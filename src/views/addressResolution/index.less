@@ -1,0 +1,140 @@
+.main-body {
+  width: 1188px;
+  margin: 0 auto;
+  .screen{
+    background: #fff;
+    margin-bottom: 24px;
+    padding: 48px 24px;
+    .container-row{
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+      font-size: 14px;
+      color: #262626;
+      .label{
+        width: 150px;
+        text-align: right;
+        padding-right: 8px;
+      }
+      .gaode-map-key{
+        flex: 1;
+        display: flex;
+        align-items: center;
+        .apply{
+          width: 100px;
+          text-decoration-line: none;
+          color: #00AAA6;
+          cursor: pointer;
+        }
+        .documentation{
+          text-align: left;
+        }
+        .el-input__inner{
+          height: 34px;
+          line-height: 34px;
+          &:focus{
+            border-color: #DCDFE6
+          }
+        }
+      }
+    }
+
+    .upload-row{
+      align-items: flex-start;
+      font-size: 12px;
+      .label{
+        padding-top: 6px;
+      }
+      .import{
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        .el-upload__tip{
+          font-size: 12px;
+          color: #FF8F3C;
+          margin-left: 8px;
+        }
+        .el-upload-list__item{
+          width: 270px;
+          background: #F7F7F7;
+          border-radius: 4px;
+          height: 28px;
+          line-height: 28px;
+          &:first-child{
+            margin-top: 6px;
+          }
+          .el-upload-list__item-name{
+            font-size: 12px;
+            color: #262626;
+            display: flex;
+            align-items: center;
+            padding-left: 12px;
+            .icon{
+              height: 12px;
+              margin-right: 8px;
+            }
+          }
+          .el-icon-close{
+            display: block;
+            padding-top: 2px;
+            font-weight: 600;
+            &:hover{
+              color: #00AAA6;
+            }
+          }
+        }
+        .el-button{
+          background: #ECF8F8;
+          border-radius: 4px;
+          border: none;
+          color: #00AAA6;
+          font-weight: 400;
+          width: 110px;
+          height: 30px;
+          font-size: 14px;
+        }
+      }
+    }
+
+    .export-row{
+      .export{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        .el-button{
+          width: 140px;
+          height: 32px;
+          color: #00AAA6;
+          font-weight: 400;
+          font-size: 14px;
+          border-radius: 4px;
+          margin-bottom: 12px;
+          &:hover{
+            background: #00AAA6;
+            color: #FFFFFF;
+            border: 1px solid #00AAA6;
+          }
+        }
+        .el-progress{
+          width: 25%;
+          margin-bottom: 12px;
+          text-align: left;
+          .el-progress__text{
+            color: #00AAA6;
+            margin-left: 13px;
+          }
+        }
+        .result-tip{
+          text-align: left;
+          font-size: 12px;
+          color: #262626;
+          span{
+            font-size: 14px;
+            color: #FF8F3C;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+}
