@@ -1,0 +1,61 @@
+@import '../components/vant/common/style/hairline.less';
+@import './utils.less';
+
+.account {
+  position: relative;
+  height: 100%;
+  background-color: #ffffff;
+  padding: 80rpx 72rpx 0 80rpx;
+  &-title {
+    font-size: 44rpx;
+    color: #262626;
+    font-weight: 500;
+    margin-bottom: 60rpx;
+  }
+  &-type {
+    &-title {
+      font-size: 28rpx;
+      color: #262626;
+      font-weight: 400;
+      &.disbaled {
+        color: #AAAAAA;
+      }
+    }
+    &-list {
+      max-height: 200rpx;
+      overflow-y: auto;
+      &-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24rpx;
+        height: 68rpx;
+        border-radius: 4rpx;
+        background-color: #EEEEEE;
+        margin-bottom: 16rpx;
+        .text {
+          font-size: 28rpx;
+          color: #777777;
+          font-weight: 400;
+        }
+        &.selected {
+          background-color: #E5F6F6;
+          &::after {
+            border-radius: 4rpx;
+            border-color: #00AAA6;
+          }
+          .text {
+            color: #00AAA6;
+          }
+        }
+      }
+    }
+  }
+  &-footer {
+    font-size: 24rpx;
+    color: #00AAA6;
+    font-weight: 400;
+    text-align: right;
+  }
+}

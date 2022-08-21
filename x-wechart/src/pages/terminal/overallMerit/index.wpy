@@ -1,0 +1,58 @@
+<template>
+  <view class="dakaBox">
+    <view>
+      <view>门店综合评价</view>
+      <view class="table">
+        <view class="hanBox titleBgc">
+          <view>指标</view>
+          <view>本店实际值</view>
+          <view>区域平均值</view>
+          <view>区域最大值</view>
+        </view>
+        <view class="hanBox block2Bgc">
+          <view>
+            <view>规模</view>
+            <view>(万元)</view>
+          </view>
+          <view>{{storeMsg.storeScale}}</view>
+          <view>{{storeMsg.avageScale}}</view>
+          <view>{{storeMsg.maxScale}}</view>
+        </view>
+        <view class="hanBox block1Bgc">
+          <view>
+            <view>坪效</view>
+            <view>(万元/平米)</view>
+          </view>
+          <view>{{storeMsg.storeSqmRatio}}</view>
+          <view>{{storeMsg.avageSqmRatio}}</view>
+          <view>{{storeMsg.maxHighRatio}}</view>
+        </view>
+        <view class="hanBox block2Bgc">
+          <view>费率</view>
+          <view>{{storeMsg.storeCostRatio}}</view>
+          <view>{{storeMsg.avageCostRatio}}</view>
+          <view>{{storeMsg.maxCostRatio}}</view>
+        </view>
+        <view class="hanBox block1Bgc">
+          <view>高端占比</view>
+          <view>{{storeMsg.storeHighRatio}}%</view>
+          <view>{{storeMsg.avageHighRatio}}%</view>
+          <view>{{storeMsg.maxHighRatio}}%</view>
+        </view>
+      </view>
+    </view>
+    <view class="introduce">
+      <view>数据时间及范围:</view>
+      <view class="paddingLeft20">2019年同分公司范围内，相同渠道的门店。</view>
+      <view>指标定义:</view>
+      <view class="paddingLeft20">
+        <view>1.规模：销售额</view>
+        <view>2.高端占比：高端型号销售额/所有型号销售额</view>
+        <view>3.费率：装修及场地费用/销售额</view>
+        <view>4.坪效：销售额/展厅面积</view>
+      </view>
+    </view>
+  </view>
+</template>
+<style lang="less" src="./index.css" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

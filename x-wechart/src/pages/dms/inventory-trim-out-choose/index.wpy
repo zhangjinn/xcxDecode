@@ -1,0 +1,80 @@
+<template>
+  <view class="sarch">
+    <view class="search-container">
+      <view class="search-container-label">
+        产品信息
+      </view>
+      <van-search
+        class="search-container-input"
+        value="{{ productCode }}"
+        leftSearchIconSow="{{ false }}"
+        placeholder="请输入产品信息"
+        custom-class="dms-item-search-input"
+        placeholder-style="font-size:26rpx;"
+        focus="{{ true }}"
+        bind:search="onSearch"
+        bind:change="onChange"
+        clearable="{{ true }}"/>
+    </view>
+
+    <!--<repeat for="{{ likePaging }}" item="item">
+      <view class="search-result-row" @tap="chooseItem('{{ index }}')">
+        <view class="search-result-row-product">
+          <view class="search-result-row-product-name">
+            {{ item.productName }}
+          </view>
+          <view class="search-result-row-product-colour">
+            {{ item.colour }}
+          </view>
+        </view>
+
+        <view class="search-result-row-qty">
+          可供量{{ item.bigQty }}
+          <span class="volume" wx:if="{{item.volume}}">,体积:{{item.volume}}m³</span>
+        </view>
+
+      </view>
+    </repeat>-->
+
+    <!---->
+    <view class="order-scroll">
+      <repeat for="{{inventoryList}}" item="item">
+        <view class="order-container" @tap="chooseItem('{{ index }}')">
+          <view class="order-top">
+            <view class="order-name">
+              <view class="order-rel-name">
+                <view class="order-name-left">{{item.model}}{{item.colour ? '/' + item.colour : ''}}</view>
+              </view>
+              <!-- <view class="order-number" style="margin-left: 40rpx;">{{item.invStatusName}}{{item.quvlitylv ? '/' + item.quvlitylv : ''}}{{item.invStatusTypeName ? ' / ' + item.invStatusTypeName : ''}}</view> -->
+              <view class="order-number" style="margin-left: 40rpx;">{{item.invStatusName}}{{item.invStatusTypeName ? ' / ' + item.invStatusTypeName : ''}}</view>
+            </view>
+          </view>
+          <view class="order-options">
+            <view class="item is-lock">
+              <span>可用</span>
+              ({{item.bigQty || '无'}})</view>
+            <view class="item">
+              <span>实际</span>
+              ({{item.totalBig}})
+            </view>
+            <view class="item">
+              <span>锁定</span>
+              ({{item.bigQtyLock}})
+            </view>
+          </view>
+          <view class="order-content">
+            <view class="order-content-laster">仓库: {{item.warehouseName}}</view>
+            <view class="order-content-items">物料组: {{item.materialGroupName}}</view>
+            <!-- <view class="order-content-items">物料组: {{item.materialGroupName}}  <span style="margin-left: 40rpx;"></span>  库存类型: {{item.invTypeName}}</view> -->
+          </view>
+        </view>
+
+      </repeat>
+    </view>
+
+
+  </view>
+
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

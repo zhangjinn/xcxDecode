@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),_dispatchable=require("./internal/_dispatchable.js"),_xdropWhile=require("./internal/_xdropWhile.js"),slice=require("./slice.js"),dropWhile=_curry2(_dispatchable(["dropWhile"],_xdropWhile,function(r,e){for(var i=0,l=e.length;i<l&&r(e[i]);)i+=1;return slice(i,1/0,e)}));module.exports=dropWhile;

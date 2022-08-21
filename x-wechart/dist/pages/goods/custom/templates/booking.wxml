@@ -1,0 +1,70 @@
+<template name="booking">
+  <view class="booking {{promotion.currentStatus === 'prev' ? 'disabled' : 'active'}}">
+    <view class="booking-left">
+      <view class="booking-left-price">
+        <view class="booking-left-price-origin">¥{{promotion.billPrice}}</view>
+        <view class="booking-left-price-current">¥{{promotion.standardPrice}}</view>
+      </view>
+      <view class="booking-left-desc">活动数量 {{promotion.qty}}</view>
+    </view>
+    <view class="booking-right">
+      <block wx:if="{{promotion.currentStatus === 'next' || promotion.currentStatus === 'current' || promotion.currentStatus === 'pause'}}">
+        <block wx:if="{{promotion.currentStatus === 'pause' || promotion.currentStatus === 'current'}}">
+          <view class="booking-right-progress">
+            <view class="booking-right-progress-content">
+              <van-progress color="#FFE28F" trackColor="#b81117" stroke-width="12rpx" show-pivot="{{false}}" percentage="{{promotion.percent}}" />
+            </view>
+            <view class="booking-right-progress-desc">仅剩{{promotion.nowCount}}件</view>
+          </view>
+        </block>
+        <block wx:if="{{promotion.currentStatus === 'next'}}">
+          <view class="booking-right-next">{{promotion.timerStr}}开始抢</view>
+        </block>
+        <view class="booking-right-timer">
+          <view class="booking-right-timer-desc">{{promotion.currentStatus === 'next' ? '距开始' : '距结束'}}</view>
+          <van-count-down
+            use-slot
+            time="{{ promotion.timer }}"
+            bind:change="onTimerChange"
+          >
+            <view class="timer-item">
+              <view class="timer-item-day" wx:if="{{timer.days > 0}}">{{ timer.days }}天</view>
+              <view class="timer-item-hours">{{ timer.hours }}</view>
+              <view class="timer-item-divider">:</view>
+              <view class="timer-item-minutes">{{ timer.minutes }}</view>
+              <view class="timer-item-divider">:</view>
+              <view class="timer-item-seconds">{{ timer.seconds }}</view>
+            </view>
+          </van-count-down>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="booking-right-tip margin-bottom-8">活动时间</view>
+        <view class="booking-right-tip">{{promotion.startAt}}-{{promotion.endAt}}</view>
+      </block>
+    </view>
+  </view>
+  <view class="booking-tag">{{promotion.activityName}} {{promotion.activityCode}}</view>
+</template>
+
+<template name="booking-footer">
+  <block wx:if="{{status !== 'prev'}}">
+    <view class="booking-footer">
+      <view bind:tap="bookingAttr" hover-class="{{ status === 'current' ? 'hover' : 'none' }}" class="booking-footer-action {{ status === 'current' ? 'active' : 'disabled' }}">
+        <block wx:if="{{status === 'next'}}">敬请期待</block>
+        <block wx:if="{{status === 'current' || status === 'pause'}}">
+          {{type !== 'order' ? '马上抢' : '去下单'}}
+        </block>
+      </view>
+    </view>
+  </block>
+</template>
+
+<template name="booking-btn">
+  <block wx:if="{{status !== 'prev'}}">
+    <view bind:tap="bookingConfirm" hover-class="{{ status === 'current' ? 'hover' : 'none' }}" class="booking-btn {{ status === 'current' ? 'active' : 'disabled' }}">
+      <block wx:if="{{status === 'next'}}">敬请期待</block>
+      <block wx:if="{{status === 'current' || status === 'pause'}}">确定</block>
+    </view>
+  </block>
+</template>

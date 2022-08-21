@@ -1,0 +1,329 @@
+<wxs src="../../../wxs/utils.wxs" module="utils" class="_4295dc0"/>
+
+  <view class="order _4295dc0">
+    <van-popup show="{{calendarShow}}" position="bottom"  bind:close="closeCalendar" z-index="200" class="_4295dc0">
+      <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay" class="_4295dc0"/>
+    </van-popup>
+    <van-popup class="cencel-pop-box _4295dc0" show="{{messagepopup}}" overlay="{{ true }}">
+      <view class="cencel-pop _4295dc0">
+        <view class="title _4295dc0">操作提示</view>
+        <view class="tip-text _4295dc0">{{cancelSucMes}}</view>
+        <view class="operation _4295dc0" bindtap="cancleSuc" data-wpycanclesuc-a="">
+          确定
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ orderpopup }}" overlay="{{ true }}" class="_4295dc0">
+      <view class="orderpopup _4295dc0">
+        <view class="text _4295dc0">您确定取消订单？</view>
+        <view class="operation _4295dc0">
+          <view bindtap="cancel" class="operation-one _4295dc0">取消</view>
+          <view bindtap="cancleOrder" class="operation-two _4295dc0" data-wpycancleorder-a="{{item.id}}">确定</view>
+        </view>
+      </view>
+    </van-popup>
+
+      <!-- 取消审核弹窗 -->
+    <van-popup show="{{ showCanselExamle }}" overlay="{{ true }}" class="_4295dc0">
+      <view class="orderpopup _4295dc0">
+        <view class="text _4295dc0">确认取消审核?</view>
+        <view class="operation _4295dc0">
+          <view bindtap="cancelExamine" class="operation-one _4295dc0">取消</view>
+          <view bindtap="canselExamine" class="operation-two _4295dc0" data-wpycanselexamine-a="">确定</view>
+        </view>
+      </view>
+    </van-popup>
+
+    <van-popup show="{{ beDismissed }}" overlay="{{ true }}" class="_4295dc0">
+      <view class="orderpopup _4295dc0">
+        <view class="text _4295dc0">确认是否驳回</view>
+        <view class="operation _4295dc0">
+          <view bindtap="cancelDismissed" class="operation-one _4295dc0">取消</view>
+          <view bindtap="beDismissed" class="operation-two _4295dc0" data-wpybedismissed-a="">确定</view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ reviewConsent }}" overlay="{{ true }}" class="_4295dc0">
+      <view class="orderpopup _4295dc0">
+        <view class="text _4295dc0">确认是否同意</view>
+        <view class="operation _4295dc0">
+          <view bindtap="cancelConsent" class="operation-one _4295dc0">取消</view>
+          <view bindtap="beConsent" class="operation-two _4295dc0" data-wpybeconsent-a="">确定</view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ deletepopup }}" overlay="{{ true }}" class="_4295dc0">
+      <view class="orderpopup _4295dc0">
+        <view class="text _4295dc0">您确定删除订单？</view>
+        <view class="operation _4295dc0">
+          <view bindtap="deletecancel" class="operation-one _4295dc0">取消</view>
+          <view bindtap="deleteOrder" class="operation-two _4295dc0" data-wpydeleteorder-a="{{item.id}}">确定</view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{visible}}" position="right" overlay="{{ true }}"  bind:close="orderfiltering" custom-style="height: 100%;" z-index="130" class="_4295dc0">
+      <view class="order-drawer _4295dc0">
+        <view class="order-drawer-attr _4295dc0">
+          <scroll-view class="order-drawer-attr-scroll _4295dc0" scroll-y>
+            <view class="attr-item _4295dc0">
+              <view class="projectem _4295dc0">
+                <view class="project _4295dc0">
+                  <text style="font-size: 13px;color: #777777" class="_4295dc0">订单号</text>
+                </view>
+                <van-field placeholder="请输入订单号" placeholder-style="font-size: 24rpx;" border="{{ false }}" bind:change="ondocumentNumChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;" clearable="clearable" value="{{filterForm.terms.documentNum}}" class="_4295dc0"/>
+              </view>
+              <view class="projectem _4295dc0">
+                <view class="project _4295dc0">
+                  <text style="font-size: 28rpx;color: #777777" class="_4295dc0">客户名称</text>
+                </view>
+                <van-field placeholder="请输入客户名称" border="{{ false }}" placeholder-style="font-size: 24rpx;" bind:change="oncustomerNameChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;" clearable="clearable" value="{{filterForm.terms.customerName}}" class="_4295dc0"/>
+              </view>
+
+              <view class="projectem _4295dc0">
+                <view class="project _4295dc0">
+                  <text style="font-size: 28rpx;color: #777777" class="_4295dc0">活动名称</text>
+                </view>
+                <van-field placeholder="请输入活动名称" border="{{ false }}" placeholder-style="font-size: 24rpx;" bind:change="onActivityNameChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;" clearable="clearable" value="{{filterForm.terms.customerName}}" class="_4295dc0"/>
+              </view>
+              <view class="projectem _4295dc0">
+                <view class="project _4295dc0">
+                  <text style="font-size: 28rpx;color: #777777" class="_4295dc0">认购单号</text>
+                </view>
+                <van-field placeholder="请输入认购单号" border="{{ false }}" placeholder-style="font-size: 24rpx;" bind:change="onActivityCodeChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;" clearable="clearable" value="{{filterForm.terms.customerName}}" class="_4295dc0"/>
+              </view>
+
+              <view class="order-data _4295dc0">
+                <view class="project _4295dc0">
+                  <text style="font-size: 28rpx;color: #777777" class="_4295dc0">单据日期</text>
+                </view>
+                <view class="order-data-input _4295dc0">
+                  <view class="order-data-input-one _4295dc0" data-name="startDate" data-type="sapDate" bindtap="openCalendar">
+                    {{filterForm.terms.startDate || '开始日期'}}
+                    <van-icon  wx:if="{{filterForm.terms.startDate}}" class="close-icon _4295dc0" name="clear" bindtap="clearCalendar" data-wpyclearcalendar-a="startDate"/>
+                  </view>
+                  <view class="order-data-input-line _4295dc0">-</view>
+                  <view class="order-data-input-one _4295dc0" data-name="endDate" data-type="sapDate" bindtap="openCalendar">
+                    {{filterForm.terms.endDate|| '结束日期'}}
+                    <van-icon  wx:if="{{filterForm.terms.endDate}}" class="close-icon _4295dc0" name="clear" bindtap="clearCalendar" data-wpyclearcalendar-a="endDate"/>
+                  </view>
+                </view>
+              </view>
+              <view class="projectem _4295dc0">
+                <view class="project _4295dc0">
+                  <text style="font-size: 28rpx;color: #777777" class="_4295dc0">下单员</text>
+                </view>
+                <van-field placeholder="请输入下单员姓名" border="{{ false }}" placeholder-style="font-size: 24rpx;" bind:change="onsellerNameChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;" clearable="clearable" value="{{filterForm.terms.sellerName}}" class="_4295dc0"/>
+              </view>
+              <view class="projectem _4295dc0">
+                <view class="project _4295dc0">
+                  <text style="font-size: 28rpx;color: #777777" class="_4295dc0">是否跨品类</text>
+                </view>
+                <view class="radioCon _4295dc0">
+                  <view style="font-size: 28rpx;color: #777777" bindtap="crossCategory" data-type="1" class="{{filterForm.terms.isCrossCategory === '1' ?'isCrossCategory' :''}} _4295dc0">是</view>
+                  <view style="font-size: 28rpx;color: #777777" bindtap="crossCategory" data-type="0" class="{{filterForm.terms.isCrossCategory === '0' ?'isCrossCategory' :''}} _4295dc0">否</view>
+                </view>
+              </view>
+            </view>
+
+          </scroll-view>
+          <!-- 底部按钮 -->
+          <view class="order-drawer-attr-footer _4295dc0">
+             <view bindtap="onResetFilterForm" class="order-drawer-attr-footer-btn reset _4295dc0" hover-class="order-drawer-attr-footer-btn-hover">重置</view>
+            <view bindtap="onSubmitFilterForm" class="order-drawer-attr-footer-btn confirm _4295dc0" hover-class="order-drawer-attr-footer-btn-hover">确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <!-- 订单类型，订单状态，订单审核状态 -->
+    <van-popup show="{{OrderSFilterVisible}}" position="top" overlay="{{ true }}" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"  bind:close="touchOrderSFilter" class="_4295dc0">
+      <view  wx:if="{{CurrentOrderSFilterName === 'orderType'}}" class="order-s-filter-container _4295dc0">
+        <view class="order-operation _4295dc0" bindtap="onSelectOrderTypeCode" data-wpyonselectordertypecode-a="">
+          <view class="operation-text van-hairline--bottom _4295dc0">
+            <view class="operation-status {{ filterForm.terms.documentType === '' ? 'active' : '' }} _4295dc0">全部</view>
+            <view wx:if="{{ filterForm.terms.documentType === '' }}" class="b-icon icon-check operation-icon _4295dc0"/>
+          </view>
+        </view>
+        <block class="_4295dc0" wx:for="{{filter}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="order-operation _4295dc0" bindtap="onSelectOrderTypeCode" data-wpyonselectordertypecode-a="{{item.key}}">
+          <view class="operation-text van-hairline--bottom _4295dc0">
+            <view class="operation-status {{ filterForm.terms.documentType === item.key ? 'active' : '' }} _4295dc0">{{item.value}}</view>
+            <view wx:if="{{ filterForm.terms.documentType === item.key }}" class="b-icon icon-check operation-icon _4295dc0"/>
+          </view>
+        </view>
+        </block>
+      </view>
+      <view wx:if="{{CurrentOrderSFilterName === 'isSpeclalShop'}}" class="order-s-filter-container _4295dc0">
+        <view class="order-operation _4295dc0" bindtap="onSelectSpeclalShopCode" data-wpyonselectspeclalshopcode-a="">
+          <view class="operation-text van-hairline--bottom _4295dc0">
+            <view class="operation-status {{ filterForm.terms.isSpeclalShop === '' ? 'active' : '' }} _4295dc0">全部</view>
+            <view wx:if="{{ filterForm.terms.isSpeclalShop === '' }}" class="b-icon icon-check operation-icon _4295dc0"/>
+          </view>
+        </view>
+        <block class="_4295dc0" wx:for="{{isSpeclalShopFilter}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="order-operation _4295dc0" bindtap="onSelectSpeclalShopCode" data-wpyonselectspeclalshopcode-a="{{item.key}}">
+          <view class="operation-text van-hairline--bottom _4295dc0">
+            <view class="operation-status {{ filterForm.terms.isSpeclalShop === item.key ? 'active' : '' }} _4295dc0">{{item.value}}</view>
+            <view wx:if="{{ filterForm.terms.isSpeclalShop === item.key }}" class="b-icon icon-check operation-icon _4295dc0"/>
+          </view>
+        </view>
+        </block>
+      </view>
+      <view wx:if="{{CurrentOrderSFilterName === 'orderStatus'}}" class="order-s-filter-container _4295dc0">
+        <view class="order-operation _4295dc0">
+          <view class="operation-text van-hairline--bottom _4295dc0" bindtap="onSelectStatus" data-wpyonselectstatus-a="">
+            <view class="operation-status {{ filterForm.terms.status === '' ? 'active' : '' }} _4295dc0">全部</view>
+            <view wx:if="{{ filterForm.terms.status === '' }}" class="b-icon icon-check operation-icon _4295dc0"/>
+          </view>
+        </view>
+        <view class="order-operation _4295dc0" wx:for="{{saleFilterList}}">
+          <view class="operation-text van-hairline--bottom _4295dc0" bindtap="onSelectStatus" data-wpyonselectstatus-a="{{ item.id}}">
+            <view class="operation-status {{ filterForm.terms.status === item.id ? 'active' : '' }} _4295dc0">{{item.value}}</view>
+            <view wx:if="{{ filterForm.terms.status ===  item.id }}" class="b-icon icon-check operation-icon _4295dc0"/>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    
+  <view class="header-tab _4295dc0">
+    <view class="left-btn">
+      <block  wx:for="{{ $headerTab$tabListNew }}">
+        <view class="btn-item {{ item.selectValue ? 'active' : '' }}" bindtap="$headerTab$changeTab" data-wpychangetab-a="{{item}}">
+          <text>{{ item.name }}</text>
+          <i wx:if="{{ $headerTab$showArrowIcon }}" class="b-icon iconxialajiantou"/>
+        </view>
+      </block>
+    </view>
+    <view class="right-btn"  wx:if="{{ $headerTab$showRightBtn }}" bindtap="$headerTab$onSideFilter">
+      <view class="line-shadow" wx:if="{{ $headerTab$showRightBtnLine }}"/>
+      <view class="side-filter-btn">
+        <text>筛选</text>
+        <i class="b-icon shaixuan"/>
+      </view>
+    </view>
+  </view>
+
+    <scroll-view wx:if="{{orderList.page.totalPage !== 0}}" scroll-y="true" class="order-scroll _4295dc0" enable-flex="enable-flex" scroll-top="{{ scrollTop }}" bindscroll="onScroll" bindscrolltolower="onGetOrderListNext">
+      <block class="_4295dc0" wx:for="{{orderList.data}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="order-container _4295dc0">
+          <view class="order-title _4295dc0">
+            <view class="order-title-container _4295dc0">
+              <text class="order-type _4295dc0">{{item.documentType === 'normal' ? (item.purchaseNum !== "" ? '分销商采购': '渠道') : '零售'}}{{item.documentNum}} {{item.BHOnum ? item.BHOnum : '' }}<text wx:if="{{item.isSpeclalShop=='T'}}" class="zhuanmaidian _4295dc0">专卖店</text></text>
+              <view wx:if="{{item.returnStatusName !== '未退货'}}" class="order-return _4295dc0">{{item.returnStatusName}}</view>
+            </view>
+            <text class="order-status _4295dc0">{{item.status}}</text>
+          </view>
+          <view class="order-detail van-hairline--bottom _4295dc0">
+            <text class="order-customercode _4295dc0">{{item.customerCode}}</text>
+            <text class="order-customername _4295dc0">{{item.customerName}}</text>
+            <text class="order-time _4295dc0">{{item.documentDate}}</text>
+          </view>
+          <block class="_4295dc0" wx:for="{{item.salesOrderItem}}" wx:for-index="index" wx:for-item="goods" wx:key="key">
+            <view class="order-goods _4295dc0">
+              <navigator class="order-goods-img _4295dc0" url="">
+                <img class="goodimg _4295dc0" src="{{ goods.img }}" errSrc="{{ goods.err }}"/>
+              </navigator>
+              <view class="order-goods-detail _4295dc0">
+                <view class="order-goods-detail-name _4295dc0">
+<!--                  <view wx:if="{{utils.isFreeShipping(goods.productLabel)}}" class="free-shipping-tag">免运费</view>-->
+                  <text class="detail-text _4295dc0">{{goods.model}}</text>
+                </view>
+                <view class="order-goods-detail-color _4295dc0">
+                  <text class="detail-text _4295dc0">颜色：{{goods.colour}}</text>
+                </view>
+                <view class="order-goods-detail-number _4295dc0">
+                  <text class="good-price _4295dc0">￥{{goods.backnowledgedPrice}}</text>
+                  <text class="good-number _4295dc0">×{{goods.backnowledgedQty}}</text>
+                </view>
+              </view>
+            </view>
+            <view class="order-agreements van-hairline--bottom _4295dc0">
+              <view class="order-agreements-number _4295dc0">
+                <text class="_4295dc0">已出库({{goods.shippedBqty || 0}})，已取消({{goods.cancelQty || 0}})</text>
+              </view>
+            </view>
+          </block>
+          <view wx:if="{{item.purchaseNum && item.status == '已提交'}}" class="order-operation _4295dc0">
+             <view class="order-operation-again _4295dc0">
+              <view class="order-operation-again-two _4295dc0">
+               <van-button plain size="small" type="default" bind:click="viewDetail" class="_4295dc0" data-wpyviewdetail-a="{{item.id}}">查看详情</van-button>
+              </view>
+            </view>
+          </view>
+          <view wx:elif="{{item.purchaseNum && item.status == '待发货'}}" class="order-operation _4295dc0">
+             <view class="order-operation-again _4295dc0">
+                  <van-button bindtap="ordercanselExamine" plain size="small" type="default" class="_4295dc0" data-wpyordercanselexamine-a="{{item.id}}">取消审核</van-button>
+
+
+              <view class="order-operation-again-two _4295dc0">
+               <van-button plain size="small" type="default" bind:click="viewDetail" class="_4295dc0" data-wpyviewdetail-a="{{item.id}}">查看详情</van-button>
+              </view>
+            </view>
+          </view>
+           <view wx:elif="{{item.purchaseNum && item.status == '已接受'}}" class="order-operation _4295dc0">
+             <view class="order-operation-again _4295dc0">
+                  <van-button bindtap="ordercanselExamine" plain size="small" type="default" class="_4295dc0" data-wpyordercanselexamine-a="{{item.id}}">取消审核</van-button>
+              <view class="order-operation-again-two _4295dc0">
+               <van-button plain size="small" type="default" bind:click="viewDetail" class="_4295dc0" data-wpyviewdetail-a="{{item.id}}">查看详情</van-button>
+              </view>
+            </view>
+          </view>
+           <view wx:elif="{{item.purchaseNum && item.status == '已确认'}}" class="order-operation _4295dc0">
+             <view class="order-operation-again _4295dc0">
+                  <van-button bindtap="ordercanselExamine" plain size="small" type="default" class="_4295dc0" data-wpyordercanselexamine-a="{{item.id}}">取消审核</van-button>
+              <view class="order-operation-again-two _4295dc0">
+               <van-button plain size="small" type="default" bind:click="viewDetail" class="_4295dc0" data-wpyviewdetail-a="{{item.id}}">查看详情</van-button>
+              </view>
+            </view>
+          </view>
+          <view wx:elif="{{item.purchaseNum && item.status == '部分出库'}}" class="order-operation _4295dc0">
+             <view class="order-operation-again _4295dc0">
+              <view class="order-operation-again-two _4295dc0">
+               <van-button plain size="small" type="default" bind:click="viewDetail" class="_4295dc0" data-wpyviewdetail-a="{{item.id}}">查看详情</van-button>
+              </view>
+            </view>
+          </view>
+          <view wx:else class="order-operation _4295dc0">
+             <view wx:if="{{item.status == '已提交'}}" class="order-operation-again _4295dc0">
+                <van-button bindtap="start" plain size="small" type="default" class="_4295dc0" data-wpystart-a="{{item.id}}">取消订单</van-button>
+              <view class="order-operation-again-two _4295dc0">
+               <van-button plain size="small" type="default" bind:click="viewDetail" class="_4295dc0" data-wpyviewdetail-a="{{item.id}}">查看详情</van-button>
+              </view>
+            </view>
+            <view wx:elif="{{item.status == '待发货'}}" class="order-operation-again _4295dc0">
+              <van-button bindtap="start" plain size="small" type="default" class="_4295dc0" data-wpystart-a="{{item.id}}">取消订单</van-button>
+              <view class="order-operation-again-two _4295dc0">
+                <van-button plain size="small" type="default" bind:click="viewDetail" class="_4295dc0" data-wpyviewdetail-a="{{item.id}}">查看详情</van-button>
+              </view>
+            </view>
+            <view wx:elif="{{item.status == '部分出库'}}" class="order-operation-again _4295dc0">
+                <van-button bindtap="start" plain size="small" type="default" class="_4295dc0" data-wpystart-a="{{item.id}}">取消订单</van-button>
+              <view class="order-operation-again-two _4295dc0">
+                <van-button plain size="small" type="default" bind:click="viewDetail" class="_4295dc0" data-wpyviewdetail-a="{{item.id}}">查看详情</van-button>
+              </view>
+            </view>
+            <view wx:elif="{{item.status == '草稿'}}" class="order-operation-again _4295dc0">
+                <van-button bindtap="deletestart" plain size="small" type="default" class="_4295dc0" data-wpydeletestart-a="{{item.id}}">删除订单</van-button>
+              <view class="order-operation-again-two _4295dc0">
+               <van-button plain size="small" type="default" bind:click="viewDetail" class="_4295dc0" data-wpyviewdetail-a="{{item.id}}" data-wpyviewdetail-b="{{item.status}}" data-wpyviewdetail-c="{{item.documentType}}">编辑</van-button>
+              </view>
+            </view>
+            <view wx:else class="order-operation-the _4295dc0">
+              <van-button plain size="small" type="default" bind:click="viewDetail" class="_4295dc0" data-wpyviewdetail-a="{{item.id}}">查看详情</van-button>
+            </view>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+    
+  <view class="empty-data _4295dc0" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <van-toast id="van-toast" class="_4295dc0"/>
+    <van-dialog id="van-dialog" class="_4295dc0"/>
+  </view>

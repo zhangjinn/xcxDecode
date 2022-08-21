@@ -1,0 +1,209 @@
+<template>
+  <view class="order">
+    <!-- 日历弹框 -->
+    <van-popup show="{{calendarShow}}" position="bottom" bind:close="closeCalendar" z-index="200">
+      <calendar
+        calendarConfig="{{calendarConfig}}"
+        bind:afterTapDay="chooseDay"
+      />
+    </van-popup>
+
+    <!-- 右侧弹框筛选条件弹框列表 -->
+    <van-popup
+      show="{{agentPopup}}"
+      position="right"
+      overlay="{{ true }}"
+      z-index="200"
+      custom-style="height: 100%;"
+    >
+      <view class="order-drawer">
+        <view class="order-drawer-time">
+          <view class="order-drawer-time-header">
+            <van-icon
+              name="arrow-left"
+              class="order-drawer-time-header-back"
+              bind:click="selectAgentPopup"
+            ></van-icon>
+            <view class="order-drawer-time-header-title">{{popupTitle}}</view>
+          </view>
+
+          <view wx:if="{{popupTitle == '是否下沉'}}" class="order-drawer-time-content">
+            <repeat for="{{whetherToSinkList}}" item="item">
+              <view
+                class="order-drawer-time-content-line"
+                catchtap="selectStatus({{item.name}},{{item.id}})"
+              >
+                <view
+                  class="text {{filterForm.terms.whetherToSinkId === item.id ? 'active' : ''}}"
+                >{{item.name}}</view>
+                <van-icon
+                  wx:if="{{filterForm.terms.whetherToSinkId === item.id}}"
+                  name="success"
+                  class="time-selected"
+                  size="32rpx"
+                />
+              </view>
+            </repeat>
+          </view>
+
+        </view>
+      </view>
+    </van-popup>
+    <!-- 筛选侧边弹框 -->
+    <van-popup
+      show="{{visible}}"
+      position="right"
+      overlay="{{ true }}"
+      bind:close="orderfiltering"
+      custom-style="height: 100%;"
+      z-index="130"
+    >
+      <view class="order-drawer">
+        <view class="order-drawer-attr">
+          <scroll-view
+            class="order-drawer-attr-scroll"
+            scroll-y>
+            <view class="attr-item">
+              <view class="projectem">
+                <view class="project">
+                  <text style="font-size: 28rpx;color: #777777">门店名称</text>
+                </view>
+                <van-field
+                  placeholder="请输入"
+                  border="{{ false }}"
+                  placeholder-style="font-size: 24rpx;"
+                  data-key="storeName"
+                  bind:change="onFieldChange"
+                  custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;"
+                  clearable
+                  value="{{filterForm.terms.storeName}}"
+                />
+              </view>
+              <view class="projectem">
+                <view class="project">
+                  <text style="font-size: 28rpx;color: #777777">门店简称</text>
+                </view>
+                <van-field
+                  placeholder="请输入"
+                  border="{{ false }}"
+                  placeholder-style="font-size: 24rpx;"
+                  data-key="storeAbbreviation"
+                  bind:change="onFieldChange"
+                  custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;"
+                  clearable
+                  value="{{filterForm.terms.storeAbbreviation}}"
+                />
+              </view>
+              <view class="item-trans">
+                <view class="item-project" @tap="selectAgentPopup('whetherToSink')">
+                  <view class="item-name">是否下沉</view>
+                  <view class="text">
+                    <text>{{filterForm.terms.whetherToSinkName || '请选择'}} ></text>
+                  </view>
+                </view>
+              </view>
+              <view class="order-data">
+                <view class="project">
+                  <text style="font-size: 28rpx;color: #777777">提交时间</text>
+                </view>
+                <view class="order-data-input">
+                  <view class="order-data-input-one" data-name="startDate" data-type="sapDate" @tap="openCalendar">
+                    {{filterForm.terms.startDate || '开始日期'}}
+                    <van-icon wx:if="{{filterForm.terms.startDate}}" class="close-icon" name="clear" @tap="clearCalendar('startDate')"/>
+                  </view>
+                  <view class="order-data-input-line">-</view>
+                  <view class="order-data-input-one" data-name="endDate" data-type="sapDate" @tap="openCalendar">
+                    {{filterForm.terms.endDate|| '结束日期'}}
+                    <van-icon wx:if="{{filterForm.terms.endDate}}" class="close-icon" name="clear" @tap="clearCalendar('endDate')"/>
+                  </view>
+                </view>
+              </view>
+
+            </view>
+          </scroll-view>
+          <!-- 底部按钮 -->
+          <view class="order-drawer-attr-footer">
+             <view
+              @tap="onResetFilterForm"
+              class="order-drawer-attr-footer-btn reset"
+              hover-class="order-drawer-attr-footer-btn-hover"
+            >重置</view>
+            <view
+              @tap="onSubmitFilterForm"
+              class="order-drawer-attr-footer-btn confirm"
+              hover-class="order-drawer-attr-footer-btn-hover"
+            >确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <!-- 快捷筛选顶部弹框 提报状态 -->
+    <van-popup
+      show="{{OrderSFilterVisible}}"
+      position="top"
+      overlay="{{ true }}"
+      custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"
+      bind:close="touchOrderSFilter"
+    >
+      <view wx:if="{{CurrentOrderSFilterName === 'orderStatus'}}" class="order-s-filter-container">
+        <view class="order-operation">
+          <view class="operation-text van-hairline--bottom" @tap="onSelectStatus('')">
+            <view class="operation-status {{ filterForm.terms.status === '' ? 'active' : '' }}">全部</view>
+            <view wx:if="{{ filterForm.terms.status === '' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <view class="order-operation" wx:for={{saleFilterList}}>
+          <view class="operation-text van-hairline--bottom" @tap="onSelectStatus({{ item.id}})">
+            <view class="operation-status {{ filterForm.terms.status === item.id ? 'active' : '' }}">{{item.value}}</view>
+            <view wx:if="{{ filterForm.terms.status ===  item.id }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    <headerTab
+      :tabList.sync="headerTabList"
+      @onTabChange.user="touchOrderSFilter"
+      @onSideFilter.user="orderfiltering"
+    />
+    <scroll-view
+      wx:if="{{ myAddShopList && myAddShopList.length !== 0}}"
+      scroll-y="true"
+      class="order-scroll"
+      enable-flex
+      scroll-top="{{ scrollTop }}">
+      <repeat for="{{ myAddShopList }}" item="item">
+        <view class="order-container" @tap="viewDetail({{item.processInstId}})">
+          <view class="order-container-inner">
+            <view class="card-title">
+              <view class="card-coding">
+                <text>{{ item.custAddShopReqDto.fullName }}</text>
+              </view>
+
+              <view class="card-status">
+                <text wx:if="{{item.checkStatus == '发布'}}" class="added">已添加</text>
+                <text wx:elif="{{item.checkStatus == '作废'}}" class="revoked">已撤销</text>
+                <text wx:else class="approval">审批中</text>
+              </view>
+            </view>
+            <view class="card-address">
+              <text class="b-icon h-icon punch-card-positioning"></text>
+              <text class="address">{{ item.address	 }}</text>
+            </view>
+            <view class="card-footer">
+              <view class="check-the-details">查看详情</view>
+            </view>
+          </view>
+        </view>
+      </repeat>
+    </scroll-view>
+    <emptyDataType wx:else/>
+    <view class="order-footer" @tap="viewDetail()">
+      新增门店
+    </view>
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

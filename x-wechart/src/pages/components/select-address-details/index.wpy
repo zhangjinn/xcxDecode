@@ -1,0 +1,56 @@
+<template>
+  <view class="goods-toper">
+    <view class="mask" bindtap='popHide' wx:if="{{popShow && addressOptions && addressOptions.length>0}}"></view>
+    <view class="item-row">
+      <view class="item-row-left">
+        <text>详细地址</text>
+        <text
+          class="redXing"
+          wx:if="{{isRequired}}"
+        >*</text>
+      </view>
+      <view class="item-row-right">
+        <view class="item-row-right-note">
+          <van-field
+            type='textarea'
+            autosize
+            value="{{ formData.addressName }}"
+            placeholder="请填写详细地址"
+            border="{{ false }}"
+            clearable
+            custom-style='font-size: 28rpx;'
+            class="dms-order-note"
+            input-align="right"
+            bind:change="onAddressChange"
+            bind:focus='onFocus'
+          />
+        </view>
+      </view>
+    </view>
+    <view class='prod-scroll-view' wx:if="{{popShow && addressOptions && addressOptions.length>0}}">
+      <scroll-view class='prod-scroll-view-inner' scroll-y bindscroll='onScroll'>
+        <repeat for="{{addressOptions}}" item="item">
+          <view class="order-operation">
+            <view class="operation-text {{index < addressOptions.length-1 ? 'van-hairline--bottom' : ''}}" @tap="onAddressSelect({{item}})">
+              <view class="operation-status">{{item.name}}</view>
+            </view>
+          </view>
+        </repeat>
+      </scroll-view>
+    </view>
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<style lang="less">
+.goods-toper{
+  .van-field__input {
+    width: 100% !important;
+  }
+  .van-cell {
+    padding-bottom: 0;
+    padding-top: 0;
+    margin: 10rpx 0;
+  }
+}
+</style>
+<script lang="typescript" src="./index.ts"></script>

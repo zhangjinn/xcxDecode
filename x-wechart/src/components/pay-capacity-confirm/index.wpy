@@ -1,0 +1,14 @@
+<template>
+  <van-popup show="{{show}}" custom-style="border-radius: 12rpx;overflow:hidden;">
+    <view class="pay-confirm">
+      <view @tap="close" hover-class="hover" class="pay-confirm-close">
+        <van-icon name="cross" color="#AAAAAA" />
+      </view>
+      <view class="pay-confirm-header">您的账户财务信息不完整，不能直接支付，请保存订单联系分公司财务完善账户信贷范围信息后再支付，或者转代理商下单！</view>
+      <van-button bind:click="onBind('cancel')" block color="#00AAA6">取消</van-button>
+      <van-button bind:click="onBind('save')" block color="#00AAA6">保存订单</van-button>
+    </view>
+  </van-popup>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

@@ -1,0 +1,667 @@
+<wxs src="../../../wxs/utils.wxs" module="utils"/>
+
+
+  <block  wx:if="{{loginStatus && isPermission}}">
+    <block wx:if="{{ !promotion.activityId }}">
+      <view class="goods">
+        <!-- 导入 promotion 模板 -->
+        <import src="./templates/booking.wxml"/>
+        <scroll-view scroll-y enable-back-to-top="true" scroll-with-animation="true" id="goods-scroll-view" class="goods-scroll">
+          <view class="goods-swiper">
+            <block wx:if="{{barrageList.length > 0 && promotion.currentStatus !== 'prev'}}">
+              <view class="goods-swiper-barrage">
+                <swiper vertical="vertical" autoplay circular="circular" interval="1500" easing-function="linear">
+                  <block wx:for="{{barrageList}}" wx:for-index="index" wx:for-item="item" wx:key="barrage_{{index}}">
+                    <swiper-item duration="{{ { enter: 3000, leave: 100 } }}">
+                      <view class="goods-swiper-barrage-item">{{item}}</view>
+                    </swiper-item>
+                  </block>
+                </swiper>
+
+              </view>
+            </block>
+            <block wx:if="{{promotion.custPurchaseQty}}">
+              <view class="goods-swiper-booking-tag">
+                <view class="b-icon iconqiangzi"/>
+                <view class="goods-swiper-booking-tag-text van-ellipsis">已抢{{promotion.custPurchaseQty}}件</view>
+              </view>
+            </block>
+            <swiper indicator-dots autoplay circular="circular" indicator-color="#d4d4d4" indicator-active-color="#262626">
+              <block wx:for="{{banners}}" wx:for-index="index" wx:for-item="item" wx:key="banner_{{index}}">
+                <swiper-item>
+                  <view class="banner-item">
+                    <img mode="scaleToFill" class="slide-image" src="{{item}}" errSrc="{{ product.errImg }}"/>
+                  </view>
+                </swiper-item>
+              </block>
+            </swiper>
+          </view>
+
+          <view class="goods-header">
+            <block wx:if="{{promotion.activityId}}">
+
+              <template is="booking" data="{{timer: countDownTimer,promotion}}"/>
+            </block>
+            <block wx:else>
+              <view class="goods-header-info">
+                <view wx:if="{{isFenXiao == 'Y'}}" class="goods-header-info-left">
+                  <view wx:if="{{dmsPrice}}">
+                    <text class="price-unit">¥</text>
+                    <text class="price">{{dmsPrice}}</text>
+                  </view>
+                  <view wx:else>
+                    <text style="font-size: 32rpx;line-height: 48rpx;color: #D9161C;font-weight: 600;">暂无价格</text>
+                  </view>
+                </view>
+                <view wx:else class="goods-header-info-left">
+                  <text class="price-unit">¥</text>
+                  <text class="price">{{utils.formatPrice(price.standardPrice)}}</text>
+                  <text class="price-rate">固定折扣：{{price.fixedDiscount || 0}}%</text>
+                </view>
+                <!-- <view wx:if="{{isFenXiao == 'Y'}}" class="goods-header-info-right">库存: {{dmsStock ? '有库存': '暂无库存'}} </view>
+                <view wx:else  class="goods-header-info-right">库存: {{stock == 0 ? '暂无库存' : stock}}</view> -->
+                <!-- <view wx:if="{{isFenXiao == 'Y'}}" class="goods-header-info-right">自有: {{dmsStock ? '有库存': '暂无库存'}} </view>  -->
+
+                <view wx:if="{{isFenXiao == 'Y'}}" class="goods-header-info-right">
+                  <span wx:if="{{invQty || invQty === 0}}">自有仓{{invQty}}</span>
+                  <span wx:if="{{gicInvQty || gicInvQty === 0}}">共享仓{{gicInvQty}}</span>
+                </view>
+                <view wx:else class="goods-header-info-right">
+                  <span wx:if="{{inventory || inventory === 0}}">海信{{inventory}}</span>
+                  <span wx:if="{{sharedInv || sharedInv === 0}}">共享{{sharedInv}}</span>
+                </view>
+                <!-- <view class="goods-header-info-right">
+                  <span wx:if="{{inventory || inventory === 0}}">{{isFenXiao != 'Y' ? '海信' : '自有'}}{{inventory}}</span>
+
+                  <span wx:if="{{sharedInv || sharedInv === 0}}">共享 {{sharedInv}}</span>
+                </view> -->
+              </view>
+               <view class="goods-header-desc" wx:if="{{product.retailPriceL}}">建议零售价：¥{{product.retailPriceL}}</view>
+            </block>
+
+            <view class="goods-header-desc">
+              <view class="goods-header-desc-tag">
+                <view wx:if="{{utils.isFreeShipping(product.productLabel)}}" class="free-shipping-tag">免运费</view>
+                <view class="title" wx:if="{{product.productName}}">{{product.productName}}</view>
+              </view>
+
+              <view class="goods-header-desc-content van-multi-ellipsis--l2" wx:if="{{product.importInfo}}">{{product.importInfo}}</view>
+            </view>
+            <view class="goods-header-type">
+              <view class="item" wx:if="{{!promotion.activityId}}">
+                <view class="item-label">品牌</view>
+                <view class="item-content">{{product.brandName}}</view>
+              </view>
+              <view class="item" wx:if="{{!promotion.activityId}}">
+                <view class="item-label">商品型号</view>
+                <view class="item-content">{{product.productModel}}</view>
+              </view>
+              <view class="item" wx:if="{{!promotion.activityId}}">
+                <view class="item-label">我的销量</view>
+                <view class="item-content">{{price.qty}}</view>
+              </view>
+              <view class="item" wx:if="{{!promotion.activityId}}">
+                <view class="item-label">渠道销量</view>
+                <view class="item-content">{{price.channelQty}}</view>
+              </view>
+              <view class="item" wx:if="{{isFenXiao == 'N' &&  !promotion.activityId}}">
+                <view class="item-label">采购类型</view>
+                <view class="item-iconlabel">
+                  <text class="text" wx:if="{{ product.purchaseType==1 || product.purchaseType==3 }}">支持应急采购</text>
+                  <text class="text" wx:if="{{ product.purchaseType==2 || product.purchaseType==3 }}">支持常规采购</text>
+                  <text class="cpjd">{{product.zzcpjd}}</text>
+                </view>
+              </view>
+              <view wx:if="{{policies &&  policies.length > 0 && isFenXiao == 'N' }}" bindtap="openPolicy" class="item" hover-class="hover">
+                <view class="item-label">政策</view>
+                <view class="item-content"/>
+                <view class="item-extra">
+                  <van-icon color="#AAAAAA" size="38rpx" name="arrow"/>
+                </view>
+              </view>
+            </view>
+          </view>
+          <block wx:if="{{!promotion.activityId}}">
+            <van-cell  bind:click="openAttrPopup" border="{{ false }}" is-link="is-link">
+              <view class="items-attr" slot="title">
+                <view class="items-attr-label">已选</view>
+                <view class="items-attr-value">{{product.color|| ''}}{{product.color ? '，' : ''}}{{cart[product.id]}}件{{ policies.length > 0 ? '，可选服务' : ''}}</view>
+              </view>
+            </van-cell>
+          </block>
+          <van-tabs custom-class="items-tab-container" color="#00AAA6">
+            <van-tab title="图文详情">
+              <view class="goods-scroll-detail">
+                <block wx:if="{{ product.productContent }}">
+                  <parser html="{{product.productContent}}"/>
+                </block>
+                <block wx:else>
+                  <view class="empty">暂无商品详情</view>
+                </block>
+              </view>
+            </van-tab>
+            <van-tab title="产品介绍">
+              <view class="setting">
+                <view class="setting-content">
+                  <view class="setting-content-body">
+                    <view class="setting-content-body-item">
+                      <view class="setting-content-body-item-label">商品名称</view>
+                      <view class="setting-content-body-item-value">{{product.productName}}</view>
+                    </view>
+                    <view class="setting-content-body-item">
+                      <view class="setting-content-body-item-label">品牌</view>
+                      <view class="setting-content-body-item-value">{{product.brandName}}</view>
+                    </view>
+                    <view class="setting-content-body-item">
+                      <view class="setting-content-body-item-label">上市时间</view>
+                      <view class="setting-content-body-item-value">{{utils.formatDate(product.onSaleDate)}}</view>
+                    </view>
+                    <view class="setting-content-body-item">
+                      <view class="setting-content-body-item-label">商品编号</view>
+                      <view class="setting-content-body-item-value">{{product.productCode}}</view>
+                    </view>
+                    <view class="setting-content-body-item">
+                      <view class="setting-content-body-item-label">品类</view>
+                      <view class="setting-content-body-item-value">{{product.materialGroupName}}</view>
+                    </view>
+                    <view class="setting-content-body-item" wx:if="{{product.importInfo}}">
+                      <view class="setting-content-body-item-label">功能</view>
+                      <view class="setting-content-body-item-value">{{product.importInfo}}</view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </van-tab>
+            <van-tab title="规格参数">
+              <view class="setting">
+                <block wx:if="{{attrs.length > 0}}">
+                  <view class="setting-content">
+                    <block wx:for="{{attrs}}" wx:for-index="index" wx:for-item="setting" wx:key="setting_{{index}}}">
+                      <view class="setting-content-header">{{setting.label}}</view>
+                      <view class="setting-content-body">
+                        <block wx:for="{{setting.child}}" wx:for-index="index" wx:for-item="attr" wx:key="attr_{{index}}">
+                          <view class="setting-content-body-item">
+                            <view class="setting-content-body-item-label">{{ attr.attrKey }}</view>
+                            <view class="setting-content-body-item-value">{{ attr.attrValue }}</view>
+                          </view>
+                        </block>
+                      </view>
+                    </block>
+                  </view>
+                </block>
+                <block wx:else>
+                  <view class="empty">暂无规格参数</view>
+                </block>
+              </view>
+            </van-tab>
+          </van-tabs>
+          <view class="goods-block"/>
+        </scroll-view>
+        <button wx:if="{{promotion.activityId}}" style="bottom: 178rpx;" bindtap="onShareAppMessage" open-type="share" class="screen shareBar" lang="zh_CN">
+          <view class="b-icon icon-huodong_fenxiang"/>
+        </button>
+        <block wx:if="{{promotion.activityId}}">
+          <template is="booking-footer" data="{{status: promotion.currentStatus, type: type}}"/>
+        </block>
+        <block wx:else>
+          <van-submit-bar loading="{{submitting}}" button-text="加入购物车"  bind:submit="addCart" button-class-container="item-order-btn" button-class="item-order-confirm">
+            <view class="goods-footer">
+              <view bindtap="goToTab" class="goods-footer-item van-hairline--right" hover-class="hover" data-wpygototab-a="/pages/main/home/index">
+                <view class="b-icon icon-home-l goods-footer-item-icon"/>
+                <text class="goods-footer-item-text">首页</text>
+              </view>
+
+              <view bindtap="goToTab" class="goods-footer-item van-hairline--right" hover-class="hover" data-wpygototab-a="/pages/main/cart/index">
+                <van-dott count="{{cartNum}}">
+                  <view class="b-icon icon-shop goods-footer-item-icon"/>
+                </van-dott>
+                <text class="goods-footer-item-text">购物车</text>
+              </view>
+              <view bindtap="toggleStar" class="goods-footer-item" hover-class="hover">
+                <view class="b-icon icon-star-e goods-footer-item-icon {{isStar ? 'active' : ''}}"/>
+                <text class="goods-footer-item-text">收藏</text>
+              </view>
+            </view>
+          </van-submit-bar>
+        </block>
+        <!-- 属性弹框 -->
+        <van-popup show="{{ attrPopup }}" position="bottom" safe-area-inset-bottom="{{true}}">
+          <view class="goods-attr-popup">
+            <view bindtap="closeAttrPopup" class="goods-attr-popup-close" hover-class="hover">
+              <van-icon color="#262626" name="cross"/>
+            </view>
+            <view class="goods-attr-popup-header">
+              <view class="goods-attr-popup-header-left van-hairline--surround">
+                <img mode="scaleToFill" class="attr-image" src="{{product.attrImg}}" errSrc="{{ product.errImg }}"/>
+              </view>
+              <!-- 增加营销活动判断 -->
+              <view wx:if="{{isFenXiao == 'Y'}}" class="goods-attr-popup-header-right">
+                <view wx:if="{{dmsPrice}}">
+                  <text class="price">¥{{dmsPrice}}</text>
+                </view>
+                <view wx:else>
+                  <text style="font-size: 32rpx;line-height: 48rpx;color: #D9161C;font-weight: 600;">暂无价格</text>
+                </view>
+                <text class="status">已选：{{cart[itemID] ? cart[itemID] : 1}}件</text>
+              </view>
+              <view wx:else class="goods-attr-popup-header-right">
+                <block wx:if="{{promotion.activityId}}">
+                  <text class="price">¥{{utils.formatPrice(promotion.billPrice)}}</text>
+                </block>
+                <block wx:else>
+                  <text class="price">¥{{utils.formatPrice(price.standardPrice)}}</text>
+                </block>
+                <text class="status">已选：{{cart[itemID] ? cart[itemID] : 1}}件</text>
+              </view>
+            </view>
+            <view wx:if="{{!promotion.activityId}}" class="goods-attr-popup-type">
+              <view class="label">颜色</view>
+              <view class="list">
+                <block wx:for="{{infoList}}" wx:for-index="index" wx:for-item="item" wx:key="{{id}}">
+                  <view bindtap="chooseItem" class="van-hairline--surround list-item {{ product.id === item.id ? 'active' : '' }}" hover-class="hover" data-wpychooseitem-a="{{item.id}}">{{item.color || ''}}</view>
+                </block>
+              </view>
+            </view>
+            <view class="goods-attr-popup-count">
+              <view class="label">购买数量</view>
+              <van-stepper value="{{cart[product.id]}}" bind:change="onCountChange" integer="{{true}}" disabled="{{promotion.activityId && promotion.currentStatus !== 'current'}}" min="{{promotion.activityId ? promotion.purchaseMinLimitQty : 0}}" max="{{promotion.activityId ? promotion.canBuyCount : 99999}}"/>
+            </view>
+            <block wx:if="{{promotion.activityId}}">
+              <view class="purchase-limit-qty">单个商家限量: {{promotion.purchaseLimitQty}}</view>
+              <view wx:if="{{type !== 'order'}}" class="goods-attr-popup-text">
+                <view class="notice">提示: 本数量代表抢购资格<view wx:if="{{promotion.activityType!=='认购'}}">，请尽快去线下付款;</view></view>
+                <view class="notice-two">本活动解释权归海信所有</view>
+              </view>
+              <view wx:else class="goods-attr-popup-text">
+                <view class="notice">提示: 本次交易为直接向海信支付货款;</view>
+                <view class="notice-two">本活动解释权归海信所有</view>
+              </view>
+            </block>
+          </view>
+          <block wx:if="{{promotion.activityId}}">
+            <template is="booking-btn" data="{{status: promotion.currentStatus}}"/>
+          </block>
+          <block wx:else>
+            <van-button bind:click="closeAttrPopup" custom-class="items-attr-confirm-btn" square="square" color="#D9161C">确认</van-button>
+          </block>
+        </van-popup>
+        <van-popup show="{{policyVisible}}" position="bottom" bind:close="closePolicy">
+          <view class="policy">
+            <view bindtap="closePolicy" class="policy-close" hover-class="hover">
+              <van-icon color="#262626" name="cross"/>
+            </view>
+            <view class="policy-header van-hairline--bottom">政策列表</view>
+            <scroll-view scroll-y enable-flex="enable-flex" enable-back-to-top="true" scroll-with-animation="true" class="policy-scroll">
+              <block wx:for="{{policies}}" wx:for-index="index" wx:for-item="item" wx:key="polycy_{{id}}">
+                <view hover-class="hover" class="policy-scroll-item van-hairline--bottom">
+                  <view class="policy-scroll-item-content">
+                    <view class="policy-scroll-item-content-title">
+                      <text class="black">{{item.policyName}}</text>
+                      <text class="red">[{{item.versionCode}}]</text>
+                    </view>
+                    <view class="policy-scroll-item-content-value">
+                      <view class="policy-info">折扣 {{utils.formatPrice(item.discount)}}%，直扣 ￥{{utils.formatPrice(item.reduce)}}，开票价 ￥{{utils.formatPrice(item.price)}}</view>
+                      <view>总数量 {{item.total}}，可购数量 {{item.canQuantity}}，已购数量 {{item.remain}}</view>
+                    </view>
+                  </view>
+                </view>
+              </block>
+            </scroll-view>
+          </view>
+        </van-popup>
+        <van-toast id="van-toast"/>
+      </view>
+    </block>
+
+    <block wx:elif="{{ promotion.activityId && promotion.canBuy == 'Y' &&  (ly=='' || (ly=='1' && zbActivityId)) }}">
+      <view class="goods">
+        <!-- 导入 promotion 模板 -->
+        <import src="./templates/booking.wxml"/>
+        <scroll-view scroll-y enable-back-to-top="true" scroll-with-animation="true" id="goods-scroll-view" class="goods-scroll">
+          <view class="goods-swiper">
+            <block wx:if="{{barrageList.length > 0 && promotion.currentStatus !== 'prev'}}">
+              <view class="goods-swiper-barrage">
+                <swiper vertical="vertical" autoplay circular="circular" interval="1500" easing-function="linear">
+                  <block wx:for="{{barrageList}}" wx:for-index="index" wx:for-item="item" wx:key="barrage_{{index}}">
+                    <swiper-item duration="{{ { enter: 3000, leave: 100 } }}">
+                      <view class="goods-swiper-barrage-item">{{item}}</view>
+                    </swiper-item>
+                  </block>
+                </swiper>
+
+              </view>
+            </block>
+            <block wx:if="{{promotion.custPurchaseQty}}">
+              <view class="goods-swiper-booking-tag">
+                <view class="b-icon iconqiangzi"/>
+                <view class="goods-swiper-booking-tag-text van-ellipsis">已抢{{promotion.custPurchaseQty}}件</view>
+              </view>
+            </block>
+            <swiper indicator-dots autoplay circular="circular" indicator-color="#d4d4d4" indicator-active-color="#262626">
+              <block wx:for="{{banners}}" wx:for-index="index" wx:for-item="item" wx:key="banner_{{index}}">
+                <swiper-item>
+                  <view class="banner-item">
+                    <img mode="scaleToFill" class="slide-image" src="{{product.attrImg}}" errSrc="{{ product.errImg }}"/>
+                  </view>
+                </swiper-item>
+              </block>
+            </swiper>
+          </view>
+
+          <view class="goods-header">
+            <block wx:if="{{promotion.activityId}}">
+              <template is="booking" data="{{timer: countDownTimer,promotion}}"/>
+            </block>
+            <block wx:else>
+              <view class="goods-header-info">
+                <view wx:if="{{isFenXiao == 'Y'}}" class="goods-header-info-left">
+                  <view wx:if="{{dmsPrice}}">
+                    <text class="price-unit">¥</text>
+                    <text class="price">{{dmsPrice}}</text>
+                  </view>
+                  <view wx:else>
+                    <text style="font-size: 32rpx;line-height: 48rpx;color: #D9161C;font-weight: 600;">暂无价格</text>
+                  </view>
+                </view>
+                <view wx:else class="goods-header-info-left">
+                  <text class="price-unit">¥</text>
+                  <text class="price">{{utils.formatPrice(price.standardPrice)}}</text>
+                  <text class="price-rate">固定折扣：{{price.fixedDiscount || 0}}%</text>
+                </view>
+                <!-- <view wx:if="{{isFenXiao == 'Y'}}" class="goods-header-info-right">库存: {{dmsStock ? '有库存': '暂无库存'}} </view>
+                <view wx:else  class="goods-header-info-right">库存: {{stock == 0 ? '暂无库存' : stock}}</view> -->
+                <view wx:if="{{isFenXiao == 'Y'}}" class="goods-header-info-right">自有 {{dmsStock ? '有库存': '暂无库存'}} </view>
+                <view wx:else class="goods-header-info-right">
+                  <span wx:if="{{inventory || inventory === 0}}">海信{{inventory}}</span>
+                  <span wx:if="{{sharedInv || sharedInv === 0}}">共享{{sharedInv}}</span>
+                </view>
+                <!-- <view class="goods-header-info-right">
+                  <span wx:if="{{inventory || inventory === 0}}">{{isFenXiao != 'Y' ? '海信' : '自有'}}{{inventory}}</span>
+
+                  <span wx:if="{{sharedInv || sharedInv === 0}}">共享 {{sharedInv}}</span>
+                </view> -->
+              </view>
+            </block>
+
+            <view class="goods-header-desc">
+              <view class="goods-header-desc-tag">
+                <view class="title" wx:if="{{product.productName}}">{{product.productName}}</view>
+              </view>
+
+              <view class="goods-header-desc-content van-multi-ellipsis--l2" wx:if="{{product.importInfo}}">{{product.importInfo}}</view>
+            </view>
+            <view class="goods-header-type">
+              <view class="item" wx:if="{{!promotion.activityId}}">
+                <view class="item-label">品牌</view>
+                <view class="item-content">{{product.brandName}}</view>
+              </view>
+              <view class="item" wx:if="{{!promotion.activityId}}">
+                <view class="item-label">商品型号</view>
+                <view class="item-content">{{product.productModel}}</view>
+              </view>
+              <view class="item" wx:if="{{!promotion.activityId}}">
+                <view class="item-label">我的销量</view>
+                <view class="item-content">{{price.qty}}</view>
+              </view>
+              <view class="item" wx:if="{{!promotion.activityId}}">
+                <view class="item-label">渠道销量</view>
+                <view class="item-content">{{price.channelQty}}</view>
+              </view>
+              <view class="item" wx:if="{{isFenXiao == 'N' && !promotion.activityId}}">
+                <view class="item-label">采购类型</view>
+                <view class="item-iconlabel">
+                  <text class="text" wx:if="{{ product.purchaseType==1 || product.purchaseType==3 }}">支持应急采购</text>
+                  <text class="text" wx:if="{{ product.purchaseType==2 || product.purchaseType==3 }}">支持常规采购</text>
+                </view>
+              </view>
+              <!-- <view wx:if="{{policies &&  policies.length > 0 && !promotion.activityId }}" bindtap="openPolicy" class="item" hover-class="hover">
+                <view class="item-label">政策</view>
+                <view class="item-content" />
+                <view class="item-extra">
+                  <van-icon color="#AAAAAA" size="38rpx" name="arrow" />
+                </view>
+              </view> -->
+            </view>
+          </view>
+          <view wx:if="{{!promotion.activityId}}" class="goods-status">
+            <van-cell bind:click="openAttrPopup" border="{{ false }}" is-link="is-link">
+              <view class="items-attr" slot="title">
+                <view class="items-attr-label">已选</view>
+                <view class="items-attr-value">{{product.color|| ''}}{{product.color ? '，' : ''}}{{cart[product.id]}}件{{ policies.length > 0 ? '，可选服务' : ''}}</view>
+              </view>
+            </van-cell>
+          </view>
+          <view class="goods-detail">
+            <van-tabs color="linear-gradient(90deg, #FF3E2A 0%, rgba(255, 156, 59, 0.48) 100%)">
+              <van-tab title="图文详情">
+                <view class="goods-scroll-detail">
+                  <block wx:if="{{ product.productContent }}">
+                    <parser html="{{product.productContent}}"/>
+                  </block>
+                  <block wx:else>
+                    <view class="empty">暂无商品详情</view>
+                  </block>
+                </view>
+              </van-tab>
+              <van-tab title="产品介绍">
+                <view class="setting">
+                  <view class="setting-content">
+                    <view class="setting-content-body">
+                      <view class="setting-content-body-item">
+                        <view class="setting-content-body-item-label">商品名称</view>
+                        <view class="setting-content-body-item-value">{{product.productName}}</view>
+                      </view>
+                      <view class="setting-content-body-item">
+                        <view class="setting-content-body-item-label">品牌</view>
+                        <view class="setting-content-body-item-value">{{product.brandName}}</view>
+                      </view>
+                      <view class="setting-content-body-item">
+                        <view class="setting-content-body-item-label">上市时间</view>
+                        <view class="setting-content-body-item-value">{{utils.formatDate(product.onSaleDate)}}</view>
+                      </view>
+                      <view class="setting-content-body-item">
+                        <view class="setting-content-body-item-label">商品编号</view>
+                        <view class="setting-content-body-item-value">{{product.productCode}}</view>
+                      </view>
+                      <view class="setting-content-body-item">
+                        <view class="setting-content-body-item-label">品类</view>
+                        <view class="setting-content-body-item-value">{{product.materialGroupName}}</view>
+                      </view>
+                      <view class="setting-content-body-item" wx:if="{{product.importInfo}}">
+                        <view class="setting-content-body-item-label">功能</view>
+                        <view class="setting-content-body-item-value">{{product.importInfo}}</view>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </van-tab>
+              <van-tab title="规格参数">
+                <view class="setting">
+                  <block wx:if="{{attrs.length > 0}}">
+                    <view class="setting-content">
+                      <block wx:for="{{attrs}}" wx:for-index="index" wx:for-item="setting" wx:key="setting_{{index}}}">
+                        <view class="setting-content-header">{{setting.label}}</view>
+                        <view class="setting-content-body">
+                          <block wx:for="{{setting.child}}" wx:for-index="index" wx:for-item="attr" wx:key="attr_{{index}}">
+                            <view class="setting-content-body-item">
+                              <view class="setting-content-body-item-label">{{ attr.attrKey }}</view>
+                              <view class="setting-content-body-item-value">{{ attr.attrValue }}</view>
+                            </view>
+                          </block>
+                        </view>
+                      </block>
+                    </view>
+                  </block>
+                  <block wx:else>
+                    <view class="empty">暂无规格参数</view>
+                  </block>
+                </view>
+              </van-tab>
+            </van-tabs>
+          </view>
+
+          <view class="goods-block"/>
+        </scroll-view>
+        <button wx:if="{{promotion.activityId}}" style="bottom: 178rpx;" bindtap="onShareAppMessage" open-type="share" class="screen shareBar" lang="zh_CN">
+          <view class="b-icon icon-huodong_fenxiang"/>
+        </button>
+        <block wx:if="{{promotion.activityId}}">
+          <template is="booking-footer" data="{{status: promotion.currentStatus, type: type, deposit: promotion.deposit}}"/>
+        </block>
+        <block wx:else>
+          <van-submit-bar loading="{{submitting}}" button-text="加入购物车" bind:submit="addCart" button-class-container="item-order-btn" button-class="item-order-confirm">
+            <view class="goods-footer">
+              <view bindtap="goToTab" class="goods-footer-item van-hairline--right" hover-class="hover" data-wpygototab-a="/pages/main/home/index">
+                <view class="b-icon icon-home-l goods-footer-item-icon"/>
+                <text class="goods-footer-item-text">首页</text>
+              </view>
+
+              <view bindtap="goToTab" class="goods-footer-item van-hairline--right" hover-class="hover" data-wpygototab-a="/pages/main/cart/index">
+                <van-dott count="{{cartNum}}">
+                  <view class="b-icon icon-shop goods-footer-item-icon"/>
+                </van-dott>
+                <text class="goods-footer-item-text">购物车</text>
+              </view>
+              <view bindtap="toggleStar" class="goods-footer-item" hover-class="hover">
+                <view class="b-icon icon-star-e goods-footer-item-icon {{isStar ? 'active' : ''}}"/>
+                <text class="goods-footer-item-text">收藏</text>
+              </view>
+            </view>
+          </van-submit-bar>
+        </block>
+
+        <!-- 属性弹框 -->
+        <van-popup show="{{ attrPopup }}" position="bottom" safe-area-inset-bottom="{{true}}">
+          <view class="goods-attr-popup">
+            <view bindtap="closeAttrPopup" class="goods-attr-popup-close" hover-class="hover">
+              <van-icon color="#262626" name="cross"/>
+            </view>
+            <view class="goods-attr-popup-header">
+              <view class="goods-attr-popup-header-left van-hairline--surround">
+                <img mode="scaleToFill" class="attr-image" src="{{product.attrImg}}" errSrc="{{ product.errImg }}"/>
+              </view>
+              <!-- 增加营销活动判断 -->
+              <view wx:if="{{isFenXiao == 'Y'}}" class="goods-attr-popup-header-right">
+                <view wx:if="{{dmsPrice}}">
+                  <text class="price">¥{{dmsPrice}}</text>
+                </view>
+                <view wx:else>
+                  <text style="font-size: 32rpx;line-height: 48rpx;color: #D9161C;font-weight: 600;">暂无价格</text>
+                </view>
+                <text class="status">已选：{{cart[itemID] ? cart[itemID] : 1}}件</text>
+              </view>
+              <view wx:else class="goods-attr-popup-header-right">
+                <block wx:if="{{promotion.activityId}}">
+                  <text class="price" wx:if="{{type== 'order'}}">¥{{utils.formatPrice(promotion.billPrice)}}</text>
+                  <text class="price" wx:if="{{type!== 'order'}}">¥{{utils.formatPrice(promotion.deposit)}}</text>
+                </block>
+                <block wx:else>
+                  <text class="price">¥{{utils.formatPrice(price.standardPrice)}}</text>
+                </block>
+                <text class="status">已选：{{cart[itemID] ? cart[itemID] : 1}}件</text>
+              </view>
+            </view>
+            <view wx:if="{{!promotion.activityId}}" class="goods-attr-popup-type">
+              <view class="label">颜色</view>
+              <view class="list">
+                <block wx:for="{{infoList}}" wx:for-index="index" wx:for-item="item" wx:key="{{id}}">
+                  <view bindtap="chooseItem" class="van-hairline--surround list-item {{ product.id === item.id ? 'active' : '' }}" hover-class="hover" data-wpychooseitem-a="{{item.id}}">{{item.color || ''}}</view>
+                </block>
+              </view>
+            </view>
+
+  <!--          //TODO：组织列表暂时隐藏-->
+  <!--          <view class="goods-attr-popup-org" wx:if="{{orgColumns.length>0}}">-->
+  <!--            <van-cell title="请选择组织" is-link value="{{org.name}}" bind:click="openOrgPopup" custom-class="goods-attr-popup-org-cell"/>-->
+  <!--          </view>-->
+            <view class="goods-attr-popup-count">
+              <view class="label">购买数量</view>
+              <van-stepper value="{{cart[itemID]}}" bind:change="onCountChange" integer="{{true}}" disabled="{{promotion.activityId && promotion.currentStatus !== 'current'}}" min="{{promotion.activityId ? promotion.purchaseMinLimitQty : 0}}" max="{{promotion.activityId ? promotion.canBuyCount : 99999}}"/>
+            </view>
+            <block wx:if="{{promotion.activityId}}">
+              <view class="purchase-limit-qty">单个商家限量: {{promotion.purchaseLimitQty}}</view>
+              <view wx:if="{{type !== 'order'}}" class="goods-attr-popup-text">
+                <view class="notice">提示: 本数量代表抢购资格<view wx:if="{{promotion.activityType!=='认购'}}">，请尽快去线下付款;</view></view>
+                <view class="notice-two">本活动解释权归海信所有</view>
+              </view>
+              <view wx:else class="goods-attr-popup-text">
+                <view class="notice">提示: 本次交易为直接向海信支付货款;</view>
+                <view class="notice-two">本活动解释权归海信所有</view>
+              </view>
+            </block>
+          </view>
+          <block wx:if="{{promotion.activityId}}">
+            <template is="booking-btn" data="{{status: promotion.currentStatus}}"/>
+          </block>
+          <block wx:else>
+            <van-button bind:click="closeAttrPopup" custom-class="items-attr-confirm-btn" square="square" color="#D9161C">确认</van-button>
+          </block>
+        </van-popup>
+        <!-- 组织弹框 -->
+        <van-popup show="{{ orgPopup }}" position="bottom" safe-area-inset-bottom="{{true}}" custom-class="base-org-popup-picker">
+            <view class="picker-header">
+              <view>组织列表</view>
+              <i class="b-icon icon-close" bindtap="closeOrgPopup"/>
+            </view>
+            <scroll-view scroll-y enable-flex="enable-flex" enable-back-to-top="true" scroll-with-animation="true" id="base-maktl-scroll-view" class="picker-content">
+              <block wx:for="{{orgColumns}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                <view class="item-line" bindtap="onSelecteSale" data-wpyonselectesale-a="{{item}}">
+                  <i class="b-icon icon-success" wx:if="{{item.code === org.code}}"/>
+                  <view wx:else class="in-active"/>
+                  <view class="item-label {{ item.code === org.code ? 'active' : '' }}">{{item.name}}</view>
+                </view>
+              </block>
+            </scroll-view>
+            <view class="picker-footer">
+              <van-button type="default" size="large" bind:click="closeOrgPopup">确定</van-button>
+            </view>
+        </van-popup>
+        <van-popup show="{{policyVisible}}" position="bottom" bind:close="closePolicy">
+          <view class="policy">
+            <view bindtap="closePolicy" class="policy-close" hover-class="hover">
+              <van-icon color="#262626" name="cross"/>
+            </view>
+            <view class="policy-header van-hairline--bottom">政策列表</view>
+            <scroll-view scroll-y enable-flex="enable-flex" enable-back-to-top="true" scroll-with-animation="true" class="policy-scroll">
+              <block wx:for="{{policies}}" wx:for-index="index" wx:for-item="item" wx:key="polycy_{{id}}">
+                <view hover-class="hover" class="policy-scroll-item van-hairline--bottom">
+                  <view class="policy-scroll-item-content">
+                    <view class="policy-scroll-item-content-title">
+                      <text class="black">{{item.policyName}}</text>
+                      <text class="red">[{{item.versionCode}}]</text>
+                    </view>
+                    <view class="policy-scroll-item-content-value">
+                      <view class="policy-info">折扣 {{utils.formatPrice(item.discount)}}%，直扣 ￥{{utils.formatPrice(item.reduce)}}，开票价 ￥{{utils.formatPrice(item.price)}}</view>
+                      <view>总数量 {{item.total}}，可购数量 {{item.canQuantity}}，已购数量 {{item.remain}}</view>
+                    </view>
+                  </view>
+                </view>
+              </block>
+            </scroll-view>
+          </view>
+        </van-popup>
+        <van-toast id="van-toast"/>
+      </view>
+    </block>
+    
+  <view class="empty-data" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+  </block>
+  <block  wx:elif="{{loginStatus && !isPermission}}">
+    
+  <view class="empty-data">
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+  </block>
+  <block  wx:else>
+    <no-permission/>
+  </block>

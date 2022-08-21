@@ -1,0 +1,482 @@
+<wxs src="../../../wxs/utils.wxs" module="utils" class="_fcf2098"/>
+
+  <view class="sale _fcf2098">
+    <van-popup overlay="{{false}}" show="{{ calendarShow }}" position="bottom"  bind:close="closeCalendar" z-index="200" class="_fcf2098">
+      <calendar calendarConfig="{{ calendarConfig }}" bind:afterTapDay="chooseDay" class="_fcf2098"/>
+    </van-popup>
+    <!-- 时效日期说明，数据更新至当天的前一天日期 -->
+    <view class="expiry-date _fcf2098">数据更新至{{ previousDayDate }}</view>
+    <view class="tabs-bar van-hairline--bottom _fcf2098">
+      <view class="border-li _fcf2098">
+        <view class="item _fcf2098" bindtap="selectTabs" style="{{ index == 1 ? 'color: #262626': ''}}" data-wpyselecttabs-a="1">销售总额
+           <view catchtap="whichPopup" class="b-icon icon-zhushi icon _fcf2098" data-wpywhichpopup-a="1"/>
+        </view>
+        <view  wx:if="{{index == 1}}" class="line _fcf2098"> </view>
+      </view>
+      <view class="border-li _fcf2098">
+        <view class="item _fcf2098" bindtap="selectTabs" style="{{ index == 2 ? 'color: #262626': ''}}" data-wpyselecttabs-a="2">渠道销售额
+          <view catchtap="whichPopup" class="b-icon icon-zhushi icon _fcf2098" data-wpywhichpopup-a="2"/>
+        </view>
+        <view  wx:if="{{index == 2}}" class="line _fcf2098"> </view>
+      </view>
+      <view class="border-li _fcf2098">
+        <view class="item _fcf2098" bindtap="selectTabs" style="{{ index == 3 ? 'color: #262626': ''}}" data-wpyselecttabs-a="3">零售额
+          <view catchtap="whichPopup" class="b-icon icon-zhushi icon _fcf2098" data-wpywhichpopup-a="3"/>
+        </view>
+        <view  wx:if="{{index == 3}}" class="line _fcf2098"> </view>
+      </view>
+      <view style="width: 180rpx" class="_fcf2098"/>
+    </view>
+    <view wx:if="{{totalSales || channelSales || retailSales}}" style="background-color: #ffffff; padding:16rpx 24rpx 24rpx 24rpx;" class="_fcf2098">
+      <view class="text-box _fcf2098" wx:if="{{totalSales}}">
+        <view class="text-heard _fcf2098">
+          <view class="name _fcf2098">
+            <view class="small _fcf2098"/>
+            销售总额
+          </view>
+          <view catchtap="whichPopup" class="b-icon icon-fail icon _fcf2098" data-wpywhichpopup-a="1"/>
+        </view>
+        <view class="text-area van-multi-ellipsis--l2 _fcf2098" style="white-space:pre-wrap">{{ dynamicMessage.totalSales }}</view>
+      </view>
+      <view class="text-box _fcf2098" wx:if="{{channelSales}}">
+        <view class="text-heard _fcf2098">
+          <view class="name _fcf2098">
+            <view class="small _fcf2098"/>
+            渠道销售额
+          </view>
+          <view catchtap="whichPopup" class="b-icon icon-fail icon _fcf2098" data-wpywhichpopup-a="2"/>
+        </view>
+        <view class="text-area van-multi-ellipsis--l2 _fcf2098" style="white-space:pre-wrap">{{ dynamicMessage.channelSales }}</view>
+      </view>
+      <view class="text-box _fcf2098" wx:if="{{retailSales}}">
+        <view class="text-heard _fcf2098">
+          <view class="name _fcf2098">
+            <view class="small _fcf2098"/>
+            零售额
+          </view>
+          <view catchtap="whichPopup" class="b-icon icon-fail icon _fcf2098" data-wpywhichpopup-a="3"/>
+        </view>
+        <view class="text-area van-multi-ellipsis--l2 _fcf2098" style="white-space:pre-wrap">{{ dynamicMessage.retailSales }}</view>
+      </view>
+    </view>
+
+    <view class="bar-chart _fcf2098" style="{{totalSales || channelSales || retailSales ? '': 'padding-top: 32rpx;'}}">
+      <view class="info _fcf2098">
+        <!-- <view class="info-one">各品类销售额占比</view> -->
+        <view class="info-two _fcf2098">
+          <view class="input-one _fcf2098" style="margin-right: 20rpx" data-name="startDate" bindtap="openCalendar">
+            <view class="time _fcf2098" data-name="startDate">{{terms.startDate || '开始日期'}}</view>
+            <view data-name="startDate" class="b-icon iconxialajiantou icon _fcf2098"/>
+          </view>
+          -
+          <view class="input-one _fcf2098" style="margin-left: 20rpx;margin-right: 12px;" data-name="endDate" bindtap="openCalendar">
+            <view class="time _fcf2098" data-name="endDate">{{terms.endDate || '结束日期'}}</view>
+            <view data-name="endDate" class="b-icon iconxialajiantou icon _fcf2098"/>
+          </view>
+        </view>
+      </view>
+      <view class="figure _fcf2098">
+        <view hidden="{{reportFlag}}" class="distribution _fcf2098">
+          <view style="width: 161px" class="_fcf2098">
+            <canvas canvas-id="ringCanvas" class="canvas _fcf2098" bindtouchstart="touchHandler"/>
+          </view>
+          <view class="dis-item _fcf2098">
+            <block class="_fcf2098" wx:for="{{inventoryReport.series}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="color-item _fcf2098">
+                <view class="content _fcf2098">
+                  <view class="circle _fcf2098" style="background-color: {{item.color}}"/>
+                  <view class="text _fcf2098">{{ item.name }}</view>
+                </view>
+                <view class="number _fcf2098">{{ item.scale }}</view>
+              </view>
+            </block>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="purchase _fcf2098">
+      <view class="purchase-screen _fcf2098">
+        <view bindtap="touchFilter" class="purchase-screen-li _fcf2098" data-wpytouchfilter-a="supplier">
+          <text class="_fcf2098">{{supplierItem.value}}</text>
+          <view class="b-icon h-icon iconxialajiantou _fcf2098"/>
+        </view>
+        <view bindtap="touchFilter" class="purchase-screen-li _fcf2098" data-wpytouchfilter-a="material">
+          <text class="_fcf2098">{{materialItem.value}}</text>
+          <view class="b-icon h-icon iconxialajiantou _fcf2098"/>
+        </view>
+        <view bindtap="touchFilter" class="purchase-screen-li _fcf2098" data-wpytouchfilter-a="date">
+          <text class="_fcf2098">{{reallyDate}}</text>
+          <view class="b-icon h-icon iconxialajiantou _fcf2098"/>
+        </view>
+      </view>
+      <view class="tabs _fcf2098">
+        <view class="purchase _fcf2098">
+          <view class="container _fcf2098">
+            <view class="sales _fcf2098">
+              <view bindtap="onePopup" class="sales-name _fcf2098">销售总额(元)<view class="b-icon icon-zhushi icon _fcf2098"/></view>
+              <view wx:if="{{onePopup}}" style="background-color: #ffffff; padding:16rpx 24rpx 24rpx 24rpx;" class="_fcf2098">
+                <view class="text-box _fcf2098">
+                  <view class="text-heard _fcf2098">
+                    <view class="name _fcf2098">
+                      <view class="small _fcf2098"/>
+                      销售总额
+                    </view>
+                    <view bindtap="onePopup" class="b-icon icon-fail icon _fcf2098"/>
+                  </view>
+                  <view class="text-area van-multi-ellipsis--l2 _fcf2098" style="white-space:pre-wrap">{{ dynamicMessage.totalSales }}</view>
+                  <view class="text-heard _fcf2098" style="padding-top:24rpx">
+                    <view class="name _fcf2098">
+                      <view class="small _fcf2098"/>
+                      渠道销售额
+                    </view>
+                  </view>
+                  <view class="text-area van-multi-ellipsis--l2 _fcf2098" style="white-space:pre-wrap">{{ dynamicMessage.channelSales }}</view>
+                  <view class="text-heard _fcf2098" style="padding-top:24rpx">
+                    <view class="name _fcf2098">
+                      <view class="small _fcf2098"/>
+                      零售额
+                    </view>
+                  </view>
+                  <view class="text-area van-multi-ellipsis--l2 _fcf2098" style="white-space:pre-wrap">{{ dynamicMessage.retailSales }}</view>
+                  <view class="text-heard _fcf2098" style="padding-top:24rpx">
+                    <view class="name _fcf2098">
+                      <view class="small _fcf2098"/>
+                      环比
+                    </view>
+                  </view>
+                  <view class="text-area van-multi-ellipsis--l2 _fcf2098" style="white-space:pre-wrap">{{ dynamicMessage.chainRatio }}</view>
+                  <view class="text-heard _fcf2098" style="padding-top:24rpx">
+                    <view class="name _fcf2098">
+                      <view class="small _fcf2098"/>
+                      同比增长率
+                    </view>
+                  </view>
+                  <view class="text-area van-multi-ellipsis--l2 _fcf2098" style="white-space:pre-wrap">{{ dynamicMessage.yearOnYearGrowthRate }}</view>
+                </view>
+              </view>
+              <view class="sales-money _fcf2098">{{salesReport.salesTotalAmount.count}}</view>
+              <view class="chain _fcf2098">
+                <view class="chain-one _fcf2098">环比</view>
+                <view class="chain-two _fcf2098" style="{{utils.homeColor(salesReport.salesTotalAmount.HB)}}">{{salesReport.salesTotalAmount.HB}}</view>
+                <view class="chain-one _fcf2098" style="padding-left: 16rpx">同比</view>
+                <view class="chain-two _fcf2098" style="{{utils.homeColor(salesReport.salesTotalAmount.TB)}}">{{salesReport.salesTotalAmount.TB}}</view>
+              </view>
+            </view>
+            <view class="items _fcf2098">
+              <view class="item _fcf2098">
+                <view class="sale-name _fcf2098">渠道销售额(元)</view>
+                <view class="sale-money _fcf2098">{{salesReport.salesNormalAmount.count}}</view>
+                <view class="chain _fcf2098" style="padding-top: 0rpx;">
+                  <view class="chain-one _fcf2098">环比</view>
+                  <view class="chain-two _fcf2098" style="{{utils.homeColor(salesReport.salesNormalAmount.HB)}}">{{salesReport.salesNormalAmount.HB}}</view>
+                  <view class="chain-one _fcf2098" style="padding-left: 16rpx">同比</view>
+                  <view class="chain-two _fcf2098" style="{{utils.homeColor(salesReport.salesNormalAmount.TB)}}">{{salesReport.salesNormalAmount.TB}}</view>
+                </view>
+              </view>
+              <view class="item _fcf2098">
+                <view class="sale-name _fcf2098">零售额(元)</view>
+                <view class="sale-money _fcf2098" style="color: #262626">{{salesReport.salesRetailAmount.count}}</view>
+                <view class="chain _fcf2098" style="padding-bottom: 28rpx;padding-top: 0rpx;">
+                  <view class="chain-one _fcf2098">环比</view>
+                  <view class="chain-two _fcf2098" style="{{utils.homeColor(salesReport.salesRetailAmount.HB)}}">{{salesReport.salesRetailAmount.HB}}</view>
+                  <view class="chain-one _fcf2098" style="padding-left: 16rpx">同比</view>
+                  <view class="chain-two _fcf2098" style="{{utils.homeColor(salesReport.salesRetailAmount.TB)}}">{{salesReport.salesRetailAmount.TB}}</view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="purchase _fcf2098">
+          <view class="container _fcf2098">
+            <view class="sales _fcf2098">
+              <view bindtap="twoPopup" class="sales-name van-hairline--top _fcf2098">销售总量(台)<view class="b-icon icon-zhushi icon _fcf2098"/></view>
+              <view wx:if="{{twoPopup}}" style="background-color: #ffffff; padding:16rpx 24rpx 24rpx 24rpx;" class="_fcf2098">
+                <view class="text-box _fcf2098">
+                  <view class="text-heard _fcf2098">
+                    <view class="name _fcf2098">
+                      <view class="small _fcf2098"/>
+                      销售总量
+                    </view>
+                    <view bindtap="twoPopup" class="b-icon icon-fail icon _fcf2098"/>
+                  </view>
+                  <view class="text-area van-multi-ellipsis--l2 _fcf2098" style="white-space:pre-wrap">{{ dynamicMessage.totalSalesQuantity }}</view>
+                  <view class="text-heard _fcf2098" style="padding-top:24rpx">
+                    <view class="name _fcf2098">
+                      <view class="small _fcf2098"/>
+                      渠道销售量
+                    </view>
+                  </view>
+                  <view class="text-area van-multi-ellipsis--l2 _fcf2098" style="white-space:pre-wrap">{{ dynamicMessage.channelSalesQuantity }}</view>
+                  <view class="text-heard _fcf2098" style="padding-top:24rpx">
+                    <view class="name _fcf2098">
+                      <view class="small _fcf2098"/>
+                      零售量
+                    </view>
+                  </view>
+                  <view class="text-area van-multi-ellipsis--l2 _fcf2098" style="white-space:pre-wrap">{{ dynamicMessage.retailSalesQuantity }}</view>
+                  <view class="text-heard _fcf2098" style="padding-top:24rpx">
+                    <view class="name _fcf2098">
+                      <view class="small _fcf2098"/>
+                      环比
+                    </view>
+                  </view>
+                  <view class="text-area van-multi-ellipsis--l2 _fcf2098" style="white-space:pre-wrap">{{ dynamicMessage.chainRatio }}</view>
+                  <view class="text-heard _fcf2098" style="padding-top:24rpx">
+                    <view class="name _fcf2098">
+                      <view class="small _fcf2098"/>
+                      同比增长率
+                    </view>
+                  </view>
+                  <view class="text-area van-multi-ellipsis--l2 _fcf2098" style="white-space:pre-wrap">{{ dynamicMessage.yearOnYearGrowthRate }}</view>
+                </view>
+              </view>
+              <view class="sales-money _fcf2098">{{salesReport.salesTotalQuantity.count}}</view>
+              <view class="chain _fcf2098">
+                <view class="chain-one _fcf2098">环比</view>
+                <view class="chain-two _fcf2098" style="{{utils.homeColor(salesReport.salesTotalQuantity.HB)}}">{{salesReport.salesTotalQuantity.HB}}</view>
+                <view class="chain-one _fcf2098" style="padding-left: 16rpx">同比</view>
+                <view class="chain-two _fcf2098" style="{{utils.homeColor(salesReport.salesTotalQuantity.TB)}}">{{salesReport.salesTotalQuantity.TB}}</view>
+              </view>
+            </view>
+            <view class="items _fcf2098">
+              <view class="item _fcf2098">
+                <view class="sale-name _fcf2098">渠道销售量(台)</view>
+                <view class="sale-money _fcf2098">{{salesReport.salesNormalQuantity.count}}</view>
+                <view class="chain _fcf2098" style="padding-top: 0rpx;">
+                  <view class="chain-one _fcf2098">环比</view>
+                  <view class="chain-two _fcf2098" style="{{utils.homeColor(salesReport.salesNormalQuantity.HB)}}">{{salesReport.salesNormalQuantity.HB}}</view>
+                  <view class="chain-one _fcf2098" style="padding-left: 16rpx">同比</view>
+                  <view class="chain-two _fcf2098" style="{{utils.homeColor(salesReport.salesNormalQuantity.TB)}}">{{salesReport.salesNormalQuantity.TB}}</view>
+                </view>
+              </view>
+              <view class="item _fcf2098">
+                <view class="sale-name _fcf2098">零售量(台)</view>
+                <view class="sale-money _fcf2098" style="color: #262626">{{salesReport.salesRetailQuantity.count}}</view>
+                <view class="chain _fcf2098" style="padding-bottom: 28rpx;padding-top: 0rpx;">
+                  <view class="chain-one _fcf2098">环比</view>
+                  <view class="chain-two _fcf2098" style="{{utils.homeColor(salesReport.salesRetailQuantity.HB)}}">{{salesReport.salesRetailQuantity.HB}}</view>
+                  <view class="chain-one _fcf2098" style="padding-left: 16rpx">同比</view>
+                  <view class="chain-two _fcf2098" style="{{utils.homeColor(salesReport.salesRetailQuantity.TB)}}">{{salesReport.salesRetailQuantity.TB}}</view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view hidden="{{reportFlag}}" class="line-chart _fcf2098">
+      <view bindtap="threePopup" class="purchase-name _fcf2098">销售额
+        <text class="_fcf2098">(万元)</text>
+        <view class="b-icon icon-zhushi icon _fcf2098"/>
+      </view>
+      <view wx:if="{{threePopup}}" style="background-color: #ffffff; padding:16rpx 24rpx 24rpx 24rpx;" class="_fcf2098">
+        <view class="text-box _fcf2098">
+          <view class="text-heard _fcf2098">
+            <view class="name _fcf2098">
+              <view class="small _fcf2098"/>
+              销售额
+            </view>
+            <view bindtap="threePopup" class="b-icon icon-fail icon _fcf2098"/>
+          </view>
+          <view class="text-area van-multi-ellipsis--l2 _fcf2098" style="white-space:pre-wrap">{{ dynamicMessage.sales }}</view>
+        </view>
+      </view>
+      
+		<ec-canvas id="{{$chart1$canvasId}}" style="width:{{$chart1$width}};height:{{$chart1$height}}" ec="{{ $chart1$ec }}" class="_77c1948 _fcf2098"/>
+      <view bindtap="fourPopup" class="purchase-name _fcf2098">销量
+        <text class="_fcf2098">(台)</text>
+        <view class="b-icon icon-zhushi icon _fcf2098"/>
+      </view>
+      <view wx:if="{{fourPopup}}" style="background-color: #ffffff; padding:16rpx 24rpx 24rpx 24rpx;" class="_fcf2098">
+        <view class="text-box _fcf2098">
+          <view class="text-heard _fcf2098">
+            <view class="name _fcf2098">
+              <view class="small _fcf2098"/>
+              销量
+            </view>
+            <view bindtap="fourPopup" class="b-icon icon-fail icon _fcf2098"/>
+          </view>
+          <view class="text-area van-multi-ellipsis--l2 _fcf2098" style="white-space:pre-wrap">{{ dynamicMessage.salesQuantity }}</view>
+        </view>
+      </view>
+      
+		<ec-canvas id="{{$chart2$canvasId}}" style="width:{{$chart2$width}};height:{{$chart2$height}}" ec="{{ $chart2$ec }}" class="_77c1948 _fcf2098"/>
+    </view>
+    <block wx:if="{{ !user.info.allFenXiao}}" class="_fcf2098">
+      <view class="tabs-bar _fcf2098">
+        <view style="width: 40rpx" class="_fcf2098"/>
+        <view class="border-li _fcf2098" bindtap="selectTopBars" data-wpyselecttopbars-a="2">
+          <view class="item _fcf2098" style="{{ indexTop == 2 ? 'color: #262626': ''}}">TOP门店</view>
+          <view wx:if="{{indexTop == 2}}" class="line-ex _fcf2098"> </view>
+        </view>
+        <view class="border-li _fcf2098" bindtap="selectTopBars" data-wpyselecttopbars-a="1">
+          <view class="item _fcf2098" style="{{ indexTop == 1 ? 'color: #262626': ''}}">TOP分销商</view>
+          <view wx:if="{{indexTop == 1}}" class="line-ex _fcf2098"> </view>
+        </view>
+        <view style="width: 300rpx" class="_fcf2098"/>
+      </view>
+      <view class="from _fcf2098">
+        <view wx:if="{{ indexTop == 1 }}" class="outer-layer _fcf2098" style="{{!show ? 'max-height: 220rpx; overflow: hidden': ''}}">
+          <block class="_fcf2098" wx:for="{{rankDistributor}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <view class="container _fcf2098">
+              <view class="name-first _fcf2098">
+                <view wx:if="{{index == 0 }}" class="_fcf2098">
+                  <image src="../images/champion.png" class="rel-icon _fcf2098"/>
+                </view>
+                <view wx:elif="{{index == 1 }}" class="_fcf2098">
+                  <image src="../images/runner.png" class="rel-icon _fcf2098"/>
+                </view>
+                <view wx:elif="{{index == 2 }}" class="_fcf2098">
+                  <image src="../images/runner_up.png" class="rel-icon _fcf2098"/>
+                </view>
+                <view wx:else class="icon _fcf2098">{{item.rank}}</view>
+                <view class="text van-ellipsis _fcf2098">{{item.dealerName}}</view>
+              </view>
+              <view class="name-last _fcf2098">
+                <view class="money _fcf2098">￥{{item.salesAmount}}</view>
+                <view class="number _fcf2098">{{item.salesQty}}</view>
+              </view>
+            </view>
+          </block>
+        </view>
+        <view wx:else class="outer-layer _fcf2098" style="{{!showTwo ? 'max-height: 220rpx; overflow: hidden': ''}}">
+          <block class="_fcf2098" wx:for="{{rankStore}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <view class="container _fcf2098">
+              <view class="name-first _fcf2098">
+                <view wx:if="{{index == 0 }}" class="_fcf2098">
+                  <image src="../images/champion.png" class="rel-icon _fcf2098"/>
+                </view>
+                <view wx:elif="{{index == 1 }}" class="_fcf2098">
+                  <image src="../images/runner.png" class="rel-icon _fcf2098"/>
+                </view>
+                <view wx:elif="{{index == 2 }}" class="_fcf2098">
+                  <image src="../images/runner_up.png" class="rel-icon _fcf2098"/>
+                </view>
+                <view wx:else class="icon _fcf2098">{{item.rank}}</view>
+                <view class="text van-ellipsis _fcf2098">{{item.storeName}}</view>
+              </view>
+              <view class="name-last _fcf2098">
+                <view class="money _fcf2098">￥{{item.salesAmount}}</view>
+                <view class="number _fcf2098">{{item.salesQty}}</view>
+              </view>
+            </view>
+          </block>
+        </view>
+        <view wx:if="{{ indexTop == 1 && rankDistributor.length > 3}}" class="operation _fcf2098">
+          <view wx:if="{{!show}}" bindtap="onshow" class="container _fcf2098">
+            <view class="text _fcf2098">放下</view>
+            <view class="b-icon iconliebiaoshaixuanjiantou-down icon _fcf2098"/>
+          </view>
+          <view wx:else bindtap="onshow" class="container _fcf2098">
+            <view class="text _fcf2098">收起</view>
+            <view class="b-icon iconliebiaoshaixuanjiantou-up icon _fcf2098"/>
+          </view>
+        </view>
+        <view wx:if="{{indexTop == 2 && rankStore.length > 3 }}" class="operation _fcf2098">
+          <view wx:if="{{!showTwo}}" bindtap="showTwo" class="container _fcf2098">
+            <view class="text _fcf2098">放下</view>
+            <view class="b-icon iconliebiaoshaixuanjiantou-down icon _fcf2098"/>
+          </view>
+          <view wx:else bindtap="showTwo" class="container _fcf2098">
+            <view class="text _fcf2098">收起</view>
+            <view class="b-icon iconliebiaoshaixuanjiantou-up icon _fcf2098"/>
+          </view>
+        </view>
+        <view hidden="{{reportFlag}}" class="dual-x-axis _fcf2098">
+          
+		<ec-canvas id="{{$chart3$canvasId}}" style="width:{{$chart3$width}};height:{{$chart3$height}}" ec="{{ $chart3$ec }}" class="_77c1948 _fcf2098"/>
+        </view>
+      </view>
+    </block>
+    <block wx:else class="_fcf2098">
+      <view class="tabs-bar _fcf2098">
+        <view style="width: 40rpx" class="_fcf2098"/>
+        <view class="border-li _fcf2098">
+          <view class="item _fcf2098" style="color: #262626">TOP门店</view>
+          <view class="line-ex-li _fcf2098"> </view>
+        </view>
+        <view style="width: 540rpx" class="_fcf2098"/>
+      </view>
+      <view class="from _fcf2098">
+        <view class="outer-layer _fcf2098" style="{{!showTwo ? 'max-height: 220rpx; overflow: hidden': ''}}">
+          <block class="_fcf2098" wx:for="{{rankStore}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <view class="container _fcf2098">
+              <view class="name-first _fcf2098">
+                <view wx:if="{{index == 0 }}" class="_fcf2098">
+                  <image src="../images/champion.png" class="rel-icon _fcf2098"/>
+                </view>
+                <view wx:elif="{{index == 1 }}" class="_fcf2098">
+                  <image src="../images/runner.png" class="rel-icon _fcf2098"/>
+                </view>
+                <view wx:elif="{{index == 2 }}" class="_fcf2098">
+                  <image src="../images/runner_up.png" class="rel-icon _fcf2098"/>
+                </view>
+                <view wx:else class="icon _fcf2098">{{item.rank}}</view>
+                <view class="text van-ellipsis _fcf2098">{{item.storeName}}</view>
+              </view>
+              <view class="name-last _fcf2098">
+                <view class="money _fcf2098">￥{{item.salesAmount}}</view>
+                <view class="number _fcf2098">{{item.salesQty}}</view>
+              </view>
+            </view>
+          </block>
+        </view>
+        <view wx:if="{{ rankStore.length > 3 }}" class="operation _fcf2098">
+          <view wx:if="{{!showTwo}}" bindtap="showTwo" class="container _fcf2098">
+            <view class="text _fcf2098">放下</view>
+            <view class="b-icon iconliebiaoshaixuanjiantou-down icon _fcf2098"/>
+          </view>
+          <view wx:else bindtap="showTwo" class="container _fcf2098">
+            <view class="text _fcf2098">收起</view>
+            <view class="b-icon iconliebiaoshaixuanjiantou-up icon _fcf2098"/>
+          </view>
+        </view>
+        <view hidden="{{reportFlag}}" class="dual-x-axis _fcf2098">
+          
+		<ec-canvas id="{{$chart3$canvasId}}" style="width:{{$chart3$width}};height:{{$chart3$height}}" ec="{{ $chart3$ec }}" class="_77c1948 _fcf2098"/>
+        </view>
+      </view>
+    </block>
+    <van-popup show="{{calendarShow}}" position="bottom"  bind:close="choseTime" z-index="200" class="_fcf2098">
+      <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay" class="_fcf2098"/>
+    </van-popup>
+    <van-popup show="{{material}}" position="bottom"  bind:close="closeMaterial" class="_fcf2098">
+      <view class="policy _fcf2098">
+        <view bindtap="closeMaterial" class="policy-close _fcf2098" hover-class="hover">
+          <van-icon color="#262626" name="cross" class="_fcf2098"/>
+        </view>
+        <view class="policy-header van-hairline--bottom _fcf2098">物料组</view>
+        <scroll-view scroll-y enable-flex="enable-flex" enable-back-to-top="true" scroll-with-animation="true" class="policy-scroll _fcf2098">
+          <block class="_fcf2098" wx:for="{{itemGroup}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <view class="warehouse-list-container _fcf2098">
+              <view bindtap="chooseMaterial" class="warehouse-list-{{materialItem.key == item.key ? 'name': 'named' }} _fcf2098" data-wpychoosematerial-a="{{item.key}}">{{item.value}}</view>
+              <view class="b-icon {{materialItem.key == item.key ? 'icon-check': '' }} warehouse-list-icon _fcf2098"/>
+            </view>
+          </block>
+          <view style="padding-top: 100rpx" class="_fcf2098"/>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-popup show="{{supplier}}" position="bottom" bind:close="closeSupplier" class="_fcf2098">
+      <view class="policy _fcf2098">
+        <view bindtap="closeSupplier" class="policy-close _fcf2098" hover-class="hover">
+          <van-icon color="#262626" name="cross" class="_fcf2098"/>
+        </view>
+        <view class="policy-header van-hairline--bottom _fcf2098">供应商</view>
+        <scroll-view scroll-y enable-flex="enable-flex" enable-back-to-top="true" scroll-with-animation="true" class="policy-scroll _fcf2098">
+          <block class="_fcf2098" wx:for="{{SuppliersList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <view class="warehouse-list-container _fcf2098">
+              <view bindtap="chooseSupper" class="warehouse-list-{{supplierItem.key == item.key ? 'name': 'named' }} _fcf2098" data-wpychoosesupper-a="{{item.key}}">{{item.value}}</view>
+              <view class="b-icon {{supplierItem.key == item.key ? 'icon-check': '' }} warehouse-list-icon _fcf2098"/>
+            </view>
+          </block>
+          <view style="padding-top: 100rpx" class="_fcf2098"/>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-popup show="{{timePicker}}" position="bottom" class="_fcf2098">
+      <view class="_fcf2098">
+        <van-datetime-picker type="year-month" value="{{ currentDate }}" min-date="{{ minDate }}" max-date="{{maxDate}}" bind:confirm="onConfirm" bind:cancel="onCancel" class="_fcf2098"/>
+      </view>
+    </van-popup>
+  </view>

@@ -1,0 +1,147 @@
+.ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+view,
+label,
+text,
+input,
+scroll-view {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+van-icon {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+view[hidden] {
+  display: none !important;
+}
+page {
+  background-color: #F7F7F7;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+.item-order-confirm {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  width: 100%;
+}
+.van-hairline,
+.van-hairline--top,
+.van-hairline--left,
+.van-hairline--right,
+.van-hairline--bottom,
+.van-hairline--top-bottom,
+.van-hairline--surround {
+  position: relative;
+}
+.van-hairline::after,
+.van-hairline--top::after,
+.van-hairline--left::after,
+.van-hairline--right::after,
+.van-hairline--bottom::after,
+.van-hairline--top-bottom::after,
+.van-hairline--surround::after {
+  content: ' ';
+  position: absolute;
+  pointer-events: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transform-origin: center;
+          transform-origin: center;
+  /* cover wechat button:after default transforn-origin */
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+  border: 0 solid #eee;
+}
+.van-hairline--top::after {
+  border-top-width: 1px;
+}
+.van-hairline--left::after {
+  border-left-width: 1px;
+}
+.van-hairline--right::after {
+  border-right-width: 1px;
+}
+.van-hairline--bottom::after {
+  border-bottom-width: 1px;
+}
+.van-hairline--top-bottom::after {
+  border-width: 1px 0;
+}
+.van-hairline--surround::after {
+  border-width: 1px;
+}
+.container {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+}
+.container .question {
+  background: #FFFFFF;
+  padding-bottom: 40rpx;
+}
+.container .question .padding {
+  padding: 40rpx 24rpx 40rpx 24rpx;
+}
+.container .question .padding .title {
+  font-size: 36rpx;
+  font-weight: 500;
+}
+.container .question .padding .content {
+  margin-top: 20rpx;
+  font-size: 28rpx;
+  color: #777777;
+}
+.container .question .padding .date {
+  margin-top: 20rpx;
+  color: #AAAAAA;
+  font-size: 22rpx;
+  float: right;
+}
+.container .answer {
+  margin-top: 16rpx;
+  background: #FFFFFF;
+}
+.container .answer .top {
+  height: 90rpx;
+}
+.container .answer .top .title {
+  color: #262626;
+  font-size: 28rpx;
+  padding: 24rpx;
+  font-weight: 500;
+}
+.container .answer .content .answer-scroll {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  padding: 24rpx;
+}
+.container .answer .content .answer-scroll .info {
+  font-size: 28rpx;
+  color: #777777;
+  max-height: 700rpx;
+}

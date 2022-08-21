@@ -1,0 +1,288 @@
+<template>
+  <view class="store">
+    <view class="store-wrapper">
+      <view class="form-wrapper">
+
+        <view class="item-row" data-name="门店名称" @tap="onPopOpen">
+          <view class="item-row-left">
+            <text>门店名称</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right">
+              <!--      1、门店名称查看详情、编辑、编辑次数大于2都不可以编辑； 2、其他表单查看详情、编辑次数大于2不可编辑； 3、附件查看详情不可编辑；    -->
+              <view class="item-row-right-inventory {{ formData.store ? '' : 'placeholder' }} {{isDisabled || pageType === 'edit' ? 'disabled-color' : ''}}">
+                {{ formData.storeName || '请选择' }}
+              </view>
+              <van-icon wx:if="{{ !isDisabled && pageType !== 'edit'}}" name="arrow" custom-class="dms-item-row-right-arrow" />
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>活动主题</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-note">
+              <van-field
+                disabled="{{ isDisabled || !isCanModify }}"
+                value="{{ formData.activityTheme }}"
+                placeholder="请输入"
+                border="{{ false }}"
+                input-align="right"
+                data-name="activityTheme"
+                bind:change="onFilterFormChange"
+                class="add-store-note"
+              />
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row" data-name="活动类型"  @tap="onPopOpen">
+          <view class="item-row-left">
+            <text>活动类型</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right">
+              <view class="item-row-right-inventory {{ formData.activityType ? '' : 'placeholder' }} {{isDisabled || !isCanModify ? 'disabled-color' : ''}}">
+                {{ formData.activityTypeName || '请选择' }}
+              </view>
+              <van-icon wx:if="{{ !isDisabled && isCanModify }}" name="arrow" custom-class="dms-item-row-right-arrow" />
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row" data-name="startDate" @tap="openCalendar">
+          <view class="item-row-left">
+            <text>活动开始时间</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right">
+              <view class="item-row-right-inventory {{ formData.startDate ? '' : 'placeholder' }} {{isDisabled || !isCanModify ? 'disabled-color' : ''}}">
+                {{ formData.startDate || '请选择' }}
+              </view>
+              <van-icon wx:if="{{ !isDisabled && isCanModify }}" name="arrow" custom-class="dms-item-row-right-arrow" />
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row" data-name="endDate" @tap="openCalendar">
+          <view class="item-row-left">
+            <text>活动结束时间</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right">
+              <view class="item-row-right-inventory {{ formData.endDate ? '' : 'placeholder' }} {{isDisabled || !isCanModify ? 'disabled-color' : ''}}">
+                {{ formData.endDate || '请选择' }}
+              </view>
+              <van-icon wx:if="{{ !isDisabled && isCanModify }}" name="arrow" custom-class="dms-item-row-right-arrow" />
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row-upload">
+          <view class="item-row-top">
+            <text>认筹宣传附件</text>
+          </view>
+          <view class="item-row-bottom">
+            <van-uploader
+              disabled="{{ isDisabled }}"
+              deletable="{{ isDisabled ? false : true }}"
+              max-count="1"
+              data-state="1"
+              data-key="publicity"
+              accept="image"
+              file-list="{{ formData.publicity }}"
+              bind:delete="deleteImg"
+              bind:after-read="afterRead"
+              sizeType="compressed">
+            </van-uploader>
+          </view>
+        </view>
+
+        <view class="item-row-upload">
+          <view class="item-row-top">
+            <text>活动方案附件</text>
+          </view>
+          <view class="item-row-bottom">
+            <van-uploader
+              disabled="{{ isDisabled || ( dataSource == '0' && !isCanModify) }}"
+              deletable="{{ isDisabled || ( dataSource == '0' && !isCanModify) ? false : true }}"
+              max-count="1"
+              data-state="2"
+              data-key="activityProgramme"
+              accept="image"
+              file-list="{{ formData.activityProgramme }}"
+              bind:delete="deleteImg"
+              bind:after-read="afterRead"
+              sizeType="compressed">
+            </van-uploader>
+          </view>
+        </view>
+
+        <view class="item-row-upload">
+          <view class="item-row-top">
+            <text>销售现场附件</text>
+          </view>
+          <view class="item-row-bottom">
+            <van-uploader
+              disabled="{{ isDisabled }}"
+              deletable="{{ isDisabled ? false : true }}"
+              max-count="1"
+              data-state="3"
+              data-key="salesSite"
+              accept="image"
+              file-list="{{ formData.salesSite }}"
+              bind:delete="deleteImg"
+              bind:after-read="afterRead"
+              sizeType="compressed">
+            </van-uploader>
+          </view>
+        </view>
+
+        <view class="item-row-upload no-bottom-line">
+          <view class="item-row-top">
+            <text>经验分享附件</text>
+          </view>
+          <view class="item-row-bottom">
+            <van-uploader
+              disabled="{{ isDisabled || ( dataSource == '0' && !isCanModify) }}"
+              deletable="{{ isDisabled  || ( dataSource == '0' && !isCanModify) ? false : true }}"
+              max-count="1"
+              data-state="4"
+              data-key="experienceSharing"
+              accept="image"
+              file-list="{{ formData.experienceSharing }}"
+              bind:delete="deleteImg"
+              bind:after-read="afterRead"
+              sizeType="compressed">
+            </van-uploader>
+          </view>
+        </view>
+
+      </view>
+      <view class="item-title">销售信息</view>
+      <view class="sales-info-wrapper">
+        <view class="sales-info-item" wx:for="{{salesInfo}}">
+          <view class="item-row" data-name="物料组" data-index="{{index}}" @tap="onPopOpen">
+            <view class="item-row-left">
+              <text>物料组</text>
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right">
+                <view class="item-row-right-inventory {{ item.materialGroup.id ? '' : 'placeholder' }} {{isDisabled || !isCanModify ? 'disabled-color' : ''}}">
+                  {{ item.materialGroup.name || '请选择' }}
+                </view>
+                <van-icon wx:if="{{ !isDisabled && isCanModify }}" name="arrow" custom-class="dms-item-row-right-arrow" />
+              </view>
+            </view>
+          </view>
+          <view class="item-row">
+            <view class="item-row-left">
+              <text>预计销售额(万元)</text>
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-note">
+                <van-field
+                  type="digit"
+                  disabled="{{ isDisabled || !isCanModify }}"
+                  value="{{ item.sales }}"
+                  placeholder="请输入"
+                  border="{{ false }}"
+                  input-align="right"
+                  data-name="sales"
+                  data-index="{{index}}"
+                  bind:change="onFilterFormChange"
+                  class="add-store-note"
+                />
+              </view>
+            </view>
+          </view>
+          <view class="sales-info-item-footer">
+            <view class="handle-btn" data-index="{{index}}" @tap="delSales">
+              <i class="b-icon shanchu"></i>
+              <text>删除</text>
+            </view>
+          </view>
+        </view>
+        <view wx:if="{{ pageType === 'add' || (pageType === 'edit' && isCanModify)}}" class="add-sales" @tap="addSales"><i class="b-icon icon-add"></i>继续添加</view>
+      </view>
+    </view>
+
+    <view wx:if="{{ pageType !== 'detail' }}" class="add-store-footer">
+      <view class="revoke-btn add-store-btn" @tap="toRevoke">取消</view>
+      <view class="submit-btn add-store-btn" @tap="toAddStore">提交</view>
+    </view>
+
+    <!-- 选择列表 -->
+    <van-popup
+      show="{{ isPopShow }}"
+      closeable
+      position="bottom"
+      custom-style="height: 570rpx"
+      zIndex="400"
+      bind:click-overlay="onClose"
+    >
+      <view class="item-inv">
+        <view class="item-inv-head">
+          <view class="item-inv-head-context">
+            <view class="item-inv-head-context-title">{{ popTitle }}</view>
+            <van-icon name="cross" class="item-inv-head-context-close" bindtap="onPopClose" />
+          </view>
+        </view>
+        <scroll-view scroll-y class="item-inv-scroll">
+          <view wx:if="{{ popTitle === '门店名称' }}" wx:for="{{ storeNameOptions }}" wx:key="{{ item.id }}" wx:for-item="item" class="item-inv-scroll-row" @tap="chooseStore({{item}})">
+            <view  data-key="{{ item.id }}" class="item-inv-scroll-row-desc {{ item.id === formData.store ? 'checked' : ''}}">
+              {{ item.name }}
+            </view>
+            <block wx:if="{{ item.id === formData.store }}">
+              <view class="b-icon icon-check item-inv-scroll-row-checked checked"></view>
+            </block>
+          </view>
+          <view wx:if="{{ popTitle === '活动类型' }}" wx:for="{{ activityTypeOptions }}" wx:key="{{ item.id }}" wx:for-item="item" class="item-inv-scroll-row" @tap="chooseSink({{item}})">
+            <view  data-key="{{ item.id }}" class="item-inv-scroll-row-desc {{ item.id === formData.activityType ? 'checked' : ''}}">
+              {{ item.name }}
+            </view>
+            <block wx:if="{{ item.id === formData.activityType }}">
+              <view class="b-icon icon-check item-inv-scroll-row-checked checked"></view>
+            </block>
+          </view>
+          <view wx:if="{{ popTitle === '物料组' }}" wx:for="{{ materialGroupOptions }}" wx:key="{{ item.id }}" wx:for-item="item" class="item-inv-scroll-row" @tap="chooseMaterialGroup({{item}})">
+            <view  data-key="{{ item.id }}" class="item-inv-scroll-row-desc {{ item.id === salesInfo[salesIndex].materialGroup.id ? 'checked' : ''}}">
+              {{ item.name }}
+            </view>
+            <block wx:if="{{ item.id  === salesInfo[salesIndex].materialGroup.id }}">
+              <view class="b-icon icon-check item-inv-scroll-row-checked checked"></view>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+
+    <!-- 日历弹框 -->
+    <van-popup show="{{calendarShow}}" position="bottom" bind:close="closeCalendar" z-index="200">
+      <calendar
+        calendarConfig="{{calendarConfig}}"
+        bind:afterTapDay="chooseDay"
+      />
+    </van-popup>
+
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<style lang="less" >
+.add-store-note {
+  .van-cell {
+    padding: 8rpx 0;
+  }
+}
+</style>
+<script lang="typescript" src="./index.ts" ></script>

@@ -1,0 +1,73 @@
+.ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+.me-return-base {
+  width: 100%;
+  height: 100%;
+  padding-top: 16rpx;
+}
+.me-return-base .return-base-form {
+  width: 100%;
+}
+.me-return-base .return-base-form .picture-button-group {
+  padding: 16rpx 24rpx;
+  background: #FFF;
+  font-size: 24rpx;
+}
+.me-return-base .return-base-form .picture-button-group .picture-button-none {
+  width: 100%;
+  text-align: center;
+  border: 2rpx dashed #979797;
+  color: #AAAAAA;
+  padding: 12rpx;
+}
+.me-return-base .return-base-form .picture-button-group .picture-button-added {
+  width: 100%;
+  text-align: center;
+  background: #ECF8F8;
+  color: #00AAAA;
+  padding: 12rpx;
+}
+.me-return-base .return-base-form .form-button-area {
+  padding: 60rpx 40rpx;
+}
+.me-return-base .return-base-form .form-button-area .form-submit {
+  background: #00AAAA;
+  color: #FFF;
+}
+.re-address-picker-popup {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+  height: 650rpx;
+}
+.re-address-picker-popup .re-address-filter {
+  width: 100%;
+}
+.re-address-picker-popup .re-address-scroll {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+.re-address-picker-popup .re-address-scroll .re-address-line {
+  padding: 16rpx 0;
+  margin: 0 32rpx;
+  border-bottom: 2rpx solid #EEEEEE;
+}
+.re-address-picker-popup .re-address-scroll .re-address-line.active {
+  color: #00AAAA;
+}

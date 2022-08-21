@@ -1,0 +1,36 @@
+@bg-color: #F7F7F7;
+@primary-color: #00AAA6;
+
+view,
+label,
+text,
+input,
+scroll-view {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+van-icon {
+  display: flex;
+}
+view[hidden] {
+  display: none !important;
+}
+
+page {
+  background-color: @bg-color;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+
+// 商品详情定义按钮
+.item-order-confirm {
+  display: flex;
+  flex: 1;
+  width: 100%;
+}
+
+

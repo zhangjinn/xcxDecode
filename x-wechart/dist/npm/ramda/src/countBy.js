@@ -1,0 +1,1 @@
+var reduceBy=require("./reduceBy.js"),countBy=reduceBy(function(e,r){return e+1},0);module.exports=countBy;

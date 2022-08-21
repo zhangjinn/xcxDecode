@@ -1,0 +1,1 @@
+function _checkForMethod(r,e){return function(){var t=arguments.length;if(0===t)return e();var o=arguments[t-1];return _isArray(o)||"function"!=typeof o[r]?e.apply(this,arguments):o[r].apply(o,Array.prototype.slice.call(arguments,0,t-1))}}var _isArray=require("./_isArray.js");module.exports=_checkForMethod;

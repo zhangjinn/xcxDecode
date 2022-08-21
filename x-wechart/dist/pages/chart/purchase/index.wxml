@@ -1,0 +1,160 @@
+<wxs src="../../../wxs/utils.wxs" module="utils" class="_990b6f8"/>
+
+  <view class="purchase _990b6f8">
+    <!-- 时效日期说明，数据更新至当天的前一天日期 -->
+    <view class="expiry-date _990b6f8">数据更新至{{ previousDayDate }}</view>
+    <!-- 顶部筛选 -->
+    <view class="header-tab-box _990b6f8">
+      
+  <view class="header-tab _990b6f8">
+    <view class="left-btn">
+      <block  wx:for="{{ $headerTab$tabListNew }}">
+        <view class="btn-item {{ item.selectValue ? 'active' : '' }}" bindtap="$headerTab$changeTab" data-wpychangetab-a="{{item}}">
+          <text>{{ item.name }}</text>
+          <i wx:if="{{ $headerTab$showArrowIcon }}" class="b-icon iconxialajiantou"/>
+        </view>
+      </block>
+    </view>
+    <view class="right-btn"  wx:if="{{ $headerTab$showRightBtn }}" bindtap="$headerTab$onSideFilter">
+      <view class="line-shadow" wx:if="{{ $headerTab$showRightBtnLine }}"/>
+      <view class="side-filter-btn">
+        <text>筛选</text>
+        <i class="b-icon shaixuan"/>
+      </view>
+    </view>
+  </view>
+
+    </view>
+
+    <!-- 筛选弹出框 -->
+    <van-popup show="{{ purchaseVisable }}" position="top" custom-class="purchase-top"  bind:close="touchFilter"  wx:if="{{CurrentFilterName==='material'}}" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;" class="_990b6f8">
+      <!-- 选择物料组 -->
+      <view wx:if="{{CurrentFilterName==='material'}}" class="order-s-filter-container _990b6f8">
+        <scroll-view scroll-y class="purchase-inv-scroll _990b6f8">
+          <view wx:for="{{  matklList }}" wx:key="{{ item.id}}" item="item" class="purchase-inv-scroll-row _990b6f8" data-key="{{item.id}}" data-index="{{ index }}">
+            <view bindtap="onMaterial" class="pose-inv-scroll-row-desc {{ item.code === materialItem.code ? 'checked' : ''}} _990b6f8" data-wpyonmaterial-a="{{item.code}}">{{ item.name}}</view>
+            <block wx:if="{{ item.code === materialItem.code }}" class="_990b6f8">
+              <view class="b-icon icon-check pose-inv-scroll-row-checked checked _990b6f8"/>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ purchaseVisable }}" position="top" custom-class="purchase-top"  bind:close="touchFilter"  wx:if="{{CurrentFilterName==='supplier'}}" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;" class="_990b6f8">
+     <!-- 选择供应商 -->
+      <view wx:if="{{CurrentFilterName==='supplier'}}" class="order-s-filter-container _990b6f8">
+        <scroll-view scroll-y class="purchase-inv-scroll _990b6f8">
+          <view wx:for="{{ supplierList }}" wx:key="{{ item.id}}" item="item" class="purchase-inv-scroll-row _990b6f8" data-key="{{item.id}}" data-index="{{ index }}">
+            <view bindtap="onChooseMa" class="pose-inv-scroll-row-desc {{ item.code === supplierItem.code ? 'checked' : ''}} _990b6f8" data-wpyonchoosema-a="{{item.code}}">{{ item.name}}</view>
+            <block wx:if="{{ item.code === supplierItem.code }}" class="_990b6f8">
+              <view class="b-icon icon-check pose-inv-scroll-row-checked checked _990b6f8"/>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ purchaseVisable }}" position="bottom" custom-class="purchase-top"  bind:close="touchFilter"  wx:if="{{CurrentFilterName==='date'}}" class="_990b6f8">
+      <!-- 选择时间 -->
+      <view class="_990b6f8">
+        <van-datetime-picker type="year-month" value="{{ currentDate }}" min-date="{{ minDate }}" max-date="{{maxDate}}" bind:input="onInput" bind:confirm="onConfirm" bind:change="getValues" bind:cancel="onCancel" class="_990b6f8"/>
+      </view>
+    </van-popup>
+    <view class="content-wrapper _990b6f8">
+    <!-- 饼图 -->
+    <view class="purchase-survey _990b6f8">
+        <view class="new-demand _990b6f8">
+          <view class="demand-text _990b6f8" style="padding-left:50rpx">提货额(元)
+            <view bindtap="openNotice" class="b-icon icon-zhushi icon _990b6f8" data-wpyopennotice-a="1"/>
+          </view>
+          <view class="demand-text _990b6f8">提货量(台)
+            <view bindtap="openNotice" class="b-icon icon-zhushi icon _990b6f8" data-wpyopennotice-a="2"/>
+          </view>
+        </view>
+        <view class="text-box _990b6f8" wx:if="{{deliveryAmount}}">
+          <view class="text-heard _990b6f8">
+            <view class="name _990b6f8">
+              <view class="small _990b6f8"/>
+              提货额
+            </view>
+            <view bindtap="openNotice" class="b-icon icon-fail icon _990b6f8" data-wpyopennotice-a="1"/>
+          </view>
+          <view class="text-area van-multi-ellipsis--l2 _990b6f8" style="white-space:pre-wrap">{{ dynamicMessage.pickUpAmount }}</view>
+          <view class="text-heard _990b6f8" style="padding-top:24rpx">
+            <view class="name _990b6f8">
+              <view class="small _990b6f8"/>
+              环比
+            </view>
+            <!-- <view class="b-icon icon-fail icon"></view> -->
+          </view>
+          <view class="text-area van-multi-ellipsis--l2 _990b6f8" style="white-space:pre-wrap">{{ dynamicMessage.chainRatio }}</view>
+        </view>
+        <view class="text-box _990b6f8" wx:if="{{whichPopup}}">
+          <view class="text-heard _990b6f8">
+            <view class="name _990b6f8">
+              <view class="small _990b6f8"/>
+              提货量
+            </view>
+            <view bindtap="openNotice" class="b-icon icon-fail icon _990b6f8" data-wpyopennotice-a="2"/>
+          </view>
+          <view class="text-area van-multi-ellipsis--l2 _990b6f8" style="white-space:pre-wrap">{{ dynamicMessage.pickUpQuantity }}</view>
+          <view class="text-heard _990b6f8" style="padding-top:24rpx">
+            <view class="name _990b6f8">
+              <view class="small _990b6f8"/>
+              环比
+            </view>
+            <!-- <view class="b-icon icon-fail icon"></view> -->
+          </view>
+          <view class="text-area van-multi-ellipsis--l2 _990b6f8" style="white-space:pre-wrap">{{ dynamicMessage.chainRatio }}</view>
+        </view>
+        <view class="info _990b6f8">
+          <view class="info-one _990b6f8" style="padding-left:50rpx">
+            <view class="number _990b6f8">{{reportSale.tb.nowRealPrice}}</view>
+            <view class="info-than _990b6f8">环比<text style="{{utils.homeColor(reportSale.tb.hbRealPrice)}}" class="_990b6f8">{{reportSale.tb.hbRealPrice}}</text></view>
+            <view class="info-than _990b6f8">常规订单占比（月累）<text style="color: #FF7474;" class="_990b6f8">{{reportSale.orderRate.monthChRatio}}</text></view>
+            <view class="info-than _990b6f8">常规订单占比（年累）<text style="color: #FF7474;" class="_990b6f8">{{reportSale.orderRate.yearChRatio}}</text></view>
+          </view>
+          <view class="info-one _990b6f8">
+            <view class="number _990b6f8" style="color: #262626">{{reportSale.tb.nowRealNum}}</view>
+            <view class="info-than _990b6f8">环比<text style="{{utils.homeColor(reportSale.tb.hbRealNum)}}" class="_990b6f8">{{reportSale.tb.hbRealPrice}}</text></view>
+            <view class="info-than _990b6f8">应急订单占比（月累）<text style="color: #FF7474;" class="_990b6f8">{{reportSale.orderRate.monthYjRatio}}</text></view>
+            <view class="info-than _990b6f8">应急订单占比（年累）<text style="color: #FF7474;" class="_990b6f8">{{reportSale.orderRate.yearYjRatio}}</text></view>
+          </view>
+        </view>
+    </view>
+    <!-- 折线图 -->
+    <view style="background-color: #FFFFFF;" class="_990b6f8">
+      <view bindtap="deliverySchedule" class="purchase-name _990b6f8">提货额 <text class="_990b6f8">(单位:万元)</text><view class="b-icon icon-zhushi icon _990b6f8"/></view>
+        <view class="text-box _990b6f8" wx:if="{{deliverySchedule}}">
+          <view class="text-heard _990b6f8">
+            <view class="name _990b6f8">
+              <view class="small _990b6f8"/>
+              提货额
+            </view>
+            <view bindtap="deliverySchedule" class="b-icon icon-fail icon _990b6f8"/>
+          </view>
+          <view class="text-area van-multi-ellipsis--l2 _990b6f8" style="white-space:pre-wrap">{{ dynamicMessage.pickUpAmount }}</view>
+        </view>
+      <view style="background-color: #FFFFFF;" hidden="{{reportFlag}}" class="_990b6f8">
+        
+		<ec-canvas id="{{$chart1$canvasId}}" style="width:{{$chart1$width}};height:{{$chart1$height}}" ec="{{ $chart1$ec }}" class="_77c1948 _990b6f8"/>
+      </view>
+    </view>
+    <view style="background-color: #FFFFFF;" class="_990b6f8">
+      <view bindtap="deliveryScale" class="purchase-name _990b6f8">提货量 <text class="_990b6f8">(单位:台)</text><view class="b-icon icon-zhushi icon _990b6f8"/></view>
+        <view class="text-box _990b6f8" wx:if="{{deliveryScale}}">
+          <view class="text-heard _990b6f8">
+            <view class="name _990b6f8">
+              <view class="small _990b6f8"/>
+              提货量
+            </view>
+            <view bindtap="deliveryScale" class="b-icon icon-fail icon _990b6f8"/>
+          </view>
+          <view class="text-area van-multi-ellipsis--l2 _990b6f8" style="white-space:pre-wrap">{{ dynamicMessage.pickUpQuantity }}</view>
+        </view>
+      <view style="background-color: #FFFFFF;" hidden="{{reportFlag}}" class="_990b6f8">
+        
+		<ec-canvas id="{{$chart2$canvasId}}" style="width:{{$chart2$width}};height:{{$chart2$height}}" ec="{{ $chart2$ec }}" class="_77c1948 _990b6f8"/>
+      </view>
+    </view>
+    </view>
+  </view>

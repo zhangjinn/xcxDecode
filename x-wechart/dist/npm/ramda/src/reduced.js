@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),_reduced=require("./internal/_reduced.js"),reduced=_curry1(_reduced);module.exports=reduced;

@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),empty=require("./empty.js"),equals=require("./equals.js"),isEmpty=_curry1(function(r){return null!=r&&equals(r,empty(r))});module.exports=isEmpty;

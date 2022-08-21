@@ -1,0 +1,49 @@
+<wxs src="../../../wxs/utils.wxs" module="utils" class="_5c9d9ce"/>
+
+  <view class="project-items _5c9d9ce">
+    <scroll-view scroll-y enable-back-to-top="true" scroll-with-animation="true" class="project-items-scroll _5c9d9ce">
+      <block class="_5c9d9ce" wx:for="{{list}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <van-swipe-cell disabled="{{item.num === 0}}" right-width="{{ 74 }}" class="_5c9d9ce">
+          <view class="project-items-scroll-item _5c9d9ce">
+            <view hidden="{{ item.num === 0 }}" class="selected-item _5c9d9ce">已选择</view>
+            <view class="project-title _5c9d9ce"><view class="project-title-tag {{item.standardPrice === 0 ? 'fail' : 'success'}} _5c9d9ce">{{item.matklName}}</view> <text class="_5c9d9ce">{{item.productModel}}</text></view>
+            <view class="project-item _5c9d9ce">
+              <view class="project-item-tag _5c9d9ce">开票单价</view>
+              <view class="project-item-price _5c9d9ce">¥{{utils.formatPrice(item.billPrice)}}</view>
+              <view class="project-item-desc _5c9d9ce">(提货价¥{{utils.formatPrice(item.standardPrice)}}，直扣¥{{utils.formatPrice(item.straightBuckle)}})</view>
+            </view>
+            <view class="project-item _5c9d9ce">
+              <view class="project-item-tag _5c9d9ce">批次</view>
+              <view class="project-item-price _5c9d9ce">{{item.batch}}</view>
+            </view>
+            <view class="project-desc van-hairline--top _5c9d9ce">
+              <view class="project-desc-num _5c9d9ce">协议数量({{item.count}})</view>
+              <view class="project-desc-order _5c9d9ce">已下单({{item.buyCount}})</view>
+            </view>
+            <view class="project-footer _5c9d9ce">
+              <view class="project-footer-price _5c9d9ce">¥{{utils.formatPrice(item.billPrice)}}</view>
+              <van-stepper disabled="{{item.standardPrice === 0}}" disable-input="{{item.standardPrice === 0}}" integer="{{true}}" value="{{item.num || 0}}" min="0" max="{{item.count}}"  bind:change="onCountChange" custom-class="cart-stepper" input-class="cart-input-class" plus-class="cart-action-class" minus-class="cart-action-class" class="_5c9d9ce" data-wpyoncountchange-a="{{item.id}}"/>
+            </view>
+          </view>
+          <view class="project-items-scroll-item-action _5c9d9ce" slot="right">
+            <view bindtap="cancelChoose" hover-class="hover" class="project-items-scroll-item-action-cancel _5c9d9ce" data-wpycancelchoose-a="{{item.id}}">取消选择</view>
+          </view>
+        </van-swipe-cell>
+      </block>
+    </scroll-view>
+    <van-submit-bar button-text="去结算"  bind:submit="confirmChoose" button-class-container="order-btn" button-class="order-confirm" class="_5c9d9ce">
+      <view class="project-items-footer _5c9d9ce">
+        <view bindtap="viewChecked" hover-class="hover" class="project-items-footer-item _5c9d9ce">
+          <view class="project-items-footer-item-radio {{all ? 'checked' : ''}} _5c9d9ce">
+            <view class="b-icon icon-check _5c9d9ce"/>
+          </view>
+          <view class="project-items-footer-item-text _5c9d9ce">查看已选</view>
+        </view>
+        <view class="project-items-footer-item _5c9d9ce">
+          <view class="project-items-footer-item-unit _5c9d9ce">合计 </view>
+          <view class="project-items-footer-item-price _5c9d9ce">¥{{utils.formatPrice(totalPrice)}}</view>
+        </view>
+      </view>
+    </van-submit-bar>
+    <van-toast id="van-toast" class="_5c9d9ce"/>
+  </view>

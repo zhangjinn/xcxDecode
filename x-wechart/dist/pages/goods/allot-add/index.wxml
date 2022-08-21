@@ -1,0 +1,268 @@
+
+  <view class="order _999e38e">
+
+    <!--调拨录入基本信息-->
+    <view class="order-scroll _999e38e">
+      <view class="free-shipping-tip _999e38e">{{ freeShippingTip }}</view>
+      <view class="order-scroll-head _999e38e">
+        <view class="item-row _999e38e">
+          <view class="item-row-left _999e38e">
+            单据日期
+          </view>
+          <view class="item-row-right _999e38e">
+            <view class="item-row-right-note _999e38e">
+              {{sysDate}}
+            </view>
+          </view>
+        </view>
+        <view class="item-row _999e38e" bindtap="openChooseFiBook">
+          <view class="item-row-left _999e38e">
+            销售组织
+          </view>
+          <view class="item-row-right _999e38e">
+            <view class="item-row-right-inventory} _999e38e">
+              {{ fiBook.name}}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_999e38e"/>
+          </view>
+        </view>
+        <view class="item-row _999e38e" bindtap="openChoose" data-wpyopenchoose-a="warehousesOutList" data-wpyopenchoose-b="gicOutWrehouse" data-wpyopenchoose-c="移出仓库">
+          <view class="item-row-left _999e38e">
+            移出仓库
+          </view>
+          <view class="item-row-right _999e38e">
+            <view class="item-row-right-inventory} _999e38e">
+              {{ gicOutWrehouse.name}}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_999e38e"/>
+          </view>
+        </view>
+        <view class="item-row _999e38e" bindtap="openChoose" data-wpyopenchoose-a="warehousesInList" data-wpyopenchoose-b="gicInWrehouse" data-wpyopenchoose-c="移入仓库">
+          <view class="item-row-left _999e38e">
+            移入仓库
+          </view>
+          <view class="item-row-right _999e38e">
+            <view class="item-row-right-inventory _999e38e">
+              {{ gicInWrehouse.name }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_999e38e"/>
+          </view>
+        </view>
+        <view class="item-row _999e38e" bindtap="openChoose" data-wpyopenchoose-a="deliveryMode" data-wpyopenchoose-b="deliveryMethod" data-wpyopenchoose-c="配送方式">
+          <view class="item-row-left _999e38e">
+            配送方式
+          </view>
+          <view class="item-row-right _999e38e">
+            <view class="item-row-right-inventory {{ deliveryMethod.id ? '' : 'placeholder' }} _999e38e">
+              {{ deliveryMethod.name }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_999e38e"/>
+          </view>
+        </view>
+        <view class="item-row _999e38e" bindtap="openChoose" data-wpyopenchoose-a="addressList" data-wpyopenchoose-b="allotAddress" data-wpyopenchoose-c="收货地址">
+          <view class="item-row-left _999e38e">
+            收货地址
+          </view>
+          <view class="item-row-right _999e38e">
+            <view class="item-row-right-inventory {{ allotAddress.id ? '' : 'placeholder' }} _999e38e">
+              {{ allotAddress.name }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_999e38e"/>
+          </view>
+        </view>
+
+        <view class="item-row _999e38e">
+          <view class="item-row-left _999e38e">
+            收货联系人
+          </view>
+          <view class="item-row-right _999e38e">
+            <view class="item-row-right-note _999e38e">
+              <van-field value="{{ customerName }}" placeholder="请填写收货联系人" border="{{ false }}" input-align="right"  bind:change="onCustomerNameChange" class="dms-order-note _999e38e"/>
+            </view>
+          </view>
+        </view>
+        <view class="item-row _999e38e">
+          <view class="item-row-left _999e38e">
+            联系电话
+          </view>
+          <view class="item-row-right _999e38e">
+            <view class="item-row-right-note _999e38e">
+              <van-field value="{{ customerPhone }}" placeholder="请填写联系电话" border="{{ false }}" input-align="right"  bind:change="onCustomerPhoneChange" class="dms-order-note _999e38e"/>
+            </view>
+          </view>
+        </view>
+        <view class="item-row _999e38e">
+          <view class="item-row-left _999e38e">
+            备注
+          </view>
+          <view class="item-row-right _999e38e">
+            <view class="item-row-right-note _999e38e">
+              <van-field value="{{ note }}" placeholder="请填写备注" border="{{ false }}" input-align="right"  bind:change="onNoteChange" class="dms-order-note _999e38e"/>
+            </view>
+          </view>
+        </view>
+      </view>
+      
+  <view class="detail _66afd82 _999e38e">
+    <view class="detail-title _66afd82">
+      明细信息
+    </view>
+
+
+    <item id="item"  wx:for="{{ $order$details }}" from="{{ $order$from }}" wx:key="*this" index="{{index}}" itemId="{{ item }}" warehouseId="{{$order$out.id}}" outInv="{{$order$outInv}}" orgId="{{$order$orgId.id}}" itemInfo="{{ $order$additionOrderDetailItem.itemInfo[item] }}" bindvolumeChange="$order$volumeChange" bindamountChange="$order$amountChange" bindchooseItem="$order$chooseItem" binditemDel="$order$delItem" isDisabled="{{ $order$isDisabled }}" class="_66afd82"/>
+
+    <view class="detail-add _66afd82" catchtap="$order$addItem">
+      <van-icon name="add" class="detail-add-icon _66afd82"/>
+      <view class="detail-add-tip _66afd82">
+        <block  wx:if="{{ $order$details.length > 0 }}" class="_66afd82">继续</block>
+        <block class="_66afd82">添加</block>
+        </view>
+    </view>
+  </view>
+    </view>
+    <view class="check-allocation-ratio _999e38e" bindtap="handleCheckAllocationRatio">查看调拨比例</view>
+    <van-submit-bar button-text="提交并出库" custom-class="order-bottom" button-class-container="dms-order-bottom-button-save" button-class="dms-order-bottom-button-save-submit" bind:submit="submit" class="_999e38e">
+      <!--<view class="order-bottom-button-temp" bindtap="cache">
+        暂存
+      </view>-->
+    </van-submit-bar>
+
+    <!--下拉框-->
+    <van-popup show="{{ popVisible }}" closeable="closeable" position="bottom" custom-style="height: 570rpx" bind:click-overlay="onClose" class="_999e38e">
+    <view class="order-inv _999e38e">
+      <view class="order-inv-head _999e38e">
+        <view class="order-inv-head-context _999e38e">
+          <view class="order-inv-head-context-title _999e38e">{{ popTitle }}</view>
+        <van-icon name="cross" class="order-inv-head-context-close _999e38e" bindtap="onClose"/>
+        </view>
+      </view>
+      <scroll-view scroll-y class="order-inv-scroll _999e38e">
+        <view  wx:for="{{ popList }}" wx:key="id" item="item" class="order-inv-scroll-row _999e38e" data-key="{{ item.id }}" data-index="{{ index }}" bindtap="onChoose">
+          <view class="order-inv-scroll-row-desc {{ item.id === compareInfo.id ? 'checked' : ''}} _999e38e">
+            {{ item.name }}
+          </view>
+          <block wx:if="{{ item.id === compareInfo.id }}" class="_999e38e">
+            <view class="b-icon icon-check order-inv-scroll-row-checked checked _999e38e">
+            </view>
+          </block>
+        </view>
+
+      </scroll-view>
+    </view>
+    </van-popup>
+
+    <!-- 销售组织 -->
+    <van-popup show="{{ popFiBookVisible }}" closeable="closeable" position="bottom" custom-style="height: 570rpx" bind:click-overlay="onCloseFiBook" class="_999e38e">
+      <view class="order-inv _999e38e">
+        <view class="order-inv-head _999e38e">
+          <view class="order-inv-head-context _999e38e">
+            <view class="order-inv-head-context-title _999e38e">销售组织</view>
+            <van-icon name="cross" class="order-inv-head-context-close _999e38e" bindtap="onCloseFiBook"/>
+          </view>
+        </view>
+        <scroll-view scroll-y class="order-inv-scroll _999e38e">
+          <view  wx:for="{{ fibookList }}" wx:key="id" item="item" class="order-inv-scroll-row _999e38e" data-key="{{ item.id }}" data-name="{{ item.name }}" bindtap="onChooseFiBook">
+            <view class="order-inv-scroll-row-desc {{ item.id === fiBook.id ? 'checked' : ''}} _999e38e">
+              {{ item.name }}
+            </view>
+            <block wx:if="{{ item.id === fiBook.id }}" class="_999e38e">
+              <view class="b-icon icon-check order-inv-scroll-row-checked checked _999e38e">
+              </view>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+
+    <!-- 调拨比例 -->
+    <van-popup show="{{ popAllocationRatioVisible }}" closeable="closeable" position="bottom" custom-style="height: 860rpx" bind:click-overlay="onCloseAllocationRatio" class="_999e38e">
+      <view class="order-inv allocation-inv _999e38e">
+        <view class="order-inv-head allocation-head _999e38e">
+          <view class="order-inv-head-context _999e38e">
+            <view class="order-inv-head-context-title _999e38e">调拨比例</view>
+            <van-icon name="cross" class="order-inv-head-context-close _999e38e" bindtap="onCloseAllocationRatio"/>
+          </view>
+        </view>
+        <scroll-view scroll-y class="order-inv-scroll allocation-scroll _999e38e">
+            <view class="allocation-ratio-box _999e38e">
+              <view class="allocation-ratio-item _999e38e"  wx:for="{{allocationRatioList}}" wx:key="index" wx:for-item="item">
+                <view class="allocation-ratio-title _999e38e">{{ item.title }}</view>
+                <view class="allocation-ratio-container _999e38e">
+                  <view wx:for="{{item.content}}" wx:for-item="child" class="allocation-ratio-info _999e38e">
+                    <view class="org _999e38e"><text class="org-txt _999e38e">{{child.orgName}}</text></view>
+                    <view class="statistics _999e38e">
+                      <view class="statistics-txt _999e38e">销售出库台数：{{ child.salesCount }}</view>
+                      <view class="statistics-txt _999e38e">调拨台数：{{ child.transCount }}</view>
+                      <view class="statistics-txt _999e38e">总数量：{{ child.total }}</view>
+                      <view class="statistics-txt _999e38e">当前比例：{{ child.transRate }}</view>
+                      <view class="statistics-txt _999e38e">系统限制比例：{{ child.availableMaxTransRate }}</view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+              <view class="allocation-ratio-tip _999e38e">提示：该数据每天24点更新</view>
+            </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-dialog id="van-dialog" class="_999e38e"/>
+    
+  <van-popup show="{{ $address$addressVisible }}" position="bottom" z-index="9999999"  bind:close="$address$closeAddressPopup" class="_c859d82 _999e38e">
+    <view class="area _c859d82">
+      <view class="area-header _c859d82">
+        <view class="area-header-content _c859d82">
+          <view class="area-header-content-title _c859d82">{{ $address$title }}</view>
+        </view>
+        <view bindtap="$address$closeAddressPopup" class="area-header-close _c859d82">
+          <icon class="h-icon icon-ic-close _c859d82"/>
+        </view>
+      </view>
+
+      <view class="area-tab _c859d82">
+        <view bindtap="$address$chooseAddressTap" class="area-tab-item _c859d82" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="province">
+          <view class="area-tab-item-title _c859d82">
+            <text class="{{ $address$areaCurrentTab === 'province' ? 'active' : '' }} _c859d82">{{ $address$province.name }}</text>
+            <view hidden="{{ !($address$areaCurrentTab === 'province') }}" class="area-tab-item-title-bar _c859d82"/>
+          </view>
+        </view>
+
+        <view bindtap="$address$chooseAddressTap" class="area-tab-item _c859d82" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="city">
+          <view class="area-tab-item-title _c859d82" hidden="{{ $address$city.items.length === 0 }}">
+            <text class="{{ $address$areaCurrentTab === 'city' ? 'active' : '' }} _c859d82">{{ $address$city.name }}</text>
+            <view hidden="{{ !($address$areaCurrentTab === 'city') }}" class="area-tab-item-title-bar _c859d82"/>
+          </view>
+        </view>
+
+        <view bindtap="$address$chooseAddressTap" class="area-tab-item _c859d82" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="area">
+          <view class="area-tab-item-title _c859d82" hidden="{{ $address$area.items.length === 0 }}">
+            <text class="{{ $address$areaCurrentTab === 'area' ? 'active' : '' }} _c859d82">{{ $address$area.name }}</text>
+            <view hidden="{{ !($address$areaCurrentTab === 'area') }}" class="area-tab-item-title-bar _c859d82"/>
+          </view>
+        </view>
+        <view bindtap="$address$chooseAddressTap" class="area-tab-item _c859d82" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="town">
+          <view class="area-tab-item-title _c859d82" hidden="{{ $address$town.items.length === 0 }}">
+            <text class="{{ $address$areaCurrentTab === 'town' ? 'active' : '' }} _c859d82">{{ $address$town.name }}</text>
+            <view hidden="{{ !($address$areaCurrentTab === 'town') }}" class="area-tab-item-title-bar _c859d82"/>
+          </view>
+        </view>
+      </view>
+
+      <view class="area-body _c859d82">
+        <view hidden="{{!$address$loading}}" class="area-body-loading _c859d82">
+          <i-spin fix="fix" class="_c859d82"/>
+        </view>
+        <scroll-view class="area-body-content _c859d82" scroll-y>
+          <block class="_c859d82" wx:for="{{$address$addressItems}}" wx:for-index="$address$index" wx:for-item="$address$item" wx:key="$address$id">
+            <view bindtap="$address$chooseAddress" class="area-body-content-item _c859d82" hover-class="area-body-content-item-hover" data-wpychooseaddress-a="{{ $address$item }}">
+              <text class="area-body-content-item-label {{ $address$item.code === $address$addressTempId && $address$item.code !== '' ? 'active' : '' }} _c859d82">{{ $address$item.name }}</text>
+              <view hidden="{{$address$item.code !== $address$addressTempId || $address$item.code === ''}}" class="_c859d82">
+                <van-icon name="success" color="#00AAA6" class="_c859d82"/>
+              </view>
+            </view>
+          </block>
+        </scroll-view>
+      </view>
+    </view>
+  </van-popup>
+    <van-toast id="van-toast" class="_999e38e"/>
+  </view>

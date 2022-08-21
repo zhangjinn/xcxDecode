@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),_dispatchable=require("./internal/_dispatchable.js"),_dropLastWhile=require("./internal/_dropLastWhile.js"),_xdropLastWhile=require("./internal/_xdropLastWhile.js"),dropLastWhile=_curry2(_dispatchable([],_xdropLastWhile,_dropLastWhile));module.exports=dropLastWhile;

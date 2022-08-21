@@ -1,0 +1,40 @@
+
+  <view class="account _7c6c2ac">
+    <view class="account-title _7c6c2ac">密码绑定</view>
+    <van-cell-group class="_7c6c2ac">
+      <van-field placeholder="账号/手机号" clearable="{{true}}" value="{{mobile}}" cell-class="login-input" placeholder-style="color: #aaa;font-size: 28rpx;"  bind:change="onPhoneChange" bind:blur="onMobileBlur" bind:clear="clearMobile" class="_7c6c2ac"/>
+      <view hidden="{{accounts.length === 0}}" class="account-type van-hairline--bottom _7c6c2ac">
+        <van-collapse value="{{ toggleAccount }}"  bind:change="onChange" class="_7c6c2ac">
+          <van-collapse-item van-cell-class="login-van-collapse" name="account" class="_7c6c2ac">
+            <view slot="title" class="account-type-title _7c6c2ac">{{ account.name || '请选择账号' }}</view>
+            <view class="account-type-list _7c6c2ac">
+              <block class="_7c6c2ac" wx:for="{{accounts}}" wx:for-index="index" wx:for-item="item" wx:key="account">
+                <view bindtap="chooseAccount" hover-class="hover" class="account-type-list-item {{ account.account === item.account ? 'selected van-hairline--surround' : '' }} _7c6c2ac" data-wpychooseaccount-a="{{item}}">
+                  <text class="text _7c6c2ac">{{item.name}}</text>
+                  <van-icon custom-style="display: {{ account.account === item.account ? 'inline-block' : 'none' }}" hidden="{{ account.account === item.account }}" color="#00AAA6" name="success" class="_7c6c2ac"/>
+                </view>
+              </block>
+            </view>
+          </van-collapse-item>
+        </van-collapse>
+      </view>
+      <van-field placeholder="密码" value="{{password}}" password="{{!passwordVisible}}" clearable="{{true}}" cell-class="login-input" placeholder-style="color: #aaa;font-size: 28rpx;" right-icon="{{ passwordVisible ? 'eye-o' : 'closed-eye' }}"  bind:change="onPasswordChange" bind:clear="clearPassword" bind:click-icon="togglePwd" class="_7c6c2ac"/>
+      <block  wx:if="{{isNeedImgCode}}" class="_7c6c2ac">
+        <van-field placeholder="图片验证码" value="{{code}}" clearable="{{true}}" cell-class="login-input" placeholder-style="color: #aaa;font-size: 28rpx;" bind:change="onCodeChange" bind:clear="clearCode" class="_7c6c2ac">
+          <view bindtap="getCodeImg" class="login-input-code _7c6c2ac" hover-class="hover" slot="button">
+            <image src="{{codeSrc}}" class="_7c6c2ac"/>
+          </view>
+        </van-field>
+      </block>
+    </van-cell-group>
+    <van-button bind:click="submit" custom-class="login-vant-btn" color="#00AAA6" square="{{true}}" block="{{true}}" disabled="{{ isNeedImgCode ? (!mobile || !password || !code) : (!mobile || !password)}}" class="_7c6c2ac">绑定</van-button>
+    <van-toast id="van-toast" class="_7c6c2ac"/>
+    <van-dialog use-slot="use-slot" show="{{secondLogin}}" async-close="{{true}}" showCancelButton="{{true}}" showConfirmButton="{{confirmTelCode}}" bind:confirm="confirmTel" bind:cancel="confirmTelCancel" class="_7c6c2ac">
+      <view class="need-confirm _7c6c2ac">
+        <van-cell-group class="_7c6c2ac">
+          <van-cell custom-class="confirm-account-tel" title="{{confirmTel}}" class="_7c6c2ac"/>
+          <van-field placeholder="请输入短信验证码" clearable="{{true}}" type="number" value="{{}}" cell-class="login-input" placeholder-style="color: #aaa;font-size: 28rpx;" bind:change="onConfirmTelChange" bind:clear="clearConfirmTel" class="_7c6c2ac"/>
+        </van-cell-group>
+      </view>
+    </van-dialog>
+  </view>

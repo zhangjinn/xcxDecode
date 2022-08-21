@@ -1,0 +1,1 @@
+var reduceBy=require("./reduceBy.js"),indexBy=reduceBy(function(e,r){return r},null);module.exports=indexBy;

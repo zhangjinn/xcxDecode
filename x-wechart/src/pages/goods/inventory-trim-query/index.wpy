@@ -1,0 +1,342 @@
+<template>
+  <view class="order">
+    <!--日历下拉-->
+    <van-popup show="{{calendarShow}}" position="bottom" bind:close="closeCalendar" z-index="200">
+      <calendar
+        calendarConfig="{{calendarConfig}}"
+        bind:afterTapDay="chooseDay"
+      />
+    </van-popup>
+    <!-- 票据日期-全部日期-pop -->
+    <van-popup
+      show="{{timeFrameVisible}}"
+      position="right"
+      overlay="{{ true }}"
+      z-index="200"
+      custom-style="height: 100%;"
+      close-on-click-overlay="{{false}}"
+      >
+      <view class="order-drawer">
+        <view class="order-drawer-time">
+          <view class="order-drawer-time-header">
+            <van-icon  name="arrow-left" class="order-drawer-time-header-back" bind:click="onToggleTimeFrame"></van-icon>
+            <view class="order-drawer-time-header-title">票据日期</view>
+          </view>
+          <view class="order-drawer-time-content">
+            <repeat for="{{timeList}}" item="item">
+              <view
+                class="order-drawer-time-content-line"
+                @tap="onSelectTimeFrame({{item.value}})"
+              >
+                <view class="text {{timeFrameCenter === item.value? 'active' : ''}}">{{item.label}}</view>
+                <van-icon
+                  wx:if="{{timeFrameCenter === item.value}}"
+                  name="success"
+                  class="time-selected"
+                  size="32rpx"
+                />
+              </view>
+            </repeat>
+          </view>
+          <view class="order-drawer-attr-footer">
+            <view
+              @tap="onToggleTimeFrameTrue"
+              class="order-drawer-attr-footer-btn confirm"
+              hover-class="order-drawer-attr-footer-btn-hover"
+            >确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <!--操作提示-->
+    <!-- <van-popup class="cencel-pop-box" show="{{messagepopup}}" overlay="{{ true }}">
+      <view class="cencel-pop">
+        <view class="title">操作提示</view>
+        <view class="tip-text">{{cancelSucMes}}</view>
+        <view class="operation" @tap="cancleSuc()">
+          确定
+        </view>
+      </view>
+    </van-popup> -->
+
+    <!--侧边筛选条件-->
+    <van-popup
+      show="{{visible}}"
+      position="right"
+      overlay="{{ true }}"
+      bind:close="orderfiltering"
+      custom-style="height: 100%;"
+      z-index="130"
+      >
+      <view class="order-drawer">
+        <view class="order-drawer-attr">
+          <scroll-view
+            class="order-drawer-attr-scroll"
+            scroll-y>
+            <view class="attr-item">
+              <!-- <view class="projectem">
+                <view class="project">
+                  <text>产品编码</text>
+                </view>
+                <van-field
+                  placeholder="请输入产品编码"
+                  value="{{filterForm.terms.productId}}"
+                  placeholder-style="font-size:24rpx;color:#AAAAAA;"
+                  border="{{ false }}"
+                  bind:change="onZzprdmodelChange"
+                  custom-style="background-color: #f7f7f7;height: 64rpx;padding: 8rpx 16rpx;"
+                  clearable
+                />
+              </view> -->
+              <!-- <view class="projectem">
+                <view class="project">
+                  <text>产品名称</text>
+                </view>
+                <van-field
+                  placeholder="请输入产品名称"
+                  value="{{filterForm.terms.productName}}"
+                  border="{{ false }}"
+                  placeholder-style="font-size: 24rpx;color:#AAAAAA;"
+                  bind:change="onOrderColorChange"
+                  custom-style="background-color: #f7f7f7;height: 64rpx;padding: 8rpx 16rpx;"
+                  clearable
+                />
+              </view> -->
+              <view class="projectem">
+                <view class="project">
+                  <text>单据编号</text>
+                </view>
+                <van-field
+                  placeholder="请输入单据编号"
+                  value="{{postTrimParams.terms.documentNum}}"
+                  border="{{ false }}"
+                  placeholder-style="font-size: 24rpx;color:#AAAAAA;"
+                  bind:change="onOrderNumChange"
+                  custom-style="background-color: #f7f7f7;height:64rpx;padding: 8rpx 16rpx;"
+                  clearable
+                />
+              </view>
+              <!-- <view class="parent-agent">
+                <view class="agent-name">子账号</view>
+                <view catchtap="selectagentPopup('sonUser')" class="agent-select">{{filterFormExtra.stockStatusName?filterFormExtra.stockStatusName:'请选择'}}
+                  <view class="b-icon icon-more icons"></view>
+                </view>
+              </view> -->
+              <view class="order-data">
+                <view class="project">
+                  <text>单据日期</text>
+                  <text wx:if="{{!filterForm.terms.timeFrame}}" class="text" @tap="onToggleTimeFrame">全部日期 ></text>
+                  <text wx:if="{{filterForm.terms.timeFrame === '7'}}" class="text" @tap="onToggleTimeFrame">最近一周 ></text>
+                  <text wx:if="{{filterForm.terms.timeFrame === '1'}}" class="text" @tap="onToggleTimeFrame">最近一个月 ></text>
+                  <text wx:if="{{filterForm.terms.timeFrame === '3'}}" class="text" @tap="onToggleTimeFrame">最近三个月 ></text>
+                  <text wx:if="{{filterForm.terms.timeFrame === '6'}}" class="text" @tap="onToggleTimeFrame">最近六个月 ></text>
+                </view>
+                <view class="order-data-input">
+                  <view  class="order-data-input-one" data-name="documentDateFrom" data-type="sapDate" @tap="openCalendar">
+                    {{postTrimParams.terms.documentDateFrom || '开始日期'}}
+                    <van-icon wx:if="{{postTrimParams.terms.documentDateFrom}}" class="close-icon" name="clear" @tap="clearCalendar('documentDateFrom')"/>
+                  </view>
+                  <view class="order-data-input-line">-</view>
+                  <view class="order-data-input-one" data-name="documentDateTo" data-type="sapDate" @tap="openCalendar">
+                    {{postTrimParams.terms.documentDateTo|| '结束日期'}}
+                    <van-icon wx:if="{{postTrimParams.terms.documentDateTo}}" class="close-icon" name="clear" @tap="clearCalendar('documentDateTo')"/>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </scroll-view>
+          <!-- 底部按钮 -->
+          <view class="order-drawer-attr-footer">
+             <view
+              @tap="onResetFilterForm"
+              class="order-drawer-attr-footer-btn reset"
+              hover-class="order-drawer-attr-footer-btn-hover"
+            >重置</view>
+            <view
+              @tap="onSubmitFilterForm"
+              class="order-drawer-attr-footer-btn confirm"
+              hover-class="order-drawer-attr-footer-btn-hover"
+            >确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <!--移入、移出仓库 弹出框数据渲染 -->
+    <van-popup
+      show="{{OrderSFilterVisible}}"
+      position="top"
+      overlay="{{ true }}"
+      custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"
+      bind:close="touchOrderSFilter"
+      >
+      <!-- 单据类型 -->
+      <view wx:if="{{CurrentOrderSFilterName === 'billType'}}" class="order-s-filter-container">
+        <view class="order-operation" @tap="onSelectOrderTypeCode('')">
+          <view class="operation-text van-hairline--bottom">
+            <view class="operation-status {{ postTrimParams.terms.transactionType === '' ? 'active' : '' }}">全部</view>
+            <view wx:if="{{ postTrimParams.terms.transactionType === '' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <!-- 单据类型数据渲染 ycw-->
+        <repeat for="{{transactionType}}" item="item">
+          <view class="order-operation" @tap="onSelectOrderTypeCode('{{item.id}}')">
+          <view class="operation-text van-hairline--bottom">
+            <view class="operation-status {{ postTrimParams.terms.transactionType === item.id ? 'active' : '' }}">{{item.name}}</view>
+            <view wx:if="{{ postTrimParams.terms.transactionType === item.id }}"  class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        </repeat>
+      </view>
+      <!-- 单据状态 -->
+      <view wx:if="{{CurrentOrderSFilterName === 'billStatus'}}" class="order-s-filter-container">
+        <view class="order-operation" @tap="onSelectStatus('')">
+          <view class="operation-text van-hairline--bottom">
+            <view class="operation-status {{ postTrimParams.terms.status === '' ? 'active' : '' }}">全部</view>
+            <view wx:if="{{ postTrimParams.terms.status === '' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <!-- 单据状态数据渲染 ycw-->
+        <repeat for="{{staStatus}}" item="item">
+          <view class="order-operation" @tap="onSelectStatus('{{item.id}}')">
+            <view class="operation-text van-hairline--bottom">
+              <view class="operation-status {{ postTrimParams.terms.status === item.id ? 'active' : '' }}">{{item.name}}</view>
+              <view wx:if="{{ postTrimParams.terms.status === item.id }}"  class="b-icon icon-check operation-icon"></view>
+            </view>
+          </view>
+        </repeat>
+      </view>
+      <!-- 仓库 -->
+      <view wx:if="{{CurrentOrderSFilterName === 'inventory'}}" class="order-s-filter-container">
+        <view class="order-operation" @tap="onSelectChangeStore('')">
+          <view class="operation-text van-hairline--bottom">
+            <view class="operation-status {{ postTrimParams.terms.warehouseId === '' ? 'active' : '' }}">全部</view>
+            <view wx:if="{{ postTrimParams.terms.warehouseId === '' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <!-- 仓库数据渲染 ycw-->
+        <repeat for="{{storeHouse}}" item="item">
+          <view class="order-operation" @tap="onSelectChangeStore('{{item.id}}')">
+            <view class="operation-text van-hairline--bottom">
+              <view class="operation-status {{ postTrimParams.terms.warehouseId === item.id ? 'active' : '' }}">{{item.name}}</view>
+              <view wx:if="{{ postTrimParams.terms.warehouseId === item.id }}"  class="b-icon icon-check operation-icon"></view>
+            </view>
+          </view>
+        </repeat>
+      </view>
+    </van-popup>
+
+    <headerTab
+      :tabList.sync="headerTabList"
+      @onTabChange.user="touchOrderSFilter"
+      @onSideFilter.user="orderfiltering"
+    />
+    <!--订单详情数据渲染-->
+    <scroll-view
+      wx:if="{{inventoryTrimList.page.totalPage !== 0}}"
+      scroll-y="true"
+      class="order-scroll"
+      enable-flex
+      scroll-top="{{ scrollTop }}"
+      bindscroll="onScroll"
+      bindscrolltolower="onGetOrderListNext">
+      <repeat for="{{inventoryTrimList.data}}" item="item">
+        <view class="order-container">
+          <view class="order-title">
+            <view class="order-title-container">
+              <!-- 订单编号-->
+              <text class="order-type">{{item.documentNum}}</text>
+              <text class="inventory">{{item.transactionTypeName}}</text>
+            </view>
+            <!-- 订单状态-->
+            <text class="order-status">{{item.statusName}}</text>
+          </view>
+          <view class="order-detail">
+            <!-- 仓库-->
+            <text class="order-customercode">{{item.transactionType=='otherIn'?item.gicInWarehouseName:item.gicOutWarehouseName}}</text>
+          </view>
+          <view class="order-detail">
+            <!-- 提交时间-->
+            <text class="order-customercode">{{item.documentDate}}</text>
+
+            <!-- <text class="order-customercode">{{item.documentDate}}提交～</text> -->
+            <!-- 完成时间-->
+            <!-- <text class="order-customername">{{item.inDate}}完成</text> -->
+          </view>
+          <view class="timeLine"></view>
+          <!-- 备注-->
+          <!-- <view class="order-detail van-hairline--bottom">
+            <text class="order-customercode">{{item.message}}</text>
+          </view> -->
+          <repeat for="{{item.staItems}}" item="goods">
+            <view class="order-goods">
+              <navigator class="order-goods-img" url="">
+                <img class="goodimg" src="{{ goods.img }}" errSrc="{{ goods.err }}"/>
+              </navigator>
+              <view class="order-goods-detail">
+                <view class="order-goods-detail-name">
+                  <text class="detail-text">{{goods.model}}</text>
+                  <text wx:if="{{goods.statusName}}" class="detail-status">{{goods.statusName}}</text>
+                </view>
+                <view class="order-goods-detail-color">
+                  <text class="detail-text">颜色：{{goods.colour}}</text>
+                </view>
+                <view class="order-goods-detail-number">
+                  <!-- 订单类型/补差类型-->
+
+                  <block wx:if="{{item.transactionType=='invStatus'}}">
+                    <view>
+                      <text class="good-price">{{goods.invStatusName}}</text>
+                      <text wx:if="{{goods.invStatusName&&goods.invStatusTypeName}}">/</text>
+                      <text class="good-price">{{goods.invStatusTypeName}}</text>
+                      <text wx:if="{{(goods.invStatusName||goods.invStatusTypeName)&&(goods.alertInvStatusName||goods.alertInvStatusTypeName)}}" class="trimJian b-icon icon-trim-jian"></text>
+                      <text class="good-price">{{goods.alertInvStatusName}}</text>
+                      <text wx:if="{{goods.alertInvStatusName&&goods.alertInvStatusTypeName}}">/</text>
+                      <text class="good-price">{{goods.alertInvStatusTypeName}}</text>
+                    </view>
+                  </block>
+                  <block wx:else>
+                    <view wx:if="{{goods.invStatusTypeName === ''}}">
+                      <text class="good-price">{{goods.invStatusName}}{{item.transactionTypeNam}}</text>
+                    </view>
+                    <view wx:if="{{goods.invStatusName === ''}}">
+                      <text class="good-price">{{goods.invStatusTypeName}}</text>
+                    </view>
+                    <view wx:if="{{goods.invStatusName === ''&&goods.invStatusTypeName === ''}}">
+                      <text class="good-price"></text>
+                    </view>
+                    <view wx:if="{{goods.invStatusName !== ''&&goods.invStatusTypeName !== ''}}">
+                      <text class="good-price">{{goods.invStatusName}}/{{goods.invStatusTypeName}}</text>
+                    </view>
+                  </block>
+                  <text class="good-number">×{{goods.bDemandQty}}</text>
+
+                </view>
+
+              </view>
+
+            </view>
+
+          </repeat>
+          <view class="huidan" wx:if="{{ item.deliveryMode == '04'}}">
+            <text class="order-customercode" @tap="receiptEffect({{item}})">回单影像</text>
+          </view>
+        </view>
+      </repeat>
+    </scroll-view>
+    <emptyDataType wx:else/>
+
+    <van-popup show="{{isImg}}" bind:close="onClose">
+      <view >
+        <image
+          wx:for = "{{ImgArr}}"
+          wx:key="{{index}}"
+          src="{{item}}"
+        alt=""/>
+      </view>
+    </van-popup>
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

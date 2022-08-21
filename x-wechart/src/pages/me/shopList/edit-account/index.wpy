@@ -1,0 +1,185 @@
+<template>
+  <view class="me-account-edit {{editAccount.type === 'admin' ? 'admin-form' : 'user-form'}}">
+    <scroll-view
+      scroll-y
+      enable-flex
+      enable-back-to-top="true"
+      scroll-with-animation="true"
+      scroll-top="{{visibelTop}}"
+      id="me-account-edit-scroll-view"
+      class="me-account-edit-scroll"
+    >
+    <form bindsubmit="onSubmitForm" class="account-form">
+      <view class="">
+        <van-field
+          value="{{ editAccount.type === 'admin' ? '管理账号' : '用户账号' }}"
+          label="账号类型"
+          input-align="right"
+          readonly
+        />
+        <van-field
+          value="{{ editAccount.account }}"
+          label="账号名称"
+          input-align="right"
+          readonly
+        />
+        <van-field
+          name="name"
+          value="{{ editAccount.userName }}"
+          required
+          readonly
+          clearable
+          label="姓名"
+          placeholder="请填写姓名"
+          error-message="{{errorMessage.name}}"
+          bind:focus="onClearError('name')"
+          input-align="right"
+          error-message-align="right"
+        />
+        <van-field
+          name="phone"
+          value="{{ editAccount.mobile }}"
+          required
+          readonly
+          clearable
+          label="手机"
+          placeholder="请填写手机"
+          error-message="{{errorMessage.phone}}"
+          bind:focus="onClearError('phone')"
+          input-align="right"
+          error-message-align="right"
+        />
+        <van-field
+          name="email"
+          value="{{ editAccount.email }}"
+          required
+          clearable
+          readonly
+          label="邮箱"
+          placeholder="请填写邮箱"
+          error-message="{{errorMessage.email}}"
+          bind:focus="onClearError('email')"
+          input-align="right"
+          error-message-align="right"
+        />
+        <van-field
+          value="{{editAccount.businessFlagName}}"
+          readonly
+          required
+          readonly
+          label="是否为业务员"
+          placeholder="请选择"
+          input-align="right"
+          border="{{ false }}"
+        />
+      </view>
+      <view wx:if="{{ editAccount.type === 'user' && mixinCurrentUser.type === 'main' }}" class="account-other-info">
+
+          <view class="account-other-info-item">
+            <view class="account-other-info-header">
+              <!-- <van-field
+                value="{{item.loginSystem.propertyName}}"
+                readonly
+                label="可登录系统"
+                placeholder="请选择可登录系统"
+                input-align="right"
+                icon="arrow"
+                data-index="{{index}}"
+                bind:click-icon="onToggleLoginSystemPopup"
+              /> -->
+              <van-field
+                value="{{otherInfo[otherInfoIndex].shopName}}"
+                readonly
+                readonly
+                label="门店列表"
+                placeholder="请选择门店"
+                input-align="right"
+                icon="arrow"
+                bind:click-icon="onToggleBaseMaktlPopup"
+                border="{{ false }}"
+              />
+            </view>
+            <view class="account-other-info-footer">
+              <i class="b-icon icon-remove" @tap="onRemoveOtherInfo()">删除</i>
+            </view>
+          </view>
+      </view>
+
+
+      <view class="form-button-area">
+        <button wx:if="{{ editAccount.type === 'user' && mixinCurrentUser.type === 'main' }}" class="add-other" @tap="onToggleBaseMaktlPopup">添加</button>
+        <button form-type="submit" class="form-submit">保存账号</button>
+      </view>
+    </form>
+    </scroll-view>
+    <!-- <van-popup show="{{ loginSystemVisible }}" position="bottom" custom-class="popup-picker">
+      <view class="picker-header">
+        <view>可登录系统</view>
+        <i class='b-icon icon-close' @tap="onToggleLoginSystemPopup"></i>
+      </view>
+      <view class="picker-content">
+        <repeat for="{{loginSystemList}}" index="loginSystem.id" item="item">
+          <view class="item-line" @tap="onSelectLoginSystem({{item}})">
+            <view class="label {{ item.id === otherInfo[otherInfoIndex].loginSystem.id ? 'active' : '' }}">{{item.propertyName}}</view>
+            <i class="b-icon icon-success active" wx:if="{{item.id === otherInfo[otherInfoIndex].loginSystem.id}}"></i>
+          </view>
+        </repeat>
+      </view>
+    </van-popup> -->
+    <van-popup show="{{ baseMatklVisible }}" position="bottom" custom-class="base-maktl-popup-picker">
+      <view class="picker-header">
+        <view>门店列表</view>
+        <i class='b-icon icon-close' @tap="onToggleBaseMaktlPopup"></i>
+      </view>
+        <view class="picker-search-box">
+            <i class='b-icon icon-search' ></i>
+            <input type="text"  class="inputStyle" placeholder="请输入搜索关键字" value="{{ searchVal }}" bindinput="onChangeSearchVal"  placeholder-class="placeholderStyle" />
+        </view>
+      <scroll-view
+        scroll-y
+        enable-flex
+        enable-back-to-top="true"
+        scroll-with-animation="true"
+        id="base-maktl-scroll-view"
+        class="picker-content"
+      >
+        <repeat for="{{otherInfo[otherInfoIndex].shopList}}" index="code" item="item">
+          <view class="item-line" @tap="onSelectBaseMatkl({{item}})"wx:if="{{!item.isNotView}}" >
+            <i class="b-icon icon-success" wx:if="{{item.selected}}"></i>
+            <view wx:else class="in-active"></view>
+            <view class="item-label">{{item.name}}</view>
+          </view>
+        </repeat>
+      <!-- <view class="picker-content">
+        <repeat for="{{shopList}}" index="index" item="item">
+          <view class="item-line" @tap="onSelecteSale({{item}})">
+            <view class="label {{ item.code === index ? 'active' : '' }}">{{item.name}}</view>
+            <i class="b-icon icon-success active" wx:if="{{item.code === index}}"></i>
+          </view>
+        </repeat>
+      </view> -->
+      </scroll-view>
+      <view class="picker-footer">
+        <van-button type='default' size="large" bind:click="onConfirmBaseMatklPopup">确定</van-button>
+      </view>
+    </van-popup>
+
+    <van-popup show="{{ saleListVisible }}" position="bottom" custom-class="popup-picker">
+      <view class="picker-header">
+        <view>业务员</view>
+        <i class='b-icon icon-close' @tap="onToggleSaleListPopup"></i>
+      </view>
+      <view class="picker-content">
+        <repeat for="{{saleList}}" index="index" item="item">
+          <view class="item-line" @tap="onSelecteSale({{item}})">
+            <view class="label {{ item.id === saleIndex ? 'active' : '' }}">{{item.name}}</view>
+            <i class="b-icon icon-success active" wx:if="{{item.id === saleIndex}}"></i>
+          </view>
+        </repeat>
+      </view>
+    </van-popup>
+    <van-toast id="van-toast"/>
+  </view>
+</template>
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts"></script>

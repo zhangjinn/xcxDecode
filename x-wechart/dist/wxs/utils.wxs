@@ -1,0 +1,154 @@
+
+// 时间格式化
+
+// eslint-disable-next-line no-undef
+var regYear = getRegExp('(y+)', 'i')
+
+var formatDate = function(timestamp, format) {
+  if (!timestamp) {
+    return ''
+  }
+  if (!format) {
+    format = 'yyyy-MM-dd hh:mm:ss'
+  }
+  timestamp = parseInt(timestamp)
+  var realDate = getDate(timestamp)
+  function timeFormat(num) {
+    return num < 10 ? '0' + num : num
+  }
+  var date = [
+    ['M+', timeFormat(realDate.getMonth() + 1)],
+    ['d+', timeFormat(realDate.getDate())],
+    ['h+', timeFormat(realDate.getHours())],
+    ['m+', timeFormat(realDate.getMinutes())],
+    ['s+', timeFormat(realDate.getSeconds())],
+    ['q+', Math.floor((realDate.getMonth() + 3) / 3)],
+    ['S+', realDate.getMilliseconds()]
+  ]
+  var reg1 = regYear.exec(format)
+  if (reg1) {
+    format = format.replace(reg1[1], (realDate.getFullYear() + '').substring(4 - reg1[1].length))
+  }
+  for (var i = 0; i < date.length; i++) {
+    var k = date[i][0]
+    var v = date[i][1]
+
+    var reg2 = getRegExp('(' + k + ')').exec(format)
+    if (reg2) {
+      format = format.replace(reg2[1], reg2[1].length === 1
+        ? v : ('00' + v).substring(('' + v).length))
+    }
+  }
+  return format
+}
+
+var formatPrice = function(price, unit = 2) {
+  var initPrice = parseFloat(price)
+  if (!price) {
+    return '0'
+  }
+  if (!unit) {
+    unit = 2
+  }
+  var formatedPrice = (initPrice).toFixed(unit)
+  return formatedPrice
+}
+
+var formatTel = function(tel) {
+  var start = tel.slice(0, 4)
+  var end = tel.slice(-2)
+  if (tel.length > 0) {
+    var returnTel = start + '****' + end
+  } else {
+    returnTel = ''
+  }
+  return returnTel
+}
+
+// 判断是否在当前列表
+var includesFunc = function(key, list) {
+  if (list && !list.indexOf) {
+    return false
+  }
+  return list ? list.indexOf(key) >= 0 : false
+}
+
+// 判断是否在当前列表
+var isFenxiao = function(list) {
+  return includesFunc('17452',list)||includesFunc('17453',list)
+}
+
+// 判断是否免运费
+var isFreeShipping = function(list) {
+  return includesFunc('15691143850',list)
+}
+
+// 判断是否有特定值在当前数组列表中
+var includesKeyInArr = function(val,arr) {
+  if(!val || !arr) return;
+  if (arr.indexOf(val)>-1) {
+    return true
+  }else{
+    return false
+  }
+}
+
+// 判断是否在当前列表,不确定的key和list
+var isInCurrentList = function( key, list) {
+  if(key && list){
+    return includesFunc(key,list)
+  }
+}
+
+//
+var transInt = function transInt(oldMoney) {
+  return parseInt(oldMoney, 10)
+}
+// 判断首页同比环比的颜色显示
+var homeColor = function homeColor(string) {
+  return string ? string.indexOf('--') !== -1 ? 'color: #AAAAAA' : string.indexOf('+') !== -1 ? 'color: #FF7474' : 'color: #15CA5A;' : ''
+}
+// 消息中心财务待办专用
+var financialTodo = function financialTodo(string) {
+  return string === 'main'
+}
+var toFix =  function toFix (value, decimal = 2) {
+  if(typeof(value) == "undefined" || value == "" || value == null || value == "null" || value.length == 0){
+    return '--'
+  }
+  if(decimal == -1){ // 等于-1原值返回
+    return value
+  }else{
+    return Number(value).toFixed(decimal) // 此处2为保留两位小数，保留几位小数，这里写几
+  }
+}
+
+//移除空字符串或者非法字符串，返回""; 如果是合法字符串，则返回原值; @param obj 文本; isPlaceholder boolean 是否有占位符--
+var removeIllegalStr = function removeIllegalStr(obj, isPlaceholder = false) {
+  //typeof 返回的是字符串，有六种可能："number"、"string"、"boolean"、"object"、"function"、"undefined"
+  if (typeof(obj) == "undefined" || obj === "" || obj === null || obj === "null" || obj.length == 0) {
+    if(isPlaceholder){
+      return "--";
+    }else{
+      return "";
+    }
+  } else {
+    return obj;
+  }
+}
+
+module.exports = {
+  formatDate: formatDate,
+  formatPrice: formatPrice,
+  includes: includesFunc,
+  transInt: transInt,
+  homeColor: homeColor,
+  financialTodo: financialTodo,
+  formatTel: formatTel,
+  isFenxiao:isFenxiao,
+  isInCurrentList:isInCurrentList,
+  isFreeShipping:isFreeShipping,
+  toFix:toFix,
+  includesKeyInArr:includesKeyInArr
+  removeIllegalStr:removeIllegalStr
+}

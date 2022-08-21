@@ -1,0 +1,66 @@
+.item-inv {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+  .item-inv-head {
+    width: 100%;
+    &-context {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-left: 64rpx;
+      height: 88rpx;
+      position: relative;
+      &::after {
+        border-bottom: 2rpx solid #EEEEEE;
+      }
+      &-title {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        font-size: 32rpx;
+        color: #262626;
+      }
+      &-close {
+        padding-right: 40rpx;
+        font-size: 32rpx;
+      }
+    }
+  }
+  .item-inv-search{
+    .search-left-icon{
+      display: flex;
+      align-items: center;
+      font-size: 32rpx;
+      color: #AAAAAA;
+      margin-right: 16rpx;
+    }
+  }
+  .item-inv-scroll {
+    flex: 1;
+    overflow-y: auto;
+    &-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 80rpx;
+      padding: 0 40rpx 0 24rpx;
+      font-size: 26rpx;
+      .checked {
+        color: #00AAA6 ;
+      }
+      &-checked {
+        font-size: 20rpx;
+      }
+    }
+  }
+  .no-data{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999999;
+  }
+}

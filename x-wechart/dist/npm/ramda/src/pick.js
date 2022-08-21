@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),pick=_curry2(function(r,e){for(var n={},u=0;u<r.length;)r[u]in e&&(n[r[u]]=e[r[u]]),u+=1;return n});module.exports=pick;

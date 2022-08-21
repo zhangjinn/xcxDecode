@@ -1,0 +1,167 @@
+
+    <view class="container _8bec560">
+        <view class="invoice-top _8bec560">
+            <view class="invoice-top-num _8bec560">{{pageInfo.sheetNo}}</view>
+            <view class="invoice-top-message _8bec560">
+                <view class="invoice-top-detail _8bec560">
+                    <view class="invoice-top-detail-li1 _8bec560">产品品类:{{pageInfo.prfcName}}</view>
+                    <view class="invoice-top-detail-li2 _8bec560">
+                        <view class="_8bec560">对账截止日期：{{pageInfo.periodEndDate}}</view>
+                        <view class="_8bec560">{{pageInfo.currencyName}}(单位：元)</view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="invoice-main _8bec560" style="height:{{height}}px">
+            <scroll-view bindscrolltolower="loadNextPage" scroll-y="true" class="invoice-scroll _8bec560">
+            <!-- 发票  -->
+            <block class="_8bec560" wx:for="{{list.rows}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                <view class="invoice-sale _8bec560" style="{{pagetype===1 ? 'display:block' : 'display:none'}}">
+                    <view class="invoice-sale-li _8bec560">
+                        <view class="invoice-sale-li-left _8bec560">
+                            <view class="invoice-sale-li-left1 _8bec560">销售订单号</view>
+                            <view class="invoice-sale-li-left2 _8bec560">{{item.orderNo}}</view>
+                        </view>
+                        <view class="invoice-sale-li-right _8bec560">
+                            <view class="invoice-sale-li-right1 _8bec560">开票日期</view>
+                            <view class="invoice-sale-li-right2 _8bec560">{{item.invoiceDate}}</view>
+                        </view>
+                    </view>
+                    <view class="invoice-sale-li _8bec560">
+                        <view class="invoice-sale-li-detail _8bec560">
+                            <view class="invoice-sale-li-detail-left _8bec560">金税发票号：
+                                <text class="_8bec560">{{item.taxInvoiceNo}}</text>
+                            </view>
+                            <view class="invoice-sale-li-detail-right _8bec560">数量 x
+                                <text class="_8bec560">{{item.qty}}</text>
+                            </view>
+                        </view>
+                        <view class="invoice-sale-li-detail _8bec560">
+                            <view class="invoice-sale-li-detail-left _8bec560">型号：
+                                <text class="_8bec560">{{item.materialModel}}</text>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="invoice-sale-li _8bec560">
+                        <view class="invoice-sale-li-detail _8bec560">
+                            <view class="invoice-sale-li-detail-left _8bec560">提货单价
+                                <text class="_8bec560">{{item.siglePrice}}</text>
+                            </view>
+                            <view class="invoice-sale-li-detail-right _8bec560">单台返利折扣
+                                <text class="_8bec560">{{item.sigleRbAmt}}</text>
+                            </view>
+                        </view>
+                        <view class="invoice-sale-li-detail _8bec560">
+                            <view class="invoice-sale-li-detail-left _8bec560">发票单价
+                                <text class="_8bec560">{{item.invoicePrice}}</text>
+                            </view>
+                            <view class="invoice-sale-li-detail-right _8bec560">返利折扣合计
+                                <text class="_8bec560">{{item.totalRbAmt}}</text>
+                            </view>
+                        </view>
+                        <view class="invoice-sale-li-detail _8bec560">
+                            <view class="invoice-sale-li-detail-left _8bec560">价税合计
+                                <text class="_8bec560">{{item.invoiceAmt}}</text>
+                            </view>
+                        </view>
+                    </view>
+                
+            </view>
+            </block>
+            <!-- 回款明细 -->
+            <block class="_8bec560" wx:for="{{list.rows}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <view class="invoice-sale _8bec560" style="{{pagetype===2 ? 'display:block' : 'display:none'}}">
+                <view class="invoice-sale-li _8bec560">
+                    <view class="invoice-sale-li-left _8bec560">
+                        <view class="invoice-sale-li-left1 _8bec560">凭证日期</view>
+                        <view class="invoice-sale-li-left2 _8bec560">{{item.voucherDate}}</view>
+                    </view>
+                    <view class="invoice-sale-li-right _8bec560">
+                        <view class="invoice-sale-li-right1 _8bec560">期间</view>
+                        <view class="invoice-sale-li-right2 _8bec560">{{item.rsYear}}-{{item.periodIdx}}</view>
+                    </view>
+                </view>
+                <view class="invoice-detail _8bec560">
+                    <view class="invoice-detail-li _8bec560">凭证号：{{item.voucherNo}}</view>
+                    <view class="invoice-detail-li _8bec560">摘要：{{item.digest}}</view>
+                    <view class="invoice-detail-li _8bec560">回款金额
+                        <text class="color26 _8bec560">{{item.incomeAmt}}</text>
+                    </view>
+                </view>
+            </view>
+            </block>
+            <!-- 已发货未开票 -->
+            <block class="_8bec560" wx:for="{{list.rows}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <view class="invoice-sale _8bec560" style="{{pagetype===3 ? 'display:block' : 'display:none'}}">
+                <view class="invoice-sale-li _8bec560">
+                    <view class="invoice-sale-li-left _8bec560">
+                        <view class="invoice-sale-li-left1 _8bec560">海信订单号</view>
+                        <view class="invoice-sale-li-left2 _8bec560">{{item.orderNo}}</view>
+                    </view>
+                    <view class="invoice-sale-li-right _8bec560">
+                        <view class="invoice-sale-li-right1 _8bec560">发货日期</view>
+                        <view class="invoice-sale-li-right2 _8bec560">{{item.sendDate}}</view>
+                    </view>
+                </view>
+                <view class="invoice-sale-li _8bec560">
+                    <view class="invoice-sale-li-detail _8bec560">
+                        <view class="invoice-sale-li-detail-left _8bec560">型号：
+                            <text class="_8bec560">{{item.materialModel}}</text>
+                        </view>
+                        <view class="invoice-sale-li-detail-right _8bec560">数量 x
+                            <text class="_8bec560">{{item.qty}}</text>
+                        </view>
+                    </view>
+                </view>
+                <view class="invoie-unbilled _8bec560">
+                    <view class="invoie-unbilled-li _8bec560">
+                        <view class="invoie-unbilled-li1 _8bec560">单价
+                            <text class="color26 _8bec560">{{item.materialPrice}}</text>
+                        </view>
+                        <view class="invoie-unbilled-li1 _8bec560">金额
+                            <text class="color26 _8bec560">{{item.amt}}</text>
+                        </view>
+                    </view>
+                    <view class="invoie-unbilled-li _8bec560">备注{{item.remark}}</view>
+                </view>
+            </view>
+            </block>
+            <!-- 已退货未退税 -->
+            <block class="_8bec560" wx:for="{{list.rows}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <view class="invoice-sale _8bec560" style="{{pagetype===4 ? 'display:block' : 'display:none'}}">
+                <view class="invoice-sale-li _8bec560">
+                    <view class="invoice-sale-li-left _8bec560">
+                        <view class="invoice-sale-li-left1 _8bec560">退货订单号</view>
+                        <view class="invoice-sale-li-left2 _8bec560">{{item.orderNo}}</view>
+                    </view>
+                    <view class="invoice-sale-li-right _8bec560">
+                        <view class="invoice-sale-li-right1 _8bec560">收货日期</view>
+                        <view class="invoice-sale-li-right2 _8bec560">{{item.sendDate}}</view>
+                    </view>
+                </view>
+                <view class="invoice-sale-li _8bec560">
+                    <view class="invoice-sale-li-detail _8bec560">
+                        <view class="invoice-sale-li-detail-left _8bec560">型号：
+                            <text class="_8bec560">{{item.materialModel}}</text>
+                        </view>
+                        <view class="invoice-sale-li-detail-right _8bec560">数量 x
+                            <text class="_8bec560">{{item.sendQty}}</text>
+                        </view>
+                    </view>
+                </view>
+                <view class="invoie-unbilled _8bec560">
+                    <view class="invoie-unbilled-li _8bec560">
+                        <view class="invoie-unbilled-li1 _8bec560">单价
+                            <text class="color26 _8bec560">{{item.materialPrice}}</text>
+                        </view>
+                        <view class="invoie-unbilled-li1 _8bec560">金额
+                            <text class="color26 _8bec560">{{item.sendAmt}}</text>
+                        </view>
+                    </view>
+                    <view class="invoie-unbilled-li _8bec560">备注{{item.remark}}</view>
+                </view>
+            </view>
+            </block>
+            </scroll-view>
+        </view>
+    </view>

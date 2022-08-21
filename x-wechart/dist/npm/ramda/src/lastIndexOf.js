@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),_isArray=require("./internal/_isArray.js"),equals=require("./equals.js"),lastIndexOf=_curry2(function(r,e){if("function"!=typeof e.lastIndexOf||_isArray(e)){for(var n=e.length-1;n>=0;){if(equals(e[n],r))return n;n-=1}return-1}return e.lastIndexOf(r)});module.exports=lastIndexOf;

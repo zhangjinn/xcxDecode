@@ -1,0 +1,78 @@
+<view>
+  <van-popup show="{{ beDismissed }}" overlay="{{ true }}">
+    <view class="orderpopup">
+      <view class="text">确认是否驳回</view>
+      <view class="operation">
+        <view catchtap="cancelDismissed" class="operation-one">取消</view>
+        <view catchtap="beDismissed" class="operation-two">确定</view>
+      </view>
+    </view>
+  </van-popup>
+  <van-popup show="{{ reviewConsent }}" overlay="{{ true }}">
+    <view class="orderpopup">
+      <view class="text">确认是否同意</view>
+      <view class="operation">
+        <view catchtap="cancelConsent" class="operation-one">取消</view>
+        <view catchtap="beConsent" class="operation-two">确定</view>
+      </view>
+    </view>
+  </van-popup>
+  <view class="order-container">
+
+    <view class="order-title-wrapper van-hairline--bottom">
+      <view class="order-title">
+        <text
+          class="order-type">{{item.documentType === 'normal' ? (item.purchaseNum !== "" ? '分销商采购订单': '渠道') : '零售'}}{{item.documentNum}}</text>
+        <text class="order-status">{{item.status}}</text>
+      </view>
+      <view class="order-detail {{item.orderType ? '' : ''}}">
+        <!--van-hairline bottom-->
+        <text class="order-customercode">{{item.customerCode}}-</text>
+        <text style='margin-left:-40rpx' class="order-customername">{{item.customerName}}</text>
+        <text class="order-time">{{item.documentDate}}</text>
+      </view>
+      <!--活动订单才显示名称-->
+      <view class="order-active" wx:if="{{item.activityName}}">
+        <view class="active-typeTitle {{item.discountType == '90605'?'combinationPurchaseLabel':'normalLabel'}}" wx:if="{{item.discountTypeName}}">
+          {{item.discountTypeName}}
+        </view>
+        <text class="order-activename">活动名称: {{item.activityName}}</text>
+      </view>
+      <view class="order-active" wx:if="{{item.activityName && (item.discountTypeName=='套购' || item.discountTypeName=='跨品类套购' || item.discountTypeName=='组合购')}}">
+        <text class="order-activename" wx:if="{{item.packageMainNum}}">主单号:{{item.packageMainNum }}</text>
+      </view>
+      <view class="order-active" style="padding-bottom: 0;" wx:if="{{item.activityName && (item.discountTypeName=='套购' || item.discountTypeName=='跨品类套购' || item.discountTypeName=='组合购')}}">
+        <text class="order-activename" wx:if="{{item.packageCode}}">组合编码:{{item.packageCode }}</text>
+      </view>
+    </view>
+
+
+    <!--  组合购  -->
+    <block wx:if="{{item.discountTypeName=='组合购'}}">
+      <view wx:for="{{ item.salesOrderItem }}" wx:for-index="idx" wx:key="idx" wx:for-item="product" class="order-content-wrapper van-hairline--bottom">
+        <view class="modelSeriesHeader">
+          <view>{{ product.productGroupRemark || '字段为空' }}</view>
+          <view class="condition">x{{ product.packageRateNum }}</view>
+        </view>
+        <view wx:for="{{product.child}}" wx:key="{{product._date}}" wx:for-item="goods">
+          <sales-distributors-info goods="{{goods}}" item="{{item}}" bind:goodInfo="goodInfo"/>
+        </view>
+      </view>
+    </block>
+
+    <!--  非组合购  -->
+    <block wx:else>
+      <view wx:for="{{item.salesOrderItem}}" wx:key="{{item._date}}" wx:for-item="goods" class="order-content-wrapper van-hairline--bottom">
+        <sales-distributors-info goods="{{goods}}" item="{{item}}" bind:goodInfo="goodInfo"/>
+      </view>
+    </block>
+
+    <view class="order-operation">
+      <view class="order-operation-again">
+        <view class="order-operation-again-two">
+          <view catchtap="viewDetail" class="card-footer-handle">查看详情</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

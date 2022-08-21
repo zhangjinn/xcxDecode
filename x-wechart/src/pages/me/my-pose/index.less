@@ -1,0 +1,185 @@
+@import '../../../styles/utils.less';
+@import '../../../styles/index.less';
+@import '../../../components/vant/common/style/hairline.less';
+@import '../../../components/vant/common/style/ellipsis.less';
+
+
+.pose {
+    font-size: 13px;
+    padding-bottom: 100rpx;
+    padding-top: 16rpx;
+    .pose-list {
+        width: 100%;
+        background: #fff;
+    }
+
+    .pose-classify {
+        height: 88rpx;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 24rpx;
+        border-bottom: 1rpx solid #EEEEEE;
+        background: #fff;
+
+        .pose-classify-text {
+            color: #262626;
+            font-size: 26rpx;
+            font-weight: 400;
+
+        }
+
+        .pose-classify-selected {
+            color: #262626;
+            font-size: 26rpx;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .pose-classify-selected-name {
+                color: #AAAAAA;
+                font-size: 26rpx;
+                font-weight: 400;
+                max-width: 478rpx;
+                &.selected{
+                  color:#262626;
+                }
+            }
+
+            .pose-classify-selected-icon {
+                color: #AAAAAA;
+                font-size: 20rpx;
+                // padding-right: 34rpx;
+                padding-left: 10rpx;
+            }
+        }
+
+    }
+
+    .pose-issue {
+        background: #fff;
+        margin-top: 14rpx;
+    }
+
+    .pose-issue-title {
+        margin: 0 24rpx;
+        padding: 24rpx 0;
+        font-size: 28rpx;
+        border-bottom: 1rpx solid #EEEEEE;
+    }
+    .pose-issue-title-input{
+      width: 100%;
+    }
+    .pose-issue-content {
+        padding: 24rpx;
+    }
+   
+
+    .pose-issue-content-textarea {
+        background: #FAFAFA;
+        width: 100%;
+        min-height: 140rpx;
+        border-radius: 2px;
+        padding: 16rpx 24rpx;
+        box-sizing: border-box;
+    }
+
+    .pose-question {
+        padding: 0 24rpx;
+        background: #fff;
+        font-size: 13px;
+        margin-top: 16rpx;
+    }
+
+    .pose-question-message {
+        display: flex;
+        justify-content: space-between;
+        padding: 24rpx 0;
+        font-size: 14px;
+        box-sizing: border-box;
+        border-bottom: #EEEEEE solid 1rpx;
+
+        input {
+            text-align: right;
+            width: 470rpx;
+        }
+    }
+
+    .pose-question-value,
+    .pose-question-name {
+        font-size: 28rpx;
+    }
+
+    .pose-submit {
+        background: #00AAA6;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        z-index:2;
+
+    }
+
+    .pose-submit-btn {
+        background: #00AAA6;
+        font-size: 32rpx;
+        color: #fff;
+        height: 100rpx;
+        line-height: 100rpx;
+        opacity: .4;
+    }
+    .pose-inv {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+        &-head {
+          position: fixed;
+          top: 0;
+          width: 100%;
+          &-context {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-left: 58rpx;
+            height: 88rpx;
+            position: relative;
+            &::after {
+              .hairline(#EEEEEE);
+              border-bottom-width: 1rpx;
+            }
+            &-title {
+              display: flex;
+              flex: 1;
+              justify-content: center;
+              font-size: 32rpx;
+              color: #262626;
+            }
+            &-close {
+              padding-right: 40rpx;
+              font-size: 18rpx;
+            }
+          }
+        }
+        &-scroll {
+          padding-top: 88rpx;
+          height: 570rpx;
+          flex: 1;
+          &-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80rpx;
+            padding: 0 40rpx 0 24rpx;
+            font-size: 26rpx;
+            .checked {
+              color: @primary-color;
+            }
+            &-checked {
+              font-size: 20rpx;
+            }
+          }
+        }
+    }
+}

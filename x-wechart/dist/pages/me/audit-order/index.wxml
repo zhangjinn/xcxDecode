@@ -1,0 +1,227 @@
+<wxs src="../../../wxs/utils.wxs" module="utils"/>
+
+  <view class="audit-order">
+    <view class="audit-order-header" bindtap="toggleFilter">
+      <view class="audit-order-header-btn">筛选</view>
+    </view>
+    <block  wx:if="{{items.length > 0}}">
+      <scroll-view bindscrolltolower="onPullBottom" enable-flex="enable-flex" scroll-y enable-back-to-top="enable-back-to-top" class="audit-order-body">
+        <block wx:for="{{items}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+          <view class="item">
+            <view class="item-header">
+              <view bindtap="chooseItem" data-wpychooseitem-a="{{item.id}}">
+                <van-checkbox value="{{utils.includes(item.id, chooses)}}" checked-color="#00AAA6"/>
+              </view>
+              <view class="right">
+                <view class="right-header">
+                  <view class="right-header-title">{{item.orderCode}}</view>
+                  <view class="right-header-status">{{item.orderStatus}}</view>
+                </view>
+                <view class="right-desc">{{item.customerCode}}-{{item.customerName}}</view>
+                <view class="right-footer">
+                  <view class="right-footer-delivery">
+                    <text>配送方式：{{item.transName}}</text>
+                    <block wx:if="{{false}}">
+                      <van-icon name="arrow"/>
+                    </block>
+                  </view>
+                  <view class="right-footer-date">{{item.orderDate}}</view>
+                </view>
+              </view>
+            </view>
+            <block wx:for="{{item.items}}" wx:for-index="index" wx:for-item="good" wx:key="itemId">
+              <view class="item-body van-hairline--top">
+                <view class="item-body-left">
+                  <van-img class="item-body-left-img" src="{{good.img}}" errSrc="{{good.errImg}}"/>
+                </view>
+                <view class="item-body-right">
+                  <view class="item-body-right-title">{{good.productName}}</view>
+                  <view class="item-body-right-desc">颜色: {{good.color}}</view>
+                  <view class="item-body-right-count">
+                    <view class="price">¥{{good.billPrice}}</view>
+                    <view class="num">x{{good.qty}}</view>
+                  </view>
+                </view>
+              </view>
+            </block>
+
+            <view class="item-footer van-hairline--top">
+              <navigator url="/pages/me/audit-order-detail/index?id={{item.id}}">
+                <view class="item-footer-btn">查看详情</view>
+              </navigator>
+            </view>
+          </view>
+        </block>
+      </scroll-view>
+    </block>
+    
+  <view class="empty-data" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+    <view class="audit-order-footer">
+      <view bindtap="checkAll">
+        <van-checkbox value="{{items.length > 0 && chooses.length == items.length}}" checked-color="#00AAA6">
+          <view class="radio">全选</view>
+        </van-checkbox>
+      </view>
+      <view class="right">
+        <view bindtap="rejectAll" class="btn reject">批量驳回</view>
+        <view bindtap="acceptAll" class="btn accept">批量通过</view>
+      </view>
+    </view>
+    <van-toast id="van-toast"/>
+    <van-dialog id="van-dialog"/>
+    <van-dialog use-slot="{{true}}" title="确认批量审核驳回？" show="{{ rejectShow }}" show-cancel-button="show-cancel-button"  bind:cancel="closeRejectDialog" bind:confirm="confirmReject">
+      <view class="reject-text">
+        <textarea bindinput="onRemarkChange" placeholder="请输入驳回原因～" placeholder-class="reject-text-placeholder"/>
+      </view>
+    </van-dialog>
+    <van-popup show="{{ viewVisible }}" position="right" overlay="{{ true }}" z-index="140" custom-style="height: 100%;" close-on-click-overlay="{{false}}">
+      <view class="audit-order-drawer">
+        <view class="audit-order-drawer-time">
+          <view class="audit-order-drawer-time-header">
+            <van-icon name="arrow-left" class="audit-order-drawer-time-header-back"  bind:click="cancelFilter"/>
+            <view class="audit-order-drawer-time-header-title">{{filterType}}</view>
+          </view>
+          <scroll-view class="audit-order-drawer-time-content" scroll-y>
+            <block  wx:if="{{filterType === '物料组'}}">
+              <block wx:for="{{matklList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                <view class="audit-order-drawer-time-content-line" bindtap="chooseMatk" data-wpychoosematk-a="{{item}}">
+                  <view class="text {{matk.code === item.code ? 'active' : ''}}">{{item.name}}</view>
+                  <van-icon wx:if="{{matk.code === item.code }}" name="success" class="time-selected" size="32rpx"/>
+                </view>
+              </block>
+            </block>
+            <block wx:if="{{filterType === '供应商'}}">
+              <block wx:for="{{orgList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                <view class="audit-order-drawer-time-content-line" bindtap="chooseOrg" data-wpychooseorg-a="{{item}}">
+                  <view class="text {{org.code === item.code ? 'active' : ''}}">{{item.name}}</view>
+                  <van-icon wx:if="{{org.code === item.code }}" name="success" class="time-selected" size="32rpx"/>
+                </view>
+              </block>
+            </block>
+            <block wx:if="{{filterType === '分销商'}}">
+              <block wx:for="{{fxDict}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                <view class="audit-order-drawer-time-content-line" bindtap="chooseFx" data-wpychoosefx-a="{{item}}">
+                  <view class="text {{fx.code === item.code ? 'active' : ''}}">{{item.name}}</view>
+                  <van-icon wx:if="{{fx.code === item.code }}" name="success" class="time-selected" size="32rpx"/>
+                </view>
+              </block>
+            </block>
+            <block wx:if="{{filterType === '配送方式'}}">
+              <block wx:for="{{tranList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                <view class="audit-order-drawer-time-content-line" bindtap="chooseTran" data-wpychoosetran-a="{{item}}">
+                  <view class="text {{tran.code === item.code ? 'active' : ''}}">{{item.name}}</view>
+                  <van-icon wx:if="{{tran.code === item.code }}" name="success" class="time-selected" size="32rpx"/>
+                </view>
+              </block>
+            </block>
+            <block wx:if="{{filterType === '单据日期'}}">
+              <view class="audit-order-drawer-time-content-line" bindtap="onSelectTimeFrame" data-wpyonselecttimeframe-a="">
+                <view class="text {{timeFrame === '' ? 'active' : ''}}">全部时间</view>
+                <van-icon wx:if="{{timeFrame === ''}}" name="success" class="time-selected" size="32rpx"/>
+              </view>
+              <view class="audit-order-drawer-time-content-line" bindtap="onSelectTimeFrame" data-wpyonselecttimeframe-a="7">
+                <view class="text {{timeFrame === '7' ? 'active' : ''}}">最近一周</view>
+                <van-icon wx:if="{{timeFrame === '7'}}" name="success" class="time-selected" size="32rpx"/>
+              </view>
+              <view class="audit-order-drawer-time-content-line" bindtap="onSelectTimeFrame" data-wpyonselecttimeframe-a="1">
+                <view class="text {{timeFrame === '1' ? 'active' : ''}}">最近一个月</view>
+                <van-icon wx:if="{{timeFrame === '1'}}" name="success" class="time-selected" size="32rpx"/>
+              </view>
+              <view class="audit-order-drawer-time-content-line" bindtap="onSelectTimeFrame" data-wpyonselecttimeframe-a="3">
+                <view class="text {{timeFrame === '3' ? 'active' : ''}}">最近三个月</view>
+                <van-icon wx:if="{{timeFrame === '3'}}" name="success" class="time-selected" size="32rpx"/>
+              </view>
+              <view class="audit-order-drawer-time-content-line" bindtap="onSelectTimeFrame" data-wpyonselecttimeframe-a="6">
+                <view class="text {{timeFrame === '6' ? 'active' : ''}}">最近六个月</view>
+                <van-icon wx:if="{{timeFrame === '6'}}" name="success" class="time-selected" size="32rpx"/>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{visible}}" position="right" bind:close="closeFilter" custom-style="height: 100%;" z-index="130">
+      <view class="audit-order-drawer">
+        <view class="audit-order-drawer-attr">
+          <scroll-view class="audit-order-drawer-attr-scroll" scroll-y>
+            <view class="attr-item">
+              <view class="projectem">
+                <view class="project">
+                  <text style="font-size: 13px;color: #777777">产品型号</text>
+                </view>
+                <van-field placeholder="请输产品型号" placeholder-style="font-size: 24rpx;" border="{{ false }}" bind:change="onModelChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;" clearable="clearable" value="{{zzprdmodel}}"/>
+              </view>
+              <view class="projectem">
+                <view class="project">
+                  <text style="font-size: 28rpx;color: #777777">订单编号</text>
+                </view>
+                <van-field placeholder="请输入订单编号" border="{{ false }}" placeholder-style="font-size: 24rpx;" bind:change="onOrderChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;" clearable="clearable" value="{{orderCode}}"/>
+              </view>
+              <view class="order-data">
+                <view class="project">
+                  <text style="font-size: 28rpx;color: #777777">单据日期</text>
+                  <text wx:if="{{!timeFrame}}" class="text" bindtap="chooseFilter" data-wpychoosefilter-a="timeFrame">全部日期 ></text>
+                  <text wx:if="{{timeFrame === '7'}}" class="text" bindtap="onToggleTimeFrame">最近一周 ></text>
+                  <text wx:if="{{timeFrame === '1'}}" class="text" bindtap="onToggleTimeFrame">最近一个月 ></text>
+                  <text wx:if="{{timeFrame === '3'}}" class="text" bindtap="onToggleTimeFrame">最近三个月 ></text>
+                  <text wx:if="{{timeFrame === '6'}}" class="text" bindtap="onToggleTimeFrame">最近六个月 ></text>
+                </view>
+                <view class="order-data-input">
+                  <view class="order-data-input-one" data-name="agentCheckStart" data-type="sapDate" bindtap="openCalendar">
+                    {{agentCheckStart || '请输入开始日期'}}
+                    <van-icon wx:if="{{agentCheckStart}}" class="close-icon" name="clear" bindtap="clearCalendar" data-wpyclearcalendar-a="agentCheckStart"/>
+                  </view>
+                  <view class="order-data-input-line">-</view>
+                  <view class="order-data-input-one" data-name="agentCheckEnd" data-type="sapDate" bindtap="openCalendar">
+                    {{agentCheckEnd|| '请输入结束日期'}}
+                    <van-icon wx:if="{{agentCheckEnd}}" class="close-icon" name="clear" bindtap="clearCalendar" data-wpyclearcalendar-a="agentCheckEnd"/>
+                  </view>
+                </view>
+              </view>
+              <view bindtap="chooseFilter" class="order-cell" data-wpychoosefilter-a="queryMatkl">
+                <view class="order-cell-label">物料组</view>
+                <view class="order-cell-value">
+                  <view class="value">{{!!matk.name ? matk.name : '全部'}}</view>
+                  <van-icon name="arrow"/>
+                </view>
+              </view>
+              <view bindtap="chooseFilter" class="order-cell" data-wpychoosefilter-a="queryOrg">
+                <view class="order-cell-label">供应商</view>
+                <view class="order-cell-value">
+                  <view class="value">{{!!org.name ? org.name : '请选择'}}</view>
+                  <van-icon name="arrow"/>
+                </view>
+              </view>
+              <view bindtap="chooseFilter" class="order-cell" data-wpychoosefilter-a="queryFxDict">
+                <view class="order-cell-label">分销商</view>
+                <view class="order-cell-value">
+                  <view class="value">{{!!fx.name ? fx.name : '请选择'}}</view>
+                  <van-icon name="arrow"/>
+                </view>
+              </view>
+              <view bindtap="chooseFilter" class="order-cell" data-wpychoosefilter-a="getTransList">
+                <view class="order-cell-label">配送方式</view>
+                <view class="order-cell-value">
+                  <view class="value">{{!!tran.name ? tran.name : '请选择'}}</view>
+                  <van-icon name="arrow"/>
+                </view>
+              </view>
+            </view>
+          </scroll-view>
+          <view class="audit-order-drawer-attr-footer">
+            <view bindtap="onResetFilterForm" class="audit-order-drawer-attr-footer-btn reset" hover-class="audit-order-drawer-attr-footer-btn-hover">重置</view>
+            <view bindtap="onSubmitFilterForm" class="audit-order-drawer-attr-footer-btn confirm" hover-class="audit-order-drawer-attr-footer-btn-hover">确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{calendarShow}}" position="bottom" bind:close="closeCalendar" z-index="150">
+      <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay"/>
+    </van-popup>
+  </view>

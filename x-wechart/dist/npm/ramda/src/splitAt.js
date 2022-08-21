@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),length=require("./length.js"),slice=require("./slice.js"),splitAt=_curry2(function(e,r){return[slice(0,e,r),slice(e,length(r),r)]});module.exports=splitAt;

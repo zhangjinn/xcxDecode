@@ -1,0 +1,57 @@
+<view class="custom-source-group">
+  <view class="item-row-top">
+    <text>用户来源</text>
+  </view>
+  <view class="item-row-bottom">
+    <view class="custom-group-tag">
+      <block wx:for="{{options}}">
+        <view class="custom-tag-item {{item.id === activeItem.id ? 'active' : ''}}" data-option="{{item}}" data-index="{{index}}" catchtap="onSourceChange">{{ item.name }}</view>
+      </block>
+      <view class="custom-tag-add">
+        <view class="add-btn" catchtap="showSourcePop"><i class="b-icon icon-add"/></view>
+      </view>
+    </view>
+  </view>
+
+  <!--  添加来源  -->
+  <van-popup
+    show="{{ sourcePopShow }}"
+    round
+    position="bottom"
+    custom-style="height: 60%; border-radius: 24rpx 24rpx 0rpx 0rpx;"
+    bind:click-overlay="hideSourcePop"
+  >
+    <view class="popup-wrapper">
+      <view class="popup-title">
+        用户来源
+      </view>
+      <view class="popup-container">
+        <view class="custom-group-tag pop-custom-group-tag">
+          <block wx:for="{{options}}">
+            <view class="custom-tag-item {{item.id === popActiveItem.id ? 'active' : ''}}" data-option="{{item}}" data-index="{{index}}" catchtap="onPopSourceChange">{{ item.name }}</view>
+          </block>
+        </view>
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>自定义</text>
+          </view>
+          <view class="item-row-right">
+            <van-field
+              value="{{ sourcePopFormData.name }}"
+              placeholder="请输入"
+              border="{{ false }}"
+              data-key="name"
+              bind:change="onFieldNameChange"
+              class="dms-order-note"
+            />
+          </view>
+        </view>
+      </view>
+      <view class="popup-footer">
+        <view class="btn cancel" catchtap="hideSourcePop">取消</view>
+        <view class="btn save" catchtap="saveSourcePop">确定</view>
+      </view>
+    </view>
+  </van-popup>
+  <van-toast id="van-toast" />
+</view>

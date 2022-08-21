@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),unless=_curry3(function(r,u,e){return r(e)?e:u(e)});module.exports=unless;

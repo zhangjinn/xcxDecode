@@ -1,0 +1,192 @@
+<template>
+  <view class="order">
+    <view class="order-scroll">
+      <view class="basic-info-wrapper">
+        <view class="basic-info-container">
+          <view class="order-scroll-info">
+            <view class="item-row">
+              <view class="item-row-left">
+                <text>手机号</text>
+                <text class="redXing">*</text>
+              </view>
+              <view class="item-row-right">
+                <view class="item-row-right-note">
+                  <van-field
+                    disabled
+                    value="{{ baseFormData.customerPhone }}"
+                    placeholder="请输入"
+                    border="{{ false }}"
+                    input-align="right"
+                    data-key="customerPhone"
+                    bind:change="onBaseFieldChange"
+                    class="dms-order-note"
+                  />
+                </view>
+              </view>
+            </view>
+            <view class="item-row">
+              <view class="item-row-left">
+                <text>用户姓名</text>
+              </view>
+              <view class="item-row-right">
+                <view class="item-row-right-note">
+                  <van-field
+                    value="{{ baseFormData.customerName }}"
+                    placeholder="请输入"
+                    border="{{ false }}"
+                    input-align="right"
+                    data-key="customerName"
+                    bind:change="onBaseFieldChange"
+                    class="dms-order-note"
+                  />
+                </view>
+              </view>
+            </view>
+            <view class="item-row">
+              <view class="item-row-left">
+                <text>用户性别</text>
+              </view>
+              <view class="item-row-right">
+                <tile-radio
+                  options="{{ genderOption }}"
+                  activeItem="{{ baseFormData.gender }}"
+                  data-key="gender"
+                  bind:onRadioChange="onRadioChange"
+                />
+              </view>
+            </view>
+            <view class="item-row">
+              <view class="item-row-left">
+                <text>是否添加微信</text>
+              </view>
+              <view class="item-row-right">
+                <tile-radio
+                  options="{{ addWeChatOption }}"
+                  activeItem="{{ baseFormData.addWeChat }}"
+                  data-key="addWeChat"
+                  bind:onRadioChange="onRadioChange"
+                />
+              </view>
+            </view>
+
+            <!--   用户来源(单选)    -->
+            <view class="item-row item-row-vertical">
+              <entry-source
+                style="width: 100%"
+                options="{{ sourceOption }}"
+                activeItem="{{ baseFormData.source }}"
+                bind:onSourceChange="onSourceChange"
+                bind:saveSourcePop="saveSourcePop"
+              />
+            </view>
+
+            <!--   用户标签(多选)    -->
+            <view class="item-row item-row-vertical">
+              <entry-label
+                options="{{ tagOption }}"
+                activeItem="{{ baseFormData.tag }}"
+                bind:onTagChange="onTagChange"
+                bind:saveTagPop="saveTagPop"
+              />
+            </view>
+
+            <view class="item-row" data-title="变更跟进人" data-key="follower" data-options="followerOption" @tap="openChoose">
+              <view class="item-row-left">
+                <text>变更跟进人</text>
+              </view>
+              <view class="item-row-right">
+                <view class="item-row-right-inventory {{ baseFormData.follower.id ? '' : 'placeholder' }}">
+                  {{ baseFormData.follower.name || '请选择'}}
+                </view>
+                <van-icon
+                  name="arrow"
+                  custom-class="dms-item-row-right-arrow"
+                />
+              </view>
+            </view>
+            <view class="item-row">
+              <view class="item-row-left">
+                <text>备注</text>
+              </view>
+              <view class="item-row-right">
+                <view class="item-row-right-note">
+                  <van-field
+                    value="{{ baseFormData.remark }}"
+                    placeholder="请填写备注"
+                    border="{{ false }}"
+                    input-align="right"
+                    data-key="remark"
+                    bind:change="onBaseFieldChange"
+                    class="dms-order-note"
+                  />
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="order-footer" data-type="add" data-id="" @tap="submit">
+      <view class="btn">确认提交</view>
+    </view>
+
+    <van-popup
+      show="{{ popVisible }}"
+      closeable
+      position="bottom"
+      custom-style="height: 570rpx"
+      bind:click-overlay="onClose"
+    >
+      <view class="order-inv">
+        <view class="order-inv-head">
+          <view class="order-inv-head-context">
+            <view class="order-inv-head-context-title">{{ popTitle }}</view>
+            <van-icon
+              name="cross"
+              class="order-inv-head-context-close"
+              bindtap="onClose"
+            />
+          </view>
+        </view>
+        <scroll-view
+          scroll-y
+          class="order-inv-scroll"
+        >
+          <view
+            wx:for="{{ popList }}"
+            wx:key="{{ item.id }}"
+            item="item"
+            class="order-inv-scroll-row"
+            data-key="{{ item.id }}"
+            data-index="{{ index }}"
+            bindtap="onChoose"
+          >
+            <view class="order-inv-scroll-row-desc {{ item.id === compareInfo.id ? 'checked' : ''}}">
+              {{ item.name }}
+            </view>
+            <block wx:if="{{ item.id === compareInfo.id }}">
+              <view class="b-icon icon-check order-inv-scroll-row-checked checked">
+              </view>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+
+    <van-dialog id="van-dialog" />
+    <van-toast id="van-toast" />
+  </view>
+
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<style lang="less">
+  .popup-wrapper{
+    .van-cell{
+      background: #F7F7F7;
+      border-radius: 20rpx;
+      padding: 10px 15px;
+    }
+  }
+</style>
+<script lang="typescript" src="./index.ts"></script>

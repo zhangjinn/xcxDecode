@@ -1,0 +1,62 @@
+.van-toast {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  color: #fff;
+  font-size: 24rpx;
+  line-height: 40rpx;
+  border-radius: 8rpx;
+  word-break: break-all;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-sizing: content-box;
+          box-sizing: content-box;
+  background-color: rgba(38, 38, 38, 0.88);
+  white-space: pre-wrap;
+}
+.van-toast__container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  max-width: 70%;
+  width: -webkit-fit-content;
+  width: fit-content;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  z-index: 120;
+}
+.van-toast--text {
+  padding: 16rpx 24rpx;
+  min-width: 192rpx;
+}
+.van-toast--icon {
+  max-width: 360rpx;
+  min-width: 180rpx;
+  padding: 30rpx;
+  min-height: 180rpx;
+}
+.van-toast--icon .van-toast__icon {
+  font-size: 96rpx;
+}
+.van-toast--icon .van-toast__text {
+  padding-top: 5px;
+}
+.van-toast__loading {
+  margin: 10px 0;
+}
+.van-toast--top {
+  -webkit-transform: translate(0, -30vh);
+          transform: translate(0, -30vh);
+}
+.van-toast--bottom {
+  -webkit-transform: translate(0, 30vh);
+          transform: translate(0, 30vh);
+}

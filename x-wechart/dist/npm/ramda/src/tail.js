@@ -1,0 +1,1 @@
+var _checkForMethod=require("./internal/_checkForMethod.js"),_curry1=require("./internal/_curry1.js"),slice=require("./slice.js"),tail=_curry1(_checkForMethod("tail",slice(1,1/0)));module.exports=tail;

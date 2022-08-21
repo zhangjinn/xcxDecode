@@ -1,0 +1,1 @@
+var _arity=require("./internal/_arity.js"),_curry2=require("./internal/_curry2.js"),bind=_curry2(function(r,n){return _arity(r.length,function(){return r.apply(n,arguments)})});module.exports=bind;

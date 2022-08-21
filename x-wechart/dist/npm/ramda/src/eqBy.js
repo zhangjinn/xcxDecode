@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),equals=require("./equals.js"),eqBy=_curry3(function(r,e,u){return equals(r(e),r(u))});module.exports=eqBy;

@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),slice=require("./slice.js"),takeLastWhile=_curry2(function(r,e){for(var i=e.length-1;i>=0&&r(e[i]);)i-=1;return slice(i+1,1/0,e)});module.exports=takeLastWhile;

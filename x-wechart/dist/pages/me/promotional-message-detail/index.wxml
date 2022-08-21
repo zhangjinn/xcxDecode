@@ -1,0 +1,30 @@
+
+  <view class="container _49371b6">
+    <view  wx:if="{{ messageList && messageList.length > 0 }}" class="container-wrapper _49371b6">
+      <view class="wrapper-header _49371b6">
+        {{ messageList[0].yearStr }}年{{ messageList[0].monthStr }}月代理商市场活动总计完成核销{{ messageList[0].sumCost }}元，完成核销活动信息如下：
+      </view>
+      <scroll-view class="container-scroll _49371b6" scroll-y>
+        <block class="_49371b6" wx:for="{{messageList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="item _49371b6">
+            <view class="title _49371b6">{{ item.activityTheme }}</view>
+            <view class="desc _49371b6">活动编码：{{ item.activityCode }}</view>
+            <view class="desc _49371b6">
+              <view class="time _49371b6">发起时间：{{ item.applyMonth }}</view>
+              <view class="amount _49371b6">核销金额(元)：<text class="amount-num _49371b6">{{ item.applyCost }}</text></view>
+            </view>
+          </view>
+        </block>
+      </scroll-view>
+    </view>
+    
+  <view class="empty-data _49371b6" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <van-toast id="van-toast" class="_49371b6"/>
+  </view>

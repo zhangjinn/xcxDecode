@@ -1,0 +1,32 @@
+
+  <view class="wechat _8639405">
+    <view class="wechat-avatar _8639405">
+      <open-data type="userAvatarUrl" class="_8639405"/>
+    </view>
+    <view class="wechat-name _8639405">
+      <open-data type="userNickName" lang="zh_CN" class="_8639405"/>
+    </view>
+    <view class="wechat-info _8639405">
+      <view class="wechat-info-tip _8639405">该小程序由海信信天翁开发，请提供以下授权，即可继续操作
+      </view>
+      <view class="wechat-info-desc _8639405">·获得你的公开信息（昵称、头像等）</view>
+    </view>
+    <view class="wechat-footer _8639405">
+      <block  wx:if="{{canIUse}}" class="_8639405">
+        <van-button loading="{{!sessionCode}}" open-type="getUserInfo"  bind:getuserinfo="userAuth" color="#00AAA6" square="{{true}}" block="{{true}}" class="_8639405">确认授权</van-button>
+      </block>
+      <block  wx:else class="_8639405">
+        请升级微信版本
+      </block>
+    </view>
+    <van-popup show="{{isAuth}}"  bind:close="onClose" class="_8639405">
+      <view class="wechat-popup _8639405">
+        <view class="wechat-popup-actions _8639405">
+          <view class="wechat-popup-actions-title _8639405">请选择登录方式</view>
+          <van-button bindtap="chooseLoginType" custom-class="auth-vant-btn" color="#00AAA6" square="{{true}}" block="{{true}}" class="_8639405" data-wpychooselogintype-a="account">密码登录</van-button>
+          <van-button bindtap="chooseLoginType" custom-class="auth-vant-btn" color="#00AAA6" square="{{true}}" block="{{true}}" class="_8639405" data-wpychooselogintype-a="mobile">验证码登录</van-button>
+        </view>
+      </view>
+    </van-popup>
+    <van-toast id="van-toast" class="_8639405"/>
+  </view>

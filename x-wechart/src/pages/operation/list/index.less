@@ -1,0 +1,300 @@
+@import '../../../styles/utils.less';
+@import '../../../components/vant/common/style/hairline.less';
+@import '../../../components/vant/common/style/ellipsis.less';
+
+.order {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .overlay {
+    background-color: #00a6aa;
+  }
+  .bg{
+    height: 100%;
+    width: 100%;
+  }
+  .statistics-wrapper{
+    width: 100%;
+    height: 458rpx;
+    background: linear-gradient(180deg, #FFFFFF 0%, #f5f5f5 100%);
+    .statistics-card{
+      width: 100%;
+      height: 280rpx;
+      position: relative;
+      .statistics-card-bg{
+        height: 280rpx;
+      }
+
+      .statistics-card-info{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 280rpx;
+        padding: 26rpx;
+        .statistics-card-info-inner{
+          width: 100%;
+          height: 100%;
+          position: relative;
+          .card-screening{
+            position: absolute;
+            width: 206rpx;
+            height: 60rpx;
+            line-height: 60rpx;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.29);
+            box-shadow: 0rpx 6rpx 12rpx 0rpx rgba(0, 198, 173, 0.31);
+            border-radius: 20rpx 0rpx 20rpx 0rpx;
+            font-size: 28rpx;
+            color: #FFFFFF;
+            text-shadow: 0rpx 6rpx 12rpx rgba(0, 198, 173, 0.31);
+            .iconxialajiantou{
+              color: #FFFFFF;
+            }
+          }
+          .card-list{
+            padding-top: 84rpx;
+            display: flex;
+            align-items: center;
+            .card-item{
+              flex: 1;
+              text-align: center;
+              .num{
+                font-size: 52rpx;
+                font-weight: 500;
+                color: #FFFFFF;
+              }
+              .text{
+                font-size: 26rpx;
+                color: rgba(255, 255, 255, 0.88);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .user-wrapper{
+    margin-top: -174rpx;
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    .header-tab-box{
+      background: transparent;
+      z-index: 99;
+    }
+  }
+
+
+  .order-scroll {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
+    padding: 0 16rpx;
+    overflow-y: auto;
+    .order-scroll-inner{
+      padding-bottom: 28rpx;
+    }
+    // 订单最外层
+    .order-container {
+      background-color: #ffffff;
+      font-size: 26rpx;
+      color: #777777;
+      font-weight: 400;
+      border-radius: 20rpx;
+      &:not(:last-child){
+        margin-bottom: 28rpx;
+      }
+      .card-header{
+        padding: 30rpx 24rpx 24rpx;
+        .card-message{
+          display: flex;
+          padding-bottom: 8rpx;
+          .card-message-left{
+            flex: 1;
+            .card-title{
+              position: relative;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              .card-coding{
+                flex: 1;
+                margin-right: 24rpx;
+                display: flex;
+                align-items: center;
+                .user-name{
+                  font-size: 34rpx;
+                  font-weight: 500;
+                  color: #262626;
+                  margin-right: 8rpx;
+                }
+                .user-gender{
+                  width: 24rpx;
+                  height: 24rpx;
+                  margin-right: 16rpx;
+                  margin-top: -40rpx;
+                }
+                .user-type{
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  width: 116rpx;
+                  height: 44rpx;
+                  background: #EDF2F9;
+                  border-radius: 200rpx 200rpx 200rpx 6rpx;
+                  font-size: 22rpx;
+                  color: #6D819F;
+                }
+                .oGreen{
+                  background: #E4F8F7;
+                  color: #00AAA6;
+                }
+                .oRed{
+                  background: #FEF1EE;
+                  color: #FC5260;
+                }
+              }
+            }
+          }
+          .card-message-right{
+            margin-right: 16rpx;
+            .card-status{
+              display: flex;
+              .message{
+                width: 76rpx;
+                height: 76rpx;
+                &:not(:first-child){
+                  margin-left: 40rpx;
+                }
+              }
+            }
+          }
+        }
+
+        .card-desc{
+          margin-top: 8rpx;
+          .gap{
+            margin-right: 32rpx;
+          }
+        }
+        .card-phone{
+          display: flex;
+          align-items: center;
+          font-weight: 500;
+          color: #262626;
+          .medal{
+            width: 56rpx;
+            height: 26rpx;
+            margin-left: 8rpx;
+          }
+        }
+        .card-tags{
+          display: flex;
+          flex-wrap: wrap;
+          margin: 10rpx -6rpx -6rpx;
+          .tag{
+            border-radius: 18rpx;
+            padding: 2rpx 14rpx;
+            font-size: 22rpx;
+            color: #00AAA6;
+            background: #E4F8F7;
+            margin: 6rpx;
+          }
+        }
+      }
+      .card-footer{
+        padding: 12rpx 24rpx 24rpx;
+        display: flex;
+        justify-content: flex-end;
+        .card-footer-handle{
+          position: relative;
+          margin-right: 16rpx;
+          .opportunityTip{
+            position: absolute;
+            left: 78rpx;
+            bottom: 50rpx;
+            font-size: 20rpx;
+            font-weight: 500;
+            background-image: url('http://3s-static.hisense.com/wechat/1/14722429883/1657096257240_0455be7d20134bdcabbb3cd81d13502e.png'); // 用户运营-角标@2x.png
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 112rpx;
+            padding-bottom: 8rpx;
+            height: 38rpx;
+          }
+        }
+      }
+    }
+  }
+  .order-footer{
+    width: 100%;
+    padding: 14rpx 30rpx env(safe-area-inset-bottom);
+    background: #FFFFFF;
+    position: relative;
+    &::after {
+      .hairline(#EEEEEE);
+      border-top-width: 2rpx;
+    }
+    .btn{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 88rpx;
+      font-size: 34rpx;
+      color: #FFFFFF;
+      background: #00C4A9;
+      border-radius: 46rpx;
+    }
+  }
+
+  .order-operation {
+    display: flex;
+    width: 100%;
+    .operation-text {
+      width: 100%;
+      height: 84rpx;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .operation-status {
+        font-size: 28rpx;
+        font-weight: 400;
+        padding-left: 16rpx;
+        &.active {
+          color: #00aaaa;
+        }
+      }
+      .operation-icon {
+        font-size: 20rpx;
+        color: #00aaa6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-right: 40rpx;
+      }
+    }
+  }
+  .free-shipping-tag{
+    background: linear-gradient(90deg, #FF7C45 0%, #F63737 100%);
+    border-radius: 4rpx;
+    font-size: 20rpx;
+    font-weight: 400;
+    color: #FFFFFF;
+    padding:2rpx 4rpx;
+    margin-right: 8rpx;
+  }
+}
+.custom-header-filter{
+  background: red;
+}
+
+.iconliebiaoshaixuanjiantou-down {
+  font-size: 28rpx;
+}

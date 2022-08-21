@@ -1,0 +1,29 @@
+<template>
+  <view class="detail">
+    <view class="detail-title">
+      明细信息
+    </view>
+    <block wx:if="{{ from === 'retail' }}">
+      <view class="detail-tip">
+        特别提醒订单开立时，单张订单避免出现同一型号的不同质量等级
+      </view>
+    </block>
+
+    <item id="item" wx:for="{{ details }}" from="{{ from }}" wx:key="*this" index="{{index}}" itemId="{{ item }}" ly="{{ly}}" isDisabled="{{ isDisabled }}" requiredParameters="{{ requiredParameters }}"
+          warehouseId="{{out.id}}" orgId="{{orgId.id}}" outInv="{{outInv}}" itemInfo="{{ additionOrderDetailItem.itemInfo[item] }}"
+          @volumeChange="volumeChange" @amountChange="amountChange"  @chooseItem="chooseItem" @itemDel="delItem" @serviceChange="serviceChange" @quantityChange="quantityChange"/>
+
+    <view class="detail-add">
+      <view class="detail-add-inner" catchtap="addItem">
+        <view class="b-icon icon-add"></view>
+        <view class="detail-add-tip">
+          <block wx:if="{{ details.length > 0 }}">继续</block>
+          <block>添加</block>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

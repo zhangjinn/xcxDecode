@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),clamp=_curry3(function(r,e,n){if(r>e)throw new Error("min must not be greater than max in clamp(min, max, value)");return n<r?r:n>e?e:n});module.exports=clamp;

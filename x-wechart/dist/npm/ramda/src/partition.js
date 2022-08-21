@@ -1,0 +1,1 @@
+var filter=require("./filter.js"),juxt=require("./juxt.js"),reject=require("./reject.js"),partition=juxt([filter,reject]);module.exports=partition;

@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),splitWhen=_curry2(function(r,e){for(var t=0,l=e.length,n=[];t<l&&!r(e[t]);)n.push(e[t]),t+=1;return[n,Array.prototype.slice.call(e,t)]});module.exports=splitWhen;

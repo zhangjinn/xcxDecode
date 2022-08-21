@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),negate=_curry1(function(r){return-r});module.exports=negate;

@@ -1,0 +1,54 @@
+<template>
+  <view class="return">
+    <view class="return-header">
+      <van-search
+        placeholder="请输入采购单号/代理名称/代理编码"
+        use-action-slot
+        bind:change="onChange"
+        @search="onClick"
+      >
+        <view slot="action" bind:tap="onClick">搜索</view>
+      </van-search>
+    </view>
+    <block wx:if="{{list_channel && list_channel.length > 0}}">
+      <view class="return-middle">
+        <view class="info">选择退货信息</view>
+      </view>
+      <scroll-view scroll-y enable-flex class="search-result" bindscrolltolower="loadNextPage">
+        <repeat for="{{list_channel}}" item="item">
+          <view catchtap="selectItem({{item.id}},{{item.documentNum}},{{item.returnNum}},{{item.supplierName}},{{item.returnBy}})" style="{{item.id == itemId ? 'border:1px solid rgba(0,170,166,1);': ''}}"  class="container">
+            <view wx:if="{{item.id == itemId}}" class="triangle"></view>
+            <view wx:if="{{item.id == itemId}}" class="b-icon icon-check icon "></view>
+            <view wx:if="{{item.returnNum}}" class="return van-hairline--bottom">
+              <view class="return-text">采购退货单号: {{item.returnNum}}</view>
+              <view wx:if="{{item.returnBy == 'bySales'}}" class="start">代理发起</view>
+              <view wx:if="{{item.returnBy == 'byPurchase'}}" class="start">分销发起</view>
+            </view>
+            <view class="first">
+              <view class="sales-number">采购单号: {{item.documentNum}}</view>
+              <view wx:if="{{item.returnStatus === 'returned'}}" class="select-border ">已退货</view>
+              <view wx:if="{{item.returnStatus === 'unreturn'}}" class="select-border ">未退货</view>
+              <view wx:if="{{item.returnStatus === 'part-returned'}}" class="select-border ">部分退货</view>
+            </view>
+            <view class="second van-ellipsis">{{item.supplierName}}</view>
+            <!-- <view class="second van-ellipsis">地址: 齐天大圣孙悟空</view> -->
+          </view>
+        </repeat>
+        <view style="padding-bottom: 100rpx;"></view>
+      </scroll-view>
+    </block>
+    <emptyDataType wx:else/>
+    <view wx:if="{{list_channel && list_channel.length > 0}}" class="return-footer van-hairline--top">
+      <view class="return-footer-bar">
+        <view
+          @tap="goNext"
+          class="return-footer-bar-btn {{itemId == '' ? 'disabled': ''}}"
+        >下一步</view>
+      </view>
+    </view>
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

@@ -1,0 +1,253 @@
+@import '../../../styles/utils.less';
+@import '../../../styles/index.less';
+.redXing{
+  color: #D9161C;
+}
+.purchase-intention-wrapper{
+  .basic-info-wrapper{
+    margin-bottom: 28rpx;
+    &:last-child{
+      margin-bottom: 200rpx;
+    }
+
+    .order-entry-title{
+      display: flex;
+      width: 100%;
+      padding: 20rpx 12rpx;
+      .title-text{
+        font-size: 32rpx;
+        font-weight: 500;
+        color: #262626;
+        margin-left: 12rpx;
+      }
+    }
+    .basic-info-container{
+      .order-scroll-info {
+        padding-left: 24rpx;
+        background-color: #FFF;
+        color: #262626;
+        font-size: 28rpx;
+        border-radius: 16rpx;
+        margin-bottom: 28rpx;
+
+        .item-row:not(:last-child) {
+          position: relative;
+          border-bottom: 2rpx solid #EEEEEE;
+        }
+
+        .item-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          min-height: 96rpx;
+          padding: 12rpx 24rpx 12rpx 0;
+          position: relative;
+          .item-row-info{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+          }
+          &-left {
+            padding-right: 24rpx;
+            font-size: 28rpx;
+            font-weight: 500;
+          }
+          .amount {
+            color: #D9161C;
+            font-size: 24rpx;
+          }
+          .input {
+            padding-right: 20rpx;
+          }
+          &-right {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            .item-row-right-note{
+              width: 100%;
+            }
+            .item-product {
+              display: flex;
+              align-items: center;
+              height: 64rpx;
+              width: 100%;
+              background-color: #F7F7F7;
+              padding: 0 16rpx;
+              color: #AAAAAA;
+
+            }
+            &-inventory {
+              padding-right: 20rpx;
+              overflow-wrap: break-word;
+              width: 100%;
+              text-align: right;
+            }
+            .item-row-right-delivery{
+              color: #00AAA6;
+              border-radius: 4rpx;
+              border: 2rpx solid #00AAA6;
+              padding: 0rpx 8rpx;
+              margin-right: 20rpx;
+            }
+            .placeholder {
+              color: #AAAAAA;
+            }
+          }
+          .mask{
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 5;
+          }
+          .prod-scroll-view{
+            z-index: 9;
+            width: 450rpx;
+            position: absolute;
+            top: 96rpx;
+            right: 23rpx;
+            background-color: white;
+            box-shadow: 0rpx 2rpx 12rpx 0rpx rgba(0, 0, 0, 0.12);
+            padding: 24rpx;
+            min-height: 200rpx;
+            border-radius: 16rpx;
+            .prod-scroll-view-inner{
+              max-height: 450rpx;
+              .order-operation {
+                display: flex;
+                width: 100%;
+                .operation-text {
+                  width: 100%;
+                  height: 80rpx;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  .operation-status {
+                    font-size: 24rpx;
+                    font-weight: 400;
+                    color: #262626;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .item-row-vertical{
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+          height: auto;
+        }
+        .sales-info-item-footer{
+          height: 96rpx;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          color: #777777;
+          font-size: 26rpx;
+          padding-right: 24rpx;
+          .handle-btn{
+            display: flex;
+            align-items: center;
+            .b-icon{
+              margin-right: 16rpx;
+              color: #CCCCCC;
+              font-size: 32rpx;
+            }
+          }
+        }
+        .clear-height-border {
+          height: auto !important;
+          &::after {
+            border-bottom-width: 0;
+          }
+        }
+      }
+    }
+    .add-sales{
+      height: 78rpx;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #FFFFFF;
+      box-shadow: 0rpx 4rpx 8rpx 0rpx rgba(204, 204, 204, 0.3);
+      border-radius: 20rpx;
+      font-size: 30rpx;
+      font-weight: 500;
+      color: #00AAA6;
+      margin-top: 16rpx;
+      .b-icon{
+        font-size: 24rpx;
+        margin-right: 16rpx;
+      }
+    }
+  }
+}
+
+
+.order-inv {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  &-head {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    &-context {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-left: 58rpx;
+      height: 88rpx;
+      position: relative;
+      &::after {
+        .hairline(#EEEEEE);
+        border-bottom-width: 1rpx;
+      }
+      &-title {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        font-size: 32rpx;
+        color: #262626;
+      }
+      &-close {
+        padding-right: 40rpx;
+        font-size: 18rpx;
+      }
+    }
+  }
+  &-scroll {
+    padding-top: 88rpx;
+    height: 492rpx;
+    flex: 1;
+    &-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 80rpx;
+      padding: 0 40rpx 0 24rpx;
+      font-size: 26rpx;
+      .store-type{
+        display: flex;
+        align-items: center;
+      }
+      .order-inv-scroll-row-desc{
+        flex: 1;
+      }
+      .checked {
+        color: #00AAA6;
+      }
+      .disabled {
+        color: #ccc;
+      }
+      &-checked {
+        font-size: 20rpx;
+      }
+    }
+  }
+}

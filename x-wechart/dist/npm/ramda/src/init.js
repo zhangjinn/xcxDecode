@@ -1,0 +1,1 @@
+var slice=require("./slice.js"),init=slice(0,-1);module.exports=init;

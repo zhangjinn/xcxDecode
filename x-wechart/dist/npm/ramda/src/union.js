@@ -1,0 +1,1 @@
+var _concat=require("./internal/_concat.js"),_curry2=require("./internal/_curry2.js"),compose=require("./compose.js"),uniq=require("./uniq.js"),union=_curry2(compose(uniq,_concat));module.exports=union;

@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),_isFunction=require("./internal/_isFunction.js"),lift=require("./lift.js"),or=require("./or.js"),either=_curry2(function(r,i){return _isFunction(r)?function(){return r.apply(this,arguments)||i.apply(this,arguments)}:lift(or)(r,i)});module.exports=either;

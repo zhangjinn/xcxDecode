@@ -1,0 +1,56 @@
+
+@import '../../components/vant/common/style/hairline.less';
+
+.s-popup {
+  position: relative;
+  &-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 88rpx;
+    font-size: 32rpx;
+    color: #262626;
+    font-weight: 400;
+    padding: 0 40rpx;
+  }
+  &-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 88rpx;
+    width: 88rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+  }
+  &-body {
+    height: 768rpx;
+    overflow-y: auto;
+    padding: 0 20rpx;
+    &-item {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      height: 116rpx;
+      .store-type{
+        display: flex;
+        align-items: center;
+      }
+      &-text {
+        flex: 1;
+        max-width: 650rpx;
+        color: #262626;
+        font-size: 26rpx;
+        line-height: 40rpx;
+        &.active {
+          color: #00AAA6;
+        }
+      }
+      &.center {
+        justify-content: center;
+      }
+    }
+  }
+}

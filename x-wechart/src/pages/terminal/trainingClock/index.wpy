@@ -1,0 +1,113 @@
+<template>
+  <view class="training-clock">
+    <view class="order-scroll">
+      <view class="training-clock-header-bg">
+        <image class="img-bg" src="{{imgObj.trainingClockBg}}"/>
+      </view>
+      <view class="training-clock-header-info">
+        <view class="clock-header-inner">
+          <view class="clock-header-inner-top">
+            <view class="trademark">
+              <image class="trademark-logo" src="{{imgObj.trainingClockLogo}}"/>
+              <view class="trademark-desc">
+                <text class="name">{{ customerInfo.customerName }}</text>
+                <text class="code">{{ customerInfo.customerCode }}</text>
+              </view>
+            </view>
+            <view class="training-record" @tap="handleToTrainingRecord">
+              <text>培训记录</text>
+            </view>
+          </view>
+
+          <view class="clock-header-inner-bottom">
+            <view class="graphic">
+              <van-circle
+                wx:if="{{!purchaseVisable}}"
+                value="{{ statisticsData.finishRatio }}"
+                size="{{ 88 }}"
+                stroke-width="12"
+                layer-color="#E4F8F7"
+                color="#00AAA6"
+                canvas-to-img="{{true}}"
+                text=""
+                bindcanvasImg="getCanvasImg"
+              >
+                <view class="circle-text">
+                  <text class="num">{{ statisticsData.finishRatio }}%</text>
+                  <text class="text">总计</text>
+                </view>
+              </van-circle>
+              <view wx:else class="img-box">
+                <image  src="{{canvasImg}}" class="img"/>
+                <view class="circle-text">
+                  <text class="num">{{ statisticsData.finishRatio }}%</text>
+                  <text class="text">总计</text>
+                </view>
+              </view>
+
+            </view>
+            <view class="session">
+              <text class="text">当月上报场次(场）</text>
+              <text class="num">{{ statisticsData.finishNum }}</text>
+            </view>
+            <view class="session">
+              <view class="text" @tap="handleDateTime">
+                <view wx:if="{{currentMonth == currentDate}}">本月任务(场)</view>
+                <view wx:else>{{currentDate}}月任务(场)</view>
+                <view class="b-icon h-icon iconxialajiantou"></view>
+              </view>
+              <text class="num">{{ statisticsData.totalField }}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{ trainingList && trainingList.length>0 }}" class="training-clock-header-container">
+        <repeat for="{{ trainingList }}" item="item">
+          <view class="training-topics-item" @tap="viewDetail({{item}})">
+            <view class="topics-header">
+              <view class="topics-name">{{ item.title }}</view>
+              <view class="topics-type">{{ item.type }}</view>
+            </view>
+            <view class="topics-desc">任务场次：{{ item.totalField }}</view>
+            <view class="topics-desc">上报审核场次：{{ item.times }}</view>
+            <view class="topics-desc">审核有效场次：{{ item.effTimes }}</view>
+          </view>
+        </repeat>
+        <view class="no-loading-data">我是有底线的~</view>
+      </view>
+      <emptyDataType wx:else/>
+    </view>
+
+    <!-- 选择时间 -->
+    <van-popup
+      show="{{ purchaseVisable }}"
+      round
+      position="bottom"
+      custom-style="height: 50%; border-radius: 24rpx 24rpx 0rpx 0rpx;"
+      custom-class="base-model-popup-picker"
+      bind:close="touchFilter">
+      <view class="datetime-picker-box">
+        <view class="datetime-picker-header">
+          <text @tap="handleCancleDatePop">取消</text>
+          <text>{{ currentYear }}年 {{ selectDate }}月</text>
+          <text @tap="handleConfirmDatePop">确定</text>
+        </view>
+        <view class="datetime-picker-container">
+          <scroll-view
+            scroll-y
+            class="purchase-inv-scroll">
+            <view>
+              <view wx:for="{{ dateOption }}" wx:key="month" item="item" class="datetime-picker-item {{item.month == selectDate?'active':''}}" data-key="{{item.month}}" data-index="{{ index }}" @tap="oMonthchange({{item.month}})">
+                {{item.month}}月
+              </view>
+            </view>
+          </scroll-view>
+        </view>
+      </view>
+    </van-popup>
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

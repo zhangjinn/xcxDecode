@@ -1,0 +1,156 @@
+@import '../../../../styles/utils.less';
+@import '../../../../styles/index.less';
+@import '../../../../components/vant/common/style/hairline.less';
+
+.purchase {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .h-icon {
+    font-size: 28rpx;
+    color: rgba(0, 170, 166, 1);
+  }
+  .canvas {
+    width: 280rpx;
+    height: 240rpx;
+  }
+  .container-list-scroll{
+    flex: 1;
+    overflow-y: auto;
+  }
+  .purchase-screen{
+    display: flex;
+    justify-content: space-between;
+    background-color: #FFFFFF;
+    z-index: 111;
+    .header-tab-box{
+      flex: 1;
+    }
+    .o2owenti{
+      display: flex;
+      align-items: center;
+      margin-right: 16rpx;
+    }
+  }
+  // 我自己写
+  .purchase-survey {
+    width: 100%;
+    background-color: #ffffff;
+    margin-bottom: 16rpx;
+    padding: 0 24rpx;
+    margin-top: 16rpx;
+    .title{
+      line-height: 120rpx;
+      height: 120rpx;
+      color: #333;
+      font-weight: 500;
+      font-size: 34rpx;
+    }
+   .inner-wrap{
+     .item-twice{
+       display: flex;
+       .item,item{
+         width: 50%;
+         padding: 20rpx 0;
+         .lab{
+           height: 50rpx;
+           line-height: 50rpx;
+           text-align: center;
+         }
+         .val{
+           height: 50rpx;
+           line-height: 50rpx;
+           text-align: center;
+           color: #333;
+         }
+         .val2{
+           color: #d05e2f;
+         }
+       }
+     }
+   }
+  }
+  .purchase-name {
+    font-size: 32rpx;
+    font-weight: 500;
+    color: rgba(38, 38, 38, 1);
+    line-height: 44rpx;
+    padding-left: 24rpx;
+    padding-top: 24rpx;
+    background-color: #FFFFFF;
+    display: flex;
+    .icon {
+      height: 40rpx;
+      width: 40rpx;
+      display: flex;
+      font-size: 36rpx;
+      align-items: center;
+      color: #cccccc;
+      padding-left: 4rpx;
+    }
+  }
+  .text-box {
+    margin: 16rpx 24rpx 24rpx 24rpx;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.12);
+    border-radius: 2px;
+    padding: 24rpx;
+    .text-heard {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .name {
+        display: flex;
+        align-items: center;
+        color: #262626;
+        font-size: 28rpx;
+        font-weight: 500;
+        .small {
+          width: 2px;
+          height: 10px;
+          background: rgba(0, 170, 166, 1);
+          margin-right: 8rpx;
+        }
+      }
+      .icon {
+        height: 40rpx;
+        width: 40rpx;
+        display: flex;
+        font-size: 32rpx;
+        align-items: center;
+        color: #cccccc;
+      }
+    }
+    .text-area {
+      color: #aaaaaa;
+      font-size: 28rpx;
+      padding-top: 8rpx;
+    }
+  }
+  .purchase-inv-scroll-row {
+    display: flex;
+    padding: 22rpx;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 28rpx;
+    border-bottom: 1rpx solid #eeeeee;
+  }
+  .icon-check {
+    font-size: 20rpx;
+  }
+  .checked {
+    color: #00aaa6;
+  }
+}
+.nodata{
+  text-align: center;
+  height: 200rpx;
+  line-height: 200rpx;
+}
+.order-s-filter-container{
+  padding-top: 134rpx;
+}
+.expiry-date{
+  z-index: 111;
+}

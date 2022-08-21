@@ -1,0 +1,1 @@
+var _concat=require("./internal/_concat.js"),_createPartialApplicator=require("./internal/_createPartialApplicator.js"),partial=_createPartialApplicator(_concat);module.exports=partial;

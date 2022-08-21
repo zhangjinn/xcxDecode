@@ -1,0 +1,112 @@
+@import '../../../../styles/utils.less';
+@import '../../../../components/vant/common/style/ellipsis.less';
+.order {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .search-left-icon{
+    display: flex;
+    align-items: center;
+    font-size: 32rpx;
+    color: #AAAAAA;
+    margin-right: 16rpx;
+  }
+  .scroll-wrapper{
+    flex: 1;
+    overflow: hidden;
+  }
+  .card-scroll {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 16rpx;
+    .card-item{
+      background: #FFFFFF;
+      border-radius: 24rpx;
+      margin-bottom: 16rpx;
+      &:last-child{
+        margin-bottom: env(safe-area-inset-bottom);
+      }
+      .card-item-header{
+        padding: 24rpx 24rpx 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .code{
+          font-size: 28rpx;
+          font-weight: 500;
+          color: #262626;
+        }
+        .tip{
+          font-size: 20rpx;
+          color: #FFFFFF;
+          border-radius: 2rpx;
+          width: 104rpx;
+          height: 32rpx;
+          text-align: center;
+          line-height: 32rpx;
+        }
+        .returned{
+          background: #CCCCCC;
+        }
+        .partial-return{
+          background: #679AF3;
+        }
+        .not-returned{
+          background: #E0807E;
+        }
+
+      }
+      .card-item-container{
+        padding: 24rpx;
+        .org-box{
+          display: flex;
+          justify-content: flex-start;
+          .org{
+            font-size: 22rpx;
+            color: #00AAA6;
+            border-radius: 2rpx;
+            border: 2rpx solid #00AAA6;
+            padding: 0 16rpx;
+          }
+        }
+
+        .desc{
+          font-size: 26rpx;
+          color: #777777;
+          margin-top: 16rpx;
+        }
+        .return-num{
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .status{
+            font-size: 24rpx;
+            color: #D9161C;
+            padding: 2rpx 24rpx;
+            border-radius: 2rpx;
+            background: rgba(217,22,28,0.06);
+          }
+        }
+      }
+      .card-item-footer{
+        padding: 20rpx 24rpx;
+        display: flex;
+        justify-content: flex-end;
+        border-top: 2rpx solid #EEEEEE;
+        .handle-btn{
+          font-size: 28rpx;
+          color: #262626;
+          background: #F7F7F7;
+          border-radius: 32rpx;
+          padding: 18rpx 22rpx;
+          &:not(:first-child){
+            margin-left: 32rpx;
+          }
+        }
+      }
+    }
+  }
+
+}

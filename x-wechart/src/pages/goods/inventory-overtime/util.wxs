@@ -1,0 +1,7 @@
+// 导出对外暴露的属性
+module.exports = {
+  arrIncludes: function(arr,value){
+    var index = arr.indexOf(value)
+    return index>-1
+  }
+}

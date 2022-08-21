@@ -1,0 +1,189 @@
+@import '../../../../styles/utils.less';
+@import '../../../../styles/index.less';
+@import '../../../../components/vant/common/style/hairline.less';
+
+.container {
+  .h-icon {
+    color: #00AAA6;
+    padding-top: 60rpx;
+    padding-left: 2rpx;
+    font-size: 40rpx;
+  }
+
+  .barcode {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    flex-direction: column;
+    padding-top: 30rpx;
+    padding-right: 26rpx;
+
+    canvas {
+      width: 250rpx;
+      height: 80rpx;
+    }
+
+    .code {
+      display: flex;
+      font-size: 20rpx;
+    }
+  }
+
+  .signature-category-li-1 {
+    &:last-child {
+      color: #777777;
+      font-size: 20rpx;
+
+    }
+  }
+
+  .signature-logo {
+    display: flex;
+  }
+
+  .signature-top {
+    background: #ffffff;
+    padding: 24rpx;
+    font-size: 28rpx;
+    color: #262626;
+
+  }
+
+  .signature-name {
+    width: 666rpx;
+    font-weight: 500;
+  }
+
+  .signature-category-li {
+    display: flex;
+    align-items: center;
+  }
+
+  .signature-from {
+    display: flex;
+    font-size: 24rpx;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+
+    &-left {
+      background: #F9FDFD;
+      min-height: 80rpx;
+      border: 1rpx solid #eeeeee;
+      width: 290rpx;
+      box-sizing: border-box;
+      padding: 24rpx;
+      margin-top: -2rpx;
+      display: block;
+
+    }
+
+    &-right {
+      min-height: 80rpx;
+      border: 1rpx solid #eeeeee;
+      border-left: none;
+      border-bottom: none;
+      padding: 24rpx;
+      width: 412rpx;
+
+
+      &:last-child {
+        border-bottom: 1rpx solid#eeeeee;
+      }
+    }
+  }
+
+  .signature-cleck {
+    padding: 16rpx 0 42rpx;
+    font-size: 20rpx;
+    border-bottom: 1rpx solid #eeeeee;
+
+    &-li1 {
+      padding-bottom: 8rpx;
+      color: #777777;
+
+      text {
+        color: #262626;
+      }
+    }
+
+    &-li2 {
+      padding-bottom: 8rpx;
+      color: #777777;
+
+      text {
+        color: #262626;
+      }
+    }
+  }
+
+  .signature-hisin {
+    font-size: 28rpx;
+    padding: 40rpx 0 24rpx;
+    font-weight: 500;
+
+  }
+
+  .signature-category-li {
+    display: flex;
+    justify-content: space-between;
+    font-size: 24rpx;
+    font-weight: 400;
+
+    &:first-child {
+      padding-bottom: 12rpx;
+    }
+  }
+
+  .signature-category {
+    min-height: 124rpx;
+    box-sizing: border-box;
+    padding: 24rpx;
+    background: rgba(250, 250, 250, 1);
+    border-radius: 4rpx 4rpx 0rpx 0rpx;
+    font-size: 24rpx;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+  }
+
+  .signature-logo {
+    padding: 10rpx 0 24rpx;
+  }
+
+  .signature-btn {
+    padding-top: 22rpx;
+
+  }
+
+  .signature-btn-click {
+    width: 303px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 170, 166, 1);
+    font-weight: 400;
+    color: rgba(255, 255, 255, .4);
+    font-size: 24rpx;
+    border-radius: 2px;
+  }
+  .signature-enable-click {
+    color: #FFFFFF;
+  }
+  .signature-disbale-click {
+    color:rgba(255,255,255,1);
+  }
+
+  .signature-bottom {
+    padding: 24rpx;
+    color: #777777;
+    font-size: 24rpx;
+
+    &-title {
+      padding-bottom: 40rpx;
+    }
+
+    &-content {
+      padding-bottom: 40rpx;
+    }
+  }
+}

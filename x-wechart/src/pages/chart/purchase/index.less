@@ -1,0 +1,181 @@
+@import '../../../styles/utils.less';
+@import '../../../styles/index.less';
+@import '../../../components/vant/common/style/hairline.less';
+
+.purchase {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .content-wrapper{
+    flex: 1;
+    overflow-y: auto;
+  }
+  .header-tab-box{
+    margin-bottom: 16rpx;
+    z-index: 111;
+  }
+  .h-icon {
+    font-size: 28rpx;
+    color: rgba(0, 170, 166, 1);
+  }
+  .canvas {
+    width: 280rpx;
+    height: 240rpx;
+  }
+  // 我自己写
+  .purchase-survey {
+    width: 100%;
+    background-color: #ffffff;
+    margin-bottom: 16rpx;
+    .new-demand {
+      display: flex;
+      align-items: center;
+      padding-top: 40rpx;
+      .demand-text {
+        display: flex;
+        flex: 1;
+        color: #262626;
+        font-size: 28rpx;
+        .icon {
+          color: #aaaaaa;
+          padding-left: 8rpx;
+        }
+      }
+    }
+    .text-box {
+      margin: 16rpx 24rpx 24rpx 24rpx;
+      background: rgba(255, 255, 255, 1);
+      box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.12);
+      border-radius: 2px;
+      padding: 24rpx;
+      .text-heard {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .name {
+          display: flex;
+          align-items: center;
+          color: #262626;
+          font-size: 28rpx;
+          font-weight: 500;
+          .small {
+            width: 2px;
+            height: 10px;
+            background: rgba(0, 170, 166, 1);
+            margin-right: 8rpx;
+          }
+        }
+        .icon {
+          height: 40rpx;
+          width: 40rpx;
+          display: flex;
+          font-size: 32rpx;
+          align-items: center;
+          color: #cccccc;
+        }
+      }
+      .text-area {
+        color: #aaaaaa;
+        font-size: 28rpx;
+        padding-top: 8rpx;
+      }
+    }
+    .info {
+      display: flex;
+      padding-bottom: 40rpx;
+      .info-one {
+        flex: 1;
+        .number {
+          color: #f04348;
+          font-size: 44rpx;
+          font-weight: 500;
+          line-height: 60rpx;
+        }
+        .info-than {
+          padding-top: 16rpx;
+          color: #aaaaaa;
+          font-size: 22rpx;
+          display: flex;
+        }
+      }
+    }
+  }
+  .purchase-name {
+    font-size: 32rpx;
+    font-weight: 500;
+    color: rgba(38, 38, 38, 1);
+    line-height: 44rpx;
+    padding-left: 24rpx;
+    padding-top: 24rpx;
+    background-color: #FFFFFF;
+    display: flex;
+    .icon {
+      height: 40rpx;
+      width: 40rpx;
+      display: flex;
+      font-size: 36rpx;
+      align-items: center;
+      color: #cccccc;
+      padding-left: 4rpx;
+    }
+  }
+  .text-box {
+    margin: 16rpx 24rpx 24rpx 24rpx;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.12);
+    border-radius: 2px;
+    padding: 24rpx;
+    .text-heard {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .name {
+        display: flex;
+        align-items: center;
+        color: #262626;
+        font-size: 28rpx;
+        font-weight: 500;
+        .small {
+          width: 2px;
+          height: 10px;
+          background: rgba(0, 170, 166, 1);
+          margin-right: 8rpx;
+        }
+      }
+      .icon {
+        height: 40rpx;
+        width: 40rpx;
+        display: flex;
+        font-size: 32rpx;
+        align-items: center;
+        color: #cccccc;
+      }
+    }
+    .text-area {
+      color: #aaaaaa;
+      font-size: 28rpx;
+      padding-top: 8rpx;
+    }
+  }
+  .purchase-inv-scroll-row {
+    display: flex;
+    padding: 22rpx;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 28rpx;
+    border-bottom: 1rpx solid #eeeeee;
+  }
+  .icon-check {
+    font-size: 20rpx;
+  }
+  .checked {
+    color: #00aaa6;
+  }
+}
+.order-s-filter-container{
+  padding-top: 134rpx;
+}
+.expiry-date{
+  z-index: 111;
+}

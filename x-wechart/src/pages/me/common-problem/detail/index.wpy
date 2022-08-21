@@ -1,0 +1,31 @@
+<template>
+    <view class="container">
+        <view class="question">
+            <view class="padding">
+                <view class="title">
+                    {{problemdetail.title}}
+                </view>
+                <view class="content">
+                    {{problemdetail.question}}
+                </view>
+                <view class="date">
+                    发布于：{{problemdetail.startAt}}
+                </view>
+            </view>
+        </view>
+        <view class="answer">
+            <view class="top van-hairline--bottom">
+                <view class="title">回答</view>
+            </view>
+            <view class="content">
+                 <scroll-view scroll-y="true" class="answer-scroll">
+                    <view class="info">{{problemdetail.answer}}</view>
+                 </scroll-view>
+            </view>
+        </view>
+        <van-toast id="van-toast" />
+    </view>
+</template>
+
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts"></script>

@@ -1,0 +1,156 @@
+
+  <view class="filter _4e6357a">
+    <van-popup show="{{visible}}" position="right" overlay="{{ true }}"  bind:close="openDrawer" custom-style="height: 100%;" overlay-style="overlay" class="_4e6357a">
+      <view class="filter-drawer _4e6357a">
+        <view class="filter-drawer-attr _4e6357a">
+        <view class="header-divider _4e6357a" style="height: {{sys.statusBarHeight}}px"/>
+          <scroll-view class="filter-drawer-attr-scroll _4e6357a" scroll-y>
+            <view  wx:if="{{user && user.fxPartInfo && user.zyPartInfo && user.fxPartInfo.length == 0 && user.zyPartInfo.length > 0}}" class="attr-item _4e6357a">
+              <view class="attr-item-header _4e6357a" hover-class="hover">
+                <view class="title _4e6357a">供应商</view>
+                <view bindtap="onOpen" class="right _4e6357a">
+                  <view class="address _4e6357a">{{searchstatuspopup}}</view>
+                  <view class="b-icon h-icon iconliebiaoshaixuanjiantou-{{ onOpen ? 'up' : 'down' }} _4e6357a" style="padding: 5rpx"/>
+                </view>
+              </view>
+              <view class="attr-item-content {{ onOpen ? 'open' : '' }} _4e6357a">
+                <block class="_4e6357a" wx:for="{{specialfilters.fwOrgsGroupMap}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                  <view hidden="{{item.filter}}" bindtap="searchSelect" class="attr {{item.searchstatus ? 'active' : ''}} _4e6357a" hover-class="hover" data-wpysearchselect-a="{{item.key}}">{{item.value}}</view>
+                </block>
+              </view>
+            </view>
+            <view  wx:else class="attr-item _4e6357a">
+              <view class="attr-item-header _4e6357a" hover-class="hover">
+                <view class="title _4e6357a">供应商</view>
+                <view class="right _4e6357a">
+                  <view class="address _4e6357a">{{searchstatuspopup}}</view>
+                  <view bindtap="onOpen" class="b-icon h-icon iconliebiaoshaixuanjiantou-{{ onOpen ? 'up' : 'down' }} _4e6357a"/>
+                </view>
+              </view>
+              <view class="attr-item-content {{ onOpen ? 'open' : '' }} _4e6357a">
+                <block class="_4e6357a" wx:for="{{dmsOrgList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                  <view bindtap="dmsOrgsearchSelect" class="attr {{item.searchstatus ? 'active' : ''}} _4e6357a" hover-class="hover" data-wpydmsorgsearchselect-a="{{item.key}}">{{item.value}}</view>
+                </block>
+              </view>
+            </view>
+            <view  wx:if="{{user && user.fxPartInfo && user.fxPartInfo.length > 0}}" class="attr-item _4e6357a">
+              <view class="attr-item-header _4e6357a" hover-class="hover">
+                <view class="title _4e6357a">物料组</view>
+                <view class="right _4e6357a">
+                  <view class="address _4e6357a">{{dmssearchstatuspopup}}</view>
+                  <view bindtap="onOpenMatk" class="b-icon h-icon iconliebiaoshaixuanjiantou-{{ onOpenMatk ? 'up' : 'down' }} _4e6357a"/>
+                </view>
+              </view>
+              <view class="attr-item-content {{ onOpenMatk ? 'open' : '' }} _4e6357a">
+                <block class="_4e6357a" wx:for="{{dmsmatklList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                  <view bindtap="dmssearchSelect" class="attr {{item.searchstatus ? 'active' : ''}} _4e6357a" hover-class="hover" data-wpydmssearchselect-a="{{item.key}}">{{item.value}}</view>
+                </block>
+              </view>
+            </view>
+
+            <!-- 采购类型start -->
+            <view wx:if="{{user && user.fxPartInfo}}" class="attr-item _4e6357a">
+              <view class="attr-item-header _4e6357a" hover-class="hover">
+                <view class="title _4e6357a">采购类型</view>
+                <view class="right _4e6357a">
+                  <view class="text _4e6357a">
+                    <text class="_4e6357a">{{purchaseTypePopup}}</text>
+                  </view>
+                  <view bindtap="Suppliers" class="b-icon h-icon iconliebiaoshaixuanjiantou-{{ Suppliersextend ? 'up' : 'down' }} _4e6357a"/>
+                </view>
+              </view>
+              <view class="attr-item-content {{Suppliersextend ? 'open' : ''}} _4e6357a">
+                <block class="_4e6357a" wx:for="{{purchaseTypeOptions}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                  <view catchtap="selectedPurchaseType" class="attr {{item.status ? 'active' : ''}} _4e6357a" hover-class="hover" data-wpyselectedpurchasetype-a="{{item.key}}">{{item.value}}</view>
+                </block>
+              </view>
+            </view>
+            <!-- 采购类型end -->
+          </scroll-view>
+          <!-- 底部 -->
+          <view class="filter-drawer-attr-footer _4e6357a">
+            <!-- 显示已维护价格产品 -->
+            <view bindtap="onCheckMainPrice" class="filter-drawer-attr-footer-check _4e6357a">
+              <view class="filter-drawer-attr-footer-check-cont _4e6357a">
+                仅显示已维护价格的商品
+              </view>
+              <view class="radio-content _4e6357a" hover-class="hover">
+                <view class="radio-content-el {{checkMainPrice ? 'checked' : ''}} _4e6357a">
+                  <view class="b-icon icon-check _4e6357a"/>
+                </view>
+              </view>
+            </view>
+            <!-- 重置和确认 -->
+            <view class="filter-drawer-attr-footer-bot _4e6357a">
+              <view bindtap="resetSearch" class="filter-drawer-attr-footer-btn reset _4e6357a" hover-class="filter-drawer-attr-footer-btn-hover">重置</view>
+              <view bindtap="confirmSearch" class="filter-drawer-attr-footer-btn confirm _4e6357a" hover-class="filter-drawer-attr-footer-btn-hover">确认</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <view class="top _4e6357a">
+      <view class="header-divider _4e6357a" style="height: {{sys.statusBarHeight}}px"/>
+      <view class="header-content _4e6357a">
+        <view class="header-content-item _4e6357a" hover-class="hover" style="width: {{menuWidth}}px">
+          <van-icon bindtap="goback" color="#262626" size="48rpx" name="arrow-left" class="_4e6357a"/>
+        </view>
+        <view class="search _4e6357a">
+          <navigator url="/pages/goods/search/index" class="header-input _4e6357a">
+            <van-icon name="search" size="30rpx" class="_4e6357a"/>
+            {{ key || '搜索商品' }}
+          </navigator>
+        </view>
+      </view>
+      <view class="bar _4e6357a">
+        <view bindtap="chageSort" data-id="0" class="bar-item _4e6357a">
+          <text class="bar-item-text {{ filterIndex == '0' ? 'active' : ''}} _4e6357a">综合</text>
+        </view>
+        <view bindtap="chageSort" data-id="1" class="bar-item _4e6357a">
+          <text class="bar-item-text {{filterIndex == '1' ? 'active' : ''}} _4e6357a">上架时间</text>
+        </view>
+        <view bindtap="chageSort" data-id="2" class="bar-item border {{filterIndex == '2' || sort === '2_0_0_0_0' ? 'active' : ''}} _4e6357a">
+          <view class="price _4e6357a">
+            <text class="bar-item-text _4e6357a">销量</text>
+            <view class="icons _4e6357a">
+              <view class="b-icon icon-arrow-up {{filterSale == '1' ? 'active' : ''}} _4e6357a"/>
+              <view class="b-icon icon-arrow-down {{filterSale == '2' ? 'active' : ''}} _4e6357a"/>
+            </view>
+          </view>
+        </view>
+        <view bindtap="openDrawer" class="bar-item _4e6357a">
+          <text class="bar-item-text _4e6357a">筛选</text>
+        </view>
+      </view>
+    </view>
+    <!-- 商品循环 -->
+    <scroll-view class="collection _4e6357a" bindscrolltolower="onPullBottom" bindscroll="onScroll" scroll-top="{{ scrollTop }}" scroll-y enable-back-to-top="enable-back-to-top">
+      <view class="scroll-grid _4e6357a">
+        <block wx:if="{{searchList.length > 0}}" class="_4e6357a">
+          <block class="_4e6357a" wx:for="{{ searchList }}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <view class="context _4e6357a">
+              <item item="{{ item }}" lazyLoad="true"  bind:toggle-collection="toggleCollection" bind:img-lose="imgLose" class="_4e6357a"/>
+            </view>
+          </block>
+        </block>
+        
+  <view class="empty-data _4e6357a" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+      </view>
+    </scroll-view>
+    <!-- 收藏 -->
+    <button class="screened shareBar _4e6357a" lang="zh_CN" bindtap="goCollection">
+      <van-icon name="star-o" color="red" class="_4e6357a"/>
+    </button>
+    <!-- 回到上方 -->
+    <button hidden="{{!visibelTop}}" bindtap="scrollToTop" class="screen shareBar _4e6357a" lang="zh_CN">
+      <view class="b-icon icon-top _4e6357a"/>
+    </button>
+    <van-toast id="van-toast" class="_4e6357a"/>
+  </view>

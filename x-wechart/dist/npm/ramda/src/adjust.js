@@ -1,0 +1,1 @@
+var _concat=require("./internal/_concat.js"),_curry3=require("./internal/_curry3.js"),adjust=_curry3(function(r,n,t){if(r>=t.length||r<-t.length)return t;var e=r<0?t.length:0,u=e+r,c=_concat(t);return c[u]=n(t[u]),c});module.exports=adjust;

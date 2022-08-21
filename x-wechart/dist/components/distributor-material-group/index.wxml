@@ -1,0 +1,14 @@
+<view class="item">
+  <view class="item-bottom van-hairline--bottom">
+    <view class="ex">
+      <view class="item-name">可售物料组:</view>
+      <block wx:if="{{ materialGroup && materialGroup.length !== 0}}">
+        <view class="item-btn">
+          <view wx:for="{{ materialGroup }}" wx:key="in" class="capsule">
+            <view class="text">{{item}}</view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>

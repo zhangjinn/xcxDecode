@@ -1,0 +1,145 @@
+
+    <view class="container">
+        <!-- 阻止弹框 -->
+        <van-popup show="{{ IKnow }}" overlay="{{ true }}">
+          <view class="todo-popup">
+            <view class="text">
+              <view class="text-first">小程序端支持查看详情及操作上上签电子签章</view>
+              <view class="text-last">U盾签章请在PC端操作</view>
+            </view>
+            <view class="operation" bindtap="allIKnow">
+              <view class="operation-text">我知道了</view>
+            </view>
+          </view>
+        </van-popup>
+        <view class="container-top">
+            <view class="name">{{policyDetail.rsRbSheet.rsUnitName}}和{{policyDetail.rsRbSheet.customerName}}电子对账单明细</view>
+            <view class="head">
+                <view class="b-icon h-icon icon-hisense"/>
+                <view class="barcode">
+                    <canvas canvas-id="barcode"/>
+                    <view class="code">{{policyDetail.rsRbSheet.sheetNo}}</view>
+                </view>
+            </view>
+            <view class="info">
+                <view class="info-content">
+                    <view class="row">
+                        <view class="org">销售组织：{{policyDetail.rsRbSheet.rsUnitName}}</view>
+                    </view>
+                    <view class="row">
+                        <view class="date">对账截止日期：{{policyDetail.rsRbSheet.periodEndDate}}</view>
+                        <view class="unit">{{policyDetail.rsRbSheet.currencyName}}(单位：元)</view>
+                    </view>
+                </view>
+                <!-- 始终展示部分 -->
+                <view class="info-detail">
+                    <view class="head">
+                        <view class="rowone">期末余额</view>
+                        <view class="rowtwo"/>
+                        <view class="rowthree">{{policyDetail.rsRbSheet.rbBalance}}</view>
+                    </view>
+                </view>
+                <view class="info-more" bindtap="showMore" hidden="{{ showMore }}">
+                    <view class="info-more-tip">
+                        展开详情
+                    </view>
+                    <van-icon name="arrow-down" class="icon"/>
+                </view>
+                <!-- 收起部分 -->
+                <view class="info-detail hidden" hidden="{{ !showMore }}">
+                    <view class="head">
+                        <view class="rowone"/>
+                        <view class="rowtwo">期初余额：</view>
+                        <view class="rowthree">{{policyDetail.rsRbSheet.rbInit}}</view>
+                    </view>
+                    <view class="head">
+                        <view class="rowone"/>
+                        <view class="rowtwo right">(加)本期新确认政策</view>
+                        <view class="rowthree">{{policyDetail.rsRbSheet.rbDebit}}</view>
+                    </view>
+                    <view class="head">
+                        <view class="rowone"/>
+                        <view class="rowtwo right">(减)本期兑现政策</view>
+                        <view class="rowthree">{{policyDetail.rsRbSheet.rbCredit}}</view>
+                    </view>
+                    <view class="info-more hidden" bindtap="hiddenMore">
+                        <view class="item-more-tip">
+                            收起详情
+                        </view>
+                        <van-icon name="arrow-up" class="icon"/>
+                    </view>
+                </view>
+                <view class="info-line van-hairline--bottom"/>
+                <view class="info-view">
+                    <view class="btn" bindtap="viewSignature" data-wpyviewsignature-a="{{policyDetail.rsRbSheet.rowId}}" data-wpyviewsignature-b="{{policyDetail.rsRbSheet.ssqBind}}">
+                        查看
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="container-list">
+            <van-tabs sticky="sticky" custom-class="custom" nav-class="nav" tab-class="tab" tab-active-class="mintable"  bind:change="onClick">
+                <van-tab title="本期新确认的政策明细" subtitle="￥{{policyDetail.curConfirmedSum}}">
+                   <scroll-view class="container-list-scroll" scroll-y>
+                    <block wx:for="{{curConfirmed}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                        <view class="policy-content">
+                            <view class="code">政策核对单编号：<text>{{item.rbNo}}</text></view>
+                            <view class="name">政策名称：<text>{{item.policyName}}</text></view>
+                            <view class="money">金额：<text>￥{{item.rbAmt}}</text></view>
+                        </view>
+                    </block>
+                   </scroll-view>
+                </van-tab>
+                <van-tab title="本期已开票兑现明细" subtitle="￥{{policyDetail.cashedSum}}">
+                    <scroll-view class="container-list-scroll" scroll-y>
+                        <block wx:for="{{cashed}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                        <view class="invoice-content">
+                            <view class="top">
+                                <view class="row">
+                                    <view class="date">兑现记账日期 {{item.cashDate}}</view>
+                                    <view class="money">兑现金额 ￥{{item.cashAmt}}</view>
+                                </view>
+                                <view class="row van-hairline--bottom" style="padding-bottom: 18rpx;">
+                                    <view class="orderno">订单号 {{item.orderNo}}</view>
+                                    <view class="billcode">金税发票号 {{item.taxInvoiceNo}}</view>
+                                </view>
+                            </view>
+                            <view class="bottom">
+                                <view class="code">政策核对单编号：<text>{{item.rbNo}}</text></view>
+                                <view class="code">政策名称：<text>{{item.policyName}}</text></view>
+                                <view class="code">摘要：<text>{{item.cashedDesc}}</text></view>
+                            </view>
+                        </view>
+                        </block>
+                   </scroll-view>
+                </van-tab>
+                <van-tab title="其他已兑现政策明细" subtitle="￥{{policyDetail.otherCashedSum}}">
+                    <scroll-view class="container-list-scroll" scroll-y>
+                        <block wx:for="{{cashed}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                        <view class="cash-content">
+                            <view class="top">
+                                <view class="row">
+                                    <view class="date">兑现记账日期 {{item.cashDate}}</view>
+                                    <view class="money">兑现金额 ￥{{item.cashAmt}}</view>
+                                </view>
+                                <view class="row van-hairline--bottom" style="padding-bottom: 18rpx;">
+                                    <!-- <view class="orderno">兑现类型 {{item.cashedType}}</view>  -->
+                                    <view  wx:if="{{item.cashedType=='01'}}" class="orderno">兑现类型 {{item.cashedType}}政策调整</view>
+                                    <view  wx:if="{{item.cashedType=='02'}}" class="orderno">兑现类型 {{item.cashedType}}正负相抵</view>
+                                    <view wx:if="{{item.cashedType=='03'}}" class="orderno">兑现类型 {{item.cashedType}}价差转费用</view>
+                                     <view wx:if="{{item.cashedType=='04'}}" class="orderno">兑现类型 {{item.cashedType}}转其他公司兑现</view>
+                                     <view wx:if="{{item.cashedType=='05'}}" class="orderno">兑现类型 {{item.cashedType}}转其他品类/客户兑现</view>
+                                </view>
+                            </view>
+                            <view class="bottom">
+                                <view class="code">政策核对单编号：<text>{{item.rbNo}}</text></view>
+                                <view class="code">政策名称：<text>{{item.policyName}}</text></view>
+                                <view class="code">摘要：<text>{{item.cashedDesc}}</text></view>
+                            </view>
+                        </view>
+                        </block>
+                   </scroll-view>
+                </van-tab>
+            </van-tabs>
+        </view>
+    </view>

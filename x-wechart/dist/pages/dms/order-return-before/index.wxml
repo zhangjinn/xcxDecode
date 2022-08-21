@@ -1,0 +1,80 @@
+
+  <view class="return _840da50">
+    <view class="return-header _840da50">
+      <van-search placeholder="请输入销售单号/客户名称/客户编码" use-action-slot="use-action-slot"  bind:change="onChange" bindsearch="onClick" class="_840da50">
+        <view slot="action" bind:tap="onClick" class="_840da50">搜索</view>
+      </van-search>
+    </view>
+    <block  wx:if="{{list && list.length > 0}}" class="_840da50">
+      <view class="return-middle _840da50">
+        <view class="info _840da50">选择退货信息</view>
+      </view>
+      <scroll-view scroll-y enable-flex="enable-flex" class="search-result _840da50" bindscrolltolower="loadNextPage">
+        <block class="_840da50" wx:for="{{list}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view catchtap="selectItem" wx:if="{{item.customerTypeCode == 'isHisense'}}" style="{{item.id == itemId ? 'border:1px solid rgba(0,170,166,1);': ''}}" class="container _840da50" data-wpyselectitem-a="{{item.id}}" data-wpyselectitem-b="{{item.customerTypeCode}}" data-wpyselectitem-c="{{item.returnNum}}">
+            <view wx:if="{{item.id == itemId}}" class="triangle _840da50"/>
+            <view wx:if="{{item.id == itemId}}" class="b-icon icon-check icon  _840da50"/>
+            <!-- 增加销售退货单号和发起方标识 -->
+            <block wx:if="{{item.returnNum}}" class="_840da50">
+              <view class="pre-first _840da50">
+                <view class="pre-first-no _840da50">销售退货单号：{{item.returnNum}}</view>
+                <block wx:if="{{item.returnBy === 'bySales'}}" class="_840da50">
+                  <view class="pre-first-initiator _840da50">代理发起</view>
+                </block>
+                <block wx:elif="{{item.returnBy === 'byPurchase'}}" class="_840da50">
+                  <view class="pre-first-initiator _840da50">分销发起</view>
+                </block>
+              </view>
+            </block>
+            <view class="first _840da50">
+              <view class="sales-number _840da50">销售单号: {{item.documentNum}}</view>
+              <view class="sales-status _840da50">{{item.returnStatus}}</view>
+            </view>
+            <view class="second van-ellipsis _840da50">{{item.legalPerson}}</view>
+            <view class="second van-ellipsis _840da50">{{item.customerName}}</view>
+            <view class="second van-ellipsis _840da50">地址: {{item.address}}</view>
+          </view>
+          <view wx:else catchtap="selectItem" style="{{item.id == itemId ? 'border:1px solid rgba(0,170,166,1);': ''}}" class="container _840da50" data-wpyselectitem-a="{{item.id}}" data-wpyselectitem-b="{{item.customerTypeCode}}" data-wpyselectitem-c="{{item.returnNum}}">
+            <view wx:if="{{item.id == itemId}}" class="triangle _840da50"/>
+            <view wx:if="{{item.id == itemId}}" class="b-icon icon-check icon  _840da50"/>
+            <!-- 增加销售退货单号和发起方标识 -->
+            <block wx:if="{{item.returnNum}}" class="_840da50">
+              <view class="pre-first _840da50">
+                <view class="pre-first-no _840da50">销售退货单号：{{item.returnNum}}</view>
+                <block wx:if="{{item.returnBy === 'bySales'}}" class="_840da50">
+                  <view class="pre-first-initiator _840da50">代理发起</view>
+                </block>
+                <block wx:elif="{{item.returnBy === 'byPurchase'}}" class="_840da50">
+                  <view class="pre-first-initiator _840da50">分销发起</view>
+                </block>
+              </view>
+            </block>
+            <view class="first _840da50">
+              <view class="sales-number _840da50">销售单号: {{item.documentNum}}</view>
+              <view class="sales-status _840da50">{{item.returnStatus}}</view>
+            </view>
+            <view class="second van-ellipsis _840da50">{{item.customerName}}</view>
+            <view class="second van-ellipsis _840da50">{{item.customerCode}}</view>
+            <view class="second van-ellipsis _840da50">地址: {{item.address}}</view>
+          </view>
+        </block>
+        <view style="padding-bottom: 100rpx;" class="_840da50"/>
+      </scroll-view>
+    </block>
+    
+  <view class="empty-data _840da50" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <view  wx:if="{{list && list.length > 0}}" class="return-footer van-hairline--top _840da50">
+      <view class="return-footer-bar _840da50">
+        <view bindtap="goNext" class="return-footer-bar-btn {{itemId == '' ? 'disabled': ''}} _840da50">下一步</view>
+      </view>
+    </view>
+    <van-toast id="van-toast" class="_840da50"/>
+    <van-dialog id="van-dialog" class="_840da50"/>
+  </view>

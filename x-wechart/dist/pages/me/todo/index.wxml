@@ -1,0 +1,44 @@
+<wxs src="../../../wxs/utils.wxs" module="utils"/>
+
+  <view class="todo">
+    <block  wx:if="{{items.data.length > 0}}">
+      <scroll-view bindscrolltolower="onPullBottom" enable-flex="enable-flex" scroll-y enable-back-to-top="enable-back-to-top" class="todo-body">
+        <block wx:for="{{items.data}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+          <view class="todo-body-item">
+            <view class="todo-body-item-header">
+              <view class="todo-body-item-header-top">
+                <view class="title">{{item.title}}</view>
+                <view wx:if="{{item.status == '1'}}" class="status">{{item.taskStatus}}</view>
+              </view>
+              <view class="todo-body-item-header-bottom">
+                <view class="tag">{{item.orgName}}</view>
+                <view class="date">{{item.createDateStr}}</view>
+              </view>
+            </view>
+            <view class="todo-body-item-body">
+              {{item.content}}
+            </view>
+            <view class="todo-body-item-footer van-hairline--top">
+              <block wx:if="{{item.status == '0'}}">
+                <view bindtap="signAction" class="card-footer-handle" hover-class="hover" data-wpysignaction-a="{{item.id}}" data-wpysignaction-b="docDetail">签署</view>
+              </block>
+              <block wx:if="{{item.status == '1'}}">
+                <view bindtap="signAction" class="card-footer-handle" hover-class="hover" data-wpysignaction-a="{{item.id}}" data-wpysignaction-b="docView">预览</view>
+                <!-- <view bindtap="downFile({{item.id}})" class="footer-item mgr-16" hover-class="hover">下载</view> -->
+              </block>
+            </view>
+          </view>
+        </block>
+      </scroll-view>
+    </block>
+    
+  <view class="empty-data" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <van-toast id="van-toast"/>
+  </view>

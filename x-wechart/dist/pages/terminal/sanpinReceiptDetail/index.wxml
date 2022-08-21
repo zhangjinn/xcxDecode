@@ -1,0 +1,57 @@
+<wxs src="../../../wxs/utils.wxs" module="utils"/>
+
+  <view class="out-warehouse-order-detail">
+    <view class="order-detail-main">
+      <view class="order-detail-main-header">
+        <view class="order-detail-main-value">{{ orderDetail.supplier.name }}</view>
+      </view>
+      <view class="order-detail-main-content">
+        <view class="order-detail-main-line">
+          <view class="order-detail-main-label">发货单编码：</view>
+          <view class="order-detail-main-value">{{orderDetail.code}}</view>
+        </view>
+        <view class="order-detail-main-line">
+          <view class="order-detail-main-label">发货日期：</view>
+          <view class="order-detail-main-value">{{ orderDetail.deliveryDate }}</view>
+        </view>
+      </view>
+    </view>
+    <view class="order-detail-items">
+      <view class="order-detail-items-title">物料明细信息</view>
+      <block wx:for="{{orderDetail.detailList}}" wx:for-index="itemIndex" wx:for-item="orderItem" wx:key="order_detail_item_{{orderItem.id}}">
+        <view class="order-detail-item-card">
+            <view class="order-detail-item-info">
+              <view class="order-detail-item-card-bar"/>
+              <view class="order-detail-item-card-header">{{ orderItem.code || '' }}</view>
+              <view class="order-detail-item-card-line">
+                <view class="order-detail-item-card-label">物料名称：</view>
+                <view class="order-detail-item-card-value">{{ orderItem.name || '' }}</view>
+              </view>
+              <view class="order-detail-item-card-line">
+                <view class="order-detail-item-card-label">发货数量：</view>
+                <view class="order-detail-item-card-value">{{ orderItem.deliveryQuantity }}</view>
+              </view>
+              <view class="order-detail-item-card-line number-of-escalations">
+                <view class="order-detail-item-card-label">收货数量(单位)：</view>
+                <view class="order-detail-item-card-value">
+                  <van-stepper integer="integer" value="{{orderItem.receiveQuantity}}" min="0" max="{{orderItem.deliveryQuantity}}" data-index="{{itemIndex}}" custom-class="cart-stepper" input-class="cart-input-class" plus-class="cart-action-class" minus-class="cart-action-class"  bind:change="onShippedBqtyChg" bind:plus="onShippedBqtyChg" bind:minus="onShippedBqtyChg" disabled="{{ pageType !== 'handle' }}"/>
+                </view>
+              </view>
+          </view>
+        </view>
+      </block>
+
+      <view class="order-detail-footer"  wx:if="{{ pageType === 'handle' }}">
+        <block>
+          <view class="button-wrapper temporary-storage" bindtap="sava" data-wpysava-a="0">
+            <view class="button-text">暂存</view>
+          </view>
+          <view class="button-wrapper" bindtap="sava" data-wpysava-a="1">
+            <view class="button-text">提交</view>
+          </view>
+        </block>
+      </view>
+      <van-toast id="van-toast"/>
+      <van-dialog id="van-dialog"/>
+    </view>
+  </view>

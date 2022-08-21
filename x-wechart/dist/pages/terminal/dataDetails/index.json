@@ -1,0 +1,1 @@
+{"navigationBarTitleText":"销售明细","navigationBarBackgroundColor":"#00aaa7","navigationBarTextStyle":"white","enablePullDownRefresh":true,"usingComponents":{"van-icon":"../../../components/vant/icon/index","van-popup":"../../../components/vant/popup/index","van-loading":"../../../components/vant/loading/index"}}

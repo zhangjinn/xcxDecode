@@ -1,0 +1,98 @@
+
+  <view class="container">
+
+    <!-- 组织列表选择 -->
+    <van-popup show="{{orgListVisible}}" custom-class="pop" position="top" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"  bind:close="toggleOrgListVisible">
+      <scroll-view scroll-y class="org-wrapper">
+        <block wx:for="{{ organizationList }}" wx:for-index="id" wx:for-item="item" wx:key="id">
+          <view class="org" bindtap="chooseOrg" data-wpychooseorg-a="{{ item.id }}">
+            <view class="org-name {{ displayName === item.displayName ? 'active' : '' }}">{{ item.displayName }}</view>
+            <icon  wx:if="{{ displayName === item.displayName }}" class="b-icon icon-check active"/>
+          </view>
+        </block>
+      </scroll-view>
+    </van-popup>
+
+    
+  <view class="header-tab">
+    <view class="left-btn">
+      <block  wx:for="{{ $headerTab$tabListNew }}">
+        <view class="btn-item {{ item.selectValue ? 'active' : '' }}" bindtap="$headerTab$changeTab" data-wpychangetab-a="{{item}}">
+          <text>{{ item.name }}</text>
+          <i wx:if="{{ $headerTab$showArrowIcon }}" class="b-icon iconxialajiantou"/>
+        </view>
+      </block>
+    </view>
+    <view class="right-btn"  wx:if="{{ $headerTab$showRightBtn }}" bindtap="$headerTab$onSideFilter">
+      <view class="line-shadow" wx:if="{{ $headerTab$showRightBtnLine }}"/>
+      <view class="side-filter-btn">
+        <text>筛选</text>
+        <i class="b-icon shaixuan"/>
+      </view>
+    </view>
+  </view>
+
+    <scroll-view wx:if="{{ addressList.totalPages !== 0 }}" class="container-list" bindscrolltolower="loadNextPage" scroll-y enable-back-to-top="enable-back-to-top">
+      <block id="id" wx:for="{{ addressList.list }}" wx:for-index="index" wx:for-item="item" wx:key="id">
+        <view class="address">
+          <view class="address-org">
+            <view class="address-org-info">
+              <view class="address-org-info-type">
+                <view class="address-org-info-type-title">
+                  {{ item.orgTitle }}
+                </view>
+                <view class="address-org-info-type-code">
+                  {{ item.code }}
+                </view>
+              </view>
+              <view class="address-org-info-code">
+                销售组织编码 {{ item.orgCode }}
+              </view>
+              <view clas="readdress-org-info-county">
+                {{ item.province }} {{ item.city }} {{ item.area }}
+              </view>
+            </view>
+            <view class="address-org-matkl">
+              <view class="address-org-matkl-name">
+                {{ item.matklName }}
+              </view>
+              <view class="address-org-matkl-tap">
+                物料组编码
+              </view>
+              <view class="address-org-matkl-code">
+                {{ item.matklCode }}
+              </view>
+            </view>
+          </view>
+          <view class="address-receiver">
+            <icon class="b-icon iconkongbaiyedizhi"/>
+            <view class="address-receiver-info">
+              <view class="address-receiver-info-user">
+                <view class="address-receiver-info-user-name">
+                  联系人：{{ item.contactPerson }}
+                </view>
+                <view class="address-receiver-info-user-tel">
+                  {{ item.contactPersonTel }}
+                </view>
+
+              </view>
+              <view class="address-receiver-info-address">
+                收货地址：{{ item.address }}
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+    
+  <view class="empty-data" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <van-toast id="van-toast"/>
+
+  </view>

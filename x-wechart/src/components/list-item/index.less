@@ -1,0 +1,201 @@
+@import '../../styles/utils.less';
+
+.item {
+  display: flex;
+  flex-direction: column;
+  width: 354rpx;
+  background-color: #FFF;
+  margin-bottom: 10rpx;
+  padding: 16rpx;
+  border-radius: 12rpx;
+  &-main {
+    display: flex;
+    flex-direction: column;
+    // height: 354rpx;
+    // position: relative;
+    &-img {
+      // margin-top: 8rpx;
+      // height: 326rpx;
+      // width: 322rpx;
+      // z-index: 0;
+      margin: 0 auto;
+      height: 300rpx;
+      width: 300rpx;
+      margin-top: 8rpx;
+
+    }
+    &-org {
+      // top: 16rpx;
+      // left: 16rpx;
+      // position: absolute;
+      text {
+        padding: 0 16rpx;
+      border: 1rpx solid #00AAA6;
+      color: #00AAA6;
+      font-size: 22rpx;
+      line-height: 32rpx;
+      }
+    }
+    .newProductStatus {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 60rpx;
+    }
+    &-bottom {
+        display: flex;
+        justify-content: flex-start;
+        position: relative;
+        min-height: 32rpx;
+      // justify-content: space-between;
+      // position: absolute;
+      // bottom: 16rpx;
+      // left: 16rpx;
+      // right: 16rpx;
+      &-inventory {
+        display: flex;
+        font-size: 20rpx;
+        padding: 0 8rpx;
+        margin-top: 20rpx;
+        background:rgba(0,0,0,0.29);
+        color: #FFF;
+        line-height: 28rpx;
+        border-radius:2rpx;
+        margin-right: 6rpx;
+
+        &-tip, &-count {
+          display: flex;
+          align-items: center;
+          opacity: 0.8;
+        }
+        &-tip {
+          padding-right: 4rpx;
+        }
+      }
+      &-collection {
+        // #D9161C
+        width: 60rpx !important;
+        height: 60rpx !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+        float: none;
+        // position: absolute;
+          top: -50rpx !important;
+          right:4rpx !important;
+        &-icon {
+          font-size: 32rpx;
+          color: #AAAAAA;
+          // padding: 14rpx 12rpx 6rpx 6rpx;
+          padding: 0 !important;
+          &.icon-shoucangzhongxin {
+            color: #D9161C;
+          }
+        }
+      }
+      &-type {
+        display: inline-block;
+        padding: 0 8rpx;
+        // margin-top: 20rpx;
+        border: 1rpx solid;
+        // color: #00aaa6;
+        font-size: 20rpx;
+        height: 32rpx;
+        line-height: 30rpx;
+        // justify-content: flex-end;
+        color: #fff;
+        margin-right: 12rpx;
+        box-sizing: border-box;
+        &:last-child{
+          margin-right: 0;
+        }
+      }
+    }
+  }
+
+  &-info {
+    // padding: 16rpx;
+    padding-top: 8rpx;
+    &-header{
+      display: flex;
+      align-items: center;
+    }
+    &-tag{
+      background: linear-gradient(90deg, #FF7C45 0%, #F63737 100%);
+      border-radius: 4rpx;
+      font-size: 20rpx;
+      font-weight: 400;
+      color: #FFFFFF;
+      padding:2rpx 4rpx;
+      margin-right: 8rpx;
+    }
+    &-name {
+      flex: 1;
+      font-size: 26rpx;
+      .ellipsis();
+    }
+    &-import {
+      padding-top: 8rpx;
+      font-size: 22rpx;
+      color: #AAAAAA;
+      .ellipsis();
+    }
+    &-null {
+      height: 36rpx;
+    }
+
+    &-bottom {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 8rpx;
+      &-no-price {
+        display: flex;
+        font-size: 26rpx;
+        color: #D9161C;
+      }
+      &-price {
+        display: flex;
+        font-size: 32rpx;
+        color: #D9161C;
+        font-weight: 600;
+      }
+
+      &-cart {
+        background-color: #00AAA6;
+        font-size: 20rpx;
+        color: #FFF;
+        padding: 8rpx 12rpx;
+        z-index: 10;
+        border-radius:2rpx;
+
+      }
+    }
+  }
+}
+.item-main-org{
+  .tag{
+    float: right;
+    color: white;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    height: 32rpx;
+    font-size: 20rpx;
+    width: 70rpx;
+    line-height: 32rpx;
+    border-radius:16rpx  0  16rpx  16rpx  ;
+    padding: 0 15rpx;
+
+  }
+  .hotProduct{
+    background: linear-gradient(180deg, #F8CA6C 0%, #F69A52 100%);
+  }
+  .popularProduct{
+    background:  linear-gradient(180deg, #FA987F 0%, #F36556 100%);
+  }
+  .newProduct{
+    background:  linear-gradient(180deg, #B8FFE0 0%, #00BFB5 100%);
+  }
+}

@@ -1,0 +1,83 @@
+<template>
+  <van-popup show="{{ addressVisible }}" position="bottom" z-index="9999999" bind:close="closeAddressPopup">
+    <view class="area">
+      <view class="area-header">
+        <view class="area-header-content">
+          <view class="area-header-content-title">{{ title }}</view>
+        </view>
+        <view @tap="closeAddressPopup" class="area-header-close">
+          <icon class="h-icon icon-ic-close"></icon>
+        </view>
+      </view>
+
+      <view class="area-tab">
+        <view
+          @tap="chooseAddressTap('province')"
+          class="area-tab-item"
+          hover-class="area-tab-item-hover"
+        >
+          <view class="area-tab-item-title">
+            <text class="{{ areaCurrentTab === 'province' ? 'active' : '' }}">{{ province.name }}</text>
+            <view hidden="{{ !(areaCurrentTab === 'province') }}" class="area-tab-item-title-bar" />
+          </view>
+        </view>
+
+        <view
+          @tap="chooseAddressTap('city')"
+          class="area-tab-item"
+          hover-class="area-tab-item-hover"
+        >
+          <view class="area-tab-item-title" hidden="{{ city.items.length === 0 }}">
+            <text class="{{ areaCurrentTab === 'city' ? 'active' : '' }}">{{ city.name }}</text>
+            <view hidden="{{ !(areaCurrentTab === 'city') }}" class="area-tab-item-title-bar" />
+          </view>
+        </view>
+
+        <view
+          @tap="chooseAddressTap('area')"
+          class="area-tab-item"
+          hover-class="area-tab-item-hover"
+        >
+          <view class="area-tab-item-title" hidden="{{ area.items.length === 0 }}">
+            <text class="{{ areaCurrentTab === 'area' ? 'active' : '' }}">{{ area.name }}</text>
+            <view hidden="{{ !(areaCurrentTab === 'area') }}" class="area-tab-item-title-bar" />
+          </view>
+        </view>
+        <view
+          @tap="chooseAddressTap('town')"
+          class="area-tab-item"
+          hover-class="area-tab-item-hover"
+        >
+          <view class="area-tab-item-title" hidden="{{ town.items.length === 0 }}">
+            <text class="{{ areaCurrentTab === 'town' ? 'active' : '' }}">{{ town.name }}</text>
+            <view hidden="{{ !(areaCurrentTab === 'town') }}" class="area-tab-item-title-bar" />
+          </view>
+        </view>
+      </view>
+
+      <view class="area-body">
+        <view hidden="{{!loading}}" class="area-body-loading">
+          <i-spin fix />
+        </view>
+        <scroll-view class="area-body-content" scroll-y>
+          <repeat for="{{addressItems}}" key="id" index="index" item="item">
+            <view
+              @tap="chooseAddress({{ item }})"
+              class="area-body-content-item"
+              hover-class="area-body-content-item-hover"
+            >
+              <text
+                class="area-body-content-item-label {{ item.code === addressTempId && item.code !== '' ? 'active' : '' }}"
+              >{{ item.name }}</text>
+              <view hidden="{{item.code !== addressTempId || item.code === ''}}">
+                <van-icon name="success" color="#00AAA6" />
+              </view>
+            </view>
+          </repeat>
+        </scroll-view>
+      </view>
+    </view>
+  </van-popup>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

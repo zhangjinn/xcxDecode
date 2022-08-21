@@ -1,0 +1,1 @@
+function composeK(){if(0===arguments.length)throw new Error("composeK requires at least one argument");var e=Array.prototype.slice.call(arguments),o=e.pop();return compose(compose.apply(this,map(chain,e)),o)}var chain=require("./chain.js"),compose=require("./compose.js"),map=require("./map.js");module.exports=composeK;

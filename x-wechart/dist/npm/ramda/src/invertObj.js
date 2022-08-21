@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),keys=require("./keys.js"),invertObj=_curry1(function(r){for(var e=keys(r),n=e.length,u=0,t={};u<n;){var i=e[u];t[r[i]]=i,u+=1}return t});module.exports=invertObj;

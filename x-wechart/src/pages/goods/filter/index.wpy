@@ -1,0 +1,214 @@
+<template>
+  <view class="filter">
+    <van-popup
+      show="{{visible}}"
+      position="right"
+      overlay="{{ true }}"
+      bind:close="openDrawer"
+      custom-style="height: 100%;"
+      overlay-style="overlay"
+    >
+      <view class="filter-drawer">
+        <view class="filter-drawer-attr">
+        <view class="header-divider" style="height: {{sys.statusBarHeight}}px" />
+          <scroll-view class="filter-drawer-attr-scroll" scroll-y>
+            <view wx:if="{{user && user.fxPartInfo && user.zyPartInfo && user.fxPartInfo.length == 0 && user.zyPartInfo.length > 0}}" class="attr-item">
+              <view class="attr-item-header" hover-class="hover">
+                <view class="title">供应商</view>
+                <view @tap="onOpen" class="right">
+                  <view class="address">{{searchstatuspopup}}</view>
+                  <view
+                    class="b-icon h-icon iconliebiaoshaixuanjiantou-{{ onOpen ? 'up' : 'down' }}"
+                    style="padding: 5rpx"
+                  />
+                </view>
+              </view>
+              <view class="attr-item-content {{ onOpen ? 'open' : '' }}">
+                <repeat for="{{specialfilters.fwOrgsGroupMap}}" item="item">
+                  <view
+                    hidden="{{item.filter}}"
+                    @tap="searchSelect({{item.key}})"
+                    class="attr {{item.searchstatus ? 'active' : ''}}"
+                    hover-class="hover"
+                  >{{item.value}}</view>
+                </repeat>
+              </view>
+            </view>
+            <view wx:else class="attr-item">
+              <view class="attr-item-header" hover-class="hover">
+                <view class="title">供应商</view>
+                <view class="right">
+                  <view class="address">{{searchstatuspopup}}</view>
+                  <view
+                    @tap="onOpen"
+                    class="b-icon h-icon iconliebiaoshaixuanjiantou-{{ onOpen ? 'up' : 'down' }}"
+                  />
+                </view>
+              </view>
+              <view class="attr-item-content {{ onOpen ? 'open' : '' }}">
+                <repeat for="{{dmsOrgList}}" item="item">
+                  <view
+                    @tap="dmsOrgsearchSelect({{item.key}})"
+                    class="attr {{item.searchstatus ? 'active' : ''}}"
+                    hover-class="hover"
+                  >{{item.value}}</view>
+                </repeat>
+              </view>
+            </view>
+            <view wx:if="{{user && user.fxPartInfo && user.fxPartInfo.length > 0}}" class="attr-item">
+              <view class="attr-item-header" hover-class="hover">
+                <view class="title">物料组</view>
+                <view class="right">
+                  <view class="address">{{dmssearchstatuspopup}}</view>
+                  <view
+                    @tap="onOpenMatk"
+                    class="b-icon h-icon iconliebiaoshaixuanjiantou-{{ onOpenMatk ? 'up' : 'down' }}"
+                  />
+                </view>
+              </view>
+              <view class="attr-item-content {{ onOpenMatk ? 'open' : '' }}">
+                <repeat for="{{dmsmatklList}}" item="item">
+                  <view
+                    @tap="dmssearchSelect({{item.key}})"
+                    class="attr {{item.searchstatus ? 'active' : ''}}"
+                    hover-class="hover"
+                  >{{item.value}}</view>
+                </repeat>
+              </view>
+            </view>
+
+            <!-- 采购类型start -->
+            <view wx:if="{{user && user.fxPartInfo}}" class="attr-item">
+              <view class="attr-item-header" hover-class="hover">
+                <view class="title">采购类型</view>
+                <view class="right">
+                  <view class="text">
+                    <text>{{purchaseTypePopup}}</text>
+                  </view>
+                  <view
+                    @tap="Suppliers"
+                    class="b-icon h-icon iconliebiaoshaixuanjiantou-{{ Suppliersextend ? 'up' : 'down' }}"
+                  />
+                </view>
+              </view>
+              <view class="attr-item-content {{Suppliersextend ? 'open' : ''}}">
+                <repeat for="{{purchaseTypeOptions}}" item="item">
+                  <view
+                    catchtap="selectedPurchaseType({{item.key}})"
+                    class="attr {{item.status ? 'active' : ''}}"
+                    hover-class="hover"
+                  >{{item.value}}</view>
+                </repeat>
+              </view>
+            </view>
+            <!-- 采购类型end -->
+          </scroll-view>
+          <!-- 底部 -->
+          <view class="filter-drawer-attr-footer">
+            <!-- 显示已维护价格产品 -->
+            <view
+              @tap="onCheckMainPrice"
+              class="filter-drawer-attr-footer-check">
+              <view class="filter-drawer-attr-footer-check-cont">
+                仅显示已维护价格的商品
+              </view>
+              <view
+                class="radio-content"
+                hover-class="hover"
+              >
+                <view
+                  class="radio-content-el {{checkMainPrice ? 'checked' : ''}}"
+                >
+                  <view class="b-icon icon-check" />
+                </view>
+              </view>
+            </view>
+            <!-- 重置和确认 -->
+            <view class="filter-drawer-attr-footer-bot">
+              <view
+                @tap="resetSearch"
+                class="filter-drawer-attr-footer-btn reset"
+                hover-class="filter-drawer-attr-footer-btn-hover"
+              >重置</view>
+              <view
+                @tap="confirmSearch"
+                class="filter-drawer-attr-footer-btn confirm"
+                hover-class="filter-drawer-attr-footer-btn-hover"
+              >确认</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <view class="top">
+      <view class="header-divider" style="height: {{sys.statusBarHeight}}px" />
+      <view class="header-content">
+        <view class="header-content-item" hover-class="hover" style="width: {{menuWidth}}px">
+          <van-icon @tap="goback" color="#262626" size="48rpx" name="arrow-left" />
+        </view>
+        <view class="search">
+          <navigator url="/pages/goods/search/index" class="header-input">
+            <van-icon name="search" size="30rpx" />
+            {{ key || '搜索商品' }}
+          </navigator>
+        </view>
+      </view>
+      <view class="bar">
+        <view @tap="chageSort" data-id="0" class="bar-item">
+          <text class="bar-item-text {{ filterIndex == '0' ? 'active' : ''}}">综合</text>
+        </view>
+        <view @tap="chageSort" data-id="1" class="bar-item">
+          <text class="bar-item-text {{filterIndex == '1' ? 'active' : ''}}">上架时间</text>
+        </view>
+        <view
+          @tap="chageSort"
+          data-id="2"
+          class="bar-item border {{filterIndex == '2' || sort === '2_0_0_0_0' ? 'active' : ''}}"
+        >
+          <view class="price">
+            <text class="bar-item-text">销量</text>
+            <view class="icons">
+              <view class="b-icon icon-arrow-up {{filterSale == '1' ? 'active' : ''}}" />
+              <view class="b-icon icon-arrow-down {{filterSale == '2' ? 'active' : ''}}" />
+            </view>
+          </view>
+        </view>
+        <view @tap="openDrawer" class="bar-item">
+          <text class="bar-item-text">筛选</text>
+        </view>
+      </view>
+    </view>
+    <!-- 商品循环 -->
+    <scroll-view
+      class="collection"
+      bindscrolltolower="onPullBottom"
+      bindscroll="onScroll"
+      scroll-top="{{ scrollTop }}"
+      scroll-y
+      enable-back-to-top
+    >
+      <view class="scroll-grid">
+        <block wx:if="{{searchList.length > 0}}">
+          <repeat for="{{ searchList }}" item="item">
+            <view class="context">
+              <item item="{{ item }}" lazyLoad="true" bind:toggle-collection="toggleCollection" bind:img-lose="imgLose" />
+            </view>
+          </repeat>
+        </block>
+        <emptyDataType wx:else/>
+
+      </view>
+    </scroll-view>
+    <!-- 收藏 -->
+    <button class="screened shareBar" lang="zh_CN" @tap="goCollection">
+      <van-icon name="star-o" color="red" />
+    </button>
+    <!-- 回到上方 -->
+    <button hidden="{{!visibelTop}}" @tap="scrollToTop" class="screen shareBar" lang="zh_CN">
+      <view class="b-icon icon-top" />
+    </button>
+    <van-toast id="van-toast" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

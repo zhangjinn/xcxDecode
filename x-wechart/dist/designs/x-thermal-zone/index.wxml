@@ -1,0 +1,12 @@
+<view bindtap="onTap" class="x-thermal-zone" style="{{contentStyle}}">
+  <image class="img" lazy-load src="{{src}}" />
+  <view
+    class="x-thermal-zone-item"
+    hover-class="x-thermal-zone-item-hover"
+    wx:for="{{coordinates}}"
+    wx:key="id"
+    style="{{ item.styles }}"
+    data-index="{{index}}"
+    bindtap="onTap"
+  />
+</view>

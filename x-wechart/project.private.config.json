@@ -1,0 +1,807 @@
+{
+  "setting": {},
+  "condition": {
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": [
+        {
+          "id": 0,
+          "name": "工程单",
+          "pathName": "pages/goods/project/index",
+          "query": "id=14170279311",
+          "scene": null
+        },
+        {
+          "id": 1,
+          "name": "分类页",
+          "pathName": "pages/main/take/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 10,
+          "name": "订单列表",
+          "pathName": "pages/me/order/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 3,
+          "name": "订单详情",
+          "pathName": "pages/me/order-detail/index",
+          "query": "id=15555524189",
+          "scene": null
+        },
+        {
+          "id": 4,
+          "name": "余额",
+          "pathName": "pages/my/account/balance/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "工程单选择商品",
+          "pathName": "pages/goods/project-items/index",
+          "query": "id=14170055642",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "地址",
+          "pathName": "pages/my/account/address/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 7,
+          "name": "工程单下单",
+          "pathName": "pages/goods/project/index",
+          "query": "id=14170279311",
+          "scene": null
+        },
+        {
+          "id": 8,
+          "name": "套购单下单",
+          "pathName": "pages/goods/buy-out/index",
+          "query": "id=13964109819",
+          "scene": null
+        },
+        {
+          "id": 9,
+          "name": "套购下单选商品",
+          "pathName": "pages/goods/buy-out-items/index",
+          "query": "id=13964109819",
+          "scene": null
+        },
+        {
+          "id": 10,
+          "name": "特惠单下单",
+          "pathName": "pages/goods/preference/index",
+          "query": "mainId=14170158568",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "特惠单选择商品",
+          "pathName": "pages/goods/preference-items/index",
+          "query": "mainId=14170112226",
+          "scene": null
+        },
+        {
+          "id": 12,
+          "name": "下单结果",
+          "pathName": "pages/goods/order-result/index",
+          "query": "type=fail",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "权限验证",
+          "pathName": "pages/auth/wechat/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "账号密码登录",
+          "pathName": "pages/auth/account/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "协议授权",
+          "pathName": "pages/auth/protocol/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 16,
+          "name": "补充登录信息",
+          "pathName": "pages/auth/confirm/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "手机号登录",
+          "pathName": "pages/auth/mobile/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 18,
+          "name": "忘记密码",
+          "pathName": "pages/auth/forget/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 19,
+          "name": "重置密码",
+          "pathName": "pages/auth/reset/index",
+          "query": "name=709761332&mobile=13026501681&code=719843&type=mobile",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "购物车",
+          "pathName": "pages/main/cart/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 21,
+          "name": "搜索页",
+          "pathName": "pages/goods/filter/index",
+          "query": "q=电视",
+          "scene": null
+        },
+        {
+          "id": 22,
+          "name": "商品详情",
+          "pathName": "pages/goods/item/index",
+          "query": "code=72309&orgId=154&orgCode=2601&promotionId=14170490817",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "订单列表",
+          "pathName": "pages/me/order/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 24,
+          "name": "普通单下单",
+          "pathName": "pages/goods/order/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "我的",
+          "pathName": "pages/main/me/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "我的订单",
+          "pathName": "pages/me/order/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "订单详情",
+          "pathName": "pages/me/order-detail/index",
+          "query": "id=15555491915",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "我的评价",
+          "pathName": "pages/me/comment/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 29,
+          "name": "我的收藏",
+          "pathName": "pages/goods/collection/index",
+          "query": "catalogId=21",
+          "scene": null
+        },
+        {
+          "id": 30,
+          "name": "搜索",
+          "pathName": "pages/goods/filter/index",
+          "query": "q=电视",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "账号密码登录",
+          "pathName": "pages/auth/account/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "产品采购",
+          "pathName": "pages/main/take/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 33,
+          "name": "采购入库",
+          "pathName": "pages/goods/purchase-shop/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "搜索中间页",
+          "pathName": "pages/goods/search/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 35,
+          "name": "采购详情",
+          "pathName": "pages/dms/purchase-detail/index",
+          "query": "purchaseOrderId=369846891922",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "渠道订单",
+          "pathName": "pages/dms/channel-order/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 37,
+          "name": "销售订单查询",
+          "pathName": "pages/dms/sales-order/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "活动专区",
+          "pathName": "pages/activity/activity-area/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 40,
+          "name": "库存查询",
+          "pathName": "pages/goods/inventory-queries/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "超期库存查询",
+          "pathName": "pages/goods/inventory-overtime/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "库存流水",
+          "pathName": "pages/goods/inventory-process/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "调拨查询",
+          "pathName": "pages/goods/allot-order/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "分销商库存查询",
+          "pathName": "pages/goods/distributor-inventory-inquiry/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "渠道采购订单",
+          "pathName": "pages/dms/channel-purchase-order/index/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "我的抢单",
+          "pathName": "pages/me/my-snapped/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "密码账号绑定",
+          "pathName": "pages/me/bind-account/account/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 45,
+          "name": "营销活动",
+          "pathName": "pages/goods/item/index",
+          "query": "code=3456204&orgId=154&orgCode=2601&promotionId=14170505764",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "零售订单",
+          "pathName": "pages/dms/retail-order/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "分销商订单确认",
+          "pathName": "pages/goods/distributors-order/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "常见问题",
+          "pathName": "pages/me/common-problem/list/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "我的咨询",
+          "pathName": "pages/me/my-consultation/list/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "我要咨询",
+          "pathName": "pages/me/my-pose/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "政策核对单列表",
+          "pathName": "pages/finance/policy-check/list/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "政策电子账单列表",
+          "pathName": "pages/finance/policy-electronic/list/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "资金电子账单列表",
+          "pathName": "pages/finance/fund-electronic/list/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "发票",
+          "pathName": "pages/finance/invoice/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "销售出库列表",
+          "pathName": "pages/dms/out-warehouse/list/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 55,
+          "name": "销售出库详情",
+          "pathName": "pages/dms/out-warehouse/detail/index",
+          "query": "id=1094027321380",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "销售出库",
+          "pathName": "pages/dms/out-warehouse/list/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "资金电子签章",
+          "pathName": "pages/finance/fund-electronic/signature/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "活动订单下单确认页",
+          "pathName": "pages/goods/activity-order/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "分销商订单列表",
+          "pathName": "pages/me/distribution-order/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 61,
+          "name": "分销商订单详情",
+          "pathName": "pages/me/distribution-order-detail/index",
+          "query": "id=15555525275",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "消息中心",
+          "pathName": "pages/me/message/list/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "活动中心",
+          "pathName": "pages/main/activity/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 64,
+          "name": "活动专区",
+          "pathName": "pages/activity/activity-area/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "资金电子账单",
+          "pathName": "pages/finance/fund-electronic/list/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "政策电子账单",
+          "pathName": "pages/finance/policy-electronic/list/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "政策核对单",
+          "pathName": "pages/finance/policy-check/list/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "库存报表",
+          "pathName": "pages/chart/stock/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "销售报表",
+          "pathName": "pages/chart/sales-report/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "采购报表",
+          "pathName": "pages/chart/purchase/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "订单审核",
+          "pathName": "pages/dms/sales-distributors/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "退货录入选择列表",
+          "pathName": "pages/dms/order-return-before/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "我的待办",
+          "pathName": "pages/me/todo/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "消息中心",
+          "pathName": "pages/me/message/list/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "直采入库",
+          "pathName": "pages/dms/order-direct-into/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 77,
+          "name": "审核详情",
+          "pathName": "pages/me/audit-order-detail/index",
+          "query": "id=15555524198",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "直采订单审核",
+          "pathName": "pages/me/audit-order/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "直销审核详情",
+          "pathName": "pages/me/distribution-order-detail/index",
+          "query": "id=15555525275",
+          "scene": null
+        },
+        {
+          "id": 80,
+          "name": "直销审核详情订单",
+          "pathName": "pages/me/audit-order-detail/index",
+          "query": "id=15555525264",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "直销审核列表",
+          "pathName": "pages/me/audit-order/index",
+          "query": "id=15555525264",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "支付结果改造",
+          "pathName": "pages/goods/order-result/index",
+          "query": "type=success",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "直采入库详情页",
+          "pathName": "pages/dms/order-direct-into-detail/index",
+          "query": "purchaseOrderId=1043849821100",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "直采出库",
+          "pathName": "pages/dms/order-direct-out/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "直采出库详情",
+          "pathName": "pages/dms/order-direct-out-detail/index",
+          "query": "purchaseOrderId=1043780263380&num=0101567882&wechatStatusTab=wait-out",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "财务待办",
+          "pathName": "pages/me/financial-todo/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "渠道退货入库选择",
+          "pathName": "pages/dms/channel-order-return-before/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 86,
+          "name": "渠道采购订单详情",
+          "pathName": "pages/dms/channel-purchase-order/detail/index",
+          "query": "id=1094027321770",
+          "scene": null
+        },
+        {
+          "id": 87,
+          "name": "销售订单查询详情",
+          "pathName": "pages/dms/sales-order-detail/index",
+          "query": "id=1094351429710",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "退货入库",
+          "pathName": "pages/dms/order-return-before/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 89,
+          "name": "退货入库详情",
+          "pathName": "pages/dms/order-return-entry/index",
+          "query": "itemId=1093586235001&purchaseId=1094200183191",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "退货入库选择页面",
+          "pathName": "pages/dms/order-return-choose/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 88,
+          "name": "退货出库详情",
+          "pathName": "pages/dms/channel-order-return/index",
+          "query": "itemId=1042999999660&returnNum=&documentNum=P2001100002&supplierName=邯郸市阳光三联电器有限公司&returnBy=",
+          "scene": null
+        },
+        {
+          "id": 92,
+          "name": "门店评价",
+          "pathName": "pages/terminal/overallMerit/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": 93,
+          "name": "pages/terminal/overallMerit/index",
+          "pathName": "pages/terminal/dataDetails/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "地图",
+          "pathName": "pages/terminal/map/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "意向商家登记表",
+          "pathName": "pages/dms/intentionMerchants/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/goods/sales-order/index",
+          "pathName": "pages/goods/sales-order/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/me/account/list/index",
+          "pathName": "pages/me/account/list/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/goods/distributor-inventory-inquiry/index",
+          "pathName": "pages/goods/distributor-inventory-inquiry/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "销售出库",
+          "pathName": "pages/dms/out-warehouse/list/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "我的订单",
+          "pathName": "pages/me/order/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "营销活动列表",
+          "pathName": "pages/activity/marketing-activities/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "营销活动详情",
+          "pathName": "pages/activity/marketing-activities-detail/index",
+          "query": "id=14183290590",
+          "scene": null
+        },
+        {
+          "name": "营销活动参与分销商",
+          "pathName": "pages/activity/marketing-activities-distributor/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "培训打卡",
+          "pathName": "pages/terminal/trainingClock/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "培训记录",
+          "pathName": "pages/terminal/trainingRecord/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "培训任务",
+          "pathName": "pages/terminal/trainingDetails/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "新增打卡记录",
+          "pathName": "pages/terminal/addrecord/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "未结预留",
+          "pathName": "pages/goods/open-reservation/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "库存调整查询",
+          "pathName": "pages/goods/inventory-trim-query/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "库存流水",
+          "pathName": "pages/goods/inventory-process/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "核心职能运营评价",
+          "pathName": "pages/chart/experience-report/index",
+          "query": "",
+          "scene": null
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,145 @@
+<template>
+  <view class="order">
+
+    <!-- 仅看自己 -->
+    <van-popup
+      show="{{ agentPopup }}"
+      position="right"
+      overlay="{{ true }}"
+      z-index="200"
+      custom-style="height: 100%;"
+      close-on-click-overlay="{{false}}"
+    >
+
+      <view wx:if="{{popupTitle == '仅看自己'}}" class="order-drawer">
+        <view class="order-drawer-time">
+          <view class="order-drawer-time-header">
+            <van-icon  name="arrow-left" class="order-drawer-time-header-back" bind:click="selectagentPopup"></van-icon>
+            <view class="order-drawer-time-header-title">{{popupTitle}}</view>
+          </view>
+          <scroll-view class="order-drawer-time-content" scroll-y>
+            <repeat for="{{lookSelfOption}}" item="item">
+              <view class="order-drawer-time-content-line" @tap="onSelectMethodChange({{item}})">
+                <view class="text {{filterForm.terms.isSelf === item.key ? 'active' : ''}}">{{item.value}}</view>
+                <van-icon wx:if="{{filterForm.terms.isSelf === item.key }}" name="success" class="time-selected" size="32rpx"/>
+              </view>
+            </repeat>
+          </scroll-view>
+        </view>
+      </view>
+    </van-popup>
+
+    <!-- 筛选侧边弹框 -->
+    <van-popup
+      show="{{visible}}"
+      position="right"
+      overlay="{{ true }}"
+      bind:close="orderfiltering"
+      custom-style="height: 100%;"
+      z-index="130"
+    >
+      <view class="order-drawer">
+        <view class="order-drawer-attr">
+          <scroll-view
+            class="order-drawer-attr-scroll"
+            scroll-y>
+            <view class="attr-item">
+
+              <view class="projectem">
+                <view class="project">
+                  <text class="project-label" style="">主题/类别</text>
+                </view>
+                <van-field
+                  placeholder="请输入"
+                  border="{{ false }}"
+                  placeholder-style="font-size: 24rpx;"
+                  bind:change="onNameChange"
+                  custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;"
+                  clearable
+                  value="{{filterForm.terms.name}}"
+                />
+              </view>
+
+              <view class="parent-agent">
+                <view class="agent-name">是否仅看自己</view>
+                <view wx:if="{{filterFormExtra.isSelfName != ''}}" catchtap="selectagentPopup('isSelf')" class="agent-select">{{filterFormExtra.isSelfName}}
+                  <view class="b-icon icon-more icons"></view>
+                </view>
+                <view wx:else catchtap="selectagentPopup('isSelf')" class="agent-select">请选择
+                  <view class="b-icon icon-more icons"></view>
+                </view>
+              </view>
+
+            </view>
+          </scroll-view>
+          <!-- 底部按钮 -->
+          <view class="order-drawer-attr-footer">
+            <view
+              @tap="onResetFilterForm"
+              class="order-drawer-attr-footer-btn reset"
+              hover-class="order-drawer-attr-footer-btn-hover"
+            >重置</view>
+            <view
+              @tap="onSubmitFilterForm"
+              class="order-drawer-attr-footer-btn confirm"
+              hover-class="order-drawer-attr-footer-btn-hover"
+            >确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    <!-- 快捷筛选顶部弹框月份 -->
+    <van-popup
+      show="{{OrderSFilterVisible}}"
+      position="top"
+      overlay="{{ true }}"
+      custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"
+      bind:close="touchOrderSFilter"
+    >
+      <view wx:if="{{CurrentOrderSFilterName === 'orderDate'}}" class="order-s-filter-container">
+        <view class="order-operation" wx:for={{dateOption}}>
+          <view class="operation-text van-hairline--bottom" @tap="onSelectDate({{ item.month }})">
+            <view class="operation-status {{ filterForm.terms.date === item.month ? 'active' : '' }}">{{item.monthName}}</view>
+            <view wx:if="{{ filterForm.terms.date ===  item.month }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    <headerTab
+      :tabList.sync="headerTabList"
+      @onTabChange.user="touchOrderSFilter"
+      @onSideFilter.user="orderfiltering"
+    />
+    <scroll-view
+      wx:if="{{ trainingRecordList && trainingRecordList.length > 0}}"
+      scroll-y="true"
+      class="order-scroll"
+      enable-flex
+      bindscroll="onScroll"
+      scroll-top="{{ scrollTop }}"
+      bindscrolltolower="onGetOrderListNext"
+
+    >
+      <repeat for="{{ trainingRecordList }}" item="item">
+        <view class="training-item" @tap="viewDetail({{item.id}})">
+          <view class="training-item-header">
+            <text class="theme">{{ item.title }}</text>
+            <text class="date">{{ item.trainingDate }}</text>
+          </view>
+          <view class="training-item-address">
+            <text class="address-label">培训地址：</text>
+            <text class="address-info">{{ item.submitAddress }}</text>
+          </view>
+        </view>
+      </repeat>
+      <view wx:if="{{trainingRecordList.length == filterForm.page.totalCount}}" class="no-loading-data">我是有底线的~</view>
+    </scroll-view>
+    <emptyDataType wx:else/>
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

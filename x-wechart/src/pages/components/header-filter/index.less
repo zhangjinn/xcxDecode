@@ -1,0 +1,79 @@
+
+.filter-header{
+  width: 100%;
+  background: #FFFFFF;
+  padding: 0 24rpx;
+  z-index: 9999;
+  .tabs{
+    display: flex;
+    justify-items: center;
+    padding: 14rpx 0;
+    .tab{
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .tab-title{
+        position: relative;
+        font-size: 28rpx;
+        color: #AAAAAA;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        .title-text{
+          position: relative;
+          padding-bottom: 12rpx;
+        }
+        .title-line{
+          width: 32rpx;
+          height: 8rpx;
+        }
+
+        .reddot{
+          position: absolute;
+          top: 0;
+          right: -52rpx;
+          font-size: 20rpx;
+          text-align: center;
+          color: #FFFFFF;
+          background: #E10F0F;
+          border-radius: 200rpx 200rpx 200rpx 0rpx;
+          border: 2rpx solid #FFFFFF;
+          padding: 3rpx 8rpx;
+        }
+        .moreAmount{
+          right: -62rpx;
+        }
+      }
+      .active{
+        font-weight: 500;
+        color: #262626;
+        .title-line{
+          background: linear-gradient(180deg, #54D6D2 0%, #00AAA6 100%);
+          border-radius: 4rpx;
+        }
+      }
+
+    }
+  }
+  .search{
+    .header-search{
+      padding: 12rpx 0;
+      .van-search{
+        padding: 0;
+      }
+      .van-search__content{
+        background-color: #F7F7F7;
+      }
+
+    }
+    .search-left-icon{
+      display: flex;
+      align-items: center;
+      font-size: 32rpx;
+      color: #AAAAAA;
+      margin-right: 16rpx;
+    }
+  }
+}

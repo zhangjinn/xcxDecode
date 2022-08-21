@@ -1,0 +1,1 @@
+var _checkForMethod=require("./internal/_checkForMethod.js"),_curry2=require("./internal/_curry2.js"),intersperse=_curry2(_checkForMethod("intersperse",function(r,e){for(var t=[],n=0,s=e.length;n<s;)n===s-1?t.push(e[n]):t.push(e[n],r),n+=1;return t}));module.exports=intersperse;

@@ -1,0 +1,58 @@
+<wxs src="../../../wxs/utils.wxs" module="utils"/>
+
+  <view class="todo">
+    <van-popup show="{{ IKnow }}" overlay="{{ true }}">
+      <view class="todo-popup">
+        <view class="text">
+          <view class="text-first">小程序端支持查看详情及操作上上签电子签章</view>
+          <view class="text-last">U盾签章请在PC端操作</view>
+        </view>
+        <view bindtap="allIKnow" class="operation">
+          <view class="operation-text">我知道了</view>
+        </view>
+      </view>
+    </van-popup>
+    <block  wx:if="{{items.data.length > 0}}">
+      <scroll-view bindscrolltolower="onPullBottom" enable-flex="enable-flex" scroll-y enable-back-to-top="enable-back-to-top" class="todo-body">
+        <block wx:for="{{items.data}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+          <view class="todo-body-item">
+            <view class="todo-body-item-header">
+              <view class="todo-body-item-header-top">
+                <view class="title">{{item.title}}</view>
+              </view>
+              <view class="todo-body-item-header-bottom">
+                <view class="tag">{{item.orgName}}</view>
+                <view class="date">{{item.createDateStr}}</view>
+              </view>
+            </view>
+            <view class="todo-body-item-body">
+              {{item.content}}
+            </view>
+            <view style="{{item.status == '0' ? '': 'height: 72rpx'}}" class="todo-body-item-footer van-hairline--top">
+              <block wx:if="{{item.status == '0'}}">
+                <view bindtap="goSignAction" class="card-footer-handle" hover-class="hover" data-wpygosignaction-a="{{item.secondTypeCode}}" data-wpygosignaction-b="{{item.id}}" data-wpygosignaction-c="{{item.sourceId}}" data-wpygosignaction-d="{{item.status}}" data-wpygosignaction-e="{{item.doType}}" data-wpygosignaction-f="sign">签署</view>
+              </block>
+              <block wx:if="{{item.status == '1'}}">
+                <view bindtap="goSignAction" class="card-footer-handle" data-wpygosignaction-a="{{item.secondTypeCode}}" data-wpygosignaction-b="{{item.id}}" data-wpygosignaction-c="{{item.sourceId}}" data-wpygosignaction-d="{{item.status}}" data-wpygosignaction-e="{{item.doType}}" data-wpygosignaction-f="view">
+                  <view class="text">查看详情</view>
+<!--                  <view class="b-icon icon-more icon"></view>-->
+                </view>
+                <!-- <view bindtap="signAction({{item.id}}, 'docView')" class="footer-item" hover-class="hover">预览</view> -->
+                <!-- <view bindtap="downFile({{item.id}})" class="footer-item mgr-16" hover-class="hover">下载</view> -->
+              </block>
+            </view>
+          </view>
+        </block>
+      </scroll-view>
+    </block>
+    
+  <view class="empty-data" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <van-toast id="van-toast"/>
+  </view>

@@ -1,0 +1,303 @@
+<wxs src="../../wxs/utils.wxs" module="utils"/>
+<view class="item">
+  <view class="item-row">
+    <view class="item-row-left">
+      产品信息
+    </view>
+    <view class="item-row-right"  catchtap="chooseItem">
+      <view class="item-placeholder" wx:if="{{ !itemInfo.model }}">
+        请输入产品信息
+      </view>
+      <view class="item-product" wx:else catchtap="chooseItem">
+        {{ itemInfo.model }}{{ itemInfo.model ? ',' : ''}}{{ itemInfo.colour }}
+      </view>
+    </view>
+  </view>
+
+  <!--<view class="item-row" catchtap="openChooseWareHouse">
+    <view class="item-row-left">
+      仓库
+    </view>
+    <view class="item-row-right">
+      <view class="item-row-right-inventory {{ warehouseId ? '' : 'placeholder' }}">
+        {{ warehouseName }}
+      </view>
+      <van-icon name="arrow" custom-class="item-row-right-arrow" />
+    </view>
+  </view>-->
+
+  <view class="item-row" wx:if="{{ (ly === 'retailNew' || ly === 'channelNew') && isDisabled}}">
+    <view class="item-row-left">
+      仓库
+    </view>
+    <view class="item-row-right">
+      <view class="item-row-right-inventory">
+        {{ warehouseName }}
+      </view>
+    </view>
+  </view>
+
+  <view class="item-row" wx:if="{{isDisabled}}">
+    <view class="item-row-left">
+      物料编码
+    </view>
+    <view class="item-row-right">
+      <view class="item-row-right-inventory">
+        {{ materialCode }}
+      </view>
+    </view>
+  </view>
+
+  <view class="item-row" catchtap="openChooseInv">
+    <view class="item-row-left">
+      质量等级
+    </view>
+    <view class="item-row-right">
+      <view class="item-row-right-inventory {{ inventory ? '' : 'placeholder' }}">
+        {{ inventoryName }}
+      </view>
+      <van-icon wx:if="{{!isDisabled}}" name="arrow" custom-class="item-row-right-arrow" />
+    </view>
+  </view>
+
+  <view class="item-row" catchtap="openChooseInvState"  >
+    <view class="item-row-left">
+      补差类型
+    </view>
+    <view class="item-row-right">
+      <view class="item-row-right-inventory {{ invState ? '' : 'placeholder' }}">
+        {{ invStateName }}
+      </view>
+      <van-icon wx:if="{{!isDisabled}}" name="arrow" custom-class="item-row-right-arrow" />
+    </view>
+  </view>
+
+  <!-- 根据发货仓库+配送方式，服务方式字段变化显示
+       如果仓库为统仓，配送方式选择“配送、自提、配送（加急）“，服务方式字段显示，可选择
+       如果仓库为统仓，配送方式为“直配到工地“，服务方式字段隐藏，取值空
+       如果仓库为原仓，服务方式字段隐藏，取值空 -->
+  <view wx:if="{{ ly === 'retailNew' && itemInfo.gicWarehouseType && itemInfo.gicWarehouseType=='20' && requiredParameters.deliveryMethod && requiredParameters.deliveryMethod.id && requiredParameters.deliveryMethod.id != '07' }}" class="item-row" catchtap="openServerPopVisible">
+    <view class="item-row-left">
+      服务方式
+    </view>
+    <view class="item-row-right">
+      <view class="item-row-right-inventory {{ zoneB2cService && zoneB2cService.length ? '' : 'placeholder' }}">
+        {{ zoneB2cServiceName && zoneB2cServiceName.length ? zoneB2cServiceName : '请选择' }}
+      </view>
+      <van-icon name="arrow" custom-class="item-row-right-arrow" />
+    </view>
+  </view>
+
+  <view class="item-row">
+    <view class="item-row-left">
+      可用数量
+    </view>
+    <view class="item-row-right">
+      <view class="item-row-right-inventory">
+        {{ bavailqty }}
+      </view>
+    </view>
+  </view>
+
+  <view class="item-row">
+    <view class="item-row-left">
+      {{ from !== 'return-stock' ? '销售数量' : '退货数量' }}{{ itemInfo.uom ? '(' + itemInfo.uom + ')' : '' }}
+    </view>
+    <view class="item-row-right input">
+        <van-stepper
+          value="{{ quantity }}"
+          min="1"
+          max="99999999"
+          integer
+          bind:change="onQuantityChange" />
+
+    </view>
+  </view>
+  <view class="item-row" wx:if="{{ ly != 'channel' && ly != 'channelNew' }}">
+    <view class="item-row-left">
+     建议零售价(元)
+    </view>
+    <view class="item-row-right input">
+      <van-field
+        maxlength="9"
+        value="{{ suggestPrice }}"
+        type="digit"
+        placeholder=""
+        placeholder-style="font-size:26rpx;"
+        input-align="right"
+        border="{{ false }}"
+        bind:change="onPriceChange"
+        bind:blur="onPriceBlur"
+        disabled="true"
+        />
+    </view>
+  </view>
+  <view class="item-row">
+    <view class="item-row-left">
+      {{ from !== 'return-stock' ? '销售价格(元)' : '退货价格（元）' }}
+    </view>
+    <view class="item-row-right input">
+      <van-field
+        maxlength="9"
+        value="{{ price }}"
+        type="digit"
+        placeholder="{{ from !== 'return-stock' ? '请输入销售价格' : '请输入退货价格' }}"
+        placeholder-style="font-size:26rpx;"
+        input-align="right"
+        border="{{ false }}"
+        bind:change="onPriceChange"
+        bind:blur="onPriceBlur"
+        disabled="{{ lock }}"
+        />
+      <!--bind:blur="onPriceBlur"-->
+    </view>
+  </view>
+    <!--<view wx:if="{{itemInfo.price>0}}" class="item-row-left input">
+      <view class='suggest'>建议零售价{{itemInfo.price}}元，解释权归海信所有</view>
+    </view> -->
+
+  <view class="item-row">
+    <view class="item-row-left amount">
+      小计: ￥{{ amount }}
+    </view>
+    <view class="item-row-right del" catchtap="del">
+      <van-icon name="delete" custom-class="del-icon" />
+      <view class="del-tip">
+        删除
+      </view>
+    </view>
+  </view>
+
+  <!--库存状态-->
+  <van-popup
+    show="{{ chooseInvShow }}"
+    closeable
+    position="bottom"
+    custom-style="height: 570rpx"
+    zIndex="400"
+    bind:click-overlay="onClose"
+  >
+  <view class="item-inv">
+    <view class="item-inv-head">
+      <view class="item-inv-head-context">
+        <view class="item-inv-head-context-title">库存状态</view>
+      <van-icon name="cross" class="item-inv-head-context-close" bindtap="onClose" />
+      </view>
+    </view>
+    <scroll-view scroll-y class="item-inv-scroll">
+      <view wx:for="{{ itemInfo.invStatus }}" wx:key="{{ item.key }}" item="item" class="item-inv-scroll-row" data-key="{{ item.key }}" bindtap="chooseInv">
+        <view class="item-inv-scroll-row-desc {{ item.key === inventory ? 'checked' : ''}}">
+          {{ item.value }}
+        </view>
+        <block wx:if="{{ item.key === inventory }}">
+          <view class="b-icon icon-check item-inv-scroll-row-checked checked">
+          </view>
+        </block>
+      </view>
+
+    </scroll-view>
+  </view>
+  </van-popup>
+
+  <!--补差类型-->
+  <van-popup
+    show="{{ chooseInvStateShow }}"
+    closeable
+    position="bottom"
+    custom-style="height: 570rpx"
+    zIndex="400"
+    bind:click-overlay="onCloseState"
+  >
+    <view class="item-inv">
+      <view class="item-inv-head">
+        <view class="item-inv-head-context">
+          <view class="item-inv-head-context-title">补差类型</view>
+          <van-icon name="cross" class="item-inv-head-context-close" bindtap="onCloseState" />
+        </view>
+      </view>
+      <scroll-view scroll-y class="item-inv-scroll">
+        <view wx:for="{{ itemInfo.invStateTypes }}" wx:key="{{ item.key }}" item="item" class="item-inv-scroll-row" data-key="{{ item.key }}" bindtap="chooseInvState">
+          <view class="item-inv-scroll-row-desc {{ item.key === invState ? 'checked' : ''}}">
+            {{ item.value }}
+          </view>
+          <block wx:if="{{ item.key === invState }}">
+            <view class="b-icon icon-check item-inv-scroll-row-checked checked">
+            </view>
+          </block>
+        </view>
+
+      </scroll-view>
+    </view>
+  </van-popup>
+
+  <!--服务方式-->
+  <van-popup
+    show="{{ serverPopVisible }}"
+    closeable
+    position="bottom"
+    custom-style="height: 570rpx"
+    zIndex="400"
+    bind:click-overlay="closeServerPopVisible"
+  >
+    <view class="item-inv">
+      <view class="item-inv-head">
+        <view class="item-inv-head-context">
+          <view class="item-inv-head-context-title">服务列表</view>
+          <van-icon name="cross" class="item-inv-head-context-close" bindtap="closeServerPopVisible" />
+        </view>
+      </view>
+      <scroll-view scroll-y class="item-inv-scroll">
+        <view
+          wx:for="{{ itemInfo.serviceList }}"
+          wx:key="{{ item.serviceCode }}"
+          item="item"
+          class="item-inv-scroll-row"
+          data-key="{{ item.serviceCode }}"
+          data-name="{{ item.serviceName }}"
+          data-index="{{ index }}"
+          data-issupport="{{ item.isSupport }}"
+          bindtap="onChooseService"
+        >
+          <view class="item-inv-scroll-row-desc {{utils.includes(item.serviceCode, zoneB2cService) ? 'checked' : ''}} {{item.isSupport=='0' ? 'disabled' : ''}}">
+            {{ item.serviceName }}
+          </view>
+          <block wx:if="{{ utils.includes(item.serviceCode, zoneB2cService) }}">
+            <view class="b-icon icon-check item-inv-scroll-row-checked checked"></view>
+          </block>
+        </view>
+      </scroll-view>
+    </view>
+  </van-popup>
+
+  <!--仓库-->
+  <van-popup
+    show="{{ wareHouseShow }}"
+    closeable
+    position="bottom"
+    custom-style="height: 570rpx"
+    zIndex="400"
+    bind:click-overlay="onCloseWarehouse"
+  >
+    <view class="item-inv">
+      <view class="item-inv-head">
+        <view class="item-inv-head-context">
+          <view class="item-inv-head-context-title">仓库</view>
+          <van-icon name="cross" class="item-inv-head-context-close" bindtap="onCloseWarehouse" />
+        </view>
+      </view>
+      <scroll-view scroll-y class="item-inv-scroll">
+        <view wx:for="{{ itemInfo.inWarehouseList }}" wx:key="{{ item.key }}" item="item" class="item-inv-scroll-row" data-key="{{ item.key }}" bindtap="chooseWarehouse">
+          <view class="item-inv-scroll-row-desc {{ item.key === warehouseId ? 'checked' : ''}}">
+            {{ item.value }}
+          </view>
+          <block wx:if="{{ item.key === warehouseId }}">
+            <view class="b-icon icon-check item-inv-scroll-row-checked checked">
+            </view>
+          </block>
+        </view>
+      </scroll-view>
+    </view>
+  </van-popup>
+
+
+</view>

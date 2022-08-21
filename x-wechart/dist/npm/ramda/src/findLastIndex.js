@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),_dispatchable=require("./internal/_dispatchable.js"),_xfindLastIndex=require("./internal/_xfindLastIndex.js"),findLastIndex=_curry2(_dispatchable([],_xfindLastIndex,function(r,e){for(var n=e.length-1;n>=0;){if(r(e[n]))return n;n-=1}return-1}));module.exports=findLastIndex;

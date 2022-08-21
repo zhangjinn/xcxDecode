@@ -1,0 +1,577 @@
+<template>
+  <view class="order">
+    <van-popup show="{{ orderpopup }}" overlay="{{ true }}">
+      <view class="orderpopup">
+        <view class="text">您确定取消订单？</view>
+        <view class="operation">
+          <view @tap="cancel" class="operation-one">取消</view>
+          <view @tap="beSure({{item.id}})" class="operation-two">确定</view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ commentVisible }}" custom-class="order-detail-comment-popup">
+      <view class="comment-detail-wrapper">
+      <view class="comment-detail-header">
+        <view>评价</view>
+        <i class="b-icon icon-close header-close" @tap="onToggleComment"></i>
+      </view>
+      <view class="comment-detail-content">
+        <view class="comment-level">
+          <view class="comment-label">产品评价</view>
+          <van-rate value="{{commentForm.productLevel}}" size="{{ 20 }}" color="#f44" void-color="#eee" void-icon="star" data-name="productLevel" bind:change="onChangeCommentLevel"/>
+        </view>
+        <view class="comment-level">
+          <view class="comment-label">服务态度</view>
+          <van-rate value="{{commentForm.serviceLevel}}" size="{{ 20 }}" color="#f44" void-color="#eee" void-icon="star" data-name="serviceLevel" bind:change="onChangeCommentLevel"/>
+        </view>
+        <view class="comment-level">
+          <view class="comment-label">物流服务</view>
+          <van-rate value="{{commentForm.logisticsLevel}}" size="{{ 20 }}" color="#f44" void-color="#eee" void-icon="star" data-name="logisticsLevel" bind:change="onChangeCommentLevel"/>
+        </view>
+        <view class="comment-level">
+          <view class="comment-label">发货速度</view>
+          <van-rate value="{{commentForm.deliveryLevel}}" size="{{ 20 }}" color="#f44" void-color="#eee" void-icon="star" data-name="deliveryLevel" bind:change="onChangeCommentLevel"/>
+        </view>
+      </view>
+      </view>
+      <view class="comment-content">
+        <van-field type="textarea" value="{{commentForm.evaluationContent}}" border="{{false}}" placeholder="请输入评价" input-class="textarea" bind:change="onCommentContentChange"/>
+      </view>
+      <view class="comment-button">
+        <van-button type="default" color="#00AAAA" size="large" bind:click="onSubmitComment">提交</van-button>
+      </view>
+    </van-popup>
+    <van-popup show="{{ commentDetailVisible }}" custom-class="order-detail-comment-popup">
+      <view class="comment-detail-wrapper">
+      <view class="comment-detail-header">
+        <view>评价信息</view>
+        <i class="b-icon icon-close header-close" @tap="onToggleCommentDetail"></i>
+      </view>
+      <view class="comment-detail-content">
+        <view class="comment-level">
+          <view class="comment-label">产品评价</view>
+          <van-rate value="{{commentDetail.productLevel}}" size="{{ 20 }}" color="#f44" void-color="#eee" void-icon="star" readonly/>
+        </view>
+        <view class="comment-level">
+          <view class="comment-label">服务态度</view>
+          <van-rate value="{{commentDetail.serviceLevel}}" size="{{ 20 }}" color="#f44" void-color="#eee" void-icon="star" readonly/>
+        </view>
+        <view class="comment-level">
+          <view class="comment-label">物流服务</view>
+          <van-rate value="{{commentDetail.logisticsLevel}}" size="{{ 20 }}" color="#f44" void-color="#eee" void-icon="star" readonly/>
+        </view>
+        <view class="comment-level">
+          <view class="comment-label">发货速度</view>
+          <van-rate value="{{commentDetail.deliveryLevel}}" size="{{ 20 }}" color="#f44" void-color="#eee" void-icon="star" readonly/>
+        </view>
+      </view>
+      </view>
+      <view class="comment-content">
+        <van-field type="textarea" value="{{commentDetail.evaluationContent}}" border="{{false}}" placeholder="请输入评价" input-class="textarea" readonly/>
+      </view>
+    </van-popup>
+    <van-popup show="{{calendarVisible}}" position="bottom" bind:close="closeCalendar" z-index="110">
+      <calendar
+        calendarConfig="{{calendarConfig}}"
+        bind:afterTapDay="chooseDay"
+      />
+    </van-popup>
+    <scroll-view scroll-y="true" class="order-scroll">
+      <view class="order-container order-bottom-radius">
+        <view class="order-title">
+          <text class="order-id">{{orderdetail.orderHeader.orderCode}}</text>
+          <text class="order-status">{{orderdetail.orderStatus}}</text>
+        </view>
+
+        <view  class="order-detail">
+          <view class="order-detail-type">
+            订单类型:
+            <text wx:if="{{orderdetail.orderHeader.distributionBuy == '1'}}" class="order-detail-type-text">{{orderdetail.orderHeader.orderType}}(直采)</text>
+            <text wx:else class="order-detail-type-text">{{orderdetail.orderHeader.orderType}}</text>
+          </view>
+          <view class="order-detail-type">
+            订单来源:
+            <text class="order-detail-type-text">{{orderdetail.orderHeader.orderSource}}</text>
+          </view>
+          <view hidden="{{!stretchFlag}}" class="order-detail order-detail-open ">
+            <view wx:if="{{orderdetail.orderHeader.preCancelStatus}}" class="order-detail-type">
+              <text class="address2-label">驳回/取消前状态:</text>
+              <text class="order-detail-type-text address-text">{{orderdetail.orderHeader.preCancelStatus}}</text>
+            </view>
+            <view wx:if="{{orderdetail.orderHeader.cancelReason}}" class="order-detail-type">
+              <text class="address2-label">驳回/取消原因:</text>
+              <text class="order-detail-type-text address-text">{{orderdetail.orderHeader.cancelReason}}</text>
+            </view>
+            <view wx:if="{{orderdetail.orderHeader.agentName}}" class="order-detail-type">
+              上级代理:
+              <text class="order-detail-type-text">{{orderdetail.orderHeader.agentName}}-{{orderdetail.orderHeader.agentCode}}</text>
+            </view>
+            <view wx:if="{{orderdetail.orderHeader.orderTypeCode === 'project'}}" class="order-detail-type">
+              工程名称:
+              <text class="order-detail-type-text">{{orderdetail.orderHeader.projectName}}</text>
+            </view>
+            <view wx:if="{{orderdetail.orderHeader.orderTypeCode === 'level'}}" class="order-detail-type">
+              特惠编码:
+              <text class="order-detail-type-text">{{orderdetail.orderHeader.reportCode}}</text>
+            </view>
+            <view wx:if="{{orderdetail.orderHeader.orderTypeCode === 'combined'}}" class="order-detail-type">
+              套购名称:
+              <text class="order-detail-type-text">{{orderdetail.orderHeader.packageName}}</text>
+            </view>
+            <view class="order-detail-type">
+              开票户头:
+              <text class="order-detail-type-text">{{orderdetail.orderHeader.fullName}}</text>
+            </view>
+            <view class="order-detail-type">
+              配送方式:
+              <text class="order-detail-type-text">{{orderdetail.orderHeader.deliveryType}}</text>
+            </view>
+            <view wx:if="{{orderdetail.orderHeader.deliveryTypeCode === '06'}}" class="order-detail-type">
+              <text class="address-label">分销商地址:</text>
+              <text class="order-detail-type-text address-text">{{orderdetail.orderHeader.address}}</text>
+            </view>
+            <view wx:if="{{orderdetail.orderHeader.deliveryTypeCode === '04'}}" class="order-detail-type">
+              <text class="address2-label">直配地址:</text>
+              <text class="order-detail-type-text address-text">{{orderdetail.orderHeader.address}}</text>
+            </view>
+            <view class="order-detail-type">
+              联系人:
+              <text class="order-detail-type-text">{{orderdetail.orderHeader.contact}}</text>
+            </view>
+            <view class="order-detail-type">
+              联系方式:
+              <text class="order-detail-type-text">{{orderdetail.orderHeader.contactPhone}}</text>
+            </view>
+            <view class="order-detail-type" wx:if="{{orderdetail.orderHeader.salesShopInfoName}}">
+              销量所属门店:
+              <text class="order-detail-type-text">{{orderdetail.orderHeader.salesShopInfoName}}</text>
+            </view>
+            <view class="order-detail-type">
+              <text class="address2-label">收货地址:</text>
+              <text class="order-detail-type-text address-text">{{orderdetail.orderHeader.address2}}</text>
+            </view>
+            <view class="order-detail-type">
+              客户采购订单号:
+              <text
+                class="order-detail-type-text"
+              >{{orderdetail.orderHeader.purchaseCode === 'null' ? '无' : orderdetail.orderHeader.purchaseCode || ''}}</text>
+            </view>
+            <view class="order-detail-type">
+              是否使用返利:
+              <text
+                class="order-detail-type-text"
+              >{{orderdetail.orderHeader.isRebate === 'Y' ? '是': '否'}}</text>
+            </view>
+            <view class="order-detail-type">
+              是否允许提前发货:
+              <text
+                class="order-detail-type-text"
+              >{{orderdetail.isAllowAdvancDeliver === '1' ? '允许': '不允许'}}</text>
+            </view>
+            <!--常规订单显示拒绝原因-->
+            <view class="order-detail-type" wx:if="{{orderdetail.orderHeader.orderTypeCode == 'routine'}}">
+              驳回意见:
+              <text
+                class="order-detail-type-text"
+              >{{orderdetail.auditedOpinion ? orderdetail.auditedOpinion : '' }}</text>
+            </view>
+
+            <!--<view class="order-detail-delay">
+              预计送达时间：
+              <text class="order-detail-delay-text" wx:if="{{orderdetail.erpList.length>0}}">{{orderdetail.erpList[0].expectedDeliveryDate?orderdetail.erpList[0].expectedDeliveryDate:''}}</text>
+            </view>-->
+
+            <view class="order-detail-delay">
+              有效期截止日期:
+              <text class="order-detail-delay-text">{{orderdetail.expireDate}}</text>
+              <!-- 常规订单不显示延期按钮 -->
+              <!--<view wx:if="{{orderdetail.orderStatus != '已完成' && orderdetail.orderStatus != '已驳回'  && orderdetail.orderStatus != '等待支付结果'  && orderdetail.orderStatus != '未付款' && orderdetail.showYq && orderdetail.orderHeader.orderTypeCode != 'routine'}}" class="order-detail-delay-time" @tap="openCalendar({{}})">-->
+<!--              <view wx:if="{{orderdetail.orderHeader.orderStatusCode != 'CHECKED' && orderdetail.orderHeader.orderStatusCode != 'REJECT'  && orderdetail.orderHeader.orderStatusCode != 'WAITPAYRESULT'  && orderdetail.orderHeader.orderStatusCode != 'UNPAYED' && orderdetail.showYq && orderdetail.orderHeader.orderTypeCode != 'routine'}}" class="order-detail-delay-time" @tap="openCalendar({{}})">-->
+<!--                <text class="delay-time" >延期</text>-->
+<!--                <view class="b-icon icon-more delay-icon" />-->
+<!--              </view>-->
+            </view>
+            <!--常规订单显示要求到货周-->
+            <view class="order-detail-delay" wx:if="{{orderdetail.orderHeader.orderTypeCode == 'routine'}}">
+              要求到货周:
+              <text class="order-detail-delay-text">{{orderdetail.orderHeader.weekName}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="fold-box">
+          <view class="box-stretch-btn audit-icon  {{ stretchFlag ? 'active':'' }}" @tap="stretchFlag">
+            {{stretchFlag ? '收起' : '展开完整信息'}}
+            <view class="b-icon iconliebiaoshaixuanjiantou-down icon put-away-icon" />
+          </view>
+        </view>
+
+      </view>
+      <!-- <view wx:if="{{orderdetail.orderStatus != '待代理商审核' || orderdetail.orderStatus != '已取消'}}" class="order-dealer-review van-hairline--top"> -->
+      <!--<view wx:if="{{ orderdetail.orderHeader.agentAuditor != null && orderdetail.orderHeader.isFenXiao == 'Y' && orderdetail.orderHeader.agentAuditedOpinion == null && (orderdetail.orderStatus != '待代理商审核' && orderdetail.orderStatus != '未付款')}}"  class="order-dealer-review van-hairline&#45;&#45;top">-->
+      <view wx:if="{{ orderdetail.orderHeader.agentAuditor != null && orderdetail.orderHeader.isFenXiao == 'Y' && orderdetail.orderHeader.agentAuditedOpinion == null && (orderdetail.orderHeader.orderStatusCode != 'AGENTUNCHKED' && orderdetail.orderHeader.orderStatusCode != 'UNPAYED')}}"  class="order-dealer-review van-hairline--top">
+        <view class="dealer-review-person">代理商审核人:  {{orderdetail.orderHeader.agentAuditor || '' }}</view>
+        <view class="dealer-review-time ">
+          代理商审核时间: {{orderdetail.orderHeader.agentAuditedDate}}
+        </view>
+      </view>
+      <view  hidden="{{!statusObj.CANCEL}}" class="order-path-box" >
+        <ul>
+          <view hidden="{{!statusObj.CUSTORDER}}">
+            <li class="first-item {{statusObj.CUSTORDER ? 'active' : ''}}">
+              <i class="b-icon iconxiadan path-icon"></i>
+              下单
+            </li>
+          </view>
+          <view hidden="{{!statusObj.REVIEWCOMPLETED || orderdetail.orderHeader.orderTypeCode != 'routine'}}">
+            <li class="{{statusObj.REVIEWCOMPLETED ? 'active' : ''}}">
+              <i class="b-icon icondingdanpingshen path-icon"></i>
+              评审{{psType == '0' ? '驳回' : '通过'}}
+            </li>
+          </view>
+          <view hidden="{{!statusObj.WAITDELIVER}}">
+            <li class="{{statusObj.WAITDELIVER ? 'active' : ''}}">
+              <i class="b-icon iconjihuafahuo path-icon"></i>
+              待发货
+            </li>
+          </view>
+          <view hidden="{{!statusObj.PARTCHECKED}}">
+            <li class="{{statusObj.PARTCHECKED ? 'active' : ''}}">
+              <i class="b-icon iconfahuozhong path-icon"></i>
+              发货中
+            </li>
+          </view>
+          <view hidden="{{!statusObj.CUSTSIGIN}}">
+            <li class="{{statusObj.CUSTSIGIN ? 'active' : ''}}">
+              <i class="b-icon iconduihao path-icon"></i>
+              客户签收
+            </li>
+          </view>
+          <li class="{{statusObj.CANCEL ? 'active' : ''}}">
+            <i class="b-icon iconyiquxiao path-icon"></i>
+            已取消
+          </li>
+        </ul>
+      </view>
+      <view  hidden="{{statusObj.CANCEL}}" class="order-path-box">
+        <ul>
+          <li class="first-item {{statusObj.CUSTORDER ? 'active' : ''}}">
+            <i class="b-icon iconxiadan path-icon"></i>
+            下单
+          </li>
+          <view hidden="{{orderdetail.orderHeader.orderTypeCode != 'routine'}}">
+            <li class="{{statusObj.REVIEWCOMPLETED ? 'active' : ''}}">
+              <i class="b-icon icondingdanpingshen path-icon"></i>
+              评审{{psType == '0' ? '驳回' : '通过'}}
+            </li>
+          </view>
+          <li class="{{statusObj.WAITDELIVER ? 'active' : ''}}">
+            <i class="b-icon iconjihuafahuo path-icon"></i>
+            待发货
+          </li>
+          <li class="{{statusObj.PARTCHECKED ? 'active' : ''}}">
+            <i class="b-icon iconfahuozhong path-icon"></i>
+            发货中
+          </li>
+          <li class="{{statusObj.CUSTSIGIN ? 'active' : ''}}">
+            <i class="b-icon iconduihao path-icon"></i>
+            客户签收
+          </li>
+        </ul>
+      </view>
+      <view class="order-container order-top-radius">
+
+      <!--  组合购 -->
+        <block wx:if="{{orderdetail.orderHeader.productGroupFlag == 'Y'}}">
+          <view wx:for="{{ orderdetail.orderLines }}" wx:for-index="idx" wx:key="idx" wx:for-item="modelList" >
+            <view class="modelSeriesHeader">
+              <view>{{ modelList.productGroupRemark }}</view>
+              <view class="condition">x{{ modelList.packageNum }}</view>
+            </view>
+            <repeat for="{{modelList.child}}" wx:for-index="index" item="item">
+              <view class="order-goods van-hairline--bottom">
+                <view class="order-select">
+                  <van-checkbox disabled="{{ item.canCancel =='N' }}" value="{{ item.isChecked }}" checkedColor="#00AAA6" icon-size="25px" @tap="onCheckOrder({{idx}},{{index}},{{item.isChecked}})"></van-checkbox>
+                </view>
+                <navigator class="order-goods-img" url="/pages/goods/item/index?code={{item.productId}}&orgId={{orderdetail.orderHeader.orgId}}&orgCode={{orderdetail.orderHeader.orgCode}}">
+                  <img class="goodimg" src="{{ item.img }}" errSrc="{{ item.errImg }}"/>
+                </navigator>
+                <view class="order-goods-detail">
+                  <view class="order-goods-detail-name">
+                    <view class="order-goods-detail-name-left">
+                      <view wx:if="{{item.freeDelivery && item.freeDelivery == '1'}}" class="item-info-tag">免运费</view>
+                      <text class="detail-text">{{item.b2bName}}</text>
+                    </view>
+                  </view>
+                  <view class="order-goods-detail-explain">
+                    <text class="explain-text van-ellipsis">{{ item.fixedDiscount ? '固定折扣：' + item.fixedDiscount + '%，' : ''}}{{item.makeUpType ? '补差类型：' + item.makeUpType : ''}}</text>
+                  </view>
+                  <!--<view class="order-goods-detail-explain">
+                    <text class="explain-text van-ellipsis">预计送达时间：{{item.expectedDeliveryDate}}</text>
+                  </view>-->
+                  <view class="order-goods-detail-number">
+                    <text class="good-price">
+                      <text class="order-code">￥</text>
+                      <text class="order-num">{{item.billPrice}}</text>
+                      <text wx:if="{{item.color}}" class="order-color">({{item.color}})</text>
+                      <!--￥{{item.billPrice}}{{item.priceGroupName ? '(' + item.priceGroupName + ')' : ''}}-->
+                    </text>
+                    <text wx:if="{{!item.isChecked}}" class="good-number">×{{item.textQty}}</text>
+                    <block wx:else>
+                      <van-stepper
+                        disabled=""
+                        integer="{{true}}"
+                        value="{{item.qty}}"
+                        min="1"
+                        max="{{item.maxQty}}"
+                        data-seriesindex="{{ idx }}"
+                        data-itemindex="{{ index }}"
+                        bind:change="onCombinationPurchaseNumChange"
+                        custom-class="order-wrapper-stepper"
+                        input-class="cart-input-class"
+                        plus-class="cart-action-class"
+                        minus-class="cart-action-class"
+                      />
+                    </block>
+                  </view>
+
+                  <view class="bottom-block-view">
+                    <text class="desc" wx:if="{{item.priceGroupName}}">{{ item.priceGroupName }}</text>
+                    <text class="desc" wx:if="{{item.deposit != null}}">定金￥{{ item.deposit }}</text>
+                    <text class="desc" wx:if="{{item.rebate != null}}">返利金￥{{ item.rebate }}</text>
+                  </view>
+                  <!-- 不确定是否需要显示 -->
+                  <view class="order-goods-detail-type">
+                    <text class="text" wx:if="{{ item.purchaseType==1 || item.purchaseType==3 }}">支持应急采购</text>
+                    <text class="text" wx:if="{{ item.purchaseType==2 || item.purchaseType==3 }}">支持常规采购</text>
+                  </view>
+
+                  <view class="order-agreements">
+                    <view  class="order-agreements-number">
+                      <!--<block wx:if="{{ orderdetail.orderStatus != '等待支付结果'  && orderdetail.orderStatus != '未付款' }}">-->
+                      <block wx:if="{{ orderdetail.orderHeader.orderStatusCode != 'WAITPAYRESULT'  && orderdetail.orderHeader.orderStatusCode != 'UNPAYED' }}">
+                        <text>已取消({{item.cancelQty || 0}})</text>
+                        <text>已审核({{item.erpQty || 0}})</text>
+                      </block>
+                      <!--常规订单-->
+                      <block wx:if="{{orderdetail.orderHeader.orderTypeCode == 'routine'}}">
+                        <text>已过期({{item.timeOutQty || 0}})</text>
+                        <text>已驳回({{item.reJectQty || 0}})</text>
+                        <text>待排产({{item.planProductQty || 0}})</text>
+                        <text wx:if="{{orderdetail.orderHeader.orderStatusCode == 'HEADCHECK' || orderdetail.orderHeader.orderStatusCode == 'BRANCHCHECK'}}">待评审({{item.qty || 0}})</text>
+                        <text wx:if="{{orderdetail.orderHeader.orderStatusCode == 'ALREADYPLANPRODUCT'}}">已评审({{item.qty || 0}})</text>
+                      </block>
+                    </view>
+                  </view>
+
+                </view>
+              </view>
+            </repeat>
+          </view>
+        </block>
+
+        <!--  非组合购 -->
+        <block wx:else>
+          <repeat for="{{orderdetail.orderLines}}" item="item">
+            <view class="order-goods van-hairline--bottom">
+              <navigator class="order-goods-img" url="/pages/goods/item/index?code={{item.productId}}&orgId={{orderdetail.orderHeader.orgId}}&orgCode={{orderdetail.orderHeader.orgCode}}">
+                <img class="goodimg" src="{{ item.img }}" errSrc="{{ item.errImg }}"/>
+              </navigator>
+              <view class="order-goods-detail">
+                <view class="order-goods-detail-name">
+                  <view class="order-goods-detail-name-left">
+                    <view wx:if="{{item.freeDelivery && item.freeDelivery == '1'}}" class="item-info-tag">免运费</view>
+                    <text class="detail-text">{{item.b2bName}}</text>
+                  </view>
+
+                  <!--1. 常规订单 只有“待分公司评审”可以取消
+                  <block wx:if="{{orderdetail.orderHeader.orderTypeCode == 'routine'}}">
+                    <block wx:if="{{orderdetail.orderStatus == '待分公司评审' || orderdetail.orderStatus == '待总部评审' || orderdetail.orderStatus == '待排产' || orderdetail.orderStatus == '已排产' || orderdetail.orderStatus == '待发货' }}">
+                      <text wx:if="{{ item.erpQty + item.cancelQty < item.qty }}" @tap="start({{item.id}})" class="detail-text-cancel">取消</text>
+                    </block>
+                  </block>
+                  -->
+                  <!-- 2. 非常规订单 UNCHKED（待发货）、PARTCHECKED（发货中）才能取消
+                  <block wx:else>
+                    <text wx:if="{{(orderdetail.orderStatus === '待发货' || orderdetail.orderStatus === '发货中')  && orderdetail.orderHeader.orderSource === '前台下单' && item.erpQty + item.cancelQty < item.qty  && !(orderdetail.orderHeader.orderType === '应急订单' && orderdetail.orderHeader.distributionBuy == '1') }}" @tap="start({{item.id}})" class="detail-text-cancel">取消</text>
+                    <text wx:if="{{(orderdetail.orderStatus === '待发货' || orderdetail.orderStatus === '发货中')  && orderdetail.orderHeader.orderSource === '小程序下单' && item.erpQty + item.cancelQty < item.qty  && !(orderdetail.orderHeader.orderType === '应急订单' && orderdetail.orderHeader.distributionBuy == '1') }}" @tap="start({{item.id}})" class="detail-text-cancel">取消</text>
+                  </block>
+                  -->
+                  <text wx:if="{{ item.canCancel === 'Y' }}" @tap="start({{item.id}})" class="detail-text-cancel">取消</text>
+
+                </view>
+                <view class="order-goods-detail-explain">
+                  <text class="explain-text van-ellipsis">{{ item.fixedDiscount ? '固定折扣：' + item.fixedDiscount + '%，' : ''}}{{item.makeUpType ? '补差类型：' + item.makeUpType : ''}}</text>
+                </view>
+                <!--<view class="order-goods-detail-explain">
+                  <text class="explain-text van-ellipsis">预计送达时间：{{item.expectedDeliveryDate}}</text>
+                </view>-->
+                <view class="order-goods-detail-number">
+                  <text class="good-price">
+                    <!--￥{{item.billPrice}}{{item.priceGroupName ? '(' + item.priceGroupName + ')' : ''}}-->
+                    <text class="order-code">￥</text>
+                    <text class="order-num">{{item.billPrice}}</text>
+                    <text wx:if="{{item.color}}" class="order-color">({{item.color}})</text>
+                  </text>
+                  <text class="good-number">×{{item.qty}}</text>
+                </view>
+                <view class="bottom-block-view">
+                  <text class="desc" wx:if="{{item.priceGroupName}}">{{ item.priceGroupName }}</text>
+                  <text class="desc" wx:if="{{item.deposit != null}}">定金￥{{ item.deposit }}</text>
+                  <text class="desc" wx:if="{{item.rebateMoney != null}}">返利金￥{{ item.rebateMoney }}</text>
+                </view>
+                <!-- 不确定是否需要显示 -->
+                <view class="order-goods-detail-type">
+                  <text class="text" wx:if="{{ item.purchaseType==1 || item.purchaseType==3 }}">支持应急采购</text>
+                  <text class="text" wx:if="{{ item.purchaseType==2 || item.purchaseType==3 }}">支持常规采购</text>
+                </view>
+
+                <view class="order-agreements">
+                  <view  class="order-agreements-number">
+                    <!--<block wx:if="{{ orderdetail.orderStatus != '等待支付结果'  && orderdetail.orderStatus != '未付款' }}">-->
+                    <block wx:if="{{ orderdetail.orderHeader.orderStatusCode != 'WAITPAYRESULT'  && orderdetail.orderHeader.orderStatusCode != 'UNPAYED' }}">
+                      <text>已取消({{item.cancelQty || 0}})</text>
+                      <text>已审核({{item.erpQty || 0}})</text>
+                    </block>
+                    <!--常规订单-->
+                    <block wx:if="{{orderdetail.orderHeader.orderTypeCode == 'routine'}}">
+                      <text>已过期({{item.timeOutQty || 0}})</text>
+                      <text>已驳回({{item.reJectQty || 0}})</text>
+                      <text>待排产({{item.planProductQty || 0}})</text>
+                      <text wx:if="{{orderdetail.orderHeader.orderStatusCode == 'HEADCHECK' || orderdetail.orderHeader.orderStatusCode == 'BRANCHCHECK'}}">待评审({{item.qty || 0}})</text>
+                      <text wx:if="{{orderdetail.orderHeader.orderStatusCode == 'ALREADYPLANPRODUCT'}}">已评审({{item.qty || 0}})</text>
+                    </block>
+                  </view>
+                </view>
+
+              </view>
+            </view>
+
+          </repeat>
+        </block>
+
+      </view>
+
+      <!--  组合购底部操作栏 -->
+      <view class="order-finals order-bottom-radius" wx:if="{{orderdetail.orderHeader.productGroupFlag == 'Y'}}">
+        <view class="order-select-all">
+          <van-checkbox disabled="{{orderdetail.orderHeader.groupCanCancel != 'Y'}}" value="{{ isCheckedAll }}" checkedColor="#00AAA6" icon-size="25px" @tap="onCheckOrderAll({{ isCheckedAll }})">全选</van-checkbox>
+        </view>
+        <view class="order-final">
+          <text class="order-expect-price" wx:if="{{purchaseType==='2' && orderdetail.orderHeader.isPujie == false }}">预付款 ￥{{orderdetail.orderHeader.orderAdvanceAmt}}   </text>
+        </view>
+        <block wx:if="{{orderdetail.orderHeader.groupCanCancel == 'Y'}}">
+          <view wx:if="{{orderdetail.isPurchaseStandard}}" class="handleCancel" @tap="handleCancel">取消</view>
+          <view wx:else class="handleCancelNoClick" @tap="handleCancelNoClick">取消</view>
+        </block>
+      </view>
+
+      <!--  非组合购底部操作栏 -->
+      <view wx:else class="order-finals order-bottom-radius">
+        <view class="order-final">
+          <text class="order-expect-price" wx:if="{{purchaseType==='2' && orderdetail.orderHeader.isPujie == false }}">预付款 ￥{{orderdetail.orderHeader.orderAdvanceAmt}}   </text>
+          <text class="order-final-price">合计 ￥{{orderdetail.orderHeader.orderAmt}}</text>
+        </view>
+      </view>
+
+      <!-- wx:if="{{orderdetail.orderStatus == '已取消'}}" -->
+      <!-- <view wx:if="{{orderdetail.orderStatus == '已取消'}}" class="review-comments"> -->
+      <view wx:if="{{ orderdetail.orderHeader.agentAuditor != null && orderdetail.orderHeader.isFenXiao == 'Y' && orderdetail.orderHeader.agentAuditedOpinion !== null }}" class="review-comments">
+        <view  class="comments-review">
+          <view class="dealer-review-person">代理商审核人:  {{orderdetail.orderHeader.agentAuditor || '' }}</view>
+          <view class="dealer-review-time ">
+            代理商审核时间: {{orderdetail.orderHeader.agentAuditedDate}}
+          </view>
+        </view>
+        <view class="comments-text">审核意见:</view>
+        <view class="comment-info ">
+          {{orderdetail.orderHeader.agentAuditedOpinion}}
+        </view>
+      </view>
+      <!-- <view hidden="{{orderdetail.erpList && orderdetail.erpList.length > 0 ? 'false' : 'true'}}" class="order-container"> -->
+      <view wx:if="{{orderdetail.erpList.length}}" class="order-container">
+        <view class="order-audit-form">
+          <view class="order-audit-form-text">审核单信息</view>
+        </view>
+        <view class="order-audit-now van-hairline--bottom">
+          <view class="audit-text">{{orderdetail.nowgoods.sapOrderCode}}</view>
+          <view @tap="viewmore" class="audit-icon">
+            查看更多审核单
+            <view class="b-icon icon-more icon {{ viewmore ? 'active': ''}}" />
+          </view>
+        </view>
+        <view class="{{ viewmore ? 'order-audit-list-active': 'order-audit-list'}} van-hairline--bottom">
+          <repeat for="{{orderdetail.erpList}}" item="item">
+            <view @tap="chose({{item.sapOrderCode}})" class="{{ item.active ? 'audit-text' : 'audit-now-text'}}">{{item.sapOrderCode}}</view>
+          </repeat>
+        </view>
+        <view class="order-audit-status van-hairline--bottom">
+          <view class="order-audit-one">状态: {{orderdetail.nowgoods.statusName}}</view>
+          <view class="order-audit-two">创建日期: {{orderdetail.nowgoods.createdDate}}</view>
+          <view class="order-audit-two">预计到货时间: {{orderdetail.nowgoods.expectedDeliveryDate?orderdetail.nowgoods.expectedDeliveryDate:""}}</view>
+          <view class="order-audit-two" style="color: red" wx:if="{{orderdetail.nowgoods.appointmentLate}}">{{orderdetail.nowgoods.appointmentLate}}预约晚到</view>
+        </view>
+        <view class="order-audit-delivery">
+          <repeat for="{{orderdetail.sapOrderItems[orderdetail.nowgoods.id]}}">
+            <view>
+              <view class="order-audit-delivery-goods">{{item.zzprdmodel}}/{{item.z_color || ''}}</view>
+              <view class="order-audit-delivery-number">
+                <text class="good-price">￥{{item.billPrice}}</text>
+                <text class="good-number">×{{item.erpQty}}</text>
+              </view>
+              <view class="order-audit-agreements">
+                <view class="order-audit-agreements-number">
+                  <text wx:if="{{item.shQty}}">已甩货({{item.shQty}})</text>
+                  <text wx:if="{{(item.rejectQuantity+item.lostQuantity)!==0}}">已拒收({{item.rejectQuantity+item.lostQuantity}})</text>
+                  <text wx:if="{{item.outboundQty}}">发货中({{item.outboundQty}})</text>
+                  <text wx:if="{{item.waitSendQty}}">待发货({{item.waitSendQty}})</text>
+                  <text wx:if="{{item.signQty}}">已签收({{item.signQty}})</text>
+                  <text wx:if="{{item.cancelQty}}">已取消({{item.cancelQty}})</text>
+                </view>
+              </view>
+            </view>
+          </repeat>
+          <view class="order-audit-final van-hairline--bottom">
+              <view class="line1">
+                  <text class="order-audit-final-price">合计 ￥{{orderdetail.nowgoods.amt}}</text>
+                <text style='width:120rpx' @tap="receiptEffect({{orderdetail.nowgoods}})" class="btn-comment" wx:if="{{item.deliveryTypeName !== '自提' && item.orderSourceName !== 'SAP'}}">回单影像</text>
+                <text style='width:160rpx' @tap="sapCancle({{orderdetail.nowgoods}})" class="btn-comment" wx:if="{{orderdetail.nowgoods.statusName == '已审核'}}">订单取消</text>
+                <!-- <text wx:if="{{(orderdetail.nowStatuses[orderdetail.nowgoods.id] === 'O8' || orderdetail.nowStatuses[orderdetail.nowgoods.id] === 'O11') && !orderdetail.nowgoods.havaOrderEvaluation}}" class="btn-comment" @tap="onToggleComment({{orderdetail.nowgoods}})">评价</text>
+                <text wx:if="{{orderdetail.nowgoods.havaOrderEvaluation}}" class="btn-comment" @tap="onToggleCommentDetail({{orderdetail.nowgoods}})">评价</text> -->
+              </view>
+             <view wx:if="{{((orderdetail.nowStatuses[orderdetail.nowgoods.id] === 'O8' || orderdetail.nowStatuses[orderdetail.nowgoods.id] === 'O11') && !orderdetail.nowgoods.havaOrderEvaluation) || orderdetail.nowgoods.havaOrderEvaluation}}" class="line2">
+                <text wx:if="{{(orderdetail.nowStatuses[orderdetail.nowgoods.id] === 'O8' || orderdetail.nowStatuses[orderdetail.nowgoods.id] === 'O11') && !orderdetail.nowgoods.havaOrderEvaluation}}" class="btn-comment-tip">{{ dynamicMessage.evaluateTip ? dynamicMessage.evaluateTip : '如有订单相关问题，您可咨询或者投诉模块反馈' }}</text>
+                <text wx:if="{{orderdetail.nowgoods.havaOrderEvaluation}}" class="btn-comment-tip">{{ dynamicMessage.evaluateTip ? dynamicMessage.evaluateTip : '如有订单相关问题，您可咨询或者投诉模块反馈' }}</text>
+            </view>
+          </view>
+
+
+          <view wx:if="{{orderdetail.nowgoods.logisticsStatus}}" class="order-audit-logistics-information">
+            <view class="order-audit-logistics-information-status">物流状态</view>
+            <view class="order-audit-logistics-information-steps">
+              <van-steps
+                steps="{{ orderdetail.nowgoods.logisticsStatus }}"
+                active="{{ active }}"
+                direction="vertical"
+                active-color="#00aaa6"
+              />
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+    <van-popup show="{{isImg}}" bind:close="onClose">
+      <view >
+        <image
+          wx:for = "{{ImgArr}}"
+          wx:key="{{index}}"
+          src="{{item}}"
+        alt=""/>
+      </view>
+    </van-popup>
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" ></style>
+<script lang="typescript" src="./index.ts" ></script>

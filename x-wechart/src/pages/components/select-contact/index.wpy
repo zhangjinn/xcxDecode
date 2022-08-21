@@ -1,0 +1,40 @@
+<template>
+  <view class="goods-toper">
+    <view class="item-row">
+      <view class="item-row-left">
+        <text>联系人</text>
+        <text
+          class="redXing"
+          wx:if="{{isRequired}}"
+        >*</text>
+      </view>
+      <view class="item-row-right">
+        <view class="item-row-right-note">
+          <van-field
+            value="{{ contact }}"
+            placeholder="请输入联系人"
+            border="{{ false }}"
+            input-align="right"
+            bind:change="onChange"
+            class="dms-order-note"
+          />
+        </view>
+      </view>
+    </view>
+
+    <view class='prod-scroll-view' wx:if="{{popShow && contacts.length>0}}">
+      <view class="cancel-btn"><i @tap="onCancel" class="b-icon iconyiquxiao"></i></view>
+      <scroll-view class='prod-scroll-view-inner' scroll-y>
+        <repeat for="{{contacts}}" item="item">
+          <view class="order-operation">
+            <view class="operation-text {{index < contacts.length-1 ? 'van-hairline--bottom' : ''}}" @tap="onSelect({{item}})">
+              <view class="operation-status">{{item.contact}}</view>
+            </view>
+          </view>
+        </repeat>
+      </scroll-view>
+    </view>
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

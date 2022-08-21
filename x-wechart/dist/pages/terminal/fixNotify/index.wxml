@@ -1,0 +1,52 @@
+
+
+  <view class="page-wrap _366bac6">
+    <view class="top-wrap _366bac6">
+      <view class="left-wrap _366bac6">
+        <view class="text name _366bac6">{{ detail.storeName }}</view>
+        <view class="text _366bac6">
+          <text class="lab _366bac6">创建日期</text>
+          <text class="val _366bac6">{{ detail.checkTime }}</text>
+        </view>
+        <view class="text _366bac6">
+          <text class="lab _366bac6">督办 人员</text>
+          <text class="val _366bac6">{{ detail.checkUserName }}</text>
+        </view>
+      </view>
+      <view class="right-wrap _366bac6">
+        <image class="img _366bac6" src="{{detail.checkResult=='T' ? imgObj.pointPass : imgObj.pointUnpass}}"/>
+      </view>
+    </view>
+    <view class="prob-wrap _366bac6">
+      <view class="name van-hairline--bottom _366bac6">不合格项</view>
+      <block class="_366bac6" wx:for="{{detail.listStandard}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="item _366bac6">
+          <view class="num _366bac6">
+            {{ index+1 }}.
+          </view>
+          <view class="cont _366bac6">
+            {{ item.contentRead }}
+          </view>
+        </view>
+      </block>
+    </view>
+    <view class="form-wrap _366bac6"  wx:if="{{!optionsTemp.read}}">
+      <view class="name van-hairline--bottom _366bac6"><text class="cell--required nbsp _366bac6"/>整改结果</view>
+      <view class="upload-wrap _366bac6">
+        <van-uploader max-count="3" data-state="4" capture="{{camera}}" accept="image" file-list="{{ imgList }}"  bind:delete="deleteImg" bind:after-read="afterRead" sizeType="compressed" class="_366bac6">
+          <!--          <image src="/images/newpage/jia.png" class="jiaImg"></image>-->
+        </van-uploader>
+      </view>
+      <view class="remark-wrap _366bac6">
+        <van-field value="{{planConent}}"  bind:change="onDescriptionChange" placeholder="请输入备注" maxlength="200" border="{{ false }}" custom-style="width:100%;color:#969698;height:100%;" type="textarea" autosize="{ maxHeight: 200, minHeight: 200 }" class="_366bac6"/>
+      </view>
+    </view>
+    <view class="bottom-wrap _366bac6">
+      <view class="btn _366bac6" bindtap="back">
+        返回
+      </view>
+      <view  wx:if="{{!optionsTemp.read}}" class="btn btn-ok _366bac6" bindtap="submit">
+        提交
+      </view>
+    </view>
+  </view>

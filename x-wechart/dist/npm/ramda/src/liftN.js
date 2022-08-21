@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),_reduce=require("./internal/_reduce.js"),ap=require("./ap.js"),curryN=require("./curryN.js"),map=require("./map.js"),liftN=_curry2(function(r,e){var u=curryN(r,e);return curryN(r,function(){return _reduce(ap,map(u,arguments[0]),Array.prototype.slice.call(arguments,1))})});module.exports=liftN;

@@ -1,0 +1,48 @@
+<template>
+  <view class="search">
+    <block wx:if="{{ searchPermissions }}">
+      <van-search
+        custom-class="header-search"
+        shape="round"
+        use-action-slot
+        use-left-icon-slot="{{ true }}"
+        leftSearchIconSow="{{ false }}"
+        placeholder="请输入关键字"
+        placeholder-style="color: #AAAAAA; font-size: 28rpx;"
+        bind:change="onChange"
+      >
+        <view slot="label" class="search-left-icon">
+          <i class="b-icon shouyesousuo"></i>
+        </view>
+        <view slot="action" bind:tap="onSearch">搜索</view>
+      </van-search>
+
+      <view class="topic">
+        <view class="card">
+          <view class="card-header">
+            <view class="card-header-title">历史搜索</view>
+            <view class="card-header-extral" @tap="clearHistory">
+              <i class="b-icon h-icon shanchu"></i>
+            </view>
+          </view>
+          <view class="card-body card-list">
+            <repeat for="{{ searchHistory }}" index="index" key="index" item="history">
+              <view
+                data-url="{{ history.url }}"
+                data-value="{{ history.value }}"
+                @tap="clickHistory"
+                class="card-list-item"
+              >
+                <text class="card-list-item-text">{{ history.value }}</text>
+              </view>
+            </repeat>
+          </view>
+        </view>
+      </view>
+    </block>
+    <emptyDataType wx:else description="权限"/>
+
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

@@ -1,0 +1,34 @@
+.page-wrap._a43e05a {
+  background-color: #f6f6f6;
+  position: relative;
+  height: 100vh;
+  overflow: auto;
+}
+.page-wrap .top-wrap .van-cell-text._a43e05a {
+  font-size: 24rpx;
+}
+.page-wrap .bottom-wrap._a43e05a {
+  background: #fff;
+  margin-top: 20rpx;
+  height: calc(100vh - 220rpx);
+  overflow: auto;
+  padding-bottom: 100rpx;
+}
+.page-wrap .bottom-wrap .item._a43e05a {
+  height: 90rpx;
+  line-height: 90rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  margin: 0 20rpx;
+  border-bottom: 1px solid #EEEEEE;
+}
+.page-wrap .bottom-wrap .item text._a43e05a {
+  color: #262626;
+}
+.page-wrap .bottom-wrap .item .check._a43e05a {
+  color: #00AAA6;
+}

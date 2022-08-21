@@ -1,0 +1,9 @@
+<template>
+  <view class="scroll-bar">
+    <view class="dots" style="background: {{bgColorOut}}">
+      <view class="dot" style="transform: translateX({{translateX}}rpx); background: {{bgColorInner}}; {{isAnimationDelay ? 'transition: all 0.2s' : ''}}"></view>
+    </view>
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

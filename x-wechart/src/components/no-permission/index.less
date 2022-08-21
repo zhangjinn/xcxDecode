@@ -1,0 +1,62 @@
+@import '../../styles/index.less';
+@import '../../styles/utils.less';
+
+.permission {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #FFF;
+
+  &-logo {
+    margin-top: 330rpx;
+    width: 500rpx;
+    height: 298rpx;
+    image {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  &-head {
+    margin-top: 458rpx;
+  }
+  &-tip {
+    margin-top: 62rpx;
+    color: #262626;
+    font-size: 28rpx;
+    font-weight:500;
+  }
+  &-login {
+    .flex-center();
+    margin-top: 42rpx;
+    width: 296rpx;
+    height: 80rpx;
+    margin-right: 40rpx;
+    background-color: @primary-color;
+    border-radius:40rpx;
+    color: #FFF;
+    font-size: 28rpx;
+  }
+  &-back {
+    .flex-center();
+    margin-top: 36rpx;
+    width: 296rpx;
+    height: 80rpx;
+    background-color: #ccc;
+    border-radius:40rpx;
+    color: #FFF;
+    font-size: 28rpx;
+  }
+  &-entrance{
+    .flex-center();
+    width: 630rpx;
+    height: 80rpx;
+    background-color: #fff;
+    border-radius:40rpx;
+    color: #00AAA6;
+    font-size: 28rpx;
+    margin-top: 40rpx;
+    border: 1px solid #00AAA6;
+  }
+}

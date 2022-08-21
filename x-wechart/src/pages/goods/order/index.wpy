@@ -1,0 +1,190 @@
+<template>
+  <view class="order">
+
+    <!-- 提示部分内容 -->
+    <van-popup show="{{ isNoticePopupShow }}" closeable position="bottom" bind:close="noticePopupClose">
+      <view class="noticeCon">
+        <view class="noticeCon-title van-hairline--bottom">
+          物流费用规则
+          <i @tap="noticePopupClose" class="b-icon iconyiquxiao"></i>
+        </view>
+        <scroll-view scroll-y="true" class="noticeCon-scroll">
+          <view class="noticeCon-scroll-con">
+            <text>{{expressFee}}</text>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+
+    <!-- 代理商 应急下单 关联库存周转对应流程调整提示 -->
+    <van-popup
+      show="{{ inventoryPopupShow }}"
+      custom-style="width:80%; min-height: 20%; border-radius: 24rpx; padding: 24rpx"
+    >
+      <view class="dialog-item-row">
+        <view class="dialog-item-wrapper">
+          <view class="content" wx:if="{{inventoryPopupText.desc}}">{{inventoryPopupText.desc}}</view>
+          <view class="tip" wx:if="{{inventoryPopupText.tip}}">{{inventoryPopupText.tip}}</view>
+        </view>
+        <view class="dialog-item-footer">
+          <view class="handle-btn sure" @tap="onInventoryConfirm">知道了</view>
+        </view>
+      </view>
+    </van-popup>
+
+    <view
+      class="order-scroll"
+    >
+
+      <order />
+
+      <view class="order-items">
+        <repeat for="{{order.items}}" key="{{id}}">
+          <view class="order-items-item van-hairline--bottom">
+            <navigator url="/pages/goods/item/index?code={{item.productId}}&orgId={{item.orgId}}&orgCode={{item.orgCode}}">
+              <img class="img" src="{{item.src}}" errSrc="{{item.errImg}}" />
+            </navigator>
+            <view class="content">
+              <view class="content-title">{{item.productName}}/{{item.color || ''}}</view>
+              <view class="content-desc" wx:if="{{item.makeUpTypeName}}">补差类型：{{item.makeUpTypeName}}</view>
+              <view class="content-desc" wx:if="{{item.policyName}}" style="display: flex;align-items: center;">
+                使用政策：<block wx:if="{{item.specialPriceVcode}}">【{{item.specialPriceVcode}}】</block>{{item.policyName}}
+                <view @tap="delPolicy({{item}})" class="content-desc-del">删除</view>
+              </view>
+              <view class="content-price">
+                单价：¥{{utils.formatPrice(item.price)}}({{item.priceGroupName}})</view>
+              <view class="content-price stock-age-online" wx:if="{{item.stockAgeNum}}">超库龄上限{{item.stockAgeNum}}台</view>
+              <!-- “常规订单”且商家类型不是“铺借商家”时，需要显示预交款 -->
+              <view class="content-price" wx:if="{{purchaseType==='2' && orderCommon.isPujie == false }}">
+                预交款：¥{{utils.formatPrice(item.price*item.quantity*orderCommon.advancePayRate/100)}}</view>
+            </view>
+            <view class="extra">x{{item.quantity}}</view>
+          </view>
+        </repeat>
+      </view>
+      <van-submit-bar
+        button-text="提交订单"
+        bind:submit="confirmSaveOrder"
+        custom-class="order-submit-bar"
+        button-class-container="order-btn"
+        button-class="order-confirm"
+      >
+        <view class="order-footer-header van-hairline--top-bottom" slot="top">
+          <view class="order-footer-header-item">
+            <view class="label">
+              <view class="label-text">账号余额</view>
+              <view class="label-value">¥{{utils.formatPrice(order.balanceAccount)}}</view>
+            </view>
+            <view class="label">
+              <view class="label-text">预占用余额</view>
+              <view class="label-value">¥{{utils.formatPrice(order.waitMoney)}}</view>
+            </view>
+            <!-- “常规订单”且商家类型不是“铺借商家”时，需要显示预交款 -->
+            <view class="label" wx:if="{{purchaseType==='2' && orderCommon.isPujie == false }}">
+              <view class="label-text">预交款合计</view>
+              <view class="label-value">¥{{utils.formatPrice(order.totalMoney*orderCommon.advancePayRate/100)}}</view>
+            </view>
+            <view class="label">
+              <!--预占用余额明细链接-->
+              <view class = "order-footer-link"
+                    style="color: #00aaa6;font-size: 20rpx;border: 2rpx solid #00aaa6;border-radius: 20rpx;padding: 4rpx 16rpx;"
+                    @tap="openWatiBalancePopup">
+                预占用明细 >
+              </view>
+            </view>
+          </view>
+          <view class="order-footer-header-item" @tap="onBateChange">
+            <view class="label">
+              <van-checkbox
+                value="{{rebateCheckBox}}"
+                checked-color="#00AAA6"
+                custom-class="order-checkbox"
+              >
+                <view class="label-checkbox">
+                  预计使用返利金额¥ {{utils.formatPrice(rebateCheckBox ? order.rebate : 0)}}
+                </view>
+              </van-checkbox>
+            </view>
+            <view class="label">
+              <view class="label-text">实际使用返利金额以最终发票金额为准</view>
+            </view>
+            <view class="label" style="height:18px;">
+
+            </view>
+          </view>
+        </view>
+
+        <view class="order-footer-body">
+          <view class="order-footer-body-item">
+            <view class="item-label">共{{order.totalNum}}件,</view>
+            <view class="item-label">{{totalVolume}}m³</view>
+            <!-- <i class="b-icon iconwenti" @tap="noticePopupOpen"></i> -->
+            <view class="item-label">合计</view>
+            <view class="item-value">¥{{utils.formatPrice(order.totalMoney)}}</view>
+          </view>
+          <view class="order-footer-body-item">
+            <view class="item-unit">账户可用余额</view>
+            <view class="item-price">¥{{utils.formatPrice(order.canUseMoney)}}</view>
+          </view>
+        </view>
+      </van-submit-bar>
+    </view>
+
+    <!--占用明细-->
+    <van-popup show="{{waitBalanceListShow}}" position="bottom" bind:close="closeWaitBalancePop">
+      <view class="waitBalancePop">
+        <view @tap="closeWaitBalancePop" class="waitBalancePop-close" hover-class="hover">
+          <van-icon color="#262626" name="cross" />
+        </view>
+        <view class="waitBalancePop-header van-hairline--bottom">预占用明细</view>
+        <scroll-view
+          scroll-y
+          enable-flex
+          enable-back-to-top="true"
+          scroll-with-animation="true"
+          class="waitBalancePop-scroll"
+        >
+          <repeat for="{{waitBalanceList}}" item="item">
+            <view class="order-container">
+              <view class="order-top">
+                <view class="order-name">
+                  <view class="order-rel-name">
+                    <view class="order-name-title">
+                      <view class="order-name-left">{{item.orgName}}</view>
+                      <view class="order-name-code">{{item.orderCode}}</view>
+                    </view>
+                    <view class="order-name-fkStatus">{{item.fkStatus}}</view>
+                  </view>
+                </view>
+              </view>
+              <view class="order-content">
+                <view class="order-content-items">
+                  <view class="order-number">物料组：({{item.matklName}})</view>
+                </view>
+                <view class="order-content-items">
+                  <view class="order-number">订单类型：{{item.orderType}}</view>
+                </view>
+                <view class="order-content-items">
+                  <view class="order-number">订单状态：{{item.status}}</view>
+                </view>
+                <view class="order-content-items">
+                  <view class="order-content-item">要求到货周次: {{item.weekName}}</view>
+                  <view class="order-content-item">订单金额: ￥{{item.orderAmt}}</view>
+                </view>
+                <view class="order-content-items">
+                  <view class="order-content-item">下单日期: {{item.createdDate}}</view>
+                  <view class="order-content-item">预占用金额: <view class="waitBalance">￥{{item.waitBalance}}</view></view>
+                </view>
+              </view>
+            </view>
+          </repeat>
+        </scroll-view>
+      </view>
+    </van-popup>
+
+    <van-toast id="van-toast" />
+    <payconfrim />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

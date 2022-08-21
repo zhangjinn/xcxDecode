@@ -1,0 +1,132 @@
+<template>
+  <view class="order">
+    <van-popup
+      show="{{visible}}"
+      position="right"
+      overlay="{{ true }}"
+      bind:close="orderfiltering"
+      custom-style="height: 100%;"
+      z-index="130"
+    >
+      <sideFilter
+        :drawerTopHeight="drawerTopHeight"
+        :sideFilterForm.sync="sideFilterForm"
+        @handleConfirm.user="handleConfirm"
+      />
+    </van-popup>
+
+    <!-- 快捷筛选顶部弹框 状态 -->
+    <van-popup
+      show="{{OrderSFilterVisible}}"
+      position="top"
+      overlay="{{ true }}"
+      custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"
+      bind:close="touchOrderSFilter"
+    >
+      <view wx:if="{{CurrentOrderSFilterName === 'status'}}" class="order-s-filter-container">
+        <view class="order-operation">
+          <view class="operation-text van-hairline--bottom" data-name="status" data-id="" @tap="onSelectStatus">
+            <view class="operation-status {{ filterForm.terms.status === '' ? 'active' : '' }}">全部</view>
+            <view wx:if="{{ filterForm.terms.status === '' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <view class="order-operation" wx:for={{statusOptions}}>
+          <view class="operation-text van-hairline--bottom" data-name="status" data-id="{{ item.id }}" @tap="onSelectStatus">
+            <view class="operation-status {{ filterForm.terms.status === item.id ? 'active' : '' }}">{{item.value}}</view>
+            <view wx:if="{{ filterForm.terms.status ===  item.id }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    <headerFilter
+      :activeLineStyle="activeLineStyle"
+      :tabList.sync="tabList"
+      :tabActive.sync="tabActive"
+      :showSearch.sync="showSearch"
+      @tabChange.user="tabChange"
+    />
+
+    <headerTab
+      :tabList.sync="headerTabList"
+      @onTabChange.user="touchOrderSFilter"
+      @onSideFilter.user="orderfiltering"
+    />
+    <scroll-view
+      wx:if="{{ activityList && activityList.length }}"
+      scroll-y="true"
+      class="order-scroll"
+      enable-flex
+      scroll-top="{{ scrollTop }}"
+      bindscroll="onScroll"
+      bindscrolltolower="onGetOrderListNext">
+      <repeat for="{{activityList}}" item="item">
+        <view class="order-container">
+          <view class="card-header">
+            <view class="card-title">
+              <view class="card-coding">
+                <text>{{ item.activityTheme }}</text>
+              </view>
+              <view wx:if="{{ item.status }}" class="card-status">
+                <text class="reporting" wx:if="{{ item.status === '作废' || item.status === '已核销' }}">{{ item.status }}</text>
+                <text class="reported" wx:else>{{ item.status }}</text>
+              </view>
+            </view>
+            <view class="card-desc">
+              <text class="gap">活动承接代理商：{{ item.custInfoName }}</text>
+            </view>
+            <view class="card-desc">
+              <text class="gap" wx:if="{{ item.marketCenterName }}">{{ item.marketCenterName }}</text>
+              <text class="gap" wx:if="{{ item.orgName }}">{{ item.orgName }}</text>
+            </view>
+            <view class="card-desc">
+              <text class="gap">开始时间：{{ item.applyMonth }}</text>
+            </view>
+            <view class="card-desc">
+              <text class="gap">活动地址：{{ item.activityPlace }}</text>
+            </view>
+          </view>
+          <view class="card-footer">
+            <view class="card-footer-handle" data-type="detail" data-id="{{item.id}}" @tap="viewDetail">查看</view>
+            <view class="card-footer-handle" wx:if="{{item.status === '作废'}}" data-id="{{item.id}}" @tap="viewDelete">删除</view>
+            <view class="card-footer-handle" wx:if="{{(item.checkStatus === '草稿' || item.checkStatus === '驳回' || item.checkStatus === '作废') && item.status === '申请中'}}" data-type="edit" data-id="{{item.id}}" @tap="viewDetail">编辑</view>
+            <!--    核销按钮 展示逻辑 1、如果有结束时间 当前时间大于等于结束时间并且已申请 展示 2、如果没有结束时间 并且状态为已申请 展示        -->
+            <view class="card-footer-handle" wx:if="{{(!item.applyEndTime && item.status === '已申请') || (item.applyEndTime && currentDate >= item.applyEndTime && item.status === '已申请')}}" data-id="{{item.id}}" data-type="off" @tap="viewDetail">核销</view>
+            <view class="card-footer-handle" wx:if="{{(item.dataSource == 1 || utils.includesFunc('信天翁', item.creator)) && item.writeActivityName === '核销发起人补充结算凭证'}}" data-id="{{item.id}}" data-item="{{item}}" @tap="uploadCertificate">上传凭证</view>
+            <view class="card-footer-handle" data-item="{{item}}" @tap="viewVoid">作废</view>
+          </view>
+        </view>
+      </repeat>
+    </scroll-view>
+    <emptyDataType wx:else/>
+    <view class="order-footer" data-type="add" data-id="" @tap="viewDetail">新增</view>
+
+    <van-toast id="van-toast" />
+    <van-dialog
+      wx:if="{{ certificateShow }}"
+      id="van-dialog"
+      use-slot
+      title="上传结算凭证"
+      show="{{ certificateShow }}"
+      show-cancel-button
+      bind:close="onCertificateClose"
+      bind:cancel="onCertificateCancel"
+      bind:confirm="onCertificateConfirm"
+    >
+      <view class="dialog-item-row">
+        <van-uploader
+          deletable="{{ true }}"
+          max-count="6"
+          data-key="experienceSharing"
+          accept="image"
+          file-list="{{ formData.experienceSharing }}"
+          bind:delete="deleteImg"
+          bind:after-read="afterRead"
+          sizeType="compressed">
+        </van-uploader>
+      </view>
+    </van-dialog>
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

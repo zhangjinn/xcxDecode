@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),and=_curry2(function(r,n){return r&&n});module.exports=and;

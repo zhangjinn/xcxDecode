@@ -1,0 +1,436 @@
+<template>
+  <view class="me-account-add">
+    <form bindsubmit="onSubmitForm" class="account-form">
+    <scroll-view
+      scroll-y
+      enable-flex
+      enable-back-to-top="true"
+      scroll-with-animation="true"
+      scroll-top="{{visibelTop}}"
+      id="me-account-add-scroll-view"
+      class="me-account-add-scroll"
+    >
+        <view class="">
+          <van-field
+            value="用户账号"
+            label="账号类型"
+            input-align="right"
+            readonly
+          />
+          <van-field
+            value="{{ editAccount.account }}"
+            label="账号名称"
+            input-align="right"
+            readonly
+          />
+          <van-field
+            name="name"
+            value="{{ formData.userName }}"
+            required
+            clearable
+            label="姓名"
+            placeholder="请填写姓名"
+            input-align="right"
+            bind:input="inputName"
+          />
+          <van-field
+            name="phone"
+            value="{{ formData.mobile }}"
+            required
+            clearable
+            label="手机"
+            placeholder="请填写手机"
+            input-align="right"
+            bind:input="inputMobile"
+          />
+          <van-field
+            name="email"
+            value="{{ formData.email }}"
+            required
+            clearable
+            label="邮箱"
+            placeholder="请填写邮箱"
+            input-align="right"
+            bind:input="inputEmail"
+          />
+          <van-field
+            value="{{formData.sale}}"
+            readonly
+            required
+            title-width="100px"
+            label="是否为营销经理"
+            placeholder="请选择"
+            input-align="right"
+            icon="arrow"
+            @tap="onToggleSaleListPopup"
+          />
+
+          <view class="account-other-info">
+            <view class="account-other-info-item">
+              <view class="account-other-info-header">
+                <van-cell
+                  required
+                  title="岗位"
+                  placeholder="请选择岗位"
+                  input-align="right"
+                  border="{{ false }}"
+                  bind:click="onTogglePostListPopup"
+                >
+                  <view class="cell-value">
+                    {{ formData.postNames }}
+                  </view>
+                  <view slot="right-icon">
+                    <van-icon name="arrow" style="line-height: inherit; margin-left: 8px;" color="#999" size="16px" />
+                  </view>
+                </van-cell>
+              </view>
+              <view class="account-other-info-footer">
+                <i class="b-icon icon-remove" @tap="onClearPostInfo">清空</i>
+              </view>
+            </view>
+          </view>
+
+        </view>
+        <view class="account-other-info">
+            <view class="account-other-info-item">
+              <view class="account-other-info-header">
+                <van-cell
+                  required
+                  title="物料组"
+                  placeholder="请选择物料组"
+                  input-align="right"
+                  border="{{ false }}"
+                  bind:click="toggleBaseMaktlPopup"
+                >
+                  <view class="cell-value">
+                    {{ formData.matklNames }}
+                  </view>
+                  <view slot="right-icon">
+                    <van-icon name="arrow" style="line-height: inherit; margin-left: 8px;" color="#999" size="16px" />
+                  </view>
+                </van-cell>
+              </view>
+              <view class="account-other-info-footer">
+                <i class="b-icon icon-remove" @tap="onClearMatklInfo({{index}})">清空</i>
+              </view>
+            </view>
+            <view class="account-other-info-item">
+              <view class="account-other-info-header">
+                <van-cell
+                  readonly
+                  required
+                  title="角色分配"
+                  placeholder="请选择"
+                  input-align="right"
+                  border="{{ false }}"
+                  bind:click="onToggleCustPopup"
+                >
+                  <view class="cell-value">
+                    {{ formData.custNames }}
+                  </view>
+                  <view slot="right-icon">
+                    <van-icon name="arrow" style="line-height: inherit; margin-left: 8px;" color="#999" size="16px" />
+                  </view>
+                </van-cell>
+              </view>
+              <view class="account-other-info-footer">
+                <i class="b-icon icon-remove" @tap="onClearCustInfo({{index}})">清空</i>
+              </view>
+            </view>
+            <view class="account-other-info-item">
+              <view class="account-other-info-header">
+                <van-cell
+                  readonly
+                  title="管理仓库"
+                  placeholder="请选择"
+                  input-align="right"
+                  border="{{ false }}"
+                  bind:click="onToggleShopCkPopup"
+                >
+                  <view class="cell-value">
+                    {{ formData.shopCkNames }}
+                  </view>
+                  <view slot="right-icon">
+                    <van-icon name="arrow" style="line-height: inherit; margin-left: 8px;" color="#999" size="16px" />
+                  </view>
+                </van-cell>
+              </view>
+              <view class="account-other-info-footer">
+                <i class="b-icon icon-remove" @tap="onClearShopCkInfo({{index}})">清空</i>
+              </view>
+            </view>
+            <view class="account-other-info-item">
+              <view class="account-other-info-header">
+                <van-cell
+                  readonly
+                  title="管辖门店"
+                  placeholder="请选择"
+                  input-align="right"
+                  border="{{ false }}"
+                  bind:click="onToggleShopPopup"
+                >
+                  <view class="cell-value">
+                    {{ formData.shopNames }}
+                  </view>
+                  <view slot="right-icon">
+                    <van-icon name="arrow" style="line-height: inherit; margin-left: 8px;" color="#999" size="16px" />
+                  </view>
+                </van-cell>
+              </view>
+              <view class="account-other-info-footer">
+                <i class="b-icon icon-remove" @tap="onClearShopInfo({{index}})">清空</i>
+              </view>
+            </view>
+            <view class="account-other-info-item">
+              <view class="account-other-info-header">
+                <van-cell
+                  readonly
+                  required
+                  title="待办"
+                  placeholder="请选择"
+                  input-align="right"
+                  border="{{ false }}"
+                  bind:click="onToggleUpcomingPopup"
+                >
+                  <view class="cell-value">
+                    {{ formData.upcomingNames }}
+                  </view>
+                  <view slot="right-icon">
+                    <van-icon name="arrow" style="line-height: inherit; margin-left: 8px;" color="#999" size="16px" />
+                  </view>
+                </van-cell>
+              </view>
+              <view class="account-other-info-footer">
+                <i class="b-icon icon-remove" @tap="onClearUpcomingInfo({{index}})">清空</i>
+              </view>
+            </view>
+            <view class="account-other-info-item">
+              <view class="account-other-info-header">
+                <van-cell
+                  readonly
+                  required
+                  title="通知"
+                  placeholder="请选择"
+                  input-align="right"
+                  border="{{ false }}"
+                  bind:click="onToggleNoticePopup"
+                >
+                  <view class="cell-value">
+                    {{ formData.noticeNames }}
+                  </view>
+                  <view slot="right-icon">
+                    <van-icon name="arrow" style="line-height: inherit; margin-left: 8px;" color="#999" size="16px" />
+                  </view>
+                </van-cell>
+              </view>
+              <view class="account-other-info-footer">
+                <i class="b-icon icon-remove" @tap="onClearNoticeInfo({{index}})">清空</i>
+              </view>
+            </view>
+        </view>
+    </scroll-view>
+    <view class="form-button-area">
+      <button square form-type="submit" class="form-submit">保存账号</button>
+    </view>
+    </form>
+    <van-popup show="{{ saleListVisible }}" position="bottom" custom-class="popup-picker">
+      <view class="picker-header">
+        <view>营销经理</view>
+        <i class='b-icon icon-close' @tap="onToggleSaleListPopup"></i>
+      </view>
+      <view class="picker-content">
+        <repeat for="{{saleList}}" index="index" item="item">
+          <view class="item-line" @tap="onSelecteSale({{item}})">
+            <view class="label {{ item.id == saleIndex ? 'active' : '' }}">{{item.name}}</view>
+            <i class="b-icon icon-success active" wx:if="{{item.id == saleIndex}}"></i>
+          </view>
+        </repeat>
+      </view>
+    </van-popup>
+
+    <van-popup show="{{ postListVisible }}" position="bottom" custom-class="base-maktl-popup-picker">
+      <view class="picker-header">
+        <view>岗位</view>
+        <i class='b-icon icon-close' @tap="onTogglePostListPopup"></i>
+      </view>
+      <scroll-view
+        scroll-y
+        enable-flex
+        enable-back-to-top="true"
+        scroll-with-animation="true"
+        id="base-post-scroll-view"
+        class="picker-content"
+      >
+        <repeat for="{{postList}}" index="id" item="item">
+          <view wx:if="{{item.id != '14181287854'}}" class="item-line" @tap="onSelectePost({{item}})">
+            <i class="b-icon icon-success" wx:if="{{item.selected}}"></i>
+            <view wx:else class="in-active"></view>
+            <view class="item-label">{{item.name}}</view>
+          </view>
+        </repeat>
+      </scroll-view>
+      <view class="picker-footer">
+        <van-button type='default' size="large" bind:click="onConfirmBasePostPopup">确定</van-button>
+      </view>
+    </van-popup>
+
+    <van-popup show="{{ baseMatklVisible }}" position="bottom" custom-class="base-maktl-popup-picker">
+      <view class="picker-header">
+        <view>物料组</view>
+        <i class='b-icon icon-close' @tap="toggleBaseMaktlPopup"></i>
+      </view>
+      <scroll-view
+        scroll-y
+        enable-flex
+        enable-back-to-top="true"
+        scroll-with-animation="true"
+        id="base-maktl-scroll-view"
+        class="picker-content"
+      >
+        <repeat for="{{matklList}}" index="id" item="item">
+          <view class="item-line" @tap="onSelectBaseMatkl({{item}})">
+            <i class="b-icon icon-success" wx:if="{{item.selected}}"></i>
+            <view wx:else class="in-active"></view>
+            <view class="item-label">{{item.name}}</view>
+          </view>
+        </repeat>
+      </scroll-view>
+      <view class="picker-footer">
+        <van-button type='default' size="large" bind:click="onConfirmBaseMatklPopup">确定</van-button>
+      </view>
+    </van-popup>
+
+    <van-popup show="{{ custVisible }}" position="bottom" custom-class="base-maktl-popup-picker">
+      <view class="picker-header">
+        <view>角色分配</view>
+        <i class='b-icon icon-close' @tap="onToggleCustPopup"></i>
+      </view>
+      <scroll-view
+        scroll-y
+        enable-flex
+        enable-back-to-top="true"
+        scroll-with-animation="true"
+        id="base-cust-scroll-view"
+        class="picker-content"
+      >
+        <repeat for="{{custList}}" index="id" item="item">
+          <view class="item-line" @tap="onSelectCust({{item}})">
+            <i class="b-icon icon-success" wx:if="{{item.selected}}"></i>
+            <view wx:else class="in-active"></view>
+            <view class="item-label">{{item.name}}</view>
+          </view>
+        </repeat>
+      </scroll-view>
+      <view class="picker-footer">
+        <van-button type='default' size="large" bind:click="onConfirmCustPopup">确定</van-button>
+      </view>
+    </van-popup>
+
+    <van-popup show="{{ shopCkVisible }}" position="bottom" custom-class="base-maktl-popup-picker">
+      <view class="picker-header">
+        <view>管理仓库</view>
+        <i class='b-icon icon-close' @tap="onToggleShopCkPopup"></i>
+      </view>
+      <scroll-view
+        scroll-y
+        enable-flex
+        enable-back-to-top="true"
+        scroll-with-animation="true"
+        id="base-cust-scroll-view"
+        class="picker-content"
+      >
+        <repeat for="{{shopCkList}}" index="id" item="item">
+          <view class="item-line" @tap="onSelectShopCk({{item}})">
+            <i class="b-icon icon-success" wx:if="{{item.selected}}"></i>
+            <view wx:else class="in-active"></view>
+            <view class="item-label">{{item.name}}</view>
+          </view>
+        </repeat>
+      </scroll-view>
+      <view class="picker-footer">
+        <van-button type='default' size="large" bind:click="onConfirmShopCkPopup">确定</van-button>
+      </view>
+    </van-popup>
+
+    <van-popup show="{{ shopVisible }}" position="bottom" custom-class="base-maktl-popup-picker">
+      <view class="picker-header">
+        <view>管辖门店</view>
+        <i class='b-icon icon-close' @tap="onToggleShopPopup"></i>
+      </view>
+      <scroll-view
+        scroll-y
+        enable-flex
+        enable-back-to-top="true"
+        scroll-with-animation="true"
+        id="base-cust-scroll-view"
+        class="picker-content"
+      >
+        <repeat for="{{shopList}}" index="id" item="item">
+          <view class="item-line" @tap="onSelectShop({{item}})">
+            <i class="b-icon icon-success" wx:if="{{item.selected}}"></i>
+            <view wx:else class="in-active"></view>
+            <view class="item-label">{{item.name}}</view>
+          </view>
+        </repeat>
+      </scroll-view>
+      <view class="picker-footer">
+        <van-button type='default' size="large" bind:click="onConfirmShopPopup">确定</van-button>
+      </view>
+    </van-popup>
+
+    <van-popup show="{{ upcomingVisible }}" position="bottom" custom-class="base-maktl-popup-picker">
+      <view class="picker-header">
+        <view>待办</view>
+        <i class='b-icon icon-close' @tap="onToggleUpcomingPopup"></i>
+      </view>
+      <scroll-view
+        scroll-y
+        enable-flex
+        enable-back-to-top="true"
+        scroll-with-animation="true"
+        id="base-cust-scroll-view"
+        class="picker-content"
+      >
+        <repeat for="{{upcomingList}}" index="id" item="item">
+          <view class="item-line" @tap="onSelectUpcoming({{item}})">
+            <i class="b-icon icon-success" wx:if="{{item.selected}}"></i>
+            <view wx:else class="in-active"></view>
+            <view class="item-label">{{item.name}}</view>
+          </view>
+        </repeat>
+      </scroll-view>
+      <view class="picker-footer">
+        <van-button type='default' size="large" bind:click="onConfirmUpcomingPopup">确定</van-button>
+      </view>
+    </van-popup>
+
+    <van-popup show="{{ noticeVisible }}" position="bottom" custom-class="base-maktl-popup-picker">
+      <view class="picker-header">
+        <view>通知</view>
+        <i class='b-icon icon-close' @tap="onToggleNoticePopup"></i>
+      </view>
+      <scroll-view
+        scroll-y
+        enable-flex
+        enable-back-to-top="true"
+        scroll-with-animation="true"
+        id="base-cust-scroll-view"
+        class="picker-content"
+      >
+        <repeat for="{{noticeList}}" index="id" item="item">
+          <view class="item-line" @tap="onSelectNotice({{item}})">
+            <i class="b-icon icon-success" wx:if="{{item.selected}}"></i>
+            <view wx:else class="in-active"></view>
+            <view class="item-label">{{item.name}}</view>
+          </view>
+        </repeat>
+      </scroll-view>
+      <view class="picker-footer">
+        <van-button type='default' size="large" bind:click="onConfirmNoticePopup">确定</van-button>
+      </view>
+    </van-popup>
+    <van-toast id="van-toast"/>
+  </view>
+</template>
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts"></script>

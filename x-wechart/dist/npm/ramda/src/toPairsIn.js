@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),toPairsIn=_curry1(function(r){var n=[];for(var e in r)n[n.length]=[e,r[e]];return n});module.exports=toPairsIn;

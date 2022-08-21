@@ -1,0 +1,39 @@
+<template>
+  <view class="todo">
+    <block wx:if="{{items.data.length > 0}}">
+      <scroll-view bindscrolltolower="onPullBottom" enable-flex scroll-y enable-back-to-top class="todo-body">
+        <repeat for="{{items.data}}" key="id">
+          <view class="todo-body-item">
+            <view class="todo-body-item-header">
+              <view class="todo-body-item-header-top">
+                <view class="title">{{item.title}}</view>
+                <view wx:if="{{item.status == '1'}}" class="status">{{item.taskStatus}}</view>
+              </view>
+              <view class="todo-body-item-header-bottom">
+                <view class="tag">{{item.orgName}}</view>
+                <view class="date">{{item.createDateStr}}</view>
+              </view>
+            </view>
+            <view class="todo-body-item-body">
+              {{item.content}}
+            </view>
+            <view class="todo-body-item-footer van-hairline--top">
+              <block wx:if="{{item.status == '0'}}">
+                <view @tap="signAction({{item.id}}, 'docDetail')" class="card-footer-handle" hover-class="hover">签署</view>
+              </block>
+              <block wx:if="{{item.status == '1'}}">
+                <view @tap="signAction({{item.id}}, 'docView')" class="card-footer-handle" hover-class="hover">预览</view>
+                <!-- <view @tap="downFile({{item.id}})" class="footer-item mgr-16" hover-class="hover">下载</view> -->
+              </block>
+            </view>
+          </view>
+        </repeat>
+      </scroll-view>
+    </block>
+    <emptyDataType wx:else/>
+
+    <van-toast id="van-toast"/>
+  </view>
+</template>
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts"></script>

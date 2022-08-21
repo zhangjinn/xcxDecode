@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),_Set=require("./internal/_Set.js"),difference=_curry2(function(e,r){for(var n=[],t=0,u=e.length,d=r.length,f=new _Set,i=0;i<d;i+=1)f.add(r[i]);for(;t<u;)f.add(e[t])&&(n[n.length]=e[t]),t+=1;return n});module.exports=difference;

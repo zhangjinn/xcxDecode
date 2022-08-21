@@ -1,0 +1,1 @@
+var _map=require("./internal/_map.js"),identity=require("./identity.js"),pickAll=require("./pickAll.js"),useWith=require("./useWith.js"),project=useWith(_map,[pickAll,identity]);module.exports=project;

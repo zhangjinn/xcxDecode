@@ -1,0 +1,86 @@
+
+    <view class="container _7fc8edd">
+        <view class="detail-top _7fc8edd">
+            <table class="detail-top-table _7fc8edd">
+                <tbody class="_7fc8edd">
+                    <tr class="detail-pic _7fc8edd">
+                        <view class="b-icon h-icon icon-hisense _7fc8edd"/>
+                        <view class="barcode _7fc8edd">
+                            <canvas canvas-id="barcode" class="_7fc8edd"/>
+                            <view class="code _7fc8edd">{{checkDetail.rows.docNo}}</view>
+                        </view>
+                    </tr>
+                    <tr class="_7fc8edd">
+                         <td class="left _7fc8edd">产品品类 </td>
+                        <td class="right _7fc8edd">{{checkDetail.rows.prfcName}}</td>
+                    </tr>
+                     <tr class="_7fc8edd">
+                         <td class="left _7fc8edd">政策名称 </td>
+                        <td class="right _7fc8edd">{{checkDetail.rows.policyName}}</td>
+                    </tr>
+                     <tr class="_7fc8edd">
+                         <td class="left _7fc8edd">期间</td>
+                        <td class="right _7fc8edd">{{checkDetail.rows.rsYear}}-{{checkDetail.rows.periodIdx}}</td>
+                    </tr>
+                     <tr class="_7fc8edd">
+                         <td class="left _7fc8edd">币种/单位</td>
+                        <td class="right _7fc8edd">{{checkDetail.rows.currencyName}}/元</td>
+                    </tr>
+                    <tr class="detail-confirm _7fc8edd">
+                        经确认，本次贵公司政策金额为：<text class="_7fc8edd">{{checkDetail.rows.rbAmt}}元</text>,大写：<text class="_7fc8edd">{{chineseAmt}}</text>
+                    </tr>
+                    <tr class="detail-confirm _7fc8edd">政策说明：<text class="_7fc8edd">{{checkDetail.rows.remark}}</text></tr>
+
+                </tbody>
+            </table>
+            <view class="detail-top-li _7fc8edd">
+                <view class="detail-top-li-left _7fc8edd">
+                    海信对账人
+                </view>
+                 <view class="detail-top-li-right _7fc8edd">
+                     {{checkDetail.rows.rsUserName}}
+                 </view>
+            </view>
+             <view class="detail-top-li _7fc8edd">
+                <view class="detail-top-li-left _7fc8edd">
+                    海信公司名称
+                </view>
+                 <view class="detail-top-li-right _7fc8edd">
+                     {{checkDetail.rows.rsUnitName}}
+                 </view>
+            </view>
+             <view class="detail-top-li _7fc8edd">
+                <view class="detail-top-li-left _7fc8edd">
+                    客户对账人
+                </view>
+                 <view class="detail-top-li-right _7fc8edd">
+                     {{checkDetail.rows.portalUserName}}
+                 </view>
+            </view>
+             <view class="detail-top-li _7fc8edd">
+                <view class="detail-top-li-left _7fc8edd">
+                    客户名称
+                </view>
+                 <view class="detail-top-li-right _7fc8edd">
+                     {{checkDetail.rows.customerName}}
+                 </view>
+            </view>
+
+        </view>
+        <view class="detail-center _7fc8edd">
+            <block  wx:if="{{ statusFlag !== 'A' && statusFlag !== '3' && statusFlag !== '1' }}" class="_7fc8edd">
+              <button class="signature-btn-click signature-{{ doType === '0' ? 'disable' : 'enable'}}-click _7fc8edd" bindtap="signature">签章</button>
+            </block>
+            <block  wx:else class="_7fc8edd">
+              <button class="signature-btn-click signature-{{ doType === '0' ? 'disable' : 'enable'}}-click _7fc8edd" bindtap="view">查看</button>
+            </block>
+        </view>
+        <view class="detail-bottom _7fc8edd">
+            <view class="detail-bottom-title _7fc8edd"> 注：</view>
+            <view class="detail-bottom-content _7fc8edd">1.未达账项包括但不限于：a 客户方已发生，而海信方尚未确认的政策；b. 双方确认的政策，海信方已兑现，而客户方尚未收到或未入账；c. 客户方办理政策折让证明，而海信方未收到或未入账；d. 对客户奖励或促销支持等，客户未入账或海信方未入账情况。</view>
+            <view class="detail-bottom-content _7fc8edd">2.此对账单是对期末余额进行确认。</view>
+            <view class="detail-bottom-content _7fc8edd">3.若双方期末余额不一致，存在未达账项，后期需要凭海信确认的见证性资料原件进行解决。</view>
+            <view class="detail-bottom-content _7fc8edd">4.下次双方对账自本次截止日期起核对。</view>
+        </view>
+        <van-toast id="van-toast" class="_7fc8edd"/>
+    </view>

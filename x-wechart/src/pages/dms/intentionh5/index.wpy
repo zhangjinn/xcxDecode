@@ -1,0 +1,5 @@
+<template>
+  <view>
+    <web-view src="{{baseUrl}}"></web-view>
+  </view>
+</template>

@@ -1,0 +1,114 @@
+@import '../../../styles/utils.less';
+@import '../../../styles/index.less';
+@import '../../../components/vant/common/style/hairline.less';
+@import '../../../components/vant/common/style/ellipsis.less';
+.goods-toper {
+  position: relative;
+  width: 100%;
+  &::after {
+    .hairline(#EEEEEE);
+    border-bottom-width: 1rpx;
+  }
+  .item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 96rpx;
+    padding-right: 24rpx;
+    &-left {
+      padding-right: 24rpx;
+
+    }
+    .amount {
+      color: #D9161C;
+      font-size: 24rpx;
+    }
+    .input {
+      padding-right: 20rpx;
+    }
+    &-right {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      .item-product {
+        display: flex;
+        align-items: center;
+        height: 64rpx;
+        width: 100%;
+        background-color: #F7F7F7;
+        padding: 0 16rpx;
+        color: #AAAAAA;
+
+      }
+      &-inventory {
+        padding-right: 20rpx;
+        max-width: 525rpx;
+        .ellipsis();
+      }
+      .item-row-right-delivery{
+        color: #00AAA6;
+        border-radius: 4rpx;
+        border: 2rpx solid #00AAA6;
+        padding: 0rpx 8rpx;
+        margin-right: 20rpx;
+      }
+      .placeholder {
+        color: #AAAAAA;
+      }
+    }
+  }
+  .prod-scroll-view{
+    width: 100%;
+    position: absolute;
+    top: 96rpx;
+    background-color: white;
+    box-shadow: 0rpx 0rpx 4rpx #e2e2e2;
+    z-index: 3;
+    padding: 24rpx;
+    min-height: 200rpx;
+    border-radius: 16rpx;
+    .cancel-btn{
+      display: flex;
+      justify-content: flex-end;
+      i{
+        color: #777;
+        font-size: 28rpx;
+        padding-left: 40rpx;
+      }
+    }
+    .prod-scroll-view-inner{
+      max-height: 450rpx;
+      .order-operation {
+        display: flex;
+        width: 100%;
+        .operation-text {
+          width: 100%;
+          height: 80rpx;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          .operation-status {
+            font-size: 24rpx;
+            font-weight: 400;
+            color: #262626;
+            &.active {
+              color: #00aaaa;
+            }
+          }
+          .operation-icon {
+            font-size: 16rpx;
+            color: #00aaa6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-right: 40rpx;
+          }
+        }
+      }
+    }
+
+  }
+  .redXing{
+    color: #D9161C;
+  }
+}

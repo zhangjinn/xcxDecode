@@ -1,0 +1,1 @@
+module.exports={"@@functional/placeholder":!0};

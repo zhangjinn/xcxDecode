@@ -1,0 +1,115 @@
+@import "./../../../components/empty-data-type/index.wxss";
+.ellipsis._e222ab4 {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+.van-hairline._e222ab4,
+.van-hairline--top._e222ab4,
+.van-hairline--left._e222ab4,
+.van-hairline--right._e222ab4,
+.van-hairline--bottom._e222ab4,
+.van-hairline--top-bottom._e222ab4,
+.van-hairline--surround._e222ab4 {
+  position: relative;
+}
+.van-hairline._e222ab4::after,
+.van-hairline--top._e222ab4::after,
+.van-hairline--left._e222ab4::after,
+.van-hairline--right._e222ab4::after,
+.van-hairline--bottom._e222ab4::after,
+.van-hairline--top-bottom._e222ab4::after,
+.van-hairline--surround._e222ab4::after {
+  content: ' ';
+  position: absolute;
+  pointer-events: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transform-origin: center;
+          transform-origin: center;
+  /* cover wechat button:after default transforn-origin */
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+  border: 0 solid #eee;
+}
+.van-hairline--top._e222ab4::after {
+  border-top-width: 1px;
+}
+.van-hairline--left._e222ab4::after {
+  border-left-width: 1px;
+}
+.van-hairline--right._e222ab4::after {
+  border-right-width: 1px;
+}
+.van-hairline--bottom._e222ab4::after {
+  border-bottom-width: 1px;
+}
+.van-hairline--top-bottom._e222ab4::after {
+  border-width: 1px 0;
+}
+.van-hairline--surround._e222ab4::after {
+  border-width: 1px;
+}
+.van-ellipsis._e222ab4 {
+  overflow-wrap: break-word;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.van-multi-ellipsis--l2._e222ab4 {
+  white-space: initial;
+  word-break: break-all;
+  /* autoprefixer: ignore next */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+}
+.van-multi-ellipsis--l3._e222ab4 {
+  white-space: initial;
+  word-break: break-all;
+  /* autoprefixer: ignore next */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+}
+.distributor._e222ab4 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  height: 100%;
+  padding: 16rpx;
+}
+.distributor .distributor-list._e222ab4 {
+  background: #FFFFFF;
+  border-radius: 4rpx;
+  border-left: 4rpx solid #00AAA6;
+  padding: 18rpx 24rpx 22rpx;
+  margin-bottom: 16rpx;
+}
+.distributor .distributor-list .name._e222ab4 {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #262626;
+}
+.distributor .distributor-list .desc._e222ab4 {
+  font-size: 26rpx;
+  font-weight: 400;
+  color: #777777;
+  margin-top: 8rpx;
+}

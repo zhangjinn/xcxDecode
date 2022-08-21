@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),_dispatchable=require("./internal/_dispatchable.js"),_xall=require("./internal/_xall.js"),all=_curry2(_dispatchable(["all"],_xall,function(r,l){for(var a=0;a<l.length;){if(!r(l[a]))return!1;a+=1}return!0}));module.exports=all;

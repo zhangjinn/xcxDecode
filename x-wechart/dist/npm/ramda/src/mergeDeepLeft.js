@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),mergeDeepWithKey=require("./mergeDeepWithKey.js"),mergeDeepLeft=_curry2(function(e,r){return mergeDeepWithKey(function(e,r,t){return r},e,r)});module.exports=mergeDeepLeft;

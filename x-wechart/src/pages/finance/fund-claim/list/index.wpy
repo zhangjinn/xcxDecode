@@ -1,0 +1,536 @@
+<template>
+  <view class="order">
+    <!-- vant日历弹框 -->
+    <van-popup show="{{calendarShow}}" position="bottom" bind:close="closeCalendar" z-index="200">
+      <calendar
+        calendarConfig="{{calendarConfig}}"
+        bind:afterTapDay="chooseDay"
+      />
+    </van-popup>
+    <!-- 订单日期弹出框 -->
+    <van-popup
+      show="{{timeFrameVisible}}"
+      position="right"
+      overlay="{{ true }}"
+      z-index="200"
+      custom-style="height: 100%;"
+      close-on-click-overlay="{{false}}"
+      >
+      <view class="order-drawer">
+        <view class="order-drawer-time">
+          <view class="order-drawer-time-header">
+            <van-icon  name="arrow-left" class="order-drawer-time-header-back" bind:click="onToggleTimeFrame"></van-icon>
+            <view class="order-drawer-time-header-title">订单日期</view>
+          </view>
+          <view class="order-drawer-time-content">
+            <view class="order-drawer-time-content-line" @tap="onSelectTimeFrame('')">
+              <view class="text {{filterForm.timeFrame === '' ? 'active' : ''}}">全部时间</view>
+              <van-icon wx:if="{{filterForm.timeFrame === ''}}" name="success" class="time-selected" size="32rpx"/>
+            </view>
+            <view class="order-drawer-time-content-line" @tap="onSelectTimeFrame('7')">
+              <view class="text {{filterForm.timeFrame === '7' ? 'active' : ''}}">最近一周</view>
+              <van-icon wx:if="{{filterForm.timeFrame === '7'}}"  name="success" class="time-selected" size="32rpx"/>
+            </view>
+            <view class="order-drawer-time-content-line" @tap="onSelectTimeFrame('1')">
+              <view class="text {{filterForm.timeFrame === '1' ? 'active' : ''}}">最近一个月</view>
+              <van-icon wx:if="{{filterForm.timeFrame === '1'}}"  name="success" class="time-selected" size="32rpx"/>
+            </view>
+            <view class="order-drawer-time-content-line" @tap="onSelectTimeFrame('3')">
+              <view class="text {{filterForm.timeFrame === '3' ? 'active' : ''}}">最近三个月</view>
+              <van-icon wx:if="{{filterForm.timeFrame === '3'}}"  name="success" class="time-selected" size="32rpx"/>
+            </view>
+            <view class="order-drawer-time-content-line" @tap="onSelectTimeFrame('6')">
+              <view class="text {{filterForm.timeFrame === '6' ? 'active' : ''}}">最近六个月</view>
+              <van-icon wx:if="{{filterForm.timeFrame === '6'}}"  name="success" class="time-selected" size="32rpx"/>
+            </view>
+          </view>
+          <view class="order-drawer-attr-footer">
+            <view
+              @tap="onToggleTimeFrame"
+              class="order-drawer-attr-footer-btn confirm"
+              hover-class="order-drawer-attr-footer-btn-hover"
+            >确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <!-- 筛选弹出框 -->
+    <van-popup
+      show="{{visible}}"
+      position="right"
+      overlay="{{ true }}"
+      bind:close="orderfiltering"
+      custom-style="height: 100%;"
+      z-index="130"
+      >
+      <view class="order-drawer">
+        <view class="order-drawer-attr">
+          <scroll-view class="order-drawer-attr-scroll" scroll-y>
+            <view class="attr-item">
+              <view class="projectem">
+                <view class="project">
+                  <text style="font-size: 13px;color: #777777">收款账户</text>
+                </view>
+                <van-field
+                  placeholder="请输入收款账户"
+                  placeholder-style="font-size: 22rpx;"
+                  border="{{ false }}"
+                  bind:change="onZzprdmodelChange"
+                  custom-style="background-color: #f7f7f7;height: 75rpx"
+                  clearable
+                  disabled
+                  value="{{filterForm.zzprdmodel}}"
+                />
+              </view>
+              <view class="projectem">
+                <view class="project">
+                  <text style="font-size: 13px;color: #777777">打款账户</text>
+                </view>
+                <view>
+                  <van-field
+                    placeholder="请输入打款账户"
+                    border="{{ false }}"
+                    placeholder-style="font-size: 22rpx;"
+                    bind:change="onOrderCodeChange"
+                    custom-style="background-color: #f7f7f7;height: 75rpx"
+                    clearable
+                    disabled
+                    value="{{filterForm.orderCode}}"
+                  />
+                </view>
+              </view>
+              <view class="projectem">
+                <view class="project">
+                  <text style="font-size: 13px;color: #777777">打款户名</text>
+                </view>
+                <van-field
+                  placeholder="请输入打款户名"
+                  border="{{ false }}"
+                  placeholder-style="font-size: 22rpx;"
+                  bind:change="onOrderNameChange"
+                  custom-style="background-color: #f7f7f7;height: 75rpx"
+                  clearable
+                  disabled
+                  value="{{filterForm.fundName}}"
+                />
+              </view>
+              <view class="order-data">
+                <view class="project">
+                  <text style="font-size: 13px;color: #777777">交易日期</text>
+                  <text wx:if="{{!filterForm.timeFrame}}" class="text" @tap="onToggleTimeFrame">全部日期 ></text>
+                  <text wx:if="{{filterForm.timeFrame === '7'}}" class="text" @tap="onToggleTimeFrame">最近一周 ></text>
+                  <text wx:if="{{filterForm.timeFrame === '1'}}" class="text" @tap="onToggleTimeFrame">最近一个月 ></text>
+                  <text wx:if="{{filterForm.timeFrame === '3'}}" class="text" @tap="onToggleTimeFrame">最近三个月 ></text>
+                  <text wx:if="{{filterForm.timeFrame === '6'}}" class="text" @tap="onToggleTimeFrame">最近六个月 ></text>
+                </view>
+                <view class="order-data-input">
+                  <view class="order-data-input-one" data-name="beginDate" data-type="date" @tap ="openCalendar">
+                    <text data-name="beginDate" data-type="date" class="{{filterForm.beginDate?'':'date_clolr'}}">{{filterForm.beginDate?filterForm.beginDate:'开始日期'}}</text>
+                    <van-icon wx:if="{{filterForm.beginDate}}" class="close-icon" name="clear" catchtap="clearCalendar('beginDate')"/>
+                  </view>
+                  <view class="order-data-input-line">-</view>
+                  <view class="order-data-input-one" data-name="endDate" data-type="date" @tap="openCalendar">
+                    <text data-name="endDate" data-type="date"  class="{{filterForm.endDate?'':'date_clolr'}}">{{filterForm.endDate?filterForm.endDate:'结束日期'}}</text>
+                    <van-icon wx:if="{{filterForm.endDate}}" class="close-icon" name="clear" catchtap="clearCalendar('endDate')"/>
+                  </view>
+                </view>
+              </view>
+              <view class="projectem">
+                <view class="project">
+                  <text style="font-size: 13px;color: #777777">票据类型</text>
+                </view>
+                <van-field
+                  placeholder="请输入票据类型"
+                  placeholder-style="font-size: 22rpx;"
+                  border="{{ false }}"
+                  bind:change="onBillTypeChange"
+                  custom-style="background-color: #f7f7f7;height: 75rpx"
+                  clearable
+                  disabled
+                  value="{{filterForm.billtype}}"
+                />
+              </view>
+              <view class="projectem">
+                <view class="project">
+                  <text style="font-size: 13px;color: #777777">票据号</text>
+                </view>
+                <van-field
+                  placeholder="请输入票据号"
+                  placeholder-style="font-size: 22rpx;"
+                  border="{{ false }}"
+                  bind:change="onBillNumberChange"
+                  custom-style="background-color: #f7f7f7;height: 75rpx"
+                  clearable
+                  disabled
+                  value="{{filterForm.billnumber}}"
+                />
+              </view>
+              <view class="projectem">
+                <view class="project">
+                  <text style="font-size: 13px;color: #777777">交票人</text>
+                </view>
+                <van-field
+                  placeholder="请输入交票人"
+                  placeholder-style="font-size: 22rpx;"
+                  border="{{ false }}"
+                  bind:change="onBillPersonChange"
+                  custom-style="background-color: #f7f7f7;height: 75rpx"
+                  clearable
+                  disabled
+                  value="{{filterForm.billperson}}"
+                />
+              </view>
+              <view class="projectem">
+                <view class="project">
+                  <text style="font-size: 13px;color: #777777">票据到期日期</text>
+                </view>
+                <van-field
+                  placeholder="请输入票据到期日期"
+                  placeholder-style="font-size: 22rpx;"
+                  border="{{ false }}"
+                  bind:change="onZzprdmodelChange"
+                  custom-style="background-color: #f7f7f7;height: 75rpx"
+                  clearable
+                  disabled
+                />
+              </view>
+              <view class="projectem">
+                <view class="project">
+                  <text style="font-size: 13px;color: #777777">出票人名称</text>
+                </view>
+                <van-field
+                  placeholder="请输入出票人名称"
+                  placeholder-style="font-size: 22rpx;"
+                  border="{{ false }}"
+                  bind:change="onBillPersonNameChange"
+                  custom-style="background-color: #f7f7f7;height: 75rpx;width:100%;padding:"
+                  clearable
+                  disabled
+                  value="{{filterForm.billpersonname}}"
+                />
+              </view>
+              <view class="projectem">
+                <view class="project">
+                  <text style="font-size: 13px;color: #777777">承兑人名称</text>
+                </view>
+                <van-field
+                  placeholder="请输入承兑人名称"
+                  placeholder-style="font-size: 22rpx;"
+                  border="{{ false }}"
+                  bind:change="onAcceptorNameChange"
+                  custom-style="background-color: #f7f7f7;height: 75rpx"
+                  clearable
+                  disabled
+                  value="{{filterForm.acceptorname}}"
+                />
+              </view>
+            </view>
+          </scroll-view>
+          <!-- 底部按钮 -->
+          <view class="order-drawer-attr-footer">
+            <view
+              @tap="onClearFilterForm"
+              class="order-drawer-attr-footer-btn reset"
+              hover-class="order-drawer-attr-footer-btn-hover"
+            >重置</view>
+            <view
+              @tap="onSubmitFilterForm"
+              class="order-drawer-attr-footer-btn confirm"
+              hover-class="order-drawer-attr-footer-btn-hover"
+            >确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <!-- 表头弹出框 -->
+    <van-popup
+      show="{{OrderSFilterVisible}}"
+      position="top"
+      overlay="{{ true }}"
+      custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"
+      bind:close="touchOrderSFilter"
+      >
+      <!-- 交易类型 -->
+      <view wx:if="{{CurrentOrderSFilterName === 'orderType'}}" class="order-s-filter-container">
+        <view class="order-operation" @tap="onSelectOrderTypeCode('')">
+          <view class="operation-text van-hairline--bottom">
+            <view class="operation-status {{ filterForm.orderTypeCode === '' ? 'active' : '' }}">全部</view>
+            <view wx:if="{{ filterForm.orderTypeCode === '' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <view class="order-operation" @tap="onSelectOrderTypeCode('account')">
+          <view class="operation-text van-hairline--bottom">
+            <view class="operation-status {{ filterForm.orderTypeCode === 'account' ? 'active' : '' }}">银行流水</view>
+            <view wx:if="{{ filterForm.orderTypeCode === 'account' }}"  class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <view class="order-operation" @tap="onSelectOrderTypeCode('pos')">
+          <view class="operation-text van-hairline--bottom">
+            <view class="operation-status {{ filterForm.orderTypeCode === 'pos' ? 'active' : '' }}">POS流水</view>
+            <view wx:if="{{ filterForm.orderTypeCode === 'pos' }}"  class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <view class="order-operation" @tap="onSelectOrderTypeCode('draftbill')">
+          <view class="operation-text van-hairline--bottom">
+            <view class="operation-status {{ filterForm.orderTypeCode === 'draftbill' ? 'active' : '' }}">票据流水</view>
+            <view wx:if="{{ filterForm.orderTypeCode === 'draftbill' }}"  class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+      </view>
+      <!-- 交易日期 -->
+      <view wx:if="{{CurrentOrderSFilterName === 'orderStatus'}}" class="order-s-filter-container">
+        <view class="order-operation">
+          <view class="operation-text van-hairline--bottom" @tap="onSelectStatus('')">
+            <view class="operation-status {{ filterForm.status === '' ? 'active' : '' }}">全部时间</view>
+            <view wx:if="{{ filterForm.status === '' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <!-- TODO: -->
+        <view class="order-operation">
+          <view class="operation-text van-hairline--bottom" @tap="onSelectStatus('UNPAYED')">
+            <view class="operation-status {{ filterForm.status === 'UNPAYED' ? 'active' : '' }}">最近一周</view>
+            <view wx:if="{{ filterForm.status === 'UNPAYED' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <view class="order-operation">
+          <view class="operation-text van-hairline--bottom" @tap="onSelectStatus('WAITPAYRESULT')">
+            <view class="operation-status {{ filterForm.status === 'WAITPAYRESULT' ? 'active' : '' }}">最近一个月</view>
+            <view wx:if="{{ filterForm.status === 'WAITPAYRESULT' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <view class="order-operation">
+          <view class="operation-text van-hairline--bottom" @tap="onSelectStatus('AGENTUNCHKED')">
+            <view class="operation-status {{ filterForm.status === 'AGENTUNCHKED' ? 'active' : '' }}">最近三个月</view>
+            <view wx:if="{{ filterForm.status === 'AGENTUNCHKED' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <view class="order-operation">
+          <view class="operation-text van-hairline--bottom" @tap="onSelectStatus('UNCHKED')">
+            <view class="operation-status {{ filterForm.status === 'UNCHKED' ? 'active' : '' }}">最近六个月</view>
+            <view wx:if="{{ filterForm.status === 'UNCHKED' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+      </view>
+      <!-- 认领状态 -->
+      <view wx:if="{{CurrentOrderSFilterName === 'auditStatus'}}" class="order-s-filter-container">
+        <view class="order-operation">
+          <view class="operation-text van-hairline--bottom" @tap="onSelectSOStatus('')">
+            <view class="operation-status {{ filterForm.sapOrderStatus === '' ? 'active' : '' }}">全部</view>
+            <view wx:if="{{ filterForm.sapOrderStatus == '' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <view class="order-operation">
+          <view class="operation-text van-hairline--bottom" @tap="onSelectSOStatus('0')">
+            <view class="operation-status {{ filterForm.sapOrderStatus == '0' ? 'active' : '' }}">待认领</view>
+            <view wx:if="{{ filterForm.sapOrderStatus == '0' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <view class="order-operation">
+          <view class="operation-text van-hairline--bottom" @tap="onSelectSOStatus('1')">
+            <view class="operation-status {{ filterForm.sapOrderStatus == '1' ? 'active' : '' }}">部分认领</view>
+            <view wx:if="{{ filterForm.sapOrderStatus == '1' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <view class="order-operation">
+          <view class="operation-text van-hairline--bottom" @tap="onSelectSOStatus('2')">
+            <view class="operation-status {{ filterForm.sapOrderStatus == '2' ? 'active' : '' }}">已认领</view>
+            <view wx:if="{{ filterForm.sapOrderStatus == '2' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <view class="order-operation">
+          <view class="operation-text van-hairline--bottom" @tap="onSelectSOStatus('3')">
+            <view class="operation-status {{ filterForm.sapOrderStatus == '3' ? 'active' : '' }}">已确认</view>
+            <view wx:if="{{ filterForm.sapOrderStatus == '3' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <view class="order-operation">
+          <view class="operation-text van-hairline--bottom" @tap="onSelectSOStatus('4')">
+            <view class="operation-status {{ filterForm.sapOrderStatus == '4' ? 'active' : '' }}">申诉中</view>
+            <view wx:if="{{ filterForm.sapOrderStatus == '4' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <view class="order-operation">
+          <view class="operation-text van-hairline--bottom" @tap="onSelectSOStatus('5')">
+            <view class="operation-status {{ filterForm.sapOrderStatus == '5' ? 'active' : '' }}">变更中</view>
+            <view wx:if="{{ filterForm.sapOrderStatus == '5' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <!-- 表头筛选 -->
+<!--    <view class="order-header">-->
+<!--      <view @tap="touchOrderSFilter('orderType')" class="order-header-label" hover-class="hover">-->
+<!--        <text>交易类型</text>-->
+<!--        <van-icon class="fund-icon-jian" name="play" size="20rpx" color="#262626" />-->
+<!--      </view>-->
+<!--      <view @tap="touchOrderSFilter('orderStatus')" class="order-header-label" hover-class="hover">-->
+<!--        <text>交易日期</text>-->
+<!--        <van-icon class="fund-icon-jian" name="play" size="20rpx" color="#262626" />-->
+<!--      </view>-->
+<!--      <view @tap="touchOrderSFilter('auditStatus')" class="order-header-label" hover-class="hover">-->
+<!--        <text>认领状态</text>-->
+<!--        <van-icon class="fund-icon-jian" name="play" size="20rpx" color="#262626" />-->
+<!--      </view>-->
+<!--      &lt;!&ndash; <view @tap="orderfiltering" class="orderfilter" hover-class="hover">-->
+<!--        <text class="orderfilter-text">筛选</text>-->
+<!--      </view> &ndash;&gt;-->
+<!--    </view>-->
+    <!-- 滚动区域列表 -->
+    <!-- <block wx:if="{{fundClaimList.length<1}}">
+      <van-loading size="24rpx" />
+    </block> -->
+    <headerTab
+      :showRightBtn="showRightBtn"
+      :tabList.sync="headerTabList"
+      @onTabChange.user="touchOrderSFilter"
+    />
+    <view class="show_view" wx:if="{{view_show}}">
+    <scroll-view id="" wx:if="{{totalPages !== 0}}" scroll-y="true" class="order-scroll" enable-flex bindscrolltolower="onGetOrderListNext" enable-back-to-top  bindscroll="endScroll"  scroll-top="scrollTop">
+    <!-- <scroll-view scroll-y="true" class="order-scroll" enable-flex bindscrolltolower="onGetOrderListNext"> -->
+      <repeat for="{{fundClaimList}}" item="item">
+      <view class="order-container">
+        <!-- checkbox -->
+        <!-- <view class="{{checkBtn?'':order-check-show}}" class="order-check">
+          <van-checkbox
+            value="{{ checked }}"
+            checked-color="#00AAA6"
+            bind:change="onChange"
+            icon-size="32rpx"
+          >
+          </van-checkbox>
+        </view> -->
+        <!-- <view class="order-container-box {{orderMove?'orderContainerMove':''}}"> -->
+        <view class="order-container-box">
+          <view class="order-title">
+            <text class="order-id">{{item.billno}}<text wx:if="{{item.hifi_flowstatus=='account'||item.hifi_flowstatus=='pos'}}" class="order-type">收款</text><text wx:else class="order-type">收票</text></text>
+            <!-- <text class="order-id">ZJDF-123244545<text class="order-type">收款</text></text> -->
+
+            <!-- <text wx:if="{{item.billtype==0}}" class="order-type">收款</text> -->
+            <!-- <text wx:else class="order-type">收票</text> -->
+            <text wx:if="{{item.claimstatus=='待认领'}}" class="order-status" style="color:#00AAA6;">待认领</text>
+            <text wx:elif="{{item.claimstatus=='部分认领'}}" class="order-status" style="color:#D9161C;">部分认领</text>
+            <text wx:elif="{{item.claimstatus=='已认领'}}" class="order-status" style="color:#777777;">已认领</text>
+            <text wx:elif="{{item.claimstatus=='已确认'}}" class="order-status" style="color:#777777;">已确认</text>
+            <text wx:elif="{{item.claimstatus=='申诉中'}}" class="order-status" style="color:#777777;">申诉中</text>
+            <text wx:elif="{{item.claimstatus=='变更中'}}" class="order-status" style="color:#777777;">变更中</text>
+          </view>
+          <view class="order-hr"></view>
+          <view class="order-content">
+            <view class="order-content-money">
+              <view class="order-content-money-item">
+                <text class="order-money-zi">收款金额</text>
+                <text class="order-money-num">￥{{item.reamount}}</text>
+              </view>
+              <view class="order-content-money-item">
+                <text class="order-money-zi">待认领金额</text>
+                <text class="order-money-num">￥{{item.unclaimamount}}</text>
+              </view>
+            </view>
+            <view  wx:if="{{item.hifi_flowstatus=='account'||item.hifi_flowstatus=='pos'}}" class="order-content-info">
+              <text class="order-content-info-text">收款账户：{{item.accountbank}}</text>
+              <text class="order-content-info-text">打款账户：{{item.oppbanknumber?item.oppbanknumber:'测试账户'}}</text>
+              <text class="order-content-info-text">打款户名：{{item.oppunit}}</text>
+              <text class="order-content-info-text">交易日期：{{item.tradetime}}</text>
+            </view>
+            <view wx:else class="order-content-info">
+              <text class="order-content-info-text">票据类型：{{item.hifi_flowstatus == 'account' ? '银行流水' : '票据流水'}}</text>
+              <text class="order-content-info-text">票据号：{{item.tradedetailno}}</text>
+              <text class="order-content-info-text">交票人：{{item.oppunit}}</text>
+              <text class="order-content-info-text">票据到期日期：{{item.hifi_draftbillexpiredate}}</text>
+              <text class="order-content-info-text">出票人名称：{{item.hifi_drawername}}</text>
+              <text class="order-content-info-text">承兑人名称：{{item.hifi_acceptername}}</text>
+            </view>
+          </view>
+          <!-- 按钮 -->
+          <view class="order-operation">
+            <view wx:if="{{item.claimstatus=='待认领'}}" class="order-operation-the">
+              <van-button
+                borderIs="true"
+                color="#262626"
+                plain
+                hairline
+                size="small"
+                type="primary"
+                bind:click="viewhandle({{item.id}},{{item.saleorg.number}},{{item.oppunit}})"
+                data-org = "{{item.saleorg.number}}"
+                custom-style="font-size:28rpx;height:56rpx;color:#262626;"
+              >认领</van-button>
+            </view>
+            <view wx:elif="{{item.claimstatus=='部分认领'}}" class="order-operation-the">
+              <van-button
+                borderIs="true"
+                color="#262626"
+                plain
+                hairline
+                size="small"
+                type="primary"
+                bind:click="viewhandle({{item.id}},{{item.saleorg.number}})"
+                data-org = "{{item.saleorg.number}}"
+                custom-style="font-size:28rpx;height:56rpx;color:#262626;"
+              >认领</van-button>
+              <van-button style="margin-left:16rpx;"
+                borderIs="true"
+                color="#262626"
+                plain
+                hairline
+                size="small"
+                type="primary"
+                bind:click="viewDetail({{item.id}},{{item.billtype}})"
+              >查看</van-button>
+            </view>
+            <view wx:else class="order-operation-the">
+              <van-button
+                borderIs="true"
+                color="#262626"
+                plain
+                hairline
+                size="small"
+                type="primary"
+                bind:click="viewDetail({{item.id}},{{item.billtype}})"
+              >查看认领明细</van-button>
+            </view>
+          </view>
+        </view>
+      </view>
+      </repeat>
+      <!-- <view wx:if="{{lineBottom}}" class="line-bottom">
+        我是有底线的
+      </view> -->
+    </scroll-view>
+    <!-- 合并认领按钮 -->
+    <!-- <view class="order-fund-bottom">
+      <view wx:if="{{!orderMove}}">
+        <van-button
+        color="#00AAA6"
+        block
+        size="normal"
+        type="primary"
+        bind:click="mergeClaim()"
+        >合并认领</van-button>
+      </view>
+      <view wx:else style="display:flex">
+        <van-button
+        block
+        style="flex:1;"
+        type="default"
+        bind:click="cancleClaim()"
+        >取消</van-button>
+        <van-button
+        color="#00AAA6"
+        block
+        style="flex:1;"
+        type="primary"
+        bind:click="trueClaim()"
+        >确定</van-button>
+      </view>
+    </view> -->
+      <emptyDataType wx:if="{{totalPages == 0}}"/>
+
+    <!-- <view style="border-radius:5rpx;height:10rpx;background:#000;width:268rpx;margin-left:240rpx;margin-bottom:16rpx;"></view> -->
+    </view>
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

@@ -1,0 +1,116 @@
+<template>
+  <view class="purchase">
+    <!-- 时效日期说明，数据更新至当天的前一天日期 -->
+    <view class="expiry-date">数据更新至{{ previousDayDate }}</view>
+
+    <!-- 顶部筛选 -->
+    <view class="report-header-tab">
+      <view class="tab-item date-box">
+        <view class="date" @tap="touchFilter('startDate')">
+          <text class="text">{{ filterForm.startDate }}</text>
+          <text class="b-icon iconxialajiantou"></text>
+        </view>
+<!--        <view class="dividing-line">~</view>-->
+<!--        <view class="date" @tap="touchFilter('endDate')">-->
+<!--          <text class="text">{{ filterForm.endDate }}</text>-->
+<!--          <text class="b-icon iconxialajiantou"></text>-->
+<!--        </view>-->
+      </view>
+      <view wx:if="{{isMaterialSelect}}" class="tab-item category-box"  @tap="touchFilter('material')">
+        <text class="text">品类</text>
+        <text class="b-icon iconxialajiantou"></text>
+      </view>
+    </view>
+
+    <scroll-view class="container-list-scroll" scroll-y>
+      <view class="dongxioalv-inner">
+        <view class="t-header">
+          <repeat for="{{tableData.column}}" item="column">
+            <view class="t-td">{{ column.label }}</view>
+          </repeat>
+        </view>
+        <view class="t-body">
+          <block wx:if="{{tableData.content.length}}">
+            <repeat for="{{tableData.content}}" item="cell" index="cellIndex">
+              <view class="tr">
+                <repeat for="{{tableData.column}}" item="column">
+                  <view class="t-td {{column.prop === 'completion'? (cellIndex%2)===0 ? 'oRed' : 'oGreen' : ''}}" >{{ utils.removeIllegalStr(cell[column.prop]) }}</view>
+                </repeat>
+              </view>
+            </repeat>
+          </block>
+          <view class="no-data" wx:else>暂无数据！</view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 筛选弹出框 -->
+    <van-popup
+      show="{{ purchaseVisable }}"
+      position="top"
+      custom-class="purchase-top"
+      bind:close="touchFilter"
+      wx:if="{{CurrentFilterName==='material' || CurrentFilterName==='runType'}}"
+      custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;">
+      <!-- 选择物料组 -->
+      <view wx:if="{{CurrentFilterName==='material'}}" class="order-s-filter-container">
+        <scroll-view scroll-y class="purchase-inv-scroll">
+          <view wx:for="{{ matklList }}" wx:key="{{ item.id}}" item="item" class="purchase-inv-scroll-row" data-key="{{item.id}}" data-index="{{ index }}" @tap="onMaterial({{item.code}})">
+            <view class="pose-inv-scroll-row-desc {{item.code === filterForm.matklCode ? 'checked' : ''}}" >{{ item.name}}</view>
+            <view wx:if="{{item.code === filterForm.matklCode }}" class="b-icon icon-check pose-inv-scroll-row-checked checked"></view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <!-- 选择跑动类型 -->
+      <view wx:if="{{CurrentFilterName==='runType'}}" class="order-s-filter-container">
+        <scroll-view scroll-y class="purchase-inv-scroll">
+          <view wx:for="{{ runTypeList }}" wx:key="{{ item.id}}" item="item" class="purchase-inv-scroll-row" data-key="{{item.id}}" data-index="{{ index }}" @tap="onRunType({{item.code}})">
+            <view class="pose-inv-scroll-row-desc {{item.code === filterForm.runTypeCode ? 'checked' : ''}}" >{{ item.name}}</view>
+            <view wx:if="{{item.code === filterForm.runTypeCode }}" class="b-icon icon-check pose-inv-scroll-row-checked checked"></view>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-popup
+      show="{{ purchaseVisable }}"
+      position="bottom"
+      custom-class="purchase-top"
+      bind:close="touchFilter"
+      wx:if="{{CurrentFilterName==='startDate'}}" >
+      <!-- 选择时间 -->
+      <view>
+        <van-datetime-picker
+          type="year-month"
+          value="{{ currentStartDate }}"
+          min-date="{{ minStartDate }}"
+          max-date="{{ maxStartDate }}"
+          bind:input="onInput"
+          bind:confirm="onConfirm"
+          bind:cancel="onCancel"/>
+      </view>
+    </van-popup>
+<!--    <van-popup-->
+<!--      show="{{ purchaseVisable }}"-->
+<!--      position="bottom"-->
+<!--      custom-class="purchase-top"-->
+<!--      bind:close="touchFilter"-->
+<!--      wx:if="{{CurrentFilterName==='endDate'}}" >-->
+<!--      &lt;!&ndash; 选择时间 &ndash;&gt;-->
+<!--      <view>-->
+<!--        <van-datetime-picker-end-->
+<!--          type="year-month"-->
+<!--          value="{{ currentEndDate }}"-->
+<!--          min-date="{{ minEndDate }}"-->
+<!--          max-date="{{ maxEndDate }}"-->
+<!--          bind:input="onInputEnd"-->
+<!--          bind:confirm="onConfirm"-->
+<!--          bind:cancel="onCancel"/>-->
+<!--      </view>-->
+<!--    </van-popup>-->
+
+  </view>
+</template>
+
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

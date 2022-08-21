@@ -1,0 +1,30 @@
+<template>
+  <van-popup show="{{show}}" custom-style="border-radius: 12rpx;overflow:hidden;">
+    <view class="pay-confirm">
+      <view @tap="close" hover-class="hover" class="pay-confirm-close">
+        <van-icon name="cross" color="#AAAAAA" />
+      </view>
+      <view class="pay-confirm-header">请输入账号密码</view>
+      <view class="pay-confirm-body">¥{{price}}</view>
+      <view class="pay-confirm-input">
+        <view class="pay-confirm-input-border van-hairline--surround">
+          <van-field
+            focus
+            clearable
+            password="{{!passwordVisible}}"
+            value="{{password}}"
+            size="small"
+            border="{{false}}"
+            placeholder="请输入密码"
+            bind:change="onChange"
+            bind:click-icon="togglePwd"
+            right-icon="{{ passwordVisible ? 'eye-o' : 'closed-eye' }}"
+          />
+        </view>
+      </view>
+      <van-button bind:click="validatePwd" block color="#00AAA6" disabled="{{!password }}">确认提交</van-button>
+    </view>
+  </van-popup>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

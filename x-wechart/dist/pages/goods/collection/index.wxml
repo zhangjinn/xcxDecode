@@ -1,0 +1,27 @@
+
+  <container loading="{{ loading }}" id="container" style="height: 100%" class="_a90e5e9">
+    <view class="collection _a90e5e9">
+      <block  wx:if="{{ list.length > 0 }}" class="_a90e5e9">
+        <view class="scroll-grid _a90e5e9">
+          <block class="_a90e5e9" wx:for="{{ list }}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <item item="{{ item }}" hiddenCollecion="false"  bind:img-lose="imgLose" class="_a90e5e9"/>
+          </block>
+        </view>
+      </block>
+      <block  wx:else class="_a90e5e9">
+        
+  <view class="empty-data _a90e5e9">
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+      </block>
+      <!-- 回到上方 -->
+      <button hidden="{{!visibelTop}}" bindtap="scrollToTop" class="screen shareBar _a90e5e9" lang="zh_CN">
+        <view class="b-icon icon-top _a90e5e9"/>
+      </button>
+      <!-- <van-toast id="van-toast" /> -->
+    </view>
+  </container>

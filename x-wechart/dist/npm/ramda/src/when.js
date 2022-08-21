@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),when=_curry3(function(r,e,n){return r(n)?e(n):n});module.exports=when;

@@ -1,0 +1,50 @@
+
+  <view class="return _bc97d06">
+    <view class="return-header _bc97d06">
+      <van-search placeholder="请输入采购单号/代理名称/代理编码" use-action-slot="use-action-slot"  bind:change="onChange" bindsearch="onClick" class="_bc97d06">
+        <view slot="action" bind:tap="onClick" class="_bc97d06">搜索</view>
+      </van-search>
+    </view>
+    <block  wx:if="{{list_channel && list_channel.length > 0}}" class="_bc97d06">
+      <view class="return-middle _bc97d06">
+        <view class="info _bc97d06">选择退货信息</view>
+      </view>
+      <scroll-view scroll-y enable-flex="enable-flex" class="search-result _bc97d06" bindscrolltolower="loadNextPage">
+        <block class="_bc97d06" wx:for="{{list_channel}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view catchtap="selectItem" style="{{item.id == itemId ? 'border:1px solid rgba(0,170,166,1);': ''}}" class="container _bc97d06" data-wpyselectitem-a="{{item.id}}" data-wpyselectitem-b="{{item.documentNum}}" data-wpyselectitem-c="{{item.returnNum}}" data-wpyselectitem-d="{{item.supplierName}}" data-wpyselectitem-e="{{item.returnBy}}">
+            <view wx:if="{{item.id == itemId}}" class="triangle _bc97d06"/>
+            <view wx:if="{{item.id == itemId}}" class="b-icon icon-check icon  _bc97d06"/>
+            <view wx:if="{{item.returnNum}}" class="return van-hairline--bottom _bc97d06">
+              <view class="return-text _bc97d06">采购退货单号: {{item.returnNum}}</view>
+              <view wx:if="{{item.returnBy == 'bySales'}}" class="start _bc97d06">代理发起</view>
+              <view wx:if="{{item.returnBy == 'byPurchase'}}" class="start _bc97d06">分销发起</view>
+            </view>
+            <view class="first _bc97d06">
+              <view class="sales-number _bc97d06">采购单号: {{item.documentNum}}</view>
+              <view wx:if="{{item.returnStatus === 'returned'}}" class="select-border  _bc97d06">已退货</view>
+              <view wx:if="{{item.returnStatus === 'unreturn'}}" class="select-border  _bc97d06">未退货</view>
+              <view wx:if="{{item.returnStatus === 'part-returned'}}" class="select-border  _bc97d06">部分退货</view>
+            </view>
+            <view class="second van-ellipsis _bc97d06">{{item.supplierName}}</view>
+            <!-- <view class="second van-ellipsis">地址: 齐天大圣孙悟空</view> -->
+          </view>
+        </block>
+        <view style="padding-bottom: 100rpx;" class="_bc97d06"/>
+      </scroll-view>
+    </block>
+    
+  <view class="empty-data _bc97d06" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+    <view  wx:if="{{list_channel && list_channel.length > 0}}" class="return-footer van-hairline--top _bc97d06">
+      <view class="return-footer-bar _bc97d06">
+        <view bindtap="goNext" class="return-footer-bar-btn {{itemId == '' ? 'disabled': ''}} _bc97d06">下一步</view>
+      </view>
+    </view>
+    <van-toast id="van-toast" class="_bc97d06"/>
+    <van-dialog id="van-dialog" class="_bc97d06"/>
+  </view>

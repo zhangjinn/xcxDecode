@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),slice=require("./slice.js"),splitEvery=_curry2(function(r,e){if(r<=0)throw new Error("First argument to splitEvery must be a positive integer");for(var i=[],t=0;t<e.length;)i.push(slice(t,t+=r,e));return i});module.exports=splitEvery;

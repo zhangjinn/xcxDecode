@@ -1,0 +1,147 @@
+.page-wrap{
+  background-color: #f6f6f6;
+  position: relative;
+  height: 100vh;
+  overflow: auto;
+  .top-wrap{
+    position: absolute;
+    display: flex;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    justify-content: flex-start;
+    background: #00aaa7;
+    height: 250rpx;
+    border-bottom-left-radius:150rpx 80rpx ;
+    border-bottom-right-radius:150rpx 80rpx ;
+    padding: 20rpx 40rpx;
+    .niaoxing{
+      font-size: 64rpx;
+    }
+    .font{
+      color: white;
+      font-size: 24rpx;
+    }
+  }
+  .botm-wrap{
+    position: absolute;
+    padding: 40rpx;
+    margin-top: 40rpx;
+    padding-top: 0;
+    top: 80rpx;
+    width: 100vw;
+    padding-bottom: 100rpx;
+    height: 80vh;
+    overflow: scroll;
+    .card{
+      background: white;
+      border-radius: 10rpx;
+      padding: 20rpx;
+      width: 100%;
+      .head{
+        .mendian{
+          margin-right: 14rpx;
+        }
+        .mendian-text{
+          font-weight: 500;
+        }
+      }
+      .list{
+        .item{
+          display: flex;
+          justify-content: flex-start;
+          margin-bottom: 20rpx;
+          .index{
+            width: 60rpx;
+          }
+          .name{
+            flex-shrink: 0;
+            width: 480rpx;
+          }
+          .type{
+            margin-left: 20rpx;
+            height: 48rpx;
+            text-align: center;
+            width: 90rpx;
+            border: 1px solid #00AAA6;
+            color: #00AAA6;
+            padding: 4rpx;
+            font-size: 26rpx;
+          }
+          .type-disabled{
+            border: 1px solid #AAAAAA;
+            color: #AAAAAA;
+          }
+        }
+
+      }
+    }
+  }
+  .submit-wrap{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 200rpx;
+    background: #f6f6f6;
+    .rest{
+      margin: 20rpx 40rpx;
+      .rest-text{
+        color: #333333;
+        margin-right: 20rpx;
+      }
+      .rest-type{
+        color: #29CD98;
+      }
+      .rest-type-disabled{
+        color: #F26522 ;
+      }
+    }
+    .btn{
+      background: #00AAA6;
+      color: white;
+      line-height: 40px;
+      height: 80rpx;
+      width: 90%;
+      margin-left: 5%;
+      text-align: center;
+    }
+  }
+}
+.sing-bg{
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  background: rgba(0, 0, 0, .45);
+  .sign-wrap{
+    position: absolute;
+    bottom: 0;
+    background: #fff;
+    width: 100%;
+    .draw-wrap{
+      height: 300rpx;
+      width: calc(100% - 60rpx);
+      margin: 30rpx;
+      .can{
+        width: 100%;
+        height: 100%;
+        border: 1px solid #ccc;
+      }
+    }
+    .btns-wrap{
+      display: flex;
+      .btn{
+        color: #666666;
+        width:50%;
+        height: 80rpx;
+        line-height: 80rpx;
+        text-align: center;
+      }
+      .btn-ok{
+        background: #00AAA6;
+        color: white;
+      }
+    }
+
+  }
+}

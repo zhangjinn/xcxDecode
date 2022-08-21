@@ -1,0 +1,85 @@
+<template>
+  <view class="search">
+    <view class="search-container">
+      <view class="search-container-label">
+        产品信息
+      </view>
+      <van-search
+        class="search-container-input"
+        value="{{ zzprdmodel }}"
+        leftSearchIconSow="{{ false }}"
+        placeholder="请输入产品信息"
+        custom-class="dms-item-search-input"
+        placeholder-style="font-size:26rpx;"
+        focus="{{ true }}"
+        bind:search="onSearch"
+        bind:change="onChange"
+        clearable="{{ true }}"/>
+    </view>
+
+    <!--<repeat for="{{ likePaging }}" item="item">
+      <view class="search-result-row" @tap="chooseItem('{{ index }}')">
+        <view class="search-result-row-product">
+          <view class="search-result-row-product-name">
+            {{ item.productName }}
+          </view>
+          <view class="search-result-row-product-colour">
+            {{ item.colour }}
+          </view>
+        </view>
+
+        <view class="search-result-row-qty">
+          可供量{{ item.bigQty }}
+          <span class="volume" wx:if="{{item.volume}}">,体积:{{item.volume}}m³</span>
+        </view>
+
+      </view>
+    </repeat>-->
+    <scroll-view
+      wx:if="{{inventoryList.length !== 0}}"
+      scroll-y="true"
+      class="order-scroll"
+      bindscrolltolower="onGetOrderListNext"
+    >
+      <repeat for="{{inventoryList}}" item="item">
+        <view class="order-container" @tap="chooseItem('{{ index }}')">
+          <view class="order-top">
+            <view class="order-name">
+              <view class="order-rel-name">
+                <view wx:if="{{utils.isFreeShipping(item.productLabel)}}" class="item-info-tag">免运费</view>
+                <view class="order-name-left">{{item.model}}{{item.colour ? '/' + item.colour : ''}}</view>
+              </view>
+              <!-- invStatusName质量等级、gicInvStatusName库存类别、invStatusTypeName补差类型-->
+              <view class="order-number" style="margin-left: 40rpx;">{{item.invStatusName}}{{item.gicInvStatusName ? '/' + item.gicInvStatusName : ''}}{{item.invStatusTypeName ? ' / ' + item.invStatusTypeName : ''}}</view>
+            </view>
+          </view>
+          <view class="order-options">
+            <view class="item is-lock">
+              <span>可用</span>
+              ({{item.bigQty || '无'}})</view>
+            <view class="item">
+              <span>实际</span>
+              ({{item.totalBig}})
+            </view>
+            <view class="item">
+              <span>预留库存</span>
+              ({{item.bigQtyLock}})
+            </view>
+          </view>
+          <view class="order-content">
+            <view class="order-content-laster">物料编码: {{item.materialCode}}  <span style="margin-left: 40rpx;"></span> 仓库: {{item.gicWarehouseName}}</view>
+            <view class="order-content-items">销售组织: {{item.orgName}}  <span style="margin-left: 40rpx;"></span> 物料组: {{item.materialGroupName}}  <span style="margin-left: 40rpx;"></span>  库存状态: {{item.invTypeName}}</view>
+            <view class="order-content-items" wx:if="{{item.inInvDate}}">入库时间: {{item.inInvDate}} </view>
+          </view>
+          <view wx:if="{{item.isSelected}}" class="b-icon zhengque selected"></view>
+        </view>
+      </repeat>
+    </scroll-view>
+    <emptyDataType wx:else description="产品"/>
+
+    <van-toast id="van-toast" />
+  </view>
+
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

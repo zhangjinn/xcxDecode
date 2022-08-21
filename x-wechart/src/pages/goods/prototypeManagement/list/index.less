@@ -1,0 +1,196 @@
+@import '../../../../styles/utils.less';
+@import '../../../../components/vant/common/style/hairline.less';
+@import '../../../../components/vant/common/style/ellipsis.less';
+
+.order {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .overlay {
+    background-color: #00a6aa;
+  }
+  .order-operation {
+    display: flex;
+    width: 100%;
+    .operation-text {
+      width: 100%;
+      height: 84rpx;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .operation-status {
+        font-size: 28rpx;
+        font-weight: 400;
+        padding-left: 16rpx;
+        &.active {
+          color: #00aaaa;
+        }
+      }
+      .operation-icon {
+        font-size: 20rpx;
+        color: #00aaa6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-right: 40rpx;
+      }
+    }
+  }
+  .background {
+    background-color: #ffffff;
+  }
+  .order-scroll {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
+    background-color: #f7f7f7;
+    padding: 16rpx;
+    overflow-y: auto;
+    // 订单最外层
+    .order-container {
+
+      &:not(:first-child){
+        margin-top: 16rpx;
+      }
+
+      background-color: #ffffff;
+      font-size: 26rpx;
+      color: #777777;
+      font-weight: 400;
+      border-radius: 16rpx;
+      .card-header{
+        padding: 24rpx;
+        .card-title{
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          &:before {
+            content: '';
+            position: absolute;
+            left: -24rpx;
+            top: 8rpx;
+            height: 24rpx;
+            border-left: 6rpx solid #00AAA6;
+          }
+          .card-coding{
+            flex: 1;
+            margin-right: 24rpx;
+            font-size: 32rpx;
+            font-weight: 500;
+            color: #262626;
+
+          }
+          .card-status{
+            font-size: 28rpx;
+            .reported{
+              color: #00AAA6;
+            }
+            .reporting{
+              color: #D9161C;
+            }
+            .reportingGreen {
+              color: #00AAA6;
+            }
+          }
+        }
+        .card-desc{
+          margin-top: 14rpx;
+          .gap{
+            margin-right: 32rpx;
+          }
+          .gapFlex {
+            margin-top: 16rpx;
+            display: flex;
+            .twoBox {
+              margin-left: 48rpx;
+            }
+          }
+          .img{
+            margin-top: 16rpx;
+            width: 152rpx;
+            height: 152rpx;
+            .image {
+              width: 100%;
+              height: 100%;
+              border-radius: 8rpx;
+            }
+          }
+
+        }
+        .card-desc1{
+          display: flex;
+          align-items: center;
+          line-height: 12rpx;
+          text-align: center;
+          margin: 20rpx 0 16rpx 0;
+
+          .gaponeActive{
+            width: 120rpx;
+            height: 36rpx;
+            margin-right: 16rpx;
+            background: #ECF8F8;
+            border-radius: 85px 85px 85px 1px;
+            font-size: 24rpx;
+            color: #00AAA6;;
+          }
+          .gaponeNotActive{
+            width: 120rpx;
+            height: 36rpx;
+            margin-right: 16rpx;
+            background: #F2F3F5;
+            border-radius: 85px 85px 85px 1px;
+            font-size: 24rpx;
+            color: #AAAAAA;
+          }
+
+
+        }
+      }
+      .card-footer{
+        padding: 24rpx;
+        border-top: 2rpx solid #EEEEEE;
+        display: flex;
+        justify-content: flex-end;
+        .card-btn{
+          border-radius: 32rpx;
+          border: 2rpx solid #CCCCCC;
+          padding: 12rpx 28rpx;
+          font-size: 28rpx;
+          color: #262626;
+        }
+      }
+
+    }
+  }
+  .order-footer{
+    width: 100%;
+    height: 100rpx;
+    line-height: 100rpx;
+    text-align: center;
+    background: #00AAA6;
+    font-size: 32rpx;
+    color: #FFFFFF;
+  }
+  .order-s-filter-container {
+    padding-top: 154rpx;
+  }
+  .free-shipping-tag{
+    background: linear-gradient(90deg, #FF7C45 0%, #F63737 100%);
+    border-radius: 4rpx;
+    font-size: 20rpx;
+    font-weight: 400;
+    color: #FFFFFF;
+    padding:2rpx 4rpx;
+    margin-right: 8rpx;
+  }
+}
+.custom-header-filter{
+  background: red;
+}
+
+.iconliebiaoshaixuanjiantou-down {
+  font-size: 28rpx;
+}

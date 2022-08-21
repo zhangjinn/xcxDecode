@@ -1,0 +1,32 @@
+<template>
+  <view class="order">
+    <filter
+      :tabList.sync="tabList"
+      :tabActive.sync="tabActive"
+      @tabChange.user="tabChange"
+      @searchChange.user="searchChange"
+    />
+    <view class="scroll-wrapper">
+      <scroll-view
+        wx:if="{{ msgList && msgList.length }}"
+        class="card-scroll"
+        scroll-y
+        enable-back-to-top
+        scroll-top="{{ scrollTop }}"
+        bindscroll="onScroll"
+        bindscrolltolower="onGetOrderListNext">
+        <repeat for="{{ msgList }}" item="item">
+          <noticeListItem
+            :item.sync="item"
+            @onSwitch.user="onSwitch"
+          />
+        </repeat>
+      </scroll-view>
+      <emptyDataType wx:else description="通知"/>
+    </view>
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

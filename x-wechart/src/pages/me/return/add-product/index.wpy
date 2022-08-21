@@ -1,0 +1,115 @@
+<template>
+  <view class="me-return-add-product">
+    <van-notice-bar
+      color="#D9161C"
+      backgroundColor="#FFEFEF"
+      left-icon="info-o"
+      text="残次品只能退单机"
+    />
+    <scroll-view
+      scroll-y
+      enable-flex
+      enable-back-to-top="true"
+      scroll-with-animation="true"
+      scroll-top="{{visibelTop}}"
+      id="return-add-product-scroll-view"
+      class="me-return-add-product-scroll"
+    >
+      <repeat for="{{productList}}" key="index" item="item">
+        <view class="return-product-item">
+          <view class="item-content">
+            <van-field
+              value="{{ item.productName }}"
+              required
+              readonly
+              label="产品型号"
+              placeholder="请输入产品型号"
+              input-align="right"
+              icon="arrow"
+              data-product-index="{{index}}"
+              bind:click-icon="onToggleProductName"
+            />
+            <van-field
+              value="{{ item.machineNum }}"
+              required
+              label="机号"
+              placeholder="请输入23位机号"
+              input-align="right"
+              data-product-index="{{index}}"
+              data-column-name="machineNum"
+              bind:change="onInputChange"
+            />
+            <van-field
+              value="{{ item.crmCode }}"
+              label="CRM鉴定工单号"
+              title-width="240rpx"
+              placeholder="请输入CRM鉴定工单号"
+              input-align="right"
+              data-product-index="{{index}}"
+              data-column-name="crmCode"
+              bind:change="onInputChange"
+            />
+            <van-field
+              value="{{ item.checkDate }}"
+              label="鉴定日期"
+              placeholder="请选择鉴定日期"
+              readonly
+              icon="arrow"
+              input-align="right"
+              data-product-index="{{index}}"
+              bind:click-icon="openCalendar"
+            />
+            <van-field
+              value="{{ item.remarks }}"
+              label="备注"
+              title-width="240rpx"
+              placeholder="请输入备注"
+              input-align="right"
+              data-product-index="{{index}}"
+              data-column-name="remarks"
+              bind:change="onInputChange"
+            />
+          </view>
+          <view class="item-footer">
+            <i class="b-icon icon-remove" @tap="onRemoveProductLine({{index}})">删除</i>
+          </view>
+        </view>
+      </repeat>
+    </scroll-view>
+    <view class="me-return-add-product-footer">
+      <van-button type="default" size="large" bind:click="onAddProductLine" custom-class"add-button">继续添加</van-button>
+      <van-button type="primary" size="large" color="#00AAAA" bind:click="onSubmitForm">提交</van-button>
+    </view>
+    <van-popup show="{{ productNameVisible }}" position="bottom" custom-class="product-name-picker-popup" bind:close="onToggleProductName">
+      <view class="product-name-filter">
+        <van-search
+          value="{{ productList[productIndex].productName }}"
+          placeholder="请输入搜索关键词"
+          bind:search="onProductModelSearch"
+        />
+      </view>
+      <scroll-view
+        scroll-y
+        enable-flex
+        enable-back-to-top="true"
+        scroll-with-animation="true"
+        id="product-name-scroll-view"
+        class="product-name-scroll"
+      >
+        <repeat for="{{productNameList}}" key="index" item="item">
+          <view class="product-name-line" @tap="onSelectProductName({{item}})">{{item}}</view>
+        </repeat>
+      </scroll-view>
+    </van-popup>
+    <van-popup show="{{calendarShow}}" position="bottom" bind:close="closeCalendar" z-index="110">
+      <calendar
+        calendarConfig="{{calendarConfig}}"
+        bind:afterTapDay="chooseDay"
+      />
+    </van-popup>
+    <van-toast id="van-toast"/>
+    <van-dialog id="van-dialog"/>
+  </view>
+</template>
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts"></script>

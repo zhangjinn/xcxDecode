@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),drop=require("./drop.js"),takeLast=_curry2(function(r,e){return drop(r>=0?e.length-r:0,e)});module.exports=takeLast;

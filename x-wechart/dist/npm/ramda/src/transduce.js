@@ -1,0 +1,1 @@
+var _reduce=require("./internal/_reduce.js"),_xwrap=require("./internal/_xwrap.js"),curryN=require("./curryN.js"),transduce=curryN(4,function(r,e,u,n){return _reduce(r("function"==typeof e?_xwrap(e):e),u,n)});module.exports=transduce;

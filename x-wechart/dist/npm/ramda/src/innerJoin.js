@@ -1,0 +1,1 @@
+var _includesWith=require("./internal/_includesWith.js"),_curry3=require("./internal/_curry3.js"),_filter=require("./internal/_filter.js"),innerJoin=_curry3(function(r,e,i){return _filter(function(e){return _includesWith(r,e,i)},e)});module.exports=innerJoin;

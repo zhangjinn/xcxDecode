@@ -1,0 +1,1 @@
+function _concat(n,t){n=n||[],t=t||[];var e,o=n.length,r=t.length,c=[];for(e=0;e<o;)c[c.length]=n[e],e+=1;for(e=0;e<r;)c[c.length]=t[e],e+=1;return c}module.exports=_concat;

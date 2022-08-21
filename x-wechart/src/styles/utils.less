@@ -1,0 +1,121 @@
+
+.hairline(@border-color) {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  transform: scale(.5);
+  transform-origin: 0 0;
+  pointer-events: none;
+  box-sizing: border-box;
+  border: 0 solid @border-color;
+}
+
+.flex-center() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+
+.multi-ellipsis(@lines) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  white-space: initial;
+  word-break: break-all;
+  -webkit-line-clamp: @lines;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+}
+
+// 回到顶部
+.scroll-btn(@right, @bottom) {
+  .scroll-to-top {
+    position: fixed;
+    .flex-center();
+    right: @right;
+    bottom: @bottom;
+    width: 86rpx;
+    height: 86rpx;
+    border-radius: 100%;
+    background-color: #ffffff;
+    border: 1rpx solid #fff;
+    box-shadow: 0 4rpx 8rpx 0 rgba(0, 0, 0, 0.15);
+    z-index: 10;
+    .h-icon {
+      display: flex;
+      font-size: 36rpx;
+      color: #262626;
+    }
+  }
+}
+
+.radio(@size) {
+  position: relative;
+  width: @size;
+  height: @size;
+  border-radius: 100%;
+  &.checked {
+    .flex-center();
+    background-color: #00AAA6;
+    .b-icon {
+      display: flex;
+      font-size: 12rpx;
+      font-weight: bolder;
+      color: #ffffff;
+    }
+    &::after {
+      border: none;
+    }
+  }
+  .b-icon {
+    display: none;
+  }
+  &::after {
+    .hairline(#cccccc);
+    border-width: 4rpx;
+    border-radius: 100%;
+  }
+}
+
+  // 按钮
+.button(@width, @height) {
+  width: @width;
+  height: @height;
+  .flex-center();
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  white-space: nowrap;
+  user-select: none;
+  position: relative;
+  text-decoration: none;
+  border-radius: 0;
+  font-size: 32rpx;
+  color: #ffffff;
+  font-weight: 400;
+  padding:0;
+  &-hover{
+    opacity: 0.45;
+  }
+  &.black {
+    background-color: #262626;
+  }
+  &.red {
+    background-color: #D9161C;
+  }
+  &::after{
+    border: none;
+  }
+}
+
+

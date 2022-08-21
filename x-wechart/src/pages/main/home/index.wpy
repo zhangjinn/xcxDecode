@@ -1,0 +1,826 @@
+<template>
+  <view>
+  <view class="home" style="padding-bottom: {{ customTabBarAllHeight }}px">
+    <scroll-view scroll-y class="home-scroll">
+      <!--<view wx:if="{{ !loginStatus }}" class="home-MerchantEntranceModel">
+        <view class="leftBox">
+          <view class="leftBoxOne">
+            <i class="me-link b-icon icon-shangjiaruzhu"></i>
+          </view>
+          <view class="leftBoxTwo">
+            <p>商家入驻</p>
+          </view>
+        </view>
+        <view class="rightBox" @tap="goMIC('/pages/dms/intentionMerchants/index')" >
+          <p>填写信息</p>
+        </view>
+      </view>-->
+      <!--  轮播图、搜索、消息中心    -->
+      <view class="home-top">
+        <view class="home-shop" style="z-index:9999">
+          <view class="search-container">
+            <view class="home-search">
+              <navigator url="/pages/goods/search/index" class="home-search-input">
+                <view class="b-icon search-icon shouyesousuo"/>
+                <text class="search-text">搜索商品</text>
+              </navigator>
+            </view>
+          </view>
+        </view>
+        <view class="swiper-box" wx:if="{{home.topPictureList && home.topPictureList.length}}">
+          <swiper
+            indicator-dots="{{false}}"
+            autoplay
+            circular
+            indicator-color="#d4d4d4"
+            indicator-active-color="#262626"
+            bindchange="swiperChange"
+          >
+            <repeat for="{{home.topPictureList}}" item="item">
+              <swiper-item>
+                <view class="image-item">
+                  <image class="slide-image" src="{{item.imgName}}" data-url="{{item.url}}" @tap="goUrl"/>
+                </view>
+              </swiper-item>
+            </repeat>
+          </swiper>
+          <!-- 进度条 -->
+          <view class="dots-box">
+            <scrollBar :translateX.sync="swiperCurrentPosition"></scrollBar>
+          </view>
+        </view>
+      </view>
+
+      <!--   导航菜单   -->
+      <view wx:if="{{ loginStatus && specialAreaList && specialAreaList.length }}" class="home-special-area">
+        <scroll-view
+          scroll-x
+          class="special-area-scroll"
+          scroll-left='0'
+          bindscroll="getleft">
+          <view class="special-group">
+            <view wx:for="{{specialAreaList}}" class="special-item {{ specialAreaList.length > 5 ? 'special-item-more' : 'special-item-less' }}" @tap="goNavigationArea({{item}})">
+              <view class="special-icon">
+                <image wx:if="{{item.iconUrl}}" class="icon-img" src="{{item.iconUrl}}"/>
+                <i wx:else class="b-icon {{item.menuCode}}"></i>
+              </view>
+              <view class="special-name">
+                <text>{{item.sourceName}}</text>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+        <!-- 进度条 -->
+        <view wx:if="{{specialAreaList.length > 5}}" class="dots-box">
+          <scrollBar1
+            :translateX.sync="scrollCurrentPosition"
+            bgColorOut="#EEEEEE"
+            bgColorInner="#CCCCCC"
+            :isAnimationDelay.sync="isAnimationDelay">
+          </scrollBar1>
+        </view>
+      </view>
+
+      <!--   最近使用   -->
+      <view wx:if="{{ loginStatus }}" class="home-recently-used">
+        <swiper
+          indicator-dots="{{false}}"
+          bindchange="swiperChange"
+          previous-margin="16rpx"
+          next-margin="16rpx"
+          snap-to-edge
+          class="home-recently-used-swiper"
+          style="height:348rpx;"
+        >
+          <swiper-item class="home-recently-used-swiper-item">
+            <view class="home-recently-used-item-box">
+              <view class="home-recently-used-inner home-recently-used-inner-pending">
+                <block wx:for="{{pendingList}}">
+                  <view wx:if="{{item.isShow}}" class="recently-used-item recently-used-item-pending" @tap="toPending({{item}})">
+                    <view class="recently-used-num">
+                      <text>{{item.num}}</text>
+                    </view>
+                    <view class="recently-used-name">
+                      <p>{{item.name}}</p>
+                    </view>
+                  </view>
+                </block>
+                <view class="tip">待处理</view>
+              </view>
+            </view>
+          </swiper-item>
+          <swiper-item class="home-recently-used-swiper-item">
+            <view class="home-recently-used-item-box">
+              <view class="home-recently-used-inner home-recently-used-inner-used">
+                <block wx:if="{{ recentlyUsedList && recentlyUsedList.length }}">
+                  <view wx:for="{{recentlyUsedList}}" class="recently-used-item" @tap="goRecentlyUsedPage({{item}})">
+                    <view class="recently-used-icon">
+                      <image wx:if="{{item.iconUrl}}" class="icon-img" src="{{item.iconUrl}}"/>
+                      <i wx:else class="b-icon {{item.menuCode}}"></i>
+                    </view>
+                    <view class="recently-used-name">
+                      <p>{{item.customerAccountSourceName}}</p>
+                    </view>
+                  </view>
+                </block>
+                <view wx:else class="no-recently-used">暂无最近使用</view>
+                <view class="tip">最近使用</view>
+              </view>
+            </view>
+          </swiper-item>
+        </swiper>
+      </view>
+
+      <!--   信息中心   -->
+      <view wx:if="{{ loginStatus }}" class="announcement-carousel">
+        <view class="announcement-carousel-inner">
+          <view class="announcement-text">
+            <view class="text-notice">
+              <view class="notice-tip">
+                <image class="img" src="{{ imgObj.informationCenter }}"/>
+              </view>
+              <view class="notice-nav">
+                <text class="notice-title {{ noticeActive === 'GG' ? 'active' : '' }}" @tap="changeNotice('GG')">公告</text>
+                <text class="notice-title {{ noticeActive === 'TASK' ? 'active' : '' }}" @tap="changeNotice('TASK')">待办</text>
+                <text class="notice-title {{ noticeActive === 'MSG' ? 'active' : '' }}" @tap="changeNotice('MSG')">通知</text>
+              </view>
+            </view>
+            <view class="text-container" @tap="navigateToMsg">
+              <view class="text-more">查看更多</view>
+              <view class="b-icon icon-more text-icon"></view>
+            </view>
+          </view>
+          <view class="announcement-container">
+            <swiper
+              wx:if="{{noticeTreat[noticeActive] && noticeTreat[noticeActive].length}}"
+              autoplay="true"
+              class="notices-swiper"
+              vertical="true"
+              style="height: {{ noticeTreat[noticeActive].length > 2 ?'100%' : noticeTreat[noticeActive].length * 50 }}rpx;"
+              display-multiple-items="{{ noticeTreat[noticeActive].length > 2 ? 3 : noticeTreat[noticeActive].length }}"
+              bindchange="noticeSwiperChange"
+            >
+              <repeat for="{{ noticeTreat[noticeActive] }}" item="item">
+                <swiper-item class="swiper-item">
+                  <view
+                    class="notices-item"
+                    data-detailType="{{item.typeCode}}"
+                    data-msgcode="{{item.id}}"
+                    data-id="{{item.sourceId}}"
+                    @tap="goDetail"
+                  >
+                    <view class="notices-container">
+                      <view wx:if="{{ noticeActive=='GG' }}" class="notices-type">公告</view>
+                      <view wx:if="{{ noticeActive=='TASK' }}" class="notices-type">待办</view>
+                      <view wx:if="{{ noticeActive=='MSG' }}" class="notices-type">通知</view>
+                      <view class="van-ellipsis notices-msg">
+                        {{ noticeActive=='GG'? item.title : item.content }}
+                      </view>
+                      <view class="notices-date">
+                        {{ item.createdDate }}
+                      </view>
+                    </view>
+                  </view>
+                </swiper-item>
+              </repeat>
+            </swiper>
+            <view wx:else class="no-msg">
+              <text wx:if="{{ noticeActive=='GG' }}">暂无新公告</text>
+              <text wx:if="{{ noticeActive=='TASK' }}">暂无新待办</text>
+              <text wx:if="{{ noticeActive=='MSG' }}">暂无新通知</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 报表(新) -->
+      <view wx:if="{{ loginStatus && masterSwitch == 'Y' }}" class="reports-wrap">
+        <view class="pickup-summary">
+          <view class="header">
+            <text class="title">综合评价</text>
+          </view>
+          <view class="chart-item chart-item-overview">
+            <view class="chart-comparison">
+              <chartOverview :option.sync="optionOverview" canvasId="overview" width="150px" height="150px"/>
+            </view>
+            <view class="data-comparison">
+              <view class="ranking-box">
+                <view class="ranking-current">
+                  <text>第</text>
+                  <text class="ranking-num">{{ utils.removeIllegalStr(reportData.overview.ranking,true) }}</text>
+                  <text>名</text>
+                </view>
+                <view class="ranking-all">(共{{ utils.removeIllegalStr(reportData.overview.customerNum,true) }}家)</view>
+              </view>
+              <view class="inventory-legend">
+                <view class="inventory-legend-item" wx:for="{{ reportData.overview.summaryScoreList }}">
+                  <view class="materials-title">
+                    <view class="materials-icon {{ item.icon }}"></view>
+                    <text class="materials-name">{{ item.name }}({{ utils.removeIllegalStr(item.fullScore,true) }})</text>
+                  </view>
+                  <text class="materials-num">{{ utils.removeIllegalStr(item.score,true) }}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+          <cover-view class="chart-cover" data-url="/pages/chart/experience-report/index" bind:tap="goPageByEvent"></cover-view>
+        </view>
+
+        <view class="pickup-summary">
+          <view class="header">
+            <text class="title">提货汇总</text>
+          </view>
+          <view class="chart-item" data-url="/pages/terminal/report/netIncrease/index?type=cashBackPickUp" bindtap="goPageByEvent">
+            <view class="data-comparison">
+              <view class="name">本月提货总额(万元)</view>
+              <view class="num">{{utils.removeIllegalStr(pickupSummary.collectionDelivery.monthAmount,true)}}</view>
+              <view class="compare compare-top">
+                <view class="compare-text">较上月 {{utils.removeIllegalStr(pickupSummary.collectionDelivery.compareWithLastMonth,true)}}</view>
+                <image wx:if="{{pickupSummary.collectionDelivery.arrowMonth == '1'}}" src="{{imgObj.rise}}" class="arrow"/>
+                <image wx:if="{{pickupSummary.collectionDelivery.arrowMonth == '0'}}" src="{{imgObj.decline}}" class="arrow"/>
+              </view>
+              <view class="compare">
+                <view class="compare-text">较去年 {{utils.removeIllegalStr(pickupSummary.collectionDelivery.compareWithLastYear,true)}}</view>
+                <image wx:if="{{pickupSummary.collectionDelivery.arrowYear == '1'}}" src="{{imgObj.rise}}" class="arrow"/>
+                <image wx:if="{{pickupSummary.collectionDelivery.arrowYear == '0'}}" src="{{imgObj.decline}}" class="arrow"/>
+              </view>
+            </view>
+            <view class="chart-comparison">
+              <view class="statistics-chart">
+                <canvas class="canvas-pick" style="width: {{canvasInfo.width}}px; height: {{canvasInfo.height}}px;" canvas-id="myPickCanvas" disable-scroll='true'></canvas>
+                <view class="chart-text">
+                  <view class="completed-num">
+                    <text class="percentage">{{utils.removeIllegalStr(pickupSummary.collectionDelivery.completion,true)}}</text>
+                    <text class="percent-sign">%</text>
+                  </view>
+                  <view class="completed">任务完成进度</view>
+                </view>
+              </view>
+            </view>
+          </view>
+          <view class="chart-item" data-url="/pages/terminal/report/netIncrease/index?type=middleHighProportion" bindtap="goPageByEvent">
+            <view class="data-comparison">
+              <view class="name">高中端占比</view>
+              <view class="compare compare-top">
+                <view class="compare-text">较上月 {{utils.removeIllegalStr(pickupSummary.midHigProportion.compareLastMonth,true)}}</view>
+                <image wx:if="{{pickupSummary.midHigProportion.arrowMonth == '1'}}" src="{{imgObj.rise}}" class="arrow"/>
+                <image wx:if="{{pickupSummary.midHigProportion.arrowMonth == '0'}}" src="{{imgObj.decline}}" class="arrow"/>
+              </view>
+              <view class="compare">
+                <view class="compare-text">较去年 {{utils.removeIllegalStr(pickupSummary.midHigProportion.compareLastYear,true)}}</view>
+                <image wx:if="{{pickupSummary.midHigProportion.arrowYear == '1'}}" src="{{imgObj.rise}}" class="arrow"/>
+                <image wx:if="{{pickupSummary.midHigProportion.arrowYear == '0'}}" src="{{imgObj.decline}}" class="arrow"/>
+              </view>
+            </view>
+            <view class="chart-comparison">
+              <view class="custom-progress-box">
+                <van-progress
+                  custom-class="customProgress"
+                  style="width: 100%"
+                  color="#1890FF"
+                  trackColor="#E1E1E1"
+                  stroke-width="24rpx"
+                  percentage="{{pickupSummary.midHigProportion.completion || 0}}" />
+                <view class="progress-info">
+                  <text class="desc">本月目标达成(%)：</text>
+                  <text class="completed">{{utils.removeIllegalStr(pickupSummary.midHigProportion.currentMonthProportion,true)}}</text>
+                  <text class="should-be-completed">/{{utils.removeIllegalStr(pickupSummary.midHigProportion.proportionTarget,true)}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+          <view class="chart-item" data-url="/pages/terminal/report/netIncrease/index?type=machinesProportion" bindtap="goPageByEvent">
+            <view class="data-comparison">
+              <view class="name">专供机占比</view>
+              <view class="compare compare-top">
+                <view class="compare-text">较上月 {{utils.removeIllegalStr(pickupSummary.dedicatedMachine.compareLastMonth,true)}}</view>
+                <image wx:if="{{pickupSummary.dedicatedMachine.arrowMonth == '1'}}" src="{{imgObj.rise}}" class="arrow"/>
+                <image wx:if="{{pickupSummary.dedicatedMachine.arrowMonth == '0'}}" src="{{imgObj.decline}}" class="arrow"/>
+              </view>
+              <view class="compare">
+                <view class="compare-text">较去年 {{utils.removeIllegalStr(pickupSummary.dedicatedMachine.compareLastYear,true)}}</view>
+                <image wx:if="{{pickupSummary.dedicatedMachine.arrowYear == '1'}}" src="{{imgObj.rise}}" class="arrow"/>
+                <image wx:if="{{pickupSummary.dedicatedMachine.arrowYear == '0'}}" src="{{imgObj.decline}}" class="arrow"/>
+              </view>
+            </view>
+            <view class="chart-comparison">
+              <view class="custom-progress-box">
+                <van-progress
+                  custom-class="customProgress"
+                  style="width: 100%"
+                  color="#1890FF"
+                  trackColor="#E1E1E1"
+                  stroke-width="24rpx"
+                  percentage="{{pickupSummary.dedicatedMachine.completion || 0}}" />
+                <view class="progress-info">
+                  <text class="desc">本月目标达成(%)：</text>
+                  <text class="completed">{{utils.removeIllegalStr(pickupSummary.dedicatedMachine.currentMonthProportion,true)}}</text>
+                  <text class="should-be-completed">/{{utils.removeIllegalStr(pickupSummary.dedicatedMachine.proportionTarget,true)}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="pickup-summary">
+          <view class="header">
+            <text class="title">销售汇总</text>
+            <text class="b-icon icon-zhushi icon" @tap.stop="onShowSalesSummaryTip"></text>
+            <view class="tip" wx:if="{{showSalesSummaryTip}}">当前月份自营零售+分销</view>
+          </view>
+          <view class="sales-info">
+            <view class="sales-chart-item data-comparison">
+              <view class="name">销售额(万元)</view>
+              <view class="num">{{ utils.removeIllegalStr(salesSummary.salesAmount.total,true) }}</view>
+              <view class="compare compare-top">
+                <view class="compare-text">较上月 {{ utils.removeIllegalStr(salesSummary.salesAmount.compareLastMonth,true) }}</view>
+                <image wx:if="{{salesSummary.salesAmount.arrowMonth == '1'}}" src="{{imgObj.rise}}" class="arrow"/>
+                <image wx:if="{{salesSummary.salesAmount.arrowMonth == '0'}}" src="{{imgObj.decline}}" class="arrow"/>
+              </view>
+              <view class="compare">
+                <view class="compare-text">较去年 {{ utils.removeIllegalStr(salesSummary.salesAmount.compareLastYear,true) }}</view>
+                <image wx:if="{{salesSummary.salesAmount.arrowYear == '1'}}" src="{{imgObj.rise}}" class="arrow"/>
+                <image wx:if="{{salesSummary.salesAmount.arrowYear == '0'}}" src="{{imgObj.decline}}" class="arrow"/>
+              </view>
+              <view class="bar-chart">
+                <chartSalesAmount :option.sync="optionSalesAmount" canvasId="salesAmount" width="100px" height="100px"></chartSalesAmount>
+              </view>
+              <view class="legend-box">
+                <view class="legend-item" wx:for="{{salesSummary.salesAmount.proportion}}">
+                  <view class="legend-circle {{item.name === '分销'? 'legend-circle-distribution' : ''}}"></view>
+                  <view class="legend-type">{{ item.name }}</view>
+                  <view class="legend-num">{{ utils.removeIllegalStr(item.value,true) }}</view>
+                </view>
+              </view>
+            </view>
+            <view class="sales-chart-item data-comparison">
+              <view class="name">销售量(台)</view>
+              <view class="num">{{ utils.removeIllegalStr(salesSummary.salesQuantity.total,true) }}</view>
+              <view class="compare compare-top">
+                <view class="compare-text">较上月 {{ utils.removeIllegalStr(salesSummary.salesQuantity.compareLastMonth,true) }}</view>
+                <image wx:if="{{salesSummary.salesQuantity.arrowMonth == '1'}}" src="{{imgObj.rise}}" class="arrow"/>
+                <image wx:if="{{salesSummary.salesQuantity.arrowMonth == '0'}}" src="{{imgObj.decline}}" class="arrow"/>
+              </view>
+              <view class="compare">
+                <view class="compare-text">较去年 {{ utils.removeIllegalStr(salesSummary.salesQuantity.compareLastYear,true) }}</view>
+                <image wx:if="{{salesSummary.salesQuantity.arrowYear == '1'}}" src="{{imgObj.rise}}" class="arrow"/>
+                <image wx:if="{{salesSummary.salesQuantity.arrowYear == '0'}}" src="{{imgObj.decline}}" class="arrow"/>
+              </view>
+              <view class="bar-chart">
+                <chartSalesQuantity :option.sync="optionSalesQuantity" canvasId="salesQuantity" width="100px" height="100px"></chartSalesQuantity>
+              </view>
+              <view class="legend-box">
+                <view class="legend-item" wx:for="{{salesSummary.salesQuantity.proportion}}">
+                  <view class="legend-circle {{item.name === '分销'? 'legend-circle-distribution' : ''}}"></view>
+                  <view class="legend-type">{{ item.name }}</view>
+                  <view class="legend-num">{{ utils.removeIllegalStr(item.value,true) }}</view>
+                </view>
+              </view>
+            </view>
+            <cover-view class="chart-cover" data-url="/pages/chart/sales-report/index" bind:tap="goPageByEvent"></cover-view>
+          </view>
+          <view class="chart-item chart-item-sales" data-url="/pages/terminal/report/netIncrease/index?type=incrementalBusiness" bindtap="goPageByEvent">
+            <view class="data-comparison">
+              <view class="name">增量业务(前置渠道)</view>
+              <view class="compare compare-top">
+                <view class="compare-text">较上月 {{ utils.removeIllegalStr(salesSummary.frontChannel.compareLastMonth,true) }}</view>
+                <image wx:if="{{salesSummary.frontChannel.arrowMonth == '1'}}" src="{{imgObj.rise}}" class="arrow"/>
+                <image wx:if="{{salesSummary.frontChannel.arrowMonth == '0'}}" src="{{imgObj.decline}}" class="arrow"/>
+              </view>
+              <view class="compare">
+                <view class="compare-text">较去年 {{ utils.removeIllegalStr(salesSummary.frontChannel.compareLastYear,true) }}</view>
+                <image wx:if="{{salesSummary.frontChannel.arrowYear == '1'}}" src="{{imgObj.rise}}" class="arrow"/>
+                <image wx:if="{{salesSummary.frontChannel.arrowYear == '0'}}" src="{{imgObj.decline}}" class="arrow"/>
+              </view>
+            </view>
+            <view class="chart-comparison">
+              <view class="custom-progress-box">
+                <van-progress
+                  custom-class="customProgress"
+                  style="width: 100%"
+                  color="#1890FF"
+                  trackColor="#E1E1E1"
+                  stroke-width="24rpx"
+                  percentage="{{ salesSummary.frontChannel.completion || 0 }}" />
+                <view class="progress-info">
+                  <text class="desc">本月目标达成(%)：</text>
+                  <text class="completed">{{ utils.removeIllegalStr(salesSummary.frontChannel.currentMonthProportion,true) }}</text>
+                  <text class="should-be-completed">/{{ utils.removeIllegalStr(salesSummary.frontChannel.proportionTarget,true) }}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="pickup-summary" data-url="/pages/terminal/report/netIncrease/index?type=grossProfitMargin" bindtap="goPageByEvent">
+          <view class="header">
+            <text class="title">毛利</text>
+          </view>
+          <view class="chart-item chart-item-gross-profit">
+            <view class="data-comparison">
+              <view class="name">本月毛利总额(万元)</view>
+              <view class="num">{{ utils.removeIllegalStr(grossMargin.totalAmount,true) }}</view>
+              <view class="compare compare-top">
+                <view class="compare-text">较上月 {{ utils.removeIllegalStr(grossMargin.compareLastMonth,true) }}</view>
+                <image wx:if="{{grossMargin.arrowMonth == '1'}}" src="{{imgObj.rise}}" class="arrow"/>
+                <image wx:if="{{grossMargin.arrowMonth == '0'}}" src="{{imgObj.decline}}" class="arrow"/>
+              </view>
+              <view class="compare">
+                <view class="compare-text">较去年 {{ utils.removeIllegalStr(grossMargin.compareLastYear,true) }}</view>
+                <image wx:if="{{grossMargin.arrowYear == '1'}}" src="{{imgObj.rise}}" class="arrow"/>
+                <image wx:if="{{grossMargin.arrowYear == '0'}}" src="{{imgObj.decline}}" class="arrow"/>
+              </view>
+            </view>
+            <view class="chart-comparison">
+              <view class="statistics-chart">
+                <canvas class="canvas-pick" style="width: {{canvasInfo.width}}px; height: {{canvasInfo.height}}px;" canvas-id="grossProfitCanvas" disable-scroll='true'></canvas>
+                <view class="chart-text">
+                  <view class="completed-num">
+                    <text class="percentage">{{ utils.removeIllegalStr(grossMargin.grossMarginRate,true) }}</text>
+                    <text class="percent-sign">%</text>
+                  </view>
+                  <view class="completed">毛利率</view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="pickup-summary">
+          <view class="header">
+            <text class="title">库存</text>
+          </view>
+          <view class="chart-item chart-item-inventory">
+            <view class="data-comparison">
+              <view class="name">库存周转天数(天)</view>
+              <view class="num">{{utils.removeIllegalStr(inventorySummary.turnoverDays,true)}}</view>
+              <view class="compare compare-top">
+                <view class="compare-text">较上月 {{utils.removeIllegalStr(inventorySummary.compareLastMonth,true)}}</view>
+                <image wx:if="{{inventorySummary.arrowMonth == '1'}}" src="{{imgObj.rise}}" class="arrow"/>
+                <image wx:if="{{inventorySummary.arrowMonth == '0'}}" src="{{imgObj.decline}}" class="arrow"/>
+              </view>
+              <view class="inventory-legend">
+                <view class="inventory-legend-item" wx:for="{{inventorySummary.details}}">
+                  <view class="materials-icon {{index === 1 ? 'air-conditioner-icon' : index === 2 ? 'refrigerator-icon' : ''}}"></view>
+                  <text class="materials-name">{{ item.name }}</text>
+                  <text class="materials-num">{{ item.count }}</text>
+                </view>
+              </view>
+            </view>
+            <view class="chart-comparison">
+              <chartInventory :option.sync="optionInventory" canvasId="inventory" width="150px" height="150px"/>
+            </view>
+          </view>
+          <cover-view class="chart-cover" data-url="/pages/chart/stock/index" bind:tap="goPageByEvent"></cover-view>
+        </view>
+
+        <view class="pickup-summary">
+          <view class="header">
+            <text class="title">分销网络拓展与维护</text>
+          </view>
+          <view class="chart-item chart-item-distribution-network" data-url="/pages/terminal/report/netIncrease/index?type=netIncrease" bindtap="goPageByEvent">
+            <view class="data-comparison">
+              <view class="name">分销网点</view>
+              <view class="annual-target-item">
+                <text class="annual-target-tip">年度目标</text>
+                <text class="annual-target-num">{{ utils.removeIllegalStr(developMaintain.distributeNetwork.annualTarget,true) }}个</text>
+              </view>
+              <view class="annual-target-item">
+                <text class="annual-target-tip">当前完成</text>
+                <text class="currently-done-num">{{ utils.removeIllegalStr(developMaintain.distributeNetwork.annualAccomplish,true) }}个</text>
+              </view>
+              <view class="compare compare-top">
+                <view class="compare-text">较上月 {{ utils.removeIllegalStr(developMaintain.distributeNetwork.compareLastMonth,true) }}</view>
+                <image wx:if="{{developMaintain.distributeNetwork.arrowMonth == '1'}}" src="{{imgObj.rise}}" class="arrow"/>
+                <image wx:if="{{developMaintain.distributeNetwork.arrowMonth == '0'}}" src="{{imgObj.decline}}" class="arrow"/>
+              </view>
+            </view>
+            <view class="running-rate-circle">
+              <van-circle
+                value="{{ developMaintain.distributeNetwork.networkIncreaseCompletion || 0 }}"
+                size="{{ 90 }}"
+                stroke-width="10"
+                layer-color="rgba(151,151,151,0.2200)"
+                color="#18D1BC"
+              >
+              </van-circle>
+              <view class="circle-text">
+                <view class="percentage">
+                  <text class="percent-num">{{ utils.removeIllegalStr(developMaintain.distributeNetwork.networkIncreaseCompletion,true) }}</text>
+                  <text class="percent-sign">%</text>
+                </view>
+              </view>
+            </view>
+          </view>
+          <view class="chart-item chart-item-distribution-network" data-url="/pages/terminal/report/netIncrease/index?type=onlineSalesRate" bindtap="goPageByEvent">
+            <view class="data-comparison">
+              <view class="name">动销率</view>
+              <view class="annual-target-item">
+                <text class="annual-target-tip">本月目标</text>
+                <text class="annual-target-num">{{ utils.removeIllegalStr(developMaintain.dynamicSales.monthRateTarget,true) }}</text>
+              </view>
+              <view class="annual-target-item">
+                <text class="annual-target-tip">当前达成</text>
+                <text class="currently-done-num">{{ utils.removeIllegalStr(developMaintain.dynamicSales.monthRate,true) }}</text>
+              </view>
+              <view class="compare compare-top">
+                <view class="compare-text">较去年 {{ utils.removeIllegalStr(developMaintain.dynamicSales.compareLastYear,true) }}</view>
+                <image wx:if="{{developMaintain.dynamicSales.arrowYear == '1'}}" src="{{imgObj.rise}}" class="arrow"/>
+                <image wx:if="{{developMaintain.dynamicSales.arrowYear == '0'}}" src="{{imgObj.decline}}" class="arrow"/>
+              </view>
+            </view>
+            <view class="running-rate-circle">
+              <van-circle
+                value="{{ developMaintain.dynamicSales.monthRateCompletion || 0 }}"
+                size="{{ 90 }}"
+                stroke-width="10"
+                layer-color="rgba(151,151,151,0.2200)"
+                color="#FF8A8A"
+              >
+              </van-circle>
+              <view class="circle-text">
+                <view class="percentage">
+                  <text class="percent-num">{{ utils.removeIllegalStr(developMaintain.dynamicSales.monthRateCompletion,true) }}</text>
+                  <text class="percent-sign">%</text>
+                </view>
+              </view>
+            </view>
+          </view>
+          <view class="chart-item chart-item-distribution-network" data-url="/pages/terminal/report/netIncrease/index?type=onlineStoreOutput" bindtap="goPageByEvent">
+            <view class="data-comparison">
+              <view class="name">单店产出</view>
+              <view class="annual-target-item">
+                <text class="annual-target-tip">本月目标</text>
+                <text class="annual-target-num">{{ utils.removeIllegalStr(developMaintain.singleOutput.singleOutputTarget,true) }}万元</text>
+              </view>
+              <view class="annual-target-item">
+                <text class="annual-target-tip">当前产出</text>
+                <text class="currently-done-num">{{ utils.removeIllegalStr(developMaintain.singleOutput.singleOutput,true) }}万元</text>
+              </view>
+              <view class="compare compare-top">
+                <view class="compare-text">较去年 {{ utils.removeIllegalStr(developMaintain.singleOutput.compareLastYear,true) }}</view>
+                <image wx:if="{{developMaintain.singleOutput.arrowYear == '1'}}" src="{{imgObj.rise}}" class="arrow"/>
+                <image wx:if="{{developMaintain.singleOutput.arrowYear == '0'}}" src="{{imgObj.decline}}" class="arrow"/>
+              </view>
+            </view>
+            <view class="running-rate-circle">
+              <van-circle
+                value="{{ developMaintain.singleOutput.monthSingleOutputCompletion || 0 }}"
+                size="{{ 90 }}"
+                stroke-width="10"
+                layer-color="rgba(151,151,151,0.2200)"
+                color="#9395EC"
+              >
+              </van-circle>
+              <view class="circle-text">
+                <view class="percentage">
+                  <text class="percent-num">{{ utils.removeIllegalStr(developMaintain.singleOutput.monthSingleOutputCompletion,true) }}</text>
+                  <text class="percent-sign">%</text>
+                </view>
+              </view>
+            </view>
+          </view>
+          <view class="chart-item chart-item-distribution-network" data-url="/pages/terminal/report/netIncrease/index?type=coverage" bindtap="goPageByEvent">
+            <view class="data-comparison">
+              <view class="name">市场覆盖</view>
+              <view class="annual-target-item">
+                <text class="annual-target-tip">目标</text>
+                <text class="annual-target-num">{{ utils.removeIllegalStr(developMaintain.marketCoverage.coverageTarget,true) }}个</text>
+              </view>
+              <view class="annual-target-item">
+                <text class="annual-target-tip">当前达成</text>
+                <text class="currently-done-num">{{ utils.removeIllegalStr(developMaintain.marketCoverage.coverageNum,true) }}个</text>
+              </view>
+              <view class="compare compare-top">
+                <view class="compare-text">较上月 {{ utils.removeIllegalStr(developMaintain.marketCoverage.compareLastMonth,true) }}</view>
+                <image wx:if="{{developMaintain.marketCoverage.arrowMonth == '1'}}" src="{{imgObj.rise}}" class="arrow"/>
+                <image wx:if="{{developMaintain.marketCoverage.arrowMonth == '0'}}" src="{{imgObj.decline}}" class="arrow"/>
+              </view>
+            </view>
+            <view class="running-rate-circle">
+              <van-circle
+                value="{{ developMaintain.marketCoverage.rate || 0 }}"
+                size="{{ 90 }}"
+                stroke-width="10"
+                layer-color="rgba(151,151,151,0.2200)"
+                color="#FAB81B"
+              >
+              </van-circle>
+              <view class="circle-text">
+                <view class="percentage">
+                  <text class="percent-num">{{ utils.removeIllegalStr(developMaintain.marketCoverage.rate,true) }}</text>
+                  <text class="percent-sign">%</text>
+                </view>
+              </view>
+            </view>
+          </view>
+          <view class="chart-item-board">
+            <view class="board-item">
+              <view class="board-item-title">分销跑动({{ utils.removeIllegalStr(developMaintain.monthRun.distributeRunRate,true) }})</view>
+              <view class="board-item-info">
+                <chartDistributionRun :option.sync="optionDistributionRun" canvasId="distributionRun" width="100px" height="100px"></chartDistributionRun>
+              </view>
+            </view>
+            <view class="board-item">
+              <view class="board-item-title">下沉门店({{ utils.removeIllegalStr(developMaintain.monthRun.sinkRunRate,true) }})</view>
+              <view class="board-item-info">
+                <chartSinkingStore :option.sync="optionSinkRunNum" canvasId="sinkingStore" width="100px" height="100px"></chartSinkingStore>
+              </view>
+            </view>
+            <!--  解决echarts ios点击无效问题  -->
+            <cover-view class="chart-cover" data-url="/pages/terminal/report/netIncrease/index?type=runningRate" bind:tap="goPageByEvent"></cover-view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 专区 -->
+      <view class="activity" @tap="goActivityArea('/pages/activity/activity-area/index', '活动专区')">
+        <view class="activity-inner">
+          <image class="activity-img" src="{{imgObj.activityAreaBg}}" />
+        </view>
+      </view>
+
+      <view class="category">
+        <view class="category-inner">
+          <view class="zoom">
+            <view @tap="gotoZone('category', '0', '电视专区')" class="tvzoom">
+              <image class="zoom-img" src="{{imgObj.tvArea}}"/>
+            </view>
+            <view class="airzoom">
+              <view @tap="gotoZone('category', '1', '空调专区')" class="airzoomnoe">
+                <image class="zoom-img" src="{{imgObj.airConditioningArea}}"/>
+              </view>
+              <view @tap="gotoZone('category', '2', '冰箱专区')" class="airzoomtwo">
+                <image class="zoom-img" src="{{imgObj.refrigeratorArea}}"/>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </scroll-view>
+    <!--  未登陆状态下提示去登录  -->
+    <view wx:if="{{ !loginStatus }}" class="go-to-log-in" style="bottom: {{ customTabBarAllHeight + 16 }}px" @tap="onLogin">
+      <view class="go-to-log-in-inner">
+        <image class="log-in-img" mode="widthFix" src="{{imgObj.notLoggedInLogo}}" />
+        <view class="not-logged-in-text">您还没登录哦~</view>
+        <view class="log-in-immediately-btn">立即登录</view>
+      </view>
+    </view>
+    <van-toast id="van-toast"/>
+    <van-popup show="{{ showPop }}" close-on-click-overlay="false" z-index="9999999" custom-style="background:none;text-algin:right;" position="top">
+      <view class="pop-notice">
+        <view class="pop-notice-content" @tap="goNoticeDetails({{selNotice.billboardMessage.id}})">
+          <view class="img">
+            <image class="airzoomnoe-img" src="{{imgObj.noticeHead}}"/>
+            <view class="title">{{ selNotice.billboardMessage.popTitle }}</view>
+          </view>
+          <view class="content">
+            <rich-text nodes="{{ selNotice.billboardMessage&&selNotice.billboardMessage.popupWindowContent }}"></rich-text>
+            <view wx:for="{{selNotice.billboardMessage.popAttachList}}"  wx:for-item="item" wx:key="{{index}}">
+              <image class='imgBox' src="{{item.filePath}}"/>
+            </view>
+          </view>
+          <view class="view-system-announcements-btn">
+            <view class="btn">立即查看</view>
+          </view>
+        </view>
+        <view class="icon" bindtap="clickGuideOvery">
+          <view class="b-icon notice-close"/>
+        </view>
+      </view>
+    </van-popup>
+
+    <view class="agreementMask" wx:if='{{showAgreementMask}}'>
+      <viwe class="con">
+        <view class="title">用户协议</view>
+        <scroll-view class="scroll" scroll-y>
+          <view class="detail">
+            <rich-text nodes='{{html}}'></rich-text>
+            <!-- <web-view src='{{html}}'></web-view> -->
+          </view>
+        </scroll-view>
+        <view class="tips">
+          点击同意并接受即表示您已阅读了解
+          <view>并同意
+            <text bindtap='toPrivacy'>《海信信天翁系统隐私政策》</text>
+          </view>
+        </view>
+        <view class="btns">
+          <navigator class="btn" hover-class="none" target="miniProgram" open-type="exit">不同意</navigator>
+          <view class="btn" bindtap='agree'>同意并接受</view>
+        </view>
+      </viwe>
+    </view>
+  </view>
+  </view>
+</template>
+<style lang="less">
+.z_index_1{
+  z-index: -1;
+  opacity: 0;
+  left: 200vw;
+}
+</style>
+
+<style lang="less" src="./index.less" scoped></style>
+<style lang="less" src="./templates/reports.less"></style>
+<style lang="less">
+  .agreementMask {
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    left: 0;
+  }
+  .agreementMask .con {
+    width: 604rpx;
+    height: 844rpx;
+    background: #fff;
+    position: absolute;
+    top: 15%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    border-radius: 24rpx;
+  }
+  .agreementMask .con .title{
+    font-size: 32rpx;
+    font-weight: 500;
+    text-align: center;
+    padding: 44rpx 0 22rpx;
+    box-sizing: border-box;
+  }
+  .agreementMask .con .scroll {
+    margin: 0 auto;
+    width: 536rpx;
+    height: 500rpx;
+
+  }
+  .agreementMask .con .scroll web-view{
+    width: 200rpx;
+    height: 200rpx;
+  }
+  .agreementMask .con .tips {
+    background: #fff;
+    box-shadow: 0px -1px 4px 0px rgba(0, 0, 0, 0.09);
+    position: absolute;
+    width: 100%;
+    height: 104rpx;
+    bottom: 108rpx;
+    padding: 20rpx 34rpx;
+    box-sizing: border-box;
+    font-size: 24rpx;
+    font-weight: 400;
+    color: #262626;
+    line-height: 34rpx;
+
+  }
+  .agreementMask .con .tips text{
+    color: #00AAA6;
+  }
+  .agreementMask .con .btns {
+    position: absolute;
+    width: 100%;
+    height: 104rpx;
+    bottom: 0;
+    display: flex;
+  }
+  .agreementMask .con .btns .btn {
+    width: 50%;
+    height: 100%;
+    text-align: center;
+    line-height: 104rpx;
+  }
+  .agreementMask .con .btns .btn:first-child {
+    font-size: 32rpx;
+    color: #666666;
+    border-radius: 0px 0px 24rpx 24rpx;
+  }
+  .agreementMask .con .btns .btn:last-child {
+    font-size: 32rpx;
+    font-weight: 500;
+    color: #FFFFFF;
+    background: #00AAA6;
+    border-radius: 0px 0px 24rpx 0px;
+  }
+
+  .customProgress{
+    width: 100%;
+    overflow: inherit !important;
+    border-radius: 12rpx !important;
+    .van-progress__pivot {
+      background: #FFFFFF !important;
+      border-radius: 24rpx !important;
+      border: 3rpx solid #1890FF !important;
+      padding: 0 8rpx !important;
+      font-size: 24rpx !important;
+      font-weight: 500 !important;
+      color: #1890FF !important;
+      right: -20rpx !important;
+    }
+  }
+</style>
+<script lang="typescript" src="./index.ts"></script>

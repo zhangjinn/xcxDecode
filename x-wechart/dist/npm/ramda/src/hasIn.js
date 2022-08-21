@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),hasIn=_curry2(function(r,n){return r in n});module.exports=hasIn;

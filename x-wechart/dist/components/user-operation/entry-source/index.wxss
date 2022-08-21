@@ -1,0 +1,181 @@
+.custom-source-group {
+  width: 100%;
+  padding-bottom: 28rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+          align-items: flex-start;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+.custom-source-group .item-row-top {
+  height: 96rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+.custom-source-group .item-row-top .tip {
+  font-size: 24rpx;
+  color: #AAAAAA;
+  padding-left: 16rpx;
+}
+.custom-source-group .item-row-bottom {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+.custom-source-group .custom-tag-add {
+  width: 80rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.custom-source-group .custom-tag-add .add-btn {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  width: 64rpx;
+  height: 64rpx;
+  background: #ECF8F8;
+  border-radius: 32rpx;
+  color: #00AAA6;
+}
+.custom-source-group .custom-tag-add .add-btn .b-icon {
+  font-size: 24rpx;
+}
+.custom-group-tag {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-flow: row wrap;
+          flex-flow: row wrap;
+  margin: -10rpx;
+}
+.custom-group-tag .custom-tag-item {
+  background: #F7F7F7;
+  border-radius: 32rpx;
+  padding: 14rpx 32rpx;
+  font-size: 26rpx;
+  margin: 10rpx;
+}
+.custom-group-tag .active {
+  background: #00B7B3;
+  color: #FFFFFF;
+  font-weight: 500;
+}
+.pop-custom-group-tag {
+  margin-bottom: 48rpx;
+}
+.popup-wrapper {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+}
+.popup-wrapper .popup-title {
+  padding: 40rpx;
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #262626;
+  text-align: center;
+}
+.popup-wrapper .popup-container {
+  padding: 0 30rpx 30rpx;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  overflow-y: auto;
+}
+.popup-wrapper .popup-container .item-row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+.popup-wrapper .popup-container .item-row .item-row-left {
+  width: 150rpx;
+  text-align: right;
+  margin-right: 16rpx;
+  padding-top: 20rpx;
+}
+.popup-wrapper .popup-container .item-row .item-row-right {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+}
+.popup-wrapper .popup-container .item-row .item-row-right .dms-order-note {
+  width: 100%;
+  background: #F7F7F7;
+  border-radius: 20rpx;
+}
+.popup-wrapper .popup-container .item-row-desc {
+  margin-top: 26rpx;
+}
+.popup-wrapper .popup-footer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-shadow: 0px -4rpx 0px 0px #EEEEEE;
+          box-shadow: 0px -4rpx 0px 0px #EEEEEE;
+  height: 100rpx;
+}
+.popup-wrapper .popup-footer .btn {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  font-size: 32rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+.popup-wrapper .popup-footer .cancel {
+  background: #FFFFFF;
+  color: #666666;
+}
+.popup-wrapper .popup-footer .save {
+  background: #00AAA6;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+.redXing {
+  color: #D9161C;
+}

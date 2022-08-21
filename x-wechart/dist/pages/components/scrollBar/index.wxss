@@ -1,0 +1,24 @@
+.scroll-bar._e0cd182 {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+.scroll-bar .dots._e0cd182 {
+  width: 80rpx;
+  height: 6rpx;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+.scroll-bar .dots .dot._e0cd182 {
+  width: 28rpx;
+  height: 100%;
+  background: rgba(204, 204, 204, 0.88);
+  border-radius: 4rpx;
+  -webkit-transform: translateX(0rpx);
+          transform: translateX(0rpx);
+}

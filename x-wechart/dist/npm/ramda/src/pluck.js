@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),map=require("./map.js"),prop=require("./prop.js"),pluck=_curry2(function(r,p){return map(prop(r),p)});module.exports=pluck;

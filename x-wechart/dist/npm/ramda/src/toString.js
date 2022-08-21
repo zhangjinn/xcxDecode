@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),_toString=require("./internal/_toString.js"),toString=_curry1(function(r){return _toString(r,[])});module.exports=toString;

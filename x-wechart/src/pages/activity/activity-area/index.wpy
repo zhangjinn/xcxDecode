@@ -1,0 +1,359 @@
+<template>
+  <block wx:if="{{isPermission}}">
+    <view class="filter">
+      <!-- 组合购显示更多弹框 -->
+      <van-popup
+        show="{{moreModelPopup}}"
+        round
+        position="bottom"
+        custom-style="height: 70%; border-radius: 24rpx 24rpx 0rpx 0rpx;"
+        bind:close="closeMoreModelPopup"
+        z-index="201"
+        custom-class="base-model-popup-picker"
+        @touchmove.stop.prevent="moveHandle">
+        <view class="picker-wrapper">
+          <view class="picker-header">
+            <view></view>
+            <i class='b-icon icon-close' @tap="closeMoreModelPopup"></i>
+          </view>
+          <view class="picker-content">
+            <activity-good-more
+              wx:if="{{ moreModelPopup }}"
+              containerItem="{{popupShowMoreModelInfo.containerItem}}"
+              item="{{popupShowMoreModelInfo.item}}"
+              mark="{{ popupShowMoreModelInfo.mark }}"
+              bindchangePopModel="changePopModel"/>
+          </view>
+          <view class="picker-footer">
+            <view class="footer-inner" @tap="closeMoreModelPopup">
+              <van-button type='default' size="large" > 关闭 </van-button>
+            </view>
+          </view>
+        </view>
+      </van-popup>
+
+      <!-- 日历弹框 -->
+      <van-popup show="{{calendarShow}}" position="bottom" bind:close="closeCalendar" z-index="200">
+        <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay" />
+      </van-popup>
+
+      <!-- 筛选弹框 -->
+      <van-popup
+        show="{{visible}}"
+        position="right"
+        overlay="{{ true }}"
+        bind:close="openDrawer"
+        custom-style="height: 100%;"
+        z-index="130"
+      >
+        <view class="filter-drawer">
+          <view class="filter-drawer-attr">
+            <view class="header-divider" style="height: {{sys.statusBarHeight}}px" />
+            <view class="header-divider" style="height: 35px" >筛选</view>
+            <scroll-view class="filter-drawer-attr-scroll" scroll-y>
+              <view class="attr-item">
+                <view @tap="onOpen('gys')" class="attr-item-header" hover-class="hover">
+                  <view class="title">供应商</view>
+                  <view class="right">
+                    <view class="address">{{orgIdname}}</view>
+                    <view class="b-icon h-icon icon-more" />
+                  </view>
+                </view>
+                <view @tap="onOpen('wlz')" class="attr-item-mid" hover-class="hover">
+                  <view class="title">物料组</view>
+                  <view class="right">
+                    <view class="address">{{matklname}}</view>
+                    <view class="b-icon h-icon icon-more" />
+                  </view>
+                </view>
+                <view class="attr-item-mid-one" hover-class="hover">
+                  <view class="item-name">活动名称</view>
+                  <van-field
+                    placeholder="请输入活动名称/活动编码"
+                    value="{{filterForm.activityName}}"
+                    placeholder-style="font-size: 24rpx;color: #AAAAAA;"
+                    border="{{ false }}"
+                    bind:change="onZzprdmodelChange"
+                    custom-style="background-color: #f7f7f7;height: 80rpx"
+                    clearable
+                  />
+                </view>
+                <view class="order-data">
+                  <view class="project">
+                    <text style="font-size: 13px;color: #777777">生效日期</text>
+                  </view>
+                  <view class="order-data-input">
+                    <view
+                      class="order-data-input-one"
+                      data-name="sapBeginDate"
+                      data-type="sapDate"
+                      @tap="openCalendar"
+                    >
+                      <view
+                        data-name="sapBeginDate"
+                        data-type="sapDate"
+                        class="text"
+                      >{{filterForm.startDate|| '开始日期'}}</view>
+                      <view>
+                        <van-icon
+                          wx:if="{{filterForm.startDate}}"
+                          custom-style="font-size: 24rpx;color: #aaaaaa;padding-right: 15rpx"
+                          name="clear"
+                          catchtap="clearCalendar('sapBeginDate')"
+                        />
+                      </view>
+                    </view>
+                    <view class="order-data-input-line">-</view>
+                    <view
+                      class="order-data-input-one"
+                      data-name="sapEndDate"
+                      data-type="sapDate"
+                      @tap="openCalendar"
+                    >
+                      <view
+                        data-name="sapEndDate"
+                        data-type="sapDate"
+                        class="text"
+                      >{{filterForm.endDate || '结束日期'}}</view>
+                      <view>
+                        <van-icon
+                          wx:if="{{filterForm.endDate}}"
+                          custom-style="font-size: 24rpx;color: #aaaaaa;padding-right: 15rpx"
+                          name="clear"
+                          catchtap="clearCalendar('sapEndDate')"
+                        />
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </scroll-view>
+            <view class="filter-drawer-attr-footer">
+              <view
+                @tap="resetSearch"
+                class="filter-drawer-attr-footer-btn reset"
+                hover-class="filter-drawer-attr-footer-btn-hover"
+              >重置</view>
+              <view
+                @tap="confirmSearch"
+                class="filter-drawer-attr-footer-btn confirm"
+                hover-class="filter-drawer-attr-footer-btn-hover"
+              >确认</view>
+            </view>
+          </view>
+        </view>
+      </van-popup>
+
+      <!-- 物料组筛选列表弹框 -->
+      <van-popup
+        show="{{wlz_visible}}"
+        position="right"
+        overlay="{{ true }}"
+        z-index="200"
+        bind:close="openDrawer"
+        custom-style="height: 100%"
+        close-on-click-overlay="{{ false }}"
+      >
+        <view class="filter-drawer">
+          <view class="filter-drawer-attr">
+            <view class="header-divider" style="height: {{sys.statusBarHeight}}px" />
+            <view class="info" @tap="onOpen('wlz')">
+              <van-icon name="arrow-left" class="icons" size="46rpx" ></van-icon>
+              <view class="title">物料组</view>
+            </view>
+            <scroll-view class="filter-drawer-attr-scroll" scroll-y>
+              <view class="attr-item">
+                <view class="attr-item-content">
+                  <view class="attr-item-content-line" @tap="onSelectWlzFrame('全部','')">
+                    <view class="text {{filterForm.matkl === '' ? 'active' : ''}}">全部</view>
+                    <van-icon
+                      wx:if="{{filterForm.matkl === ''}}"
+                      name="success"
+                      class="time-selected"
+                      size="32rpx"
+                    />
+                  </view>
+                  <repeat for="{{specialfilters.productGroupMap}}" item="item">
+                    <view
+                      class="attr-item-content-line"
+                      @tap="onSelectWlzFrame({{item.value}},{{item.key}})"
+                    >
+                      <view
+                        class="text {{filterForm.matkl === item.key ? 'active' : ''}}"
+                      >{{item.value}}</view>
+                      <van-icon
+                        wx:if="{{filterForm.matkl === item.key}}"
+                        name="success"
+                        class="time-selected"
+                        size="32rpx"
+                      />
+                    </view>
+                  </repeat>
+                </view>
+              </view>
+            </scroll-view>
+          </view>
+        </view>
+      </van-popup>
+
+      <!-- 供应商筛选列表弹框 -->
+      <van-popup
+        show="{{gys_visible}}"
+        position="right"
+        overlay="{{ true }}"
+        z-index="200"
+        bind:close="openDrawer"
+        custom-style="height: 100%;"
+        close-on-click-overlay="{{ false }}"
+      >
+        <view class="filter-drawer">
+          <view class="filter-drawer-attr">
+            <view class="header-divider" style="height: {{sys.statusBarHeight}}px" />
+            <view class="info" @tap="onOpen('gys')">
+              <van-icon name="arrow-left" class="icons" size="46rpx"></van-icon>
+              <view class="title">供应商</view>
+            </view>
+            <scroll-view class="filter-drawer-attr-scroll" scroll-y>
+              <view class="attr-item">
+                <view class="attr-item-content">
+                  <view class="attr-item-content-line" @tap="onSelectGysFrame('全部','')">
+                    <view class="text {{filterForm.orgId === '' ? 'active' : ''}}">全部</view>
+                    <van-icon
+                      wx:if="{{filterForm.orgId === ''}}"
+                      name="success"
+                      class="time-selected"
+                      size="32rpx"
+                    />
+                  </view>
+                  <repeat for="{{specialfilters.fwOrgsGroupMap}}" item="item">
+                    <view
+                      class="attr-item-content-line"
+                      @tap="onSelectGysFrame({{item.value}},{{item.key}})"
+                    >
+                      <view
+                        class="text {{filterForm.orgId === item.key ? 'active' : ''}}"
+                      >{{item.value}}</view>
+                      <van-icon
+                        wx:if="{{filterForm.orgId === item.key}}"
+                        name="success"
+                        class="time-selected"
+                        size="32rpx"
+                      />
+                    </view>
+                  </repeat>
+                </view>
+              </view>
+            </scroll-view>
+          </view>
+        </view>
+      </van-popup>
+      <view class="top topH">
+        <view class="top-bg">
+          <image class="img-bg" src="{{imgObj.activeHeaderBg}}"/>
+        </view>
+        <view class="top-info">
+          <view
+            class="header-divider"
+            style="height: {{sys.statusBarHeight}}px;"
+          />
+          <view class="header-content">
+            <view class="icon-space">
+              <van-icon @tap="goback" name="arrow-left" custom-class="activity-icon-front" size="46rpx"/>
+            </view>
+            <view class="activity-name">
+              <image class="img-logo" src="{{imgObj.activeHeaderLogo}}"/>
+            </view>
+            <view class="icon-space"></view>
+          </view>
+
+          <view class="touch-bar">
+            <view class="container">
+              <view @tap="chosebar('2')" class="chose-name">
+                <view class="capsuled">进行中</view>
+                <view class="choose-tab">
+                  <image wx:if="{{filterForm.status == '2'}}" class="img-tab" src="{{imgObj.activeHeaderTab}}"/>
+                </view>
+              </view>
+              <view @tap="chosebar('1')" class="chose-name">
+                <view class="capsuled">即将抢购</view>
+                <view class="choose-tab">
+                  <image wx:if="{{filterForm.status == '1'}}" class="img-tab" src="{{imgObj.activeHeaderTab}}"/>
+                </view>
+              </view>
+              <view @tap="chosebar('3')" class="chose-name">
+                <view class="capsuled">已结束</view>
+                <view class="choose-tab">
+                  <image wx:if="{{filterForm.status == '3'}}" class="img-tab" src="{{imgObj.activeHeaderTab}}"/>
+                </view>
+              </view>
+            </view>
+            <view class="iview"></view>
+          </view>
+        </view>
+
+      </view>
+      <!-- 活动循环循环 -->
+      <scroll-view
+        class="collection"
+        enable-flex
+        bindscrolltolower="onPullBottom"
+        bindscroll="onScroll"
+        scroll-top="{{ scrollTop }}"
+        scroll-y
+        enable-back-to-top
+      >
+        <view class="scroll-grid">
+          <view  wx:if="{{ActivityList.length > 0}}" class="scroll-grid-inner">
+            <view wx:for="{{ ActivityList }}" wx:for-item="item" wx:for-index="index" wx:key="id" class="item">
+              <activity-good-container
+                bindshowMoreModel="showMoreModel"
+                bindchangeModel="changeModel"
+                containerItem="{{item}}"
+                timestatus="{{item.timestatus}}" />
+            </view>
+          </view>
+          <view wx:else  class="collection-empty">
+            <emptyDataType description="活动"/>
+          </view>
+
+        </view>
+      </scroll-view>
+      <!-- 收藏 -->
+      <button class="screening shareBar" lang="zh_CN" @tap="openDrawer">
+        <text class="shareBarname">筛选</text>
+      </button>
+      <!-- 分享 -->
+      <button  style="bottom: 178rpx;" @tap="onShareAppMessage" open-type='share' class="screen shareBar" lang="zh_CN">
+        <view class="b-icon icon-huodong_fenxiang" />
+      </button>
+      <!-- 回到上方 -->
+      <button hidden="{{!visibelTop}}" @tap="scrollToTop" class="screen shareBar" lang="zh_CN">
+        <view class="b-icon icon-top" />
+      </button>
+      <van-toast id="van-toast" />
+    </view>
+  </block>
+  <block wx:else>
+    <view class="filter">
+      <view class="top">
+        <view
+          class="header-divider"
+          style="height: {{sys.statusBarHeight}}px;"
+        />
+        <view class="header-content">
+          <view class="icon-space">
+            <van-icon @tap="goback" name="arrow-left" custom-class="activity-icon-front" size="46rpx"/>
+          </view>
+          <view class="activity-name">
+            <image class="img-logo" src="{{imgObj.activeHeaderLogo}}"/>
+          </view>
+          <view class="icon-space"></view>
+        </view>
+      </view>
+      <emptyDataAuth description="权限"/>
+    </view>
+  </block>
+
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

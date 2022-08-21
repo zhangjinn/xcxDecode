@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),pathOr=require("./pathOr.js"),propOr=_curry3(function(r,e,p){return pathOr(r,[e],p)});module.exports=propOr;

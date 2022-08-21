@@ -1,0 +1,1 @@
+var _checkForMethod=require("./internal/_checkForMethod.js"),_curry2=require("./internal/_curry2.js"),reduceBy=require("./reduceBy.js"),groupBy=_curry2(_checkForMethod("groupBy",reduceBy(function(r,e){return null==r&&(r=[]),r.push(e),r},null)));module.exports=groupBy;

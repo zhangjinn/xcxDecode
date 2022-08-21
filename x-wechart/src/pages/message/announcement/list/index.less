@@ -1,0 +1,68 @@
+@import '../../../../styles/utils.less';
+@import '../../../../components/vant/common/style/ellipsis.less';
+
+.order {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .scroll-wrapper{
+    flex: 1;
+    overflow: hidden;
+  }
+  .card-scroll {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 30rpx;
+    .card-container {
+      background: #FFFFFF;
+      box-shadow: 0 4rpx 8rpx 0 rgba(0, 0, 0, 0.03);
+      border-radius: 20rpx;
+      margin-bottom: 30rpx;
+      overflow: hidden;
+
+      .card-img-box{
+        height: 280rpx;
+        overflow-y: hidden;
+        .card-img{
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .card-info-box{
+        display: flex;
+        flex-direction: column;
+        padding: 40rpx 26rpx;
+        .info-title{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          .name{
+            flex: 1;
+            font-size: 34rpx;
+            font-weight: 500;
+            color: #262626;
+          }
+          .type{
+            border-radius: 18rpx;
+            border: 2rpx solid #00AAA6;
+            font-size: 22rpx;
+            color: #00AAA6;
+            padding: 2rpx 8rpx;
+          }
+        }
+        .info-desc{
+          padding-top: 20rpx;
+          font-size: 26rpx;
+          color: #AAAAAA;
+          text{
+            padding: 0 4rpx;
+          }
+        }
+      }
+
+    }
+  }
+
+}

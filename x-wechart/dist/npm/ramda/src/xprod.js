@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),xprod=_curry2(function(r,e){for(var n,o=0,t=r.length,u=e.length,l=[];o<t;){for(n=0;n<u;)l[l.length]=[r[o],e[n]],n+=1;o+=1}return l});module.exports=xprod;

@@ -1,0 +1,114 @@
+
+    <view class="container">
+        <view class="question">
+            <view class="padding">
+                <view class="title">
+                    {{consultdetail.title}}
+                </view>
+                <view class="content">
+                    {{consultdetail.question}}
+                </view>
+
+                <view class="content float-left">
+                  <view  wx:for="{{consultdetail.attachments}}" wx:key="index" item="item">
+                    <image class="imgs" src="{{item}}" bindtap="downloadImg" data-wpydownloadimg-a="{{item}}"/>
+                  </view>
+                </view>
+
+                <view class="row">
+                    <view  wx:if="{{consultdetail.status!='已关闭'}}" class="status">
+                        {{consultdetail.status}}
+                    </view>
+                     <view wx:else class="status clo">
+                        已被 <text>{{consultdetail.closePerson}}</text> 关闭
+                    </view>
+                    <view class="date">
+                        发布于：{{consultdetail.pubAt}}
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="answer">
+            <view class="top van-hairline--bottom">
+                <view class="title">回答</view>
+            </view>
+            <view class="content">
+                 <scroll-view scroll-y="true" class="answer-scroll">
+                    <view wx:if="{{consultdetail.answer}}" class="info">
+                        <view style="padding-bottom:16rpx">{{consultdetail.answer}}</view>
+                       <view wx:for="{{consultdetail.appendList}}" wx:key="index" item="item">
+
+                           <view wx:if="{{item.type==='追答'}}">
+                               <view class="chase {{consultdetail.appendList[index].type==consultdetail.appendList[index-1].type ?'hidden': 'show'}}||{{consultdetail.appendList[index]==0 ? 'hidden': 'show' }}">追答:</view>
+                              <view class="chase-green">{{item.content}} </view>
+                           </view>
+                           <view wx:if="{{item.type==='追问'}}">
+                                <view class="chase {{consultdetail.appendList[index].type==consultdetail.appendList[index-1].type ?'hidden': 'show'}}||{{consultdetail.appendList[index]==0 ? 'hidden': 'show' }}">追问:</view>
+                                  <view class="chase-grey">{{item.content}}</view>
+                           </view>
+                           <view class="date"><text>{{item.createdTime}}</text></view>
+                       </view>
+                       <!--关闭追问
+                       <view class="goask">
+                            <view wx:if="{{consultdetail.status!='已关闭'}}" class="questionagain" bindtap="addQuestion">
+                                <view class="b-icon icon-zhuiwen pose-classify-selected-icon"></view>追问
+                            </view>
+                        </view>
+                        -->
+                    </view>
+                    <view wx:else class="empty">
+                        暂无回答
+                    </view>
+                 </scroll-view>
+            </view>
+        </view>
+        <view class="close">
+            <view wx:if="{{consultdetail.status!='已关闭'}}" class="top van-hairline--bottom">
+                <view class="title">关闭问题</view>
+            </view>
+             <view class="content">
+                <view wx:if="{{consultdetail.status!='已关闭'}}" class="intro">
+                    <view>尊敬的用户您好！首先感谢您对我们提出问题！</view>
+                    <view>我们会根据您的问题进行改进和完善，请在关闭前给我们的回答是否满意打个分，谢谢！</view>
+                </view>
+                <view wx:else class="intro">
+                    <view style="text-align: center;padding-top: 10rpx;">尊敬的用户您好！感谢您对我们提出问题！</view>
+                </view>
+                <view class="rate">
+                     <van-rate wx:if="{{consultdetail.status!='已关闭'}}" value="{{consultdetail.scope}}" size="{{ 25 }}" void-color="#eee" void-icon="star" data-name="productLevel"  bind:change="onChangeRate"/>
+
+                    <van-rate wx:else readonly="readonly" value="{{consultdetail.scope}}" size="{{ 25 }}" void-color="#eee" void-icon="star" data-name="productLevel"/>
+
+                    <view class="ratetext">（{{consultdetail.ratetext}}）</view>
+                </view>
+                <view class="reply">
+                    <van-field wx:if="{{consultdetail.status!='已关闭'}}" type="textarea" readonly="{{ popVisible }}" placeholder="请输入您的感想～" placeholder-style="padding:16rpx 24rpx 16rpx 24rpx;" border="{{ false }}"  bind:change="onFeelChange" autosize="autosize"/>
+                    <view wx:else class="myfeel"><view class="content">{{consultdetail.feel}}</view></view>
+                </view>
+             </view>
+        </view>
+        <view wx:if="{{consultdetail.status!='已关闭'}}">
+            <view class="submitBtn" bindtap="onQuestionClose">
+                <text wx:if="{{closedisable}}" class="disable">关闭</text>
+                <text wx:else>关闭</text>
+            </view>
+        </view>
+        <!-- 追问弹窗 -->
+        <van-popup show="{{ popVisible }}" round="round" position="bottom" custom-style="border-radius: 20rpx 20rpx 0px 0px;" autosize="autosize">
+        <view class="pose-inv">
+          <view class="pose-inv-head">
+            <view class="pose-inv-head-context">
+              <view class="pose-inv-head-context-cancel" bindtap="onClose">取消</view>
+              <view wx:if="{{addquestion}}" class="pose-inv-head-context-submit active" bindtap="onSubmit">提交追问</view>
+              <view wx:else class="pose-inv-head-context-submit">提交追问</view>
+            </view>
+          </view>
+            <view class="pose-inv-content">
+                <view class="textarea">
+                    <van-field type="textarea" placeholder="填写追问的问题吧～" placeholder-style="" border="{{ false }}" bind:change="onAddQuestionChange" custom-style="background: #FAFAFA;" show-confirm-bar="{{ false }}" cursor-spacing="60" value="{{addquestion}}"/>
+                </view>
+            </view>
+        </view>
+      </van-popup>
+      <van-toast id="van-toast"/>
+    </view>

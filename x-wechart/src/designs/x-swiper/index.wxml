@@ -1,0 +1,24 @@
+
+<block wx:if="{{items.length > 0}}">
+  <swiper
+    indicator-dots
+    autoplay
+    interval="{{interval}}"
+    style="{{contentStyle}}"
+  >
+    <block wx:for="{{items}}" wx:key="key">
+      <swiper-item>
+        <view
+          class="x-design-swiper"
+          hover-class="x-design-swiper-hover"
+          style="{{swiperItemStyle}}"
+          bindtap="onTap"
+          data-index="{{index}}"
+        >
+          <image class="img" lazy-load src="{{item.src}}" />
+        </view>
+      </swiper-item>
+    </block>
+  </swiper>
+</block>
+

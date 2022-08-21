@@ -1,0 +1,1 @@
+var _curry1=require("./_curry1.js"),_isArray=require("./_isArray.js"),_isString=require("./_isString.js"),_isArrayLike=_curry1(function(r){return!!_isArray(r)||!!r&&("object"==typeof r&&(!_isString(r)&&(1===r.nodeType?!!r.length:0===r.length||r.length>0&&(r.hasOwnProperty(0)&&r.hasOwnProperty(r.length-1)))))});module.exports=_isArrayLike;

@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),_isInteger=require("./internal/_isInteger.js"),mathMod=_curry2(function(r,e){return _isInteger(r)?!_isInteger(e)||e<1?NaN:(r%e+e)%e:NaN});module.exports=mathMod;

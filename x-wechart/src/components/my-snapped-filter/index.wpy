@@ -1,0 +1,191 @@
+<template>
+  <view class="filter">
+    <van-popup show="{{ calendarShow }}" position="bottom" bind:close="closeCalendar" z-index="200">
+      <calendar calendarConfig="{{ calendarConfig }}" bind:afterTapDay="chooseDay" />
+    </van-popup>
+    <van-popup
+      show="{{ filterVisible }}"
+      position="right"
+      bind:close="closeDrawer"
+      custom-style="height: 100%;"
+    >
+      <view class="filter-drawer">
+        <view class="filter-drawer-attr">
+          <!-- <view class="header-divider" style="height: {{sys.statusBarHeight}}px" /> -->
+          <!-- <view class="header-divider" style="height: 35px">筛选</view> -->
+          <scroll-view class="filter-drawer-attr-scroll" scroll-y>
+            <view class="attr-item">
+              <view @tap="openChoose('org')" class="attr-item-header" hover-class="hover">
+                <view class="title">供应商</view>
+                <view class="right">
+                  <view class="address">{{ chooseOrg.name }}</view>
+                  <view class="b-icon h-icon icon-more" />
+                </view>
+              </view>
+              <block wx:if="{{ currentPage === 'distributor' }}">
+                <view class="attr-item-mid-one" hover-class="hover">
+                  <view class="item-name">商家名称</view>
+                  <!-- <view class="item-customer"> -->
+                  <navigator url="/pages/dms/order-customer-choose/index" class="item-customer">
+                    <view class="item-customer-name {{ chooseCustomerInfo.customerName ? '' : 'item-customer-placeholder' }}">
+                      {{ chooseCustomerInfo.customerName ? chooseCustomerInfo.customerName : '请输入老板名称/商家名称/商家编码' }}
+                    </view>
+                    <block wx:if="{{ chooseCustomerInfo.customerCode }}">
+                      <view class="item-customer-code">
+                        ,{{ chooseCustomerInfo.customerCode }}
+                      </view>
+                    </block>
+                    <view class="item-customer-code">
+                      {{ chooseCustomerInfo.customerCode ? '' : '' }}
+                    </view>
+                  </navigator>
+                </view>
+
+              </block>
+              <view @tap="openChoose('matkl')" class="attr-item-mid" hover-class="hover">
+                <view class="title">物料组</view>
+                <view class="right">
+                  <view class="address">{{ chooseMatkl.name }}</view>
+                  <view class="b-icon h-icon icon-more" />
+                </view>
+              </view>
+              <view class="attr-item-mid-one" hover-class="hover">
+                <view class="item-name">产品型号</view>
+                <van-field
+                  placeholder="请输入产品型号"
+                  value="{{ form.productModel }}"
+                  placeholder-style="font-size: 24rpx;color: #AAAAAA;"
+                  border="{{ false }}"
+                  bind:change="onModelChange"
+                  custom-style="background-color: #f7f7f7;height: 80rpx"
+                  clearable
+                ></van-field>
+              </view>
+              <view class="attr-item-mid-one" hover-class="hover">
+                <view class="item-name">活动名称</view>
+                <van-field
+                  placeholder="请输入活动名称/活动编码"
+                  value="{{ form.activityName }}"
+                  placeholder-style="font-size: 24rpx;color: #AAAAAA;"
+                  border="{{ false }}"
+                  bind:change="onZzprdmodelChange"
+                  custom-style="background-color: #f7f7f7;height: 80rpx"
+                  clearable
+                ></van-field>
+              </view>
+              <view class="order-data">
+                <view class="project">
+                  <text style="font-size: 13px;color: #777777">抢购日期</text>
+                </view>
+                <view class="order-data-input">
+                  <view
+                    class="order-data-input-one"
+                    data-name="startDate"
+                    @tap="openCalendar"
+                  >
+                    <view
+                      data-name="startDate"
+                      class="text"
+                    >{{form.startDate|| '开始日期'}}</view>
+                    <view class="order-data-input-one-clear" catchtap="clearCalendar('startDate')">
+                      <van-icon
+                        wx:if="{{form.startDate}}"
+                        custom-style="font-size: 24rpx;color: #aaaaaa;padding-right: 15rpx"
+                        name="clear"
+                      />
+                    </view>
+                  </view>
+                  <view class="order-data-input-line">-</view>
+                  <view
+                    class="order-data-input-one"
+                    data-name="endDate"
+                    @tap="openCalendar"
+                  >
+                    <view
+                      data-name="endDate"
+                      class="text"
+                    >{{form.endDate || '结束日期'}}</view>
+                    <view class="order-data-input-one-clear" catchtap="clearCalendar('endDate')">
+                      <van-icon
+                        wx:if="{{form.endDate}}"
+                        custom-style="font-size: 24rpx;color: #aaaaaa;padding-right: 15rpx"
+                        name="clear"
+                      />
+                    </view>
+                  </view>
+                </view>
+              </view>
+              <view class="attr-item-mid-one">
+                <view class="item-name">是否有效</view>
+                <view class="item-status">
+                  <view class="item-status-choose {{ form.status === '0' ? 'item-status-active' : '' }}"  @tap="chooseStatus('0')">
+                    是
+                  </view>
+                  <view class="item-status-choose {{ form.status === '1' ? 'item-status-active' : '' }}" @tap="chooseStatus('1')">
+                    否
+                  </view>
+                </view>
+              </view>
+
+            </view>
+          </scroll-view>
+          <view class="filter-drawer-attr-footer">
+            <view
+              @tap="resetSearch"
+              class="filter-drawer-attr-footer-btn reset"
+              hover-class="filter-drawer-attr-footer-btn-hover"
+            >重置</view>
+            <view
+              @tap="confirmSearch"
+              class="filter-drawer-attr-footer-btn confirm"
+              hover-class="filter-drawer-attr-footer-btn-hover"
+            >确认</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup
+      show="{{ chooseVisible }}"
+      position="right"
+      overlay="{{ true }}"
+      bind:close="closeDrawer"
+      custom-style="height: 100%;"
+      overlay-style="overlay"
+    >
+      <view class="filter-drawer">
+        <view class="filter-drawer-attr">
+          <!-- <view class="header-divider" style="height: {{sys.statusBarHeight}}px" /> -->
+          <view class="info">
+            <van-icon name="arrow-left" class="icons" bind:click="closeChoose"></van-icon>
+            <view class="title">{{ chooseTitle }}</view>
+          </view>
+          <scroll-view class="filter-drawer-attr-scroll" scroll-y>
+            <view class="attr-item">
+              <view class="attr-item-content">
+                <repeat for="{{ chooseList }}" item="item">
+                  <view
+                    class="attr-item-content-line"
+                    @tap="onSelect({{ item }})"
+                  >
+                    <view
+                      class="text {{compareInfo.id === item.id ? 'active' : ''}}"
+                    >{{item.name}}</view>
+                    <van-icon
+                      wx:if="{{ compareInfo.id === item.id }}"
+                      name="success"
+                      class="time-selected"
+                      size="32rpx"
+                    />
+                  </view>
+                </repeat>
+              </view>
+            </view>
+          </scroll-view>
+        </view>
+      </view>
+    </van-popup>
+
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

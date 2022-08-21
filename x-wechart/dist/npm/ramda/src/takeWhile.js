@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),_dispatchable=require("./internal/_dispatchable.js"),_xtakeWhile=require("./internal/_xtakeWhile.js"),slice=require("./slice.js"),takeWhile=_curry2(_dispatchable(["takeWhile"],_xtakeWhile,function(e,r){for(var i=0,a=r.length;i<a&&e(r[i]);)i+=1;return slice(0,i,r)}));module.exports=takeWhile;

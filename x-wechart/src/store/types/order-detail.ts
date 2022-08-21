@@ -1,0 +1,9 @@
+// 获取订单详情
+export const GET_ORDER_DETAIL = "GET_ORDER_DETAIL"
+// 重置订单详情
+export const RESET_ORDER_DETAIL = "RESET_ORDER_DETAIL"
+// 取消原因列表
+export const GET_CANCEL_LIST = "GET_CANCEL_LIST"
+// 获取订单流程状态
+export const GET_QUERY_CIS_ORDER_STATUS_INFO_MOBILE = "GET_QUERY_CIS_ORDER_STATUS_INFO_MOBILE"
+

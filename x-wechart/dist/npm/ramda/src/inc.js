@@ -1,0 +1,1 @@
+var add=require("./add.js"),inc=add(1);module.exports=inc;

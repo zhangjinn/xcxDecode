@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),pickBy=_curry2(function(r,u){var c={};for(var e in u)r(u[e],e,u)&&(c[e]=u[e]);return c});module.exports=pickBy;

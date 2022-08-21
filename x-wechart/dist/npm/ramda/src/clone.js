@@ -1,0 +1,1 @@
+var _clone=require("./internal/_clone.js"),_curry1=require("./internal/_curry1.js"),clone=_curry1(function(e){return null!=e&&"function"==typeof e.clone?e.clone():_clone(e,[],[],!0)});module.exports=clone;

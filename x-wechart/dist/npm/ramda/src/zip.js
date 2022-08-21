@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),zip=_curry2(function(r,e){for(var n=[],t=0,u=Math.min(r.length,e.length);t<u;)n[t]=[r[t],e[t]],t+=1;return n});module.exports=zip;

@@ -1,0 +1,103 @@
+
+  <view class="order _7c0adb8">
+    <van-popup show="{{calendarShow}}" position="bottom"  bind:close="closeCalendar" z-index="200" class="_7c0adb8">
+      <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay" class="_7c0adb8"/>
+    </van-popup>
+    <van-popup show="{{visible}}" position="right" overlay="{{ true }}"  bind:close="orderfiltering" custom-style="height: 100%;" z-index="130" class="_7c0adb8">
+      <view class="order-drawer _7c0adb8">
+        <view class="order-drawer-attr _7c0adb8">
+          <scroll-view class="order-drawer-attr-scroll _7c0adb8" scroll-y>
+            <view class="attr-item _7c0adb8">
+              <view class="projectem _7c0adb8">
+                <view class="project _7c0adb8">
+                  <text style="font-size: 13px;color: #777777" class="_7c0adb8">订单号</text>
+                </view>
+                <van-field placeholder="请输入订单号" placeholder-style="font-size: 24rpx;" border="{{ false }}" bind:change="ondocumentNumChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;" clearable="clearable" value="{{filterForm.terms.documentNum}}" class="_7c0adb8"/>
+              </view>
+              <view class="projectem _7c0adb8">
+                <view class="project _7c0adb8">
+                  <text style="font-size: 28rpx;color: #777777" class="_7c0adb8">客户名称</text>
+                </view>
+                <van-field placeholder="请输入客户名称" border="{{ false }}" placeholder-style="font-size: 24rpx;" bind:change="oncustomerNameChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;" clearable="clearable" value="{{filterForm.terms.customerName}}" class="_7c0adb8"/>
+              </view>
+              <view class="projectem _7c0adb8">
+                <view class="project _7c0adb8">
+                  <text style="font-size: 24rpx;color: #777777" class="_7c0adb8">主单号</text>
+                </view>
+                <van-field placeholder="请输入主单号" placeholder-style="font-size: 24rpx;" border="{{ false }}" bind:change="onTgzhudanhaoChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;" clearable="clearable" value="{{filterForm.terms.packageMainNum}}" class="_7c0adb8"/>
+              </view>
+              <view class="projectem _7c0adb8">
+                <view class="project _7c0adb8">
+                  <text style="font-size: 24rpx;color: #777777" class="_7c0adb8">组合编码</text>
+                </view>
+                <van-field placeholder="请输入组合编码" placeholder-style="font-size: 24rpx;" border="{{ false }}" bind:change="onTgdocumentNumChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;" clearable="clearable" value="{{filterForm.terms.packageCode}}" class="_7c0adb8"/>
+              </view>
+              <view class="order-data _7c0adb8">
+                <view class="project _7c0adb8">
+                  <text style="font-size: 28rpx;color: #777777" class="_7c0adb8">单据日期</text>
+                </view>
+                <view class="order-data-input _7c0adb8">
+                  <view class="order-data-input-one _7c0adb8" data-name="startDate" data-type="sapDate" bindtap="openCalendar">
+                    {{filterForm.terms.startDate || '开始日期'}}
+                    <van-icon  wx:if="{{filterForm.terms.startDate}}" class="close-icon _7c0adb8" name="clear" bindtap="clearCalendar" data-wpyclearcalendar-a="startDate"/>
+                  </view>
+                  <view class="order-data-input-line _7c0adb8">-</view>
+                  <view class="order-data-input-one _7c0adb8" data-name="endDate" data-type="sapDate" bindtap="openCalendar">
+                    {{filterForm.terms.endDate|| '结束日期'}}
+                    <van-icon  wx:if="{{filterForm.terms.endDate}}" class="close-icon _7c0adb8" name="clear" bindtap="clearCalendar" data-wpyclearcalendar-a="endDate"/>
+                  </view>
+                </view>
+              </view>
+              <view class="projectem _7c0adb8">
+                <view class="project _7c0adb8">
+                  <text style="font-size: 28rpx;color: #777777" class="_7c0adb8">下单员</text>
+                </view>
+                <van-field placeholder="请输入下单员姓名" border="{{ false }}" placeholder-style="font-size: 24rpx;" bind:change="onsellerNameChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;" clearable="clearable" value="{{filterForm.terms.sellerName}}" class="_7c0adb8"/>
+              </view>
+            </view>
+          </scroll-view>
+          <view class="order-drawer-attr-footer _7c0adb8">
+             <view bindtap="onResetFilterForm" class="order-drawer-attr-footer-btn reset _7c0adb8" hover-class="order-drawer-attr-footer-btn-hover">重置</view>
+            <view bindtap="onSubmitFilterForm" class="order-drawer-attr-footer-btn confirm _7c0adb8" hover-class="order-drawer-attr-footer-btn-hover">确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    
+  <view class="header-tab _7c0adb8">
+    <view class="left-btn">
+      <block  wx:for="{{ $headerTab$tabListNew }}">
+        <view class="btn-item {{ item.selectValue ? 'active' : '' }}" bindtap="$headerTab$changeTab" data-wpychangetab-a="{{item}}">
+          <text>{{ item.name }}</text>
+          <i wx:if="{{ $headerTab$showArrowIcon }}" class="b-icon iconxialajiantou"/>
+        </view>
+      </block>
+    </view>
+    <view class="right-btn"  wx:if="{{ $headerTab$showRightBtn }}" bindtap="$headerTab$onSideFilter">
+      <view class="line-shadow" wx:if="{{ $headerTab$showRightBtnLine }}"/>
+      <view class="side-filter-btn">
+        <text>筛选</text>
+        <i class="b-icon shaixuan"/>
+      </view>
+    </view>
+  </view>
+
+    <view wx:if="{{freeShippingTip}}" class="free-shipping-tip _7c0adb8">{{freeShippingTip}}</view>
+    <scroll-view wx:if="{{orderList.page.totalPage !== 0}}" scroll-y="true" class="order-scroll _7c0adb8" enable-flex="enable-flex" scroll-top="{{ scrollTop }}" bindscroll="onScroll" bindscrolltolower="onGetOrderListNext">
+      <block class="_7c0adb8" wx:for="{{orderList.data}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <sales-distributors-item item="{{item}}"  bind:distributorsOperation="distributorsOperation" class="_7c0adb8"/>
+      </block>
+    </scroll-view>
+    
+  <view class="empty-data _7c0adb8" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <van-toast id="van-toast" class="_7c0adb8"/>
+    <van-dialog id="van-dialog" class="_7c0adb8"/>
+  </view>

@@ -1,0 +1,6 @@
+<template>
+  <view>
+    <web-view src="{{url}}" bindmessage='getMsg'></web-view>
+  </view>
+</template>
+<script lang="typescript" src="./index.ts"></script>

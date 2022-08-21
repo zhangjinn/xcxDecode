@@ -1,0 +1,205 @@
+
+    <view class="container">
+      <!-- 阻止弹框 -->
+      <van-popup show="{{ IKnow }}" overlay="{{ true }}">
+      <!-- <van-popup show="{{ true }}" overlay="{{ true }}"> -->
+        <view class="todo-popup">
+          <view class="text">
+            <view class="text-first">小程序端支持查看详情及操作上上签电子签章</view>
+            <view class="text-last">U盾签章请在PC端操作</view>
+          </view>
+          <view bindtap="allIKnow" class="operation">
+            <view class="operation-text">我知道了</view>
+          </view>
+        </view>
+      </van-popup>
+        <view class="container-top">
+            <view class="name">{{fundDetail.rsUnitName}}和{{fundDetail.customerName}}电子对账单明细</view>
+            <view class="head">
+                <view class="b-icon h-icon icon-hisense"/>
+                <view class="barcode">
+                    <canvas canvas-id="barcode"/>
+                    <view class="code">{{fundDetail.sheetNo}}</view>
+                </view>
+            </view>
+            <view class="info">
+                <view class="info-content">
+                    <view class="row">
+                        <view class="org">销售组织：{{fundDetail.rsUnitName}}</view>
+                    </view>
+                    <view class="row">
+                        <view class="date">发布日期：{{fundDetail.publicDate}}</view>
+                        <view class="unit">{{fundDetail.currencyName}}(单位：元)</view>
+                    </view>
+                </view>
+                <view class="info-detail">
+                    <view class="head">
+                        <view class="rowone">应收账款期末余额</view>
+                        <view class="rowtwo"/>
+                        <view class="rowthree">{{fundDetail.arBalance}}</view>
+                    </view>
+                    <view class="head">
+                        <view class="rowone"/>
+                        <view class="rowtwo">期初余额</view>
+                        <view class="rowthree">{{fundDetail.arInit}}</view>
+                    </view>
+                    <view class="head">
+                        <view class="rowone"/>
+                        <view class="rowtwo right">(加)本期开票</view>
+                        <view class="rowthree link" bindtap="viewInvoice" data-wpyviewinvoice-a="1" data-wpyviewinvoice-b="">{{fundDetail.arDebit}}</view>
+                    </view>
+                    <view class="head">
+                        <view class="rowone"/>
+                        <view class="rowtwo right">(减)本期回款</view>
+                        <view class="rowthree link" bindtap="viewInvoice" data-wpyviewinvoice-a="2" data-wpyviewinvoice-b="">{{fundDetail.arCredit}}</view>
+                    </view>
+                    <view class="head">
+                        <view class="rowone"/>
+                        <view class="rowtwo right">(加)本期其他</view>
+                        <view class="rowthree">{{fundDetail.arOther}}</view>
+                    </view>
+
+                </view>
+                <view class="info-end van-hairline--bottom">
+                    <view class="row">海信方已发货未开票：<text bindtap="viewInvoice" data-wpyviewinvoice-a="3" data-wpyviewinvoice-b="">￥{{fundDetail.sniAmt}}</text></view>
+                    <view class="row">客户方已退货未退税：<text bindtap="viewInvoice" data-wpyviewinvoice-a="4" data-wpyviewinvoice-b="">￥{{fundDetail.rnrAmt}}</text></view>
+                </view>
+                <view class="info-view">
+                    <view class="btn" bindtap="viewSignature" data-wpyviewsignature-a="{{fundDetail.rowId}}" data-wpyviewsignature-b="{{fundDetail.ssqBind}}">
+                        查看
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="container-list">
+            <van-tabs sticky="sticky" nav-class="nav"  bind:change="onChooseType">
+                <van-tab title="全部">
+                   <scroll-view class="container-list-scroll" scroll-y bindscrolltolower="loadNextPage">
+                    <block wx:for="{{threecolumn.rows}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                        <view class="content">
+                            <view class="row">
+                                <view class="date">交易日期：{{item.voucherDate}}</view>
+                                <view  wx:if="{{item.businessType=='10'||item.businessType=='20'}}" class="status">
+                                    <text wx:if="{{item.businessType=='10'}}">开票</text>
+                                    <text wx:if="{{item.businessType=='20'}}">回款</text>
+                                </view>
+                                <view class="code">凭证号 {{item.voucherNo}}</view>
+                            </view>
+                            <view class="row">
+                                <view class="summary">摘要：{{item.digest}}</view>
+                            </view>
+                            <view class="row">
+                                   <view  wx:if="{{item.businessType=='30'&&item.debit!=0}}" class="money">金额：￥{{item.debit}}</view>
+                                 <view wx:if="{{item.businessType=='30'&&item.credit!=0}}" class="money">金额：￥{{item.credit}}</view>
+                                   <view wx:if="{{item.businessType=='30'&&item.credit==0&&item.debit==0}}" class="money">金额：￥0</view>
+                                <view wx:if="{{item.businessType=='10'}}" class="money">金额：￥{{item.debit}}</view>
+                                <view wx:if="{{item.businessType=='20'}}" class="money">金额：￥{{item.credit}}</view>
+
+                                <view wx:if="{{item.businessType=='10'}}" class="btn" bindtap="viewInvoice" data-wpyviewinvoice-a="1" data-wpyviewinvoice-b="{{item.voucherNo}}">
+                                    开票
+                                    <view class="b-icon s-icon icon-more"/>
+                                </view>
+                                <view wx:if="{{item.businessType=='20'}}" class="btn" bindtap="viewInvoice" data-wpyviewinvoice-a="2" data-wpyviewinvoice-b="{{item.voucherNo}}">
+                                    回款
+                                    <view class="b-icon s-icon icon-more"/>
+                                </view>
+                            </view>
+                        </view>
+                    </block>
+                   </scroll-view>
+                </van-tab>
+                <van-tab title="开票">
+                    <scroll-view class="container-list-scroll" scroll-y bindscrolltolower="loadNextPage">
+                        <block wx:for="{{threecolumn.rows}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                          <view class="content">
+                            <view class="row">
+                                <view class="date">交易日期：{{item.voucherDate}}</view>
+                                <view wx:if="{{item.businessType=='10'||item.businessType=='20'}}" class="status">
+                                    <text wx:if="{{item.businessType=='10'}}">开票</text>
+                                    <text wx:if="{{item.businessType=='20'}}">回款</text>
+                                </view>
+                                <view class="code">凭证号 {{item.voucherNo}}</view>
+                            </view>
+                            <view class="row">
+                                <view class="summary">摘要：{{item.digest}}</view>
+                            </view>
+                            <view class="row">
+                                <view class="money">金额：￥{{item.debit}}</view>
+                                <view wx:if="{{item.businessType=='10'}}" class="btn" bindtap="viewInvoice" data-wpyviewinvoice-a="1" data-wpyviewinvoice-b="{{item.voucherNo}}">
+                                    开票
+                                    <view class="b-icon s-icon icon-more"/>
+                                </view>
+                                <view wx:if="{{item.businessType=='20'}}" class="btn" bindtap="viewInvoice" data-wpyviewinvoice-a="2" data-wpyviewinvoice-b="{{item.voucherNo}}">
+                                    回款
+                                    <view class="b-icon s-icon icon-more"/>
+                                </view>
+                            </view>
+                        </view>
+                        </block>
+                   </scroll-view>
+                </van-tab>
+               <van-tab title="回款">
+                    <scroll-view class="container-list-scroll" scroll-y bindscrolltolower="loadNextPage">
+                        <block wx:for="{{threecolumn.rows}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                          <view class="content">
+                            <view class="row">
+                                <view class="date">交易日期：{{item.voucherDate}}</view>
+                                <view wx:if="{{item.businessType=='10'||item.businessType=='20'}}" class="status">
+                                    <text wx:if="{{item.businessType=='10'}}">开票</text>
+                                    <text wx:if="{{item.businessType=='20'}}">回款</text>
+                                </view>
+                                <view class="code">凭证号 {{item.voucherNo}}</view>
+                            </view>
+                            <view class="row">
+                                <view class="summary">摘要：{{item.digest}}</view>
+                            </view>
+                            <view class="row">
+                                <view class="money">金额：￥{{item.credit}}</view>
+                                <view wx:if="{{item.businessType=='10'}}" class="btn" bindtap="viewInvoice" data-wpyviewinvoice-a="1" data-wpyviewinvoice-b="{{item.voucherNo}}">
+                                    开票
+                                    <view class="b-icon s-icon icon-more"/>
+                                </view>
+                                <view wx:if="{{item.businessType=='20'}}" class="btn" bindtap="viewInvoice" data-wpyviewinvoice-a="2" data-wpyviewinvoice-b="{{item.voucherNo}}">
+                                    回款
+                                    <view class="b-icon s-icon icon-more"/>
+                                </view>
+                            </view>
+                        </view>
+                        </block>
+                   </scroll-view>
+                </van-tab>
+                <van-tab title="其他">
+                    <scroll-view class="container-list-scroll" scroll-y bindscrolltolower="loadNextPage">
+                        <block wx:for="{{threecolumn.rows}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                         <view class="content">
+                            <view class="row">
+                                <view class="date">交易日期：{{item.voucherDate}}</view>
+                                <view wx:if="{{item.businessType=='10'||item.businessType=='20'}}" class="status">
+                                    <text wx:if="{{item.businessType=='10'}}">开票</text>
+                                    <text wx:if="{{item.businessType=='20'}}">回款</text>
+                                </view>
+                                <view class="code">凭证号 {{item.voucherNo}}</view>
+                            </view>
+                            <view class="row">
+                                <view class="summary">摘要：{{item.digest}}</view>
+                            </view>
+                            <view class="row">
+                                <view wx:if="{{item.debit!=0}}" class="money">金额：￥{{item.debit}}</view>
+                                 <view wx:if="{{item.credit!=0}}" class="money">金额：￥{{item.credit}}</view>
+                                   <view wx:if="{{item.credit==0&&item.debit==0}}" class="money">金额：￥0</view>
+                                <view wx:if="{{item.businessType=='10'}}" class="btn" bindtap="viewInvoice" data-wpyviewinvoice-a="1" data-wpyviewinvoice-b="{{item.voucherNo}}">
+                                    开票
+                                    <view class="b-icon s-icon icon-more"/>
+                                </view>
+                                <view wx:if="{{item.businessType=='20'}}" class="btn" bindtap="viewInvoice" data-wpyviewinvoice-a="2" data-wpyviewinvoice-b="{{item.voucherNo}}">
+                                    回款
+                                    <view class="b-icon s-icon icon-more"/>
+                                </view>
+                            </view>
+                        </view>
+                        </block>
+                   </scroll-view>
+                </van-tab>
+            </van-tabs>
+        </view>
+    </view>

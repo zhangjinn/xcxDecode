@@ -1,0 +1,1 @@
+var _curry2=require("./_curry2.js"),_flatCat=require("./_flatCat.js"),map=require("./../map.js"),_xchain=_curry2(function(r,a){return map(r,_flatCat(a))});module.exports=_xchain;

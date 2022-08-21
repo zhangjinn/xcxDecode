@@ -1,0 +1,168 @@
+<wxs src="../../../../wxs/utils.wxs" module="utils"/>
+
+  <view class="out-warehouse-order-detail">
+    <view class="order-detail-main">
+      <view class="order-detail-main-header">
+        <view class="order-detail-main-order-no">{{orderDetail.documentType === 'normal' ? orderDetail.purchaseNum !== "" ? '分销商采购订单' : '渠道' : '零售'}}{{orderDetail.documentNum}}</view>
+        <view class="order-detail-main-order-status">{{orderDetail.statusName}}</view>
+      </view>
+      <view class="order-detail-main-content">
+        <view class="order-detail-main-line">
+          <view class="order-detail-main-label">单据日期：</view>
+          <view class="order-detail-main-value">{{orderDetail.documentDate}}</view>
+        </view>
+        <view class="order-detail-main-line">
+          <view class="order-detail-main-label">出库日期：</view>
+          <view class="order-detail-main-value">{{orderDetail.edt}}</view>
+        </view>
+        <view class="order-detail-main-line">
+          <view class="order-detail-main-label">业务员：</view>
+          <view class="order-detail-main-value">{{orderDetail.sellerName}}</view>
+        </view>
+        <view class="order-detail-main-line">
+          <view class="order-detail-main-label">仓库：</view>
+          <view class="order-detail-main-value">{{orderDetail.warehouseName}}</view>
+        </view>
+        <view class="order-detail-main-line">
+          <view class="order-detail-main-label">所属门店：</view>
+          <view class="order-detail-main-value">{{orderDetail.storeName}}</view>
+        </view>
+        <view class="order-detail-main-line">
+          <view class="order-detail-main-label">备注：</view>
+          <view class="order-detail-main-value">{{orderDetail.message}}</view>
+        </view>
+      </view>
+    </view>
+    <view class="order-detail-items">
+      <view class="order-detail-items-title">明细信息</view>
+      <block wx:for="{{orderDetail.salesOrderItem}}" wx:for-index="itemIndex" wx:for-item="orderItem" wx:key="order_detail_item_{{orderItem.itemId}}">
+        <view class="order-detail-item-card">
+          <view class="order-detail-item-info">
+            <view class="order-detail-item-card-bar">
+            </view>
+            <view class="order-detail-item-card-header">{{orderItem.model || ''}}</view>
+            <view class="order-detail-item-card-line">
+              <view class="order-detail-item-card-label">颜色：</view>
+              <view class="order-detail-item-card-value">{{orderItem.colour || ''}}</view>
+            </view>
+            <view class="order-detail-item-card-line">
+              <view class="order-detail-item-card-label">销售数量：</view>
+              <view class="order-detail-item-card-value">{{orderItem.backnowledgedQty}}</view>
+            </view>
+            <view class="order-detail-item-card-line">
+              <view class="order-detail-item-card-label">已出库数量：</view>
+              <view class="order-detail-item-card-value">{{orderItem.shippedBqty}}</view>
+            </view>
+            <view class="order-detail-item-card-line">
+              <view class="order-detail-item-card-label">销售价格：</view>
+              <!-- <view wx:if="{{orderItem.isLock}}" class="order-detail-item-card-value">￥{{orderItem.bprice}}</view>
+              <view wx:elif="{{orderDetail.documentType === 'normal' && orderDetail.purchaseNum !== ''}}" class="order-detail-item-card-field">
+                <van-field
+                  custom-style="padding: 0; height: 34rpx; align-items: center;background-color: #F7F7F7;font-size: 24rpx;"
+                  value="{{ orderItem.bprice }}"
+                  border="{{ false }}"
+                  bind:change="onDmsGoodsItems({{itemIndex}})"
+                />
+              </view> -->
+              <view class="order-detail-item-card-value">￥{{orderItem.bprice}}</view>
+            </view>
+            <view class="order-detail-item-card-line">
+              <view class="order-detail-item-card-label">金额小计：</view>
+              <view class="order-detail-item-card-value">￥{{orderItem.acknowledgedAmount}}</view>
+            </view>
+          </view>
+          <block wx:for="{{orderItem.outItems}}" wx:for-index="outIndex" wx:for-item="outItem" wx:key="order_detail_item_{{orderItem.itemId}}_out_{{outIndex}}">
+            <view class="order-detail-item-out-info">
+              <van-cell-group>
+                <view class="item-info-line">
+                  <view class="item-info-line-out-quantity">出库数量</view>
+                  <view class="item-info-line-out-quantity-input">
+                    <van-stepper integer="integer" value="{{outItem.shippedBqty}}" min="0" custom-class="cart-stepper" input-class="cart-input-class" plus-class="cart-action-class" minus-class="cart-action-class" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}"  bind:change="onShippedBqtyChg" bind:plus="onShippedBqtyChg" bind:minus="onShippedBqtyChg" disabled="{{outItem.barCodes && outItem.barCodes.length > 0}}"/>
+                  </view>
+                </view>
+                <!-- <van-field label="出库单价(元)" placeholder="请输入出库单价" input-align="right" value="{{outItem.bprice}}" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}" bind:change="onToggleInvPrice"/> -->
+                <van-field label="仓库" placeholder="请选择仓库" input-align="right" icon="arrow" readonly="readonly" disabled="{{ orderDetail.documentType === 'normal' && orderDetail.purchaseNum !== '' }}" value="{{outItem.warehouseName}}" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}"  bind:click-icon="onToggleWarehouse"/>
+                <van-field label="补差类型" placeholder="请选择" input-align="right" icon="arrow" readonly="readonly" value="{{outItem.invStatusTypeName}}" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}" bind:click-icon="onToggleInvStatusType"/>
+                <!-- <van-field wx:if="{{orderDetail.documentType === 'normal' && orderDetail.purchaseNum !== ''}}" label="库存状态" placeholder="请选择库存状态" input-align="right" readonly value="{{outItem.invStatus}}" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}"/> -->
+                <van-field label="库存状态" placeholder="请选择库存状态" input-align="right" icon="arrow" readonly="readonly" disabled="{{ orderDetail.documentType === 'normal' && orderDetail.purchaseNum !== '' }}" value="{{outItem.invStatus}}" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}" bind:click-icon="onToggleInvStatus"/>
+                <van-field label="批次" placeholder="请选择批次" input-align="right" icon="arrow" readonly="readonly" value="{{outItem.invBatchName}}" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}" bind:click-icon="onToggleInvBatch"/>
+                <van-field label="可用库存" input-align="right" readonly="readonly" value="{{outItem.bavailQty}}"/>
+              </van-cell-group>
+              <view class="order-detail-item-out-info-footer">
+                <i class="b-icon icon-remove footer-remove" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}" bindtap="onRemoveOutItem">删除</i>
+              </view>
+              <!-- 条码展示 -->
+              <view  wx:if="{{outItem.barCodes.length > 0}}" class="order_detail-item-out-barcode">
+                <view class="order_detail-item-out-barcode-title">
+                  <view class="order_detail-item-out-barcode-title-first">已添加条码</view>
+                  <view class="order_detail-item-out-barcode-title-second">(型号{{orderItem.model}})</view>
+                </view>
+                <view class="order_detail-item-out-barcode-body">
+                  <block wx:for="{{outItem.barCodes}}" wx:for-index="barIndex" wx:for-item="item" wx:key="barCode_{{barIndex}}">
+                    <view class="order_detail-item-out-barcode-body-content">
+                      <van-checkbox disabled="{{!item.isChecked}}" value="{{item.checked}}" checked-color="#00AAA6" custom-class="barCode-checkbox" bind:change="onChangeBarCode" data-wpyonchangebarcode-a="{{orderItem.model}}" data-wpyonchangebarcode-b="{{item.barCode}}" data-wpyonchangebarcode-c="{{outIndex}}">
+                          <view class="label-checkbox">
+                            {{item.barCode}}
+                          </view>
+                        </van-checkbox>
+                        <view class="b-icon icon-fail icon-error" bindtap="onDelBarCode" data-wpyondelbarcode-a="{{orderItem.model}}" data-wpyondelbarcode-b="{{item.barCode}}" data-wpyondelbarcode-c="{{outIndex}}"/>
+                    </view>
+                  </block>
+                </view>
+              </view>
+            </view>
+          </block>
+          <view class="order-detail-item-out-add">
+            <i class="b-icon icon-add-full out-add" data-item-index="{{itemIndex}}" bindtap="onAddOutItem">添加</i>
+          </view>
+        </view>
+      </block>
+    </view>
+    <view class="order-detail-footer">
+<!--      <block  wx:if="{{orderDetail.isScan}}">-->
+<!--        <view class="button-saoma-wrapper" bindtap="onScanCode">-->
+<!--          <view class="b-icon saoma saoma-icon"></view>-->
+<!--          <view class="button-saoma-text">按单扫码</view>-->
+<!--        </view>-->
+<!--        <view class="button-wrapper" bindtap="onSubmitConfirmOutFrom">-->
+<!--          <view class="button-text">提交并出库</view>-->
+<!--        </view>-->
+<!--      </block>-->
+      <block>
+        <view  wx:if="{{isCanOutbound}}" class="button-wrapper" bindtap="onSubmitConfirmOutFrom">
+          <view class="button-text">出库</view>
+        </view>
+        <view wx:else class="button-wrapper-gray" bindtap="onSubmitCancel">
+          <view class="button-text">出库</view>
+        </view>
+      </block>
+    </view>
+    <van-popup show="{{warehouseVisible}}" position="bottom" bind:close="onCloseWarehouse" z-index="300">
+      <van-picker id="out-warehouse-detail-warehouse-picker" show-toolbar="show-toolbar" title="出库仓库" value-key="value" columns="{{warehouseList}}" bind:cancel="onWarehouseCancel" bind:confirm="onWarehouseConfirm"/>
+    </van-popup>
+    <van-popup show="{{invBatchVisible}}" position="bottom" bind:close="onCloseInvBatch" z-index="300">
+      <van-picker id="out-warehouse-detail-batch-picker" show-toolbar="show-toolbar" title="批次" value-key="value" columns="{{currentInvBatchList}}" bind:cancel="onInvBatchCancel" bind:confirm="onInvBatchConfirm"/>
+    </van-popup>
+    <van-popup show="{{invStatusVisible}}" position="bottom" bind:close="onCloseInvStatus" z-index="300">
+      <van-picker id="out-warehouse-detail-status-picker" show-toolbar="show-toolbar" title="仓库状态" value-key="value" columns="{{invStatusList}}" bind:cancel="onInvStatusCancel" bind:confirm="onInvStatusConfirm"/>
+    </van-popup>
+
+    <van-popup show="{{invStatusTypeVisible}}" position="bottom" bind:close="onCloseInvStatusType" z-index="300">
+      <van-picker id="out-warehouse-detail-status-type-picker" show-toolbar="show-toolbar" title="补差类型" value-key="name" columns="{{invStatusTypeList}}" bind:cancel="onInvStatusTypeCancel" bind:confirm="onInvStatusTypeConfirm"/>
+    </van-popup>
+    <!-- 扫码确认 -->
+    <van-popup show="{{isSubmitBarCode}}" custom-style="border-radius: 4rpx;overflow:hidden;">
+      <view class="scan-confirm">
+        <view class="scan-confirm-header">请确认条形码</view>
+        <view class="scan-confirm-input">
+          <van-field bind:change="onBarCodeChange" maxlength="23" placeholder="请输入条形码" value="{{barCode}}"/>
+        </view>
+        <view class="scan-confirm-button">
+          <van-button type="default" block="block" bind:click="closeScan">取消</van-button>
+          <van-button type="default" color="#00AAA6" block="block" plain bind:click="submitBarCode">提交</van-button>
+        </view>
+      </view>
+    </van-popup>
+    <van-toast id="van-toast"/>
+    <van-dialog id="van-dialog"/>
+  </view>

@@ -1,0 +1,1 @@
+var _complement=require("./internal/_complement.js"),_curry2=require("./internal/_curry2.js"),filter=require("./filter.js"),reject=_curry2(function(e,r){return filter(_complement(e),r)});module.exports=reject;

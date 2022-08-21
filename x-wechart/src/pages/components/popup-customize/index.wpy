@@ -1,0 +1,52 @@
+<template>
+  <van-popup
+    show="{{ show }}"
+    closeable
+    position="bottom"
+    custom-style="height: 720rpx"
+    zIndex="400"
+    bind:click-overlay="onClose"
+  >
+    <view class="item-inv">
+      <view class="item-inv-head">
+        <view class="item-inv-head-context">
+          <view class="item-inv-head-context-title">{{ title }}</view>
+          <i class="b-icon iconyiquxiao item-inv-head-context-close" bindtap="onClose"></i>
+        </view>
+      </view>
+      <view class="item-inv-search" wx:if="{{ isSearch }}">
+        <van-search
+          custom-class="header-search"
+          shape="round"
+          use-action-slot
+          use-left-icon-slot="{{ true }}"
+          leftSearchIconSow="{{ false }}"
+          placeholder="请输入搜索关键字"
+          placeholder-style="color: #AAAAAA; font-size: 28rpx;"
+          bind:change="onChange"
+        >
+          <view slot="label" class="search-left-icon">
+            <i class="b-icon shouyesousuo"></i>
+          </view>
+        </van-search>
+      </view>
+      <scroll-view scroll-y class="item-inv-scroll">
+        <block wx:if="{{options && options.length>0}}">
+          <view wx:for="{{ options }}" wx:key="{{ item.id }}" wx:for-item="item" class="item-inv-scroll-row" data-item="{{item}}" @tap="chooseOption">
+            <block wx:if="{{multiple}}">
+              <view class="item-inv-scroll-row-desc  {{ utils.includes(item.id, selectedOption.id) ? 'checked' : '' }}">{{ item.name }}</view>
+              <view wx:if="{{ utils.includes(item.id, selectedOption.id) }}" class="b-icon icon-check item-inv-scroll-row-checked checked"></view>
+            </block>
+            <block wx:else>
+              <view class="item-inv-scroll-row-desc {{ item.id == selectedOption.id ? 'checked' : ''}}">{{ item.name }}</view>
+              <view wx:if="{{ item.id == selectedOption.id }}" class="b-icon icon-check item-inv-scroll-row-checked checked"></view>
+            </block>
+          </view>
+        </block>
+        <view wx:else class="no-data">暂无数据</view>
+      </scroll-view>
+    </view>
+  </van-popup>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

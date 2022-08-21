@@ -1,0 +1,49 @@
+
+  <view class="page-wrap _a2502ef">
+    <view class="top-wrap _a2502ef">
+      <view class="_a2502ef">
+        <view class="b-icon niaoxing _a2502ef"/>
+      </view>
+      <view class="font _a2502ef">
+        <view class="_a2502ef">终端巡查</view>
+        <view class="_a2502ef">请按终端管理要求，逐条点检并勾选</view>
+      </view>
+    </view>
+    <view class="botm-wrap _a2502ef">
+      <block class="_a2502ef" wx:for="{{list}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="card _a2502ef">
+          <view class="head _a2502ef">
+            <text class="b-icon mendian _a2502ef"/>
+            <text class="mendian-text _a2502ef">{{ item.checkProject }}</text>
+          </view>
+          <view class="list _a2502ef">
+            <block class="_a2502ef" wx:for="{{item.listStandar}}" wx:for-index="indexChild" wx:for-item="itemChild" wx:key="key">
+              <view class="item _a2502ef">
+                <text class="index _a2502ef">{{indexChild+1}}</text>
+                <text class="name _a2502ef">{{itemChild.contentRead}}</text>
+                <text class="{{itemChild.checkResult=='T'?'type':'type type-disabled'}} _a2502ef" bindtap="changeType" data-wpychangetype-a="{{index}}" data-wpychangetype-b="{{indexChild}}">合格</text>
+              </view>
+            </block>
+          </view>
+        </view>
+      </block>
+    </view>
+    <view class="submit-wrap _a2502ef">
+      <view class="rest _a2502ef">
+        <text class="rest-text _a2502ef">点检结果</text>
+        <text class="{{checkResult=='F'?'rest-type rest-type-disabled':'rest-type'}} _a2502ef">{{ checkResult=='T'?'合格':'不合格' }}</text>
+      </view>
+      <view class="btn _a2502ef" bindtap="nextStep">下一步</view>
+    </view>
+    <view bindtap="onClose" data-type="close" hidden="{{ !showSing }}" class="sing-bg _a2502ef">
+      <view class="sign-wrap _a2502ef" hover-stop-propagation="true">
+        <view class="draw-wrap _a2502ef">
+          <canvas class="can _a2502ef" disable-scroll="true" canvas-id="firstCanvas" id="firstCanvas" bindtouchstart="bindtouchstart" bindtouchmove="bindtouchmove"/>
+        </view>
+        <view class="btns-wrap _a2502ef">
+          <view class="btn _a2502ef" bindtap="clear">重新输入</view>
+          <view class="btn btn-ok _a2502ef" bindtap="exportImg">确定签字</view>
+        </view>
+      </view>
+    </view>
+  </view>

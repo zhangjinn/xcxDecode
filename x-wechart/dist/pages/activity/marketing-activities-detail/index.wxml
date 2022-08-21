@@ -1,0 +1,157 @@
+
+  <view class="activity-detail _b78bc08">
+    <view class="activity-wrapper _b78bc08">
+      <view class="activity-header _b78bc08">
+        <view class="activity-code _b78bc08">
+          <text class="code _b78bc08">{{marketingActivityDetail.activityCode}}</text>
+          <text class="type _b78bc08">{{ marketingActivityDetail.statusDesc }}</text>
+        </view>
+        <view class="activity-info _b78bc08">
+          <text class="label _b78bc08">活动名称：</text>
+          <text class="info _b78bc08">{{ marketingActivityDetail.activityName }}</text>
+        </view>
+        <view class="activity-info _b78bc08">
+          <text class="label _b78bc08">促销方式：</text>
+          <text class="info _b78bc08">{{ marketingActivityDetail.discountTypeName }}</text>
+        </view>
+        <view class="activity-info _b78bc08">
+          <text class="label _b78bc08">开始时间：</text>
+          <text class="info _b78bc08">{{ marketingActivityDetail.startDate }}</text>
+        </view>
+        <view class="activity-info _b78bc08">
+          <text class="label _b78bc08">结束时间：</text>
+          <text class="info _b78bc08">{{ marketingActivityDetail.endDate }}</text>
+        </view>
+        <view class="activity-info _b78bc08">
+          <text class="label _b78bc08">商家范围：</text>
+          <text class="info _b78bc08">{{ marketingActivityDetail.custTagName }}</text>
+        </view>
+      </view>
+
+      <view class="activity-content _b78bc08">
+        <view class="view-distributors _b78bc08" bindtap="viewDistributor">查看参与分销商</view>
+        <view class="product-relationship-title-txt _b78bc08">产品关系</view>
+        <block class="_b78bc08" wx:for="{{marketingActivityDetail.productDtoList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="product-relationship-list _b78bc08">
+            <view class="product-name _b78bc08">
+              <text class="name _b78bc08">{{ item.productName }} <text  wx:if="{{ item.color }}" class="_b78bc08">/ {{ item.color }}</text></text>
+              <text class="nums _b78bc08">x{{ item.qty }}</text>
+            </view>
+            <view class="product-desc _b78bc08">
+              <block  wx:if="{{ item.discountTypeId == '90601' || item.discountTypeId == '90602' }}" class="_b78bc08">
+                <view class="desc-item _b78bc08">
+                  <text class="_b78bc08">提货价：</text>
+                  <text class="_b78bc08">￥{{ item.standardPrice }}</text>
+                </view>
+                <view class="desc-item _b78bc08">
+                  <text class="_b78bc08">开票单价：</text>
+                  <text class="_b78bc08">￥{{ item.billPrice }}</text>
+                </view>
+                <view class="desc-item _b78bc08">
+                  <text class="_b78bc08">单个商家限量：</text>
+                  <text class="_b78bc08">{{ item.purchaseLimitQty }}</text>
+                </view>
+                <view class="desc-item _b78bc08">
+                  <text class="_b78bc08">本次活动返利：</text>
+                  <text wx:if="{{item.rebateMoney}}" class="_b78bc08">￥{{ item.rebateMoney }}</text>
+                </view>
+                <view class="instruction-item _b78bc08">
+                  <text class="_b78bc08">活动说明：</text>
+                  <text wx:if="{{item.productSubtitle}}" class="_b78bc08">{{ item.productSubtitle }}</text>
+                </view>
+                <view class="instruction-item _b78bc08">
+                  <text class="_b78bc08">备注：</text>
+                  <text wx:if="{{item.remark}}" class="_b78bc08">{{ item.remark }}</text>
+                </view>
+              </block>
+              <block  wx:if="{{ item.discountTypeId == '90603' }}" class="_b78bc08">
+                <view class="desc-item _b78bc08">
+                  <text class="_b78bc08">组合编码：</text>
+                  <text class="_b78bc08">{{ item.packageCode }}</text>
+                </view>
+                <view class="desc-item _b78bc08">
+                  <text class="_b78bc08">组合数量：</text>
+                  <text class="_b78bc08">{{ item.packageNum }}</text>
+                </view>
+                <view class="desc-item _b78bc08">
+                  <text class="_b78bc08">提货价：</text>
+                  <text class="_b78bc08">￥{{ item.standardPrice }}</text>
+                </view>
+                <view class="desc-item _b78bc08">
+                  <text class="_b78bc08">开票单价：</text>
+                  <text class="_b78bc08">￥{{ item.billPrice }}</text>
+                </view>
+                <view class="desc-item _b78bc08">
+                  <text class="_b78bc08">单个商家限量：</text>
+                  <text class="_b78bc08">{{ item.purchaseLimitQty }}</text>
+                </view>
+                <view class="desc-item _b78bc08">
+                  <text class="_b78bc08">本次活动返利：</text>
+                  <text wx:if="{{item.rebateMoney}}" class="_b78bc08">￥{{ item.rebateMoney }}</text>
+                </view>
+                <view class="instruction-item _b78bc08">
+                  <text class="_b78bc08">活动说明：</text>
+                  <text wx:if="{{item.productSubtitle}}" class="_b78bc08">{{ item.productSubtitle }}</text>
+                </view>
+                <view class="instruction-item _b78bc08">
+                  <text class="_b78bc08">备注：</text>
+                  <text wx:if="{{item.remark}}" class="_b78bc08">{{ item.remark }}</text>
+                </view>
+              </block>
+              <block wx:if="{{ item.discountTypeId == '90605' }}" class="_b78bc08">
+                <view class="desc-item _b78bc08">
+                  <text class="_b78bc08">组合编码：</text>
+                  <text class="_b78bc08">{{ item.packageCode }}</text>
+                </view>
+                <view class="desc-item _b78bc08">
+                  <text class="_b78bc08">组合数量：</text>
+                  <text class="_b78bc08">{{ item.packageNum }}</text>
+                </view>
+                <view class="desc-item _b78bc08">
+                  <text class="_b78bc08">分组编码：</text>
+                  <text class="_b78bc08">{{ item.productGroup }}</text>
+                </view>
+                <view class="desc-item _b78bc08">
+                  <text class="_b78bc08">分组描述：</text>
+                  <text class="_b78bc08">{{ item.productGroupRemark }}</text>
+                </view>
+                <view class="desc-item _b78bc08">
+                  <text class="_b78bc08">提货价：</text>
+                  <text class="_b78bc08">￥{{ item.standardPrice }}</text>
+                </view>
+                <view class="desc-item _b78bc08">
+                  <text class="_b78bc08">开票单价：</text>
+                  <text class="_b78bc08">￥{{ item.billPrice }}</text>
+                </view>
+                <view class="desc-item _b78bc08">
+                  <text class="_b78bc08">单个商家限量：</text>
+                  <text class="_b78bc08">{{ item.purchaseLimitQty }}</text>
+                </view>
+                <view class="desc-item _b78bc08">
+                  <text class="_b78bc08">本次活动返利：</text>
+                  <text wx:if="{{item.rebateMoney}}" class="_b78bc08">￥{{ item.rebateMoney }}</text>
+                </view>
+                <view class="instruction-item _b78bc08">
+                  <text class="_b78bc08">活动说明：</text>
+                  <text wx:if="{{item.productSubtitle}}" class="_b78bc08">{{ item.productSubtitle }}</text>
+                </view>
+                <view class="instruction-item _b78bc08">
+                  <text class="_b78bc08">是否默认：</text>
+                  <text wx:if="{{ item.defaultFlag == '1' }}" class="_b78bc08">是</text>
+                  <text wx:if="{{ item.defaultFlag == '0' }}" class="_b78bc08">否</text>
+                </view>
+                <view class="instruction-item _b78bc08">
+                  <text class="_b78bc08">备注：</text>
+                  <text wx:if="{{item.remark}}" class="_b78bc08">{{ item.remark }}</text>
+                </view>
+              </block>
+
+            </view>
+          </view>
+        </block>
+
+      </view>
+    </view>
+    <van-toast id="van-toast" class="_b78bc08"/>
+    <van-dialog id="van-dialog" class="_b78bc08"/>
+  </view>

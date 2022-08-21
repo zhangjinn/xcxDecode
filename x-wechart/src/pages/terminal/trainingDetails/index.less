@@ -1,0 +1,54 @@
+@import '../../../styles/utils.less';
+@import '../../../components/vant/common/style/hairline.less';
+@import '../../../components/vant/common/style/ellipsis.less';
+
+.training {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 30rpx;
+  background: #FFF;
+
+  .training-wrapper{
+    color: #262626;
+    font-weight: 400;
+
+    .header{
+      position: relative;
+      font-size: 30rpx;
+      font-weight: 500;
+      padding-left: 22rpx;
+      &:before {
+        content: '';
+        position: absolute;
+        left: 0rpx;
+        top: 8rpx;
+        height: 24rpx;
+        border-left: 6rpx solid #00AAA6;
+      }
+
+    }
+    .info{
+      display: flex;
+      margin-top: 24rpx;
+      font-size: 26rpx;
+
+      .value{
+        flex: 1;
+        color: #777777;
+      }
+    }
+
+    .img-box{
+      margin: 14rpx -10rpx -10rpx;
+      .img-item{
+        width: 152rpx;
+        height: 152rpx;
+        margin: 10rpx;
+        border-radius: 8rpx;
+      }
+    }
+  }
+}
+

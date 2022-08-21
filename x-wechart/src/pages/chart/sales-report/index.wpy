@@ -1,0 +1,544 @@
+<template>
+  <view class="sale">
+    <van-popup overlay="{{false}}" show="{{ calendarShow }}" position="bottom" bind:close="closeCalendar" z-index="200">
+      <calendar calendarConfig="{{ calendarConfig }}" bind:afterTapDay="chooseDay" />
+    </van-popup>
+    <!-- 时效日期说明，数据更新至当天的前一天日期 -->
+    <view class="expiry-date">数据更新至{{ previousDayDate }}</view>
+    <view class="tabs-bar van-hairline--bottom">
+      <view class="border-li">
+        <view class="item" @tap="selectTabs(1)" style="{{ index == 1 ? 'color: #262626': ''}}">销售总额
+           <view catchtap="whichPopup('1')" class="b-icon icon-zhushi icon"></view>
+        </view>
+        <view wx:if="{{index == 1}}" class="line"> </view>
+      </view>
+      <view class="border-li">
+        <view class="item" @tap="selectTabs(2)" style="{{ index == 2 ? 'color: #262626': ''}}">渠道销售额
+          <view catchtap="whichPopup('2')" class="b-icon icon-zhushi icon"></view>
+        </view>
+        <view wx:if="{{index == 2}}" class="line"> </view>
+      </view>
+      <view class="border-li">
+        <view class="item" @tap="selectTabs(3)" style="{{ index == 3 ? 'color: #262626': ''}}">零售额
+          <view catchtap="whichPopup('3')" class="b-icon icon-zhushi icon"></view>
+        </view>
+        <view wx:if="{{index == 3}}" class="line"> </view>
+      </view>
+      <view style="width: 180rpx"></view>
+    </view>
+    <view wx:if="{{totalSales || channelSales || retailSales}}" style="background-color: #ffffff; padding:16rpx 24rpx 24rpx 24rpx;">
+      <view class="text-box" wx:if="{{totalSales}}">
+        <view class="text-heard">
+          <view class="name">
+            <view class="small"></view>
+            销售总额
+          </view>
+          <view catchtap="whichPopup('1')" class="b-icon icon-fail icon"></view>
+        </view>
+        <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.totalSales }}</view>
+      </view>
+      <view class="text-box" wx:if="{{channelSales}}">
+        <view class="text-heard">
+          <view class="name">
+            <view class="small"></view>
+            渠道销售额
+          </view>
+          <view catchtap="whichPopup('2')" class="b-icon icon-fail icon"></view>
+        </view>
+        <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.channelSales }}</view>
+      </view>
+      <view class="text-box" wx:if="{{retailSales}}">
+        <view class="text-heard">
+          <view class="name">
+            <view class="small"></view>
+            零售额
+          </view>
+          <view catchtap="whichPopup('3')" class="b-icon icon-fail icon"></view>
+        </view>
+        <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.retailSales }}</view>
+      </view>
+    </view>
+
+    <view class="bar-chart" style="{{totalSales || channelSales || retailSales ? '': 'padding-top: 32rpx;'}}">
+      <view class="info">
+        <!-- <view class="info-one">各品类销售额占比</view> -->
+        <view class="info-two">
+          <view class="input-one"
+            style="margin-right: 20rpx"
+            data-name="startDate"
+            @tap="openCalendar"
+          >
+            <view class="time" data-name="startDate">{{terms.startDate || '开始日期'}}</view>
+            <view data-name="startDate" class="b-icon iconxialajiantou icon"></view>
+          </view>
+          -
+          <view class="input-one"
+            style="margin-left: 20rpx;margin-right: 12px;"
+            data-name="endDate"
+            @tap="openCalendar"
+          >
+            <view class="time" data-name="endDate">{{terms.endDate || '结束日期'}}</view>
+            <view data-name="endDate" class="b-icon iconxialajiantou icon"></view>
+          </view>
+        </view>
+      </view>
+      <view class="figure">
+        <view hidden="{{reportFlag}}" class="distribution">
+          <view style="width: 161px">
+            <canvas canvas-id="ringCanvas" class="canvas" bindtouchstart="touchHandler"></canvas>
+          </view>
+          <view class="dis-item">
+            <repeat for="{{inventoryReport.series}}" item="item">
+              <view class="color-item">
+                <view class="content">
+                  <view class="circle" style="background-color: {{item.color}}"></view>
+                  <view class="text">{{ item.name }}</view>
+                </view>
+                <view class="number">{{ item.scale }}</view>
+              </view>
+            </repeat>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="purchase">
+      <view class="purchase-screen">
+        <view @tap="touchFilter('supplier')" class="purchase-screen-li">
+          <text>{{supplierItem.value}}</text>
+          <view class="b-icon h-icon iconxialajiantou"></view>
+        </view>
+        <view @tap="touchFilter('material')" class="purchase-screen-li">
+          <text>{{materialItem.value}}</text>
+          <view class="b-icon h-icon iconxialajiantou"></view>
+        </view>
+        <view @tap="touchFilter('date')" class="purchase-screen-li">
+          <text>{{reallyDate}}</text>
+          <view class="b-icon h-icon iconxialajiantou"></view>
+        </view>
+      </view>
+      <view class="tabs">
+        <view class="purchase">
+          <view class="container">
+            <view class="sales">
+              <view @tap="onePopup" class="sales-name">销售总额(元)<view class="b-icon icon-zhushi icon"></view></view>
+              <view wx:if="{{onePopup}}" style="background-color: #ffffff; padding:16rpx 24rpx 24rpx 24rpx;">
+                <view class="text-box">
+                  <view class="text-heard">
+                    <view class="name">
+                      <view class="small"></view>
+                      销售总额
+                    </view>
+                    <view @tap="onePopup" class="b-icon icon-fail icon"></view>
+                  </view>
+                  <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.totalSales }}</view>
+                  <view class="text-heard" style="padding-top:24rpx">
+                    <view class="name">
+                      <view class="small"></view>
+                      渠道销售额
+                    </view>
+                  </view>
+                  <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.channelSales }}</view>
+                  <view class="text-heard" style="padding-top:24rpx">
+                    <view class="name">
+                      <view class="small"></view>
+                      零售额
+                    </view>
+                  </view>
+                  <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.retailSales }}</view>
+                  <view class="text-heard" style="padding-top:24rpx">
+                    <view class="name">
+                      <view class="small"></view>
+                      环比
+                    </view>
+                  </view>
+                  <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.chainRatio }}</view>
+                  <view class="text-heard" style="padding-top:24rpx">
+                    <view class="name">
+                      <view class="small"></view>
+                      同比增长率
+                    </view>
+                  </view>
+                  <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.yearOnYearGrowthRate }}</view>
+                </view>
+              </view>
+              <view class="sales-money">{{salesReport.salesTotalAmount.count}}</view>
+              <view class="chain">
+                <view class="chain-one">环比</view>
+                <view class="chain-two" style="{{utils.homeColor(salesReport.salesTotalAmount.HB)}}">{{salesReport.salesTotalAmount.HB}}</view>
+                <view class="chain-one" style="padding-left: 16rpx">同比</view>
+                <view class="chain-two" style="{{utils.homeColor(salesReport.salesTotalAmount.TB)}}">{{salesReport.salesTotalAmount.TB}}</view>
+              </view>
+            </view>
+            <view class="items">
+              <view class="item">
+                <view class="sale-name">渠道销售额(元)</view>
+                <view class="sale-money">{{salesReport.salesNormalAmount.count}}</view>
+                <view class="chain" style="padding-top: 0rpx;">
+                  <view class="chain-one">环比</view>
+                  <view class="chain-two" style="{{utils.homeColor(salesReport.salesNormalAmount.HB)}}">{{salesReport.salesNormalAmount.HB}}</view>
+                  <view class="chain-one" style="padding-left: 16rpx">同比</view>
+                  <view class="chain-two" style="{{utils.homeColor(salesReport.salesNormalAmount.TB)}}">{{salesReport.salesNormalAmount.TB}}</view>
+                </view>
+              </view>
+              <view class="item">
+                <view class="sale-name">零售额(元)</view>
+                <view class="sale-money" style="color: #262626">{{salesReport.salesRetailAmount.count}}</view>
+                <view class="chain" style="padding-bottom: 28rpx;padding-top: 0rpx;">
+                  <view class="chain-one">环比</view>
+                  <view class="chain-two" style="{{utils.homeColor(salesReport.salesRetailAmount.HB)}}">{{salesReport.salesRetailAmount.HB}}</view>
+                  <view class="chain-one" style="padding-left: 16rpx">同比</view>
+                  <view class="chain-two" style="{{utils.homeColor(salesReport.salesRetailAmount.TB)}}">{{salesReport.salesRetailAmount.TB}}</view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="purchase">
+          <view class="container">
+            <view class="sales">
+              <view @tap="twoPopup" class="sales-name van-hairline--top">销售总量(台)<view class="b-icon icon-zhushi icon"></view></view>
+              <view wx:if="{{twoPopup}}" style="background-color: #ffffff; padding:16rpx 24rpx 24rpx 24rpx;">
+                <view class="text-box">
+                  <view class="text-heard">
+                    <view class="name">
+                      <view class="small"></view>
+                      销售总量
+                    </view>
+                    <view @tap="twoPopup" class="b-icon icon-fail icon"></view>
+                  </view>
+                  <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.totalSalesQuantity }}</view>
+                  <view class="text-heard" style="padding-top:24rpx">
+                    <view class="name">
+                      <view class="small"></view>
+                      渠道销售量
+                    </view>
+                  </view>
+                  <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.channelSalesQuantity }}</view>
+                  <view class="text-heard" style="padding-top:24rpx">
+                    <view class="name">
+                      <view class="small"></view>
+                      零售量
+                    </view>
+                  </view>
+                  <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.retailSalesQuantity }}</view>
+                  <view class="text-heard" style="padding-top:24rpx">
+                    <view class="name">
+                      <view class="small"></view>
+                      环比
+                    </view>
+                  </view>
+                  <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.chainRatio }}</view>
+                  <view class="text-heard" style="padding-top:24rpx">
+                    <view class="name">
+                      <view class="small"></view>
+                      同比增长率
+                    </view>
+                  </view>
+                  <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.yearOnYearGrowthRate }}</view>
+                </view>
+              </view>
+              <view class="sales-money">{{salesReport.salesTotalQuantity.count}}</view>
+              <view class="chain">
+                <view class="chain-one">环比</view>
+                <view class="chain-two" style="{{utils.homeColor(salesReport.salesTotalQuantity.HB)}}">{{salesReport.salesTotalQuantity.HB}}</view>
+                <view class="chain-one" style="padding-left: 16rpx">同比</view>
+                <view class="chain-two" style="{{utils.homeColor(salesReport.salesTotalQuantity.TB)}}">{{salesReport.salesTotalQuantity.TB}}</view>
+              </view>
+            </view>
+            <view class="items">
+              <view class="item">
+                <view class="sale-name">渠道销售量(台)</view>
+                <view class="sale-money">{{salesReport.salesNormalQuantity.count}}</view>
+                <view class="chain" style="padding-top: 0rpx;">
+                  <view class="chain-one">环比</view>
+                  <view class="chain-two" style="{{utils.homeColor(salesReport.salesNormalQuantity.HB)}}">{{salesReport.salesNormalQuantity.HB}}</view>
+                  <view class="chain-one" style="padding-left: 16rpx">同比</view>
+                  <view class="chain-two" style="{{utils.homeColor(salesReport.salesNormalQuantity.TB)}}">{{salesReport.salesNormalQuantity.TB}}</view>
+                </view>
+              </view>
+              <view class="item">
+                <view class="sale-name">零售量(台)</view>
+                <view class="sale-money" style="color: #262626">{{salesReport.salesRetailQuantity.count}}</view>
+                <view class="chain" style="padding-bottom: 28rpx;padding-top: 0rpx;">
+                  <view class="chain-one">环比</view>
+                  <view class="chain-two" style="{{utils.homeColor(salesReport.salesRetailQuantity.HB)}}">{{salesReport.salesRetailQuantity.HB}}</view>
+                  <view class="chain-one" style="padding-left: 16rpx">同比</view>
+                  <view class="chain-two" style="{{utils.homeColor(salesReport.salesRetailQuantity.TB)}}">{{salesReport.salesRetailQuantity.TB}}</view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view hidden="{{reportFlag}}" class="line-chart">
+      <view @tap="threePopup" class="purchase-name">销售额
+        <text>(万元)</text>
+        <view class="b-icon icon-zhushi icon"></view>
+      </view>
+      <view wx:if="{{threePopup}}" style="background-color: #ffffff; padding:16rpx 24rpx 24rpx 24rpx;">
+        <view class="text-box">
+          <view class="text-heard">
+            <view class="name">
+              <view class="small"></view>
+              销售额
+            </view>
+            <view @tap="threePopup" class="b-icon icon-fail icon"></view>
+          </view>
+          <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.sales }}</view>
+        </view>
+      </view>
+      <chart1 :option.sync="option1" canvasId="bbb" height="240px"></chart1>
+      <view @tap="fourPopup" class="purchase-name">销量
+        <text>(台)</text>
+        <view class="b-icon icon-zhushi icon"></view>
+      </view>
+      <view wx:if="{{fourPopup}}" style="background-color: #ffffff; padding:16rpx 24rpx 24rpx 24rpx;">
+        <view class="text-box">
+          <view class="text-heard">
+            <view class="name">
+              <view class="small"></view>
+              销量
+            </view>
+            <view @tap="fourPopup" class="b-icon icon-fail icon"></view>
+          </view>
+          <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.salesQuantity }}</view>
+        </view>
+      </view>
+      <chart2 :option.sync="option2" canvasId="ccc" height="240px"></chart2>
+    </view>
+    <block wx:if="{{ !user.info.allFenXiao}}">
+      <view class="tabs-bar">
+        <view style="width: 40rpx"></view>
+        <view class="border-li" @tap="selectTopBars(2)">
+          <view class="item" style="{{ indexTop == 2 ? 'color: #262626': ''}}">TOP门店</view>
+          <view wx:if="{{indexTop == 2}}" class="line-ex"> </view>
+        </view>
+        <view class="border-li" @tap="selectTopBars(1)">
+          <view class="item" style="{{ indexTop == 1 ? 'color: #262626': ''}}">TOP分销商</view>
+          <view wx:if="{{indexTop == 1}}" class="line-ex"> </view>
+        </view>
+        <view style="width: 300rpx"></view>
+      </view>
+      <view class="from">
+        <view wx:if="{{ indexTop == 1 }}" class="outer-layer" style="{{!show ? 'max-height: 220rpx; overflow: hidden': ''}}">
+          <repeat for="{{rankDistributor}}" item="item" index="index">
+            <view class="container">
+              <view class="name-first">
+                <view wx:if="{{index == 0 }}">
+                  <image
+                    src="../images/champion.png"
+                    class="rel-icon"
+                  />
+                </view>
+                <view wx:elif="{{index == 1 }}">
+                  <image
+                    src="../images/runner.png"
+                    class="rel-icon"
+                  />
+                </view>
+                <view wx:elif="{{index == 2 }}">
+                  <image
+                    src="../images/runner_up.png"
+                    class="rel-icon"
+                  />
+                </view>
+                <view wx:else class="icon">{{item.rank}}</view>
+                <view class="text van-ellipsis">{{item.dealerName}}</view>
+              </view>
+              <view class="name-last">
+                <view class="money">￥{{item.salesAmount}}</view>
+                <view class="number">{{item.salesQty}}</view>
+              </view>
+            </view>
+          </repeat>
+        </view>
+        <view wx:else class="outer-layer" style="{{!showTwo ? 'max-height: 220rpx; overflow: hidden': ''}}">
+          <repeat for="{{rankStore}}" item="item" index="index">
+            <view class="container">
+              <view class="name-first">
+                <view wx:if="{{index == 0 }}">
+                  <image
+                    src="../images/champion.png"
+                    class="rel-icon"
+                  />
+                </view>
+                <view wx:elif="{{index == 1 }}">
+                  <image
+                    src="../images/runner.png"
+                    class="rel-icon"
+                  />
+                </view>
+                <view wx:elif="{{index == 2 }}">
+                  <image
+                    src="../images/runner_up.png"
+                    class="rel-icon"
+                  />
+                </view>
+                <view wx:else class="icon">{{item.rank}}</view>
+                <view class="text van-ellipsis">{{item.storeName}}</view>
+              </view>
+              <view class="name-last">
+                <view class="money">￥{{item.salesAmount}}</view>
+                <view class="number">{{item.salesQty}}</view>
+              </view>
+            </view>
+          </repeat>
+        </view>
+        <view wx:if="{{ indexTop == 1 && rankDistributor.length > 3}}" class="operation">
+          <view wx:if="{{!show}}" @tap="onshow" class="container">
+            <view class="text">放下</view>
+            <view class="b-icon iconliebiaoshaixuanjiantou-down icon"></view>
+          </view>
+          <view wx:else @tap="onshow" class="container">
+            <view class="text">收起</view>
+            <view class="b-icon iconliebiaoshaixuanjiantou-up icon"></view>
+          </view>
+        </view>
+        <view wx:if="{{indexTop == 2 && rankStore.length > 3 }}" class="operation">
+          <view wx:if="{{!showTwo}}" @tap="showTwo" class="container">
+            <view class="text">放下</view>
+            <view class="b-icon iconliebiaoshaixuanjiantou-down icon"></view>
+          </view>
+          <view wx:else @tap="showTwo" class="container">
+            <view class="text">收起</view>
+            <view class="b-icon iconliebiaoshaixuanjiantou-up icon"></view>
+          </view>
+        </view>
+        <view hidden="{{reportFlag}}" class="dual-x-axis">
+          <chart3 :option.sync="option3" canvasId="zxzx" height="338px"></chart3>
+        </view>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="tabs-bar">
+        <view style="width: 40rpx"></view>
+        <view class="border-li">
+          <view class="item" style="color: #262626">TOP门店</view>
+          <view class="line-ex-li"> </view>
+        </view>
+        <view style="width: 540rpx"></view>
+      </view>
+      <view class="from">
+        <view class="outer-layer" style="{{!showTwo ? 'max-height: 220rpx; overflow: hidden': ''}}">
+          <repeat for="{{rankStore}}" item="item" index="index">
+            <view class="container">
+              <view class="name-first">
+                <view wx:if="{{index == 0 }}">
+                  <image
+                    src="../images/champion.png"
+                    class="rel-icon"
+                  />
+                </view>
+                <view wx:elif="{{index == 1 }}">
+                  <image
+                    src="../images/runner.png"
+                    class="rel-icon"
+                  />
+                </view>
+                <view wx:elif="{{index == 2 }}">
+                  <image
+                    src="../images/runner_up.png"
+                    class="rel-icon"
+                  />
+                </view>
+                <view wx:else class="icon">{{item.rank}}</view>
+                <view class="text van-ellipsis">{{item.storeName}}</view>
+              </view>
+              <view class="name-last">
+                <view class="money">￥{{item.salesAmount}}</view>
+                <view class="number">{{item.salesQty}}</view>
+              </view>
+            </view>
+          </repeat>
+        </view>
+        <view wx:if="{{ rankStore.length > 3 }}" class="operation">
+          <view wx:if="{{!showTwo}}" @tap="showTwo" class="container">
+            <view class="text">放下</view>
+            <view class="b-icon iconliebiaoshaixuanjiantou-down icon"></view>
+          </view>
+          <view wx:else @tap="showTwo" class="container">
+            <view class="text">收起</view>
+            <view class="b-icon iconliebiaoshaixuanjiantou-up icon"></view>
+          </view>
+        </view>
+        <view hidden="{{reportFlag}}" class="dual-x-axis">
+          <chart3 :option.sync="option3" canvasId="zxzx" height="338px"></chart3>
+        </view>
+      </view>
+    </block>
+    <van-popup show="{{calendarShow}}" position="bottom" bind:close="choseTime" z-index="200">
+      <calendar
+        calendarConfig="{{calendarConfig}}"
+        bind:afterTapDay="chooseDay"
+      />
+    </van-popup>
+    <van-popup show="{{material}}" position="bottom" bind:close="closeMaterial">
+      <view class="policy">
+        <view @tap="closeMaterial" class="policy-close" hover-class="hover">
+          <van-icon color="#262626" name="cross" />
+        </view>
+        <view class="policy-header van-hairline--bottom">物料组</view>
+        <scroll-view
+          scroll-y
+          enable-flex
+          enable-back-to-top="true"
+          scroll-with-animation="true"
+          class="policy-scroll"
+        >
+          <repeat for="{{itemGroup}}" item="item">
+            <view class="warehouse-list-container">
+              <view
+                @tap="chooseMaterial({{item.key}})"
+                class="warehouse-list-{{materialItem.key == item.key ? 'name': 'named' }}"
+              >{{item.value}}</view>
+              <view class="b-icon {{materialItem.key == item.key ? 'icon-check': '' }} warehouse-list-icon"></view>
+            </view>
+          </repeat>
+          <view style="padding-top: 100rpx"></view>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-popup show="{{supplier}}" position="bottom" bind:close="closeSupplier">
+      <view class="policy">
+        <view @tap="closeSupplier" class="policy-close" hover-class="hover">
+          <van-icon color="#262626" name="cross" />
+        </view>
+        <view class="policy-header van-hairline--bottom">供应商</view>
+        <scroll-view
+          scroll-y
+          enable-flex
+          enable-back-to-top="true"
+          scroll-with-animation="true"
+          class="policy-scroll"
+        >
+          <repeat for="{{SuppliersList}}" item="item">
+            <view class="warehouse-list-container">
+              <view
+                @tap="chooseSupper({{item.key}})"
+                class="warehouse-list-{{supplierItem.key == item.key ? 'name': 'named' }}"
+              >{{item.value}}</view>
+              <view class="b-icon {{supplierItem.key == item.key ? 'icon-check': '' }} warehouse-list-icon"></view>
+            </view>
+          </repeat>
+          <view style="padding-top: 100rpx"></view>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-popup show="{{timePicker}}" position="bottom">
+      <view>
+        <van-datetime-picker
+          type="year-month"
+          value="{{ currentDate }}"
+          min-date="{{ minDate }}"
+          max-date="{{maxDate}}"
+          bind:confirm="onConfirm"
+          bind:cancel="onCancel"
+        />
+      </view>
+    </van-popup>
+  </view>
+</template>
+
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

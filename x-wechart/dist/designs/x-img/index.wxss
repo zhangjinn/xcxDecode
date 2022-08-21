@@ -1,0 +1,10 @@
+.x-design-img {
+  overflow: hidden;
+}
+.x-design-img .img {
+  width: 100%;
+  height: 100%;
+}
+.x-design-img-hover {
+  opacity: 0.65;
+}

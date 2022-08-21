@@ -1,0 +1,71 @@
+.dakaBox._95782be {
+  padding: 0 0 40rpx;
+  background: #F2F2F2;
+}
+.dakaBox .smallBox._95782be {
+  background: #fff;
+  border-radius: 0 0 10px 10px;
+  padding: 30rpx 30rpx 10rpx;
+}
+.dakaBox .botm-box._95782be {
+  border-radius: 10px 10px;
+  margin-top: 16rpx;
+}
+.itemBox._95782be {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding: 6rpx 0;
+  font-size: 28rpx;
+}
+.itemBox .b-icon._95782be {
+  font-size: 30rpx;
+  margin-right: 14rpx;
+  line-height: 40rpx;
+}
+.mendianTitle._95782be {
+  width: 146rpx;
+  font-size: 28rpx;
+  margin-bottom: 10rpx;
+  color: #262626;
+  font-weight: 400;
+  -webkit-flex-shrink: 0;
+          flex-shrink: 0;
+}
+.neirong._95782be {
+  color: #777;
+  font-size: 26rpx;
+  line-height: 40rpx;
+}
+.imageItem._95782be {
+  padding: 10rpx 0;
+}
+.imageItemStyle._95782be {
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 6rpx;
+  margin-right: 10rpx;
+}
+.title._95782be {
+  height: 30rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #262626;
+  line-height: 30rpx;
+  margin-bottom: 20rpx;
+  padding-left: 16rpx;
+  position: relative;
+}
+.title._95782be:before {
+  content: '';
+  position: absolute;
+  left: 0rpx;
+  top: 4rpx;
+  height: 24rpx;
+  border-left: 6rpx solid #00AAA6;
+}
+.no-data._95782be {
+  text-align: center;
+  line-height: 100rpx;
+  color: #ccc;
+}

@@ -1,0 +1,1 @@
+function _assertPromise(e,r){if(null==r||!_isFunction(r.then))throw new TypeError("`"+e+"` expected a Promise, received "+_toString(r,[]))}var _isFunction=require("./_isFunction.js"),_toString=require("./_toString.js");module.exports=_assertPromise;

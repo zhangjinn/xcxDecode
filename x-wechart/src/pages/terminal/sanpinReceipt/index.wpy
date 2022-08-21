@@ -1,0 +1,141 @@
+<template>
+  <view class="order">
+
+    <!-- 筛选侧边弹框 -->
+    <van-popup
+      show="{{visible}}"
+      position="right"
+      overlay="{{ true }}"
+      bind:close="orderfiltering"
+      custom-style="height: 100%;"
+      z-index="130"
+    >
+      <view class="order-drawer">
+        <view class="order-drawer-attr">
+          <scroll-view
+            class="order-drawer-attr-scroll"
+            scroll-y>
+            <view class="attr-item">
+              <view class="projectem">
+                <view class="project">
+                  <text style="font-size: 28rpx;color: #777777">收货人</text>
+                </view>
+                <van-field
+                  placeholder="请输入"
+                  border="{{ false }}"
+                  placeholder-style="font-size: 24rpx;"
+                  bind:change="onReceiverNameChange"
+                  custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;"
+                  clearable
+                  value="{{filterForm.terms.receiverName}}"
+                />
+              </view>
+            </view>
+          </scroll-view>
+          <!-- 底部按钮 -->
+          <view class="order-drawer-attr-footer">
+             <view
+              @tap="onResetFilterForm"
+              class="order-drawer-attr-footer-btn reset"
+              hover-class="order-drawer-attr-footer-btn-hover"
+            >重置</view>
+            <view
+              @tap="onSubmitFilterForm"
+              class="order-drawer-attr-footer-btn confirm"
+              hover-class="order-drawer-attr-footer-btn-hover"
+            >确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    <!-- 快捷筛选顶部弹框 收货状态、供应商 -->
+    <van-popup
+      show="{{filterVisible}}"
+      position="top"
+      overlay="{{ true }}"
+      custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"
+      bind:close="touchOrderSFilter"
+    >
+      <view wx:if="{{currentFilterName === 'status'}}" class="order-s-filter-container">
+        <view class="order-operation" @tap="onSelectStatus('')">
+          <view class="operation-text van-hairline--bottom">
+            <view class="operation-status {{ filterForm.terms.status === '' ? 'active' : '' }}">全部</view>
+            <view wx:if="{{ filterForm.terms.status === '' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <repeat for="{{statusFilterList}}" item="item">
+          <view class="order-operation" @tap="onSelectStatus({{ item.id }})">
+            <view class="operation-text van-hairline--bottom">
+              <view class="operation-status {{ filterForm.terms.status === item.id ? 'active' : '' }}">{{item.value}}</view>
+              <view wx:if="{{ filterForm.terms.status ===  item.id }}" class="b-icon icon-check operation-icon"></view>
+            </view>
+          </view>
+        </repeat>
+      </view>
+      <view wx:if="{{currentFilterName === 'supplier'}}" class="order-s-filter-container">
+        <view class="order-operation" @tap="onSelectSupplier('')">
+          <view class="operation-text van-hairline--bottom">
+            <view class="operation-status {{ filterForm.terms.supplier === '' ? 'active' : '' }}">全部</view>
+            <view wx:if="{{ filterForm.terms.supplier === '' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <repeat for="{{supplierFilterList}}" item="item">
+          <view class="order-operation" @tap="onSelectSupplier({{ item.id }})">
+            <view class="operation-text van-hairline--bottom">
+              <view class="operation-status {{ filterForm.terms.supplier === item.id ? 'active' : '' }}">{{item.value}}</view>
+              <view wx:if="{{ filterForm.terms.supplier === item.id }}"  class="b-icon icon-check operation-icon"></view>
+            </view>
+          </view>
+        </repeat>
+      </view>
+    </van-popup>
+
+    <headerTab
+      :showRightBtn="showRightBtn"
+      :tabList.sync="headerTabList"
+      @onTabChange.user="touchOrderSFilter"
+      @onSideFilter.user="orderfiltering"
+    />
+    <scroll-view
+      wx:if="{{ orderList.count && orderList.count !== 0 }}"
+      scroll-y="true"
+      class="order-scroll"
+      enable-flex
+      scroll-top="{{ scrollTop }}"
+      bindscroll="onScroll"
+      bindscrolltolower="onGetOrderListNext">
+      <repeat for="{{orderList.data}}" item="item">
+        <view class="order-container" @tap="viewDetail({{item.id}}, {{item.status == '1' ? 'view' : 'handle' }})">
+          <view class="card-title">
+            <view class="card-coding">
+              <text>发货单编码：{{ item.code }}</text>
+            </view>
+            <view class="card-status">
+              <text wx:if="{{item.status == '1'}}" class="reported">已收货</text>
+              <text wx:else class="to-be-reported">待收货</text>
+            </view>
+          </view>
+          <view class="card-desc">
+            <text class="card-desc-text">{{ item.purchaseOrg.name }}</text>
+          </view>
+          <view class="card-valid-period">
+            <text>发货日期：{{ item.deliveryDate }}</text>
+          </view>
+<!--          <view class="card-informant">-->
+<!--            <text>收货人：{{ item.shop }}</text>-->
+<!--          </view>-->
+<!--          <view class="card-date">-->
+<!--            <text>单据日期：{{ '未知' }}</text>-->
+<!--          </view>-->
+        </view>
+      </repeat>
+    </scroll-view>
+    <emptyDataType wx:else/>
+
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

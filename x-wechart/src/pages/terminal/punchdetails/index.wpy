@@ -1,0 +1,237 @@
+<template>
+  <view class="check-in">
+    <view class="check-in-content">
+      <view class="check-in-statistics">
+        <view class="check-in-statistics-bg">
+          <image class="check-in-img" src="{{imgObj.checkInRecord}}"/>
+        </view>
+
+        <view class="check-in-statistics-info">
+          <view class="check-in-statistics-info-inner">
+            <view class="filter">
+              <view class="filter-month" @tap="handleDateTime">
+                <text wx:if="{{currentMonth == commitParam.month}}">本月</text>
+                <text wx:else>{{ currentYear }}年{{ commitParam.month }}月</text>
+                <text class="b-icon h-icon iconxialajiantou"></text>
+              </view>
+              <view class="filter-channel" @tap="handleChannel">
+                <text class="filter-channel-name">{{ commitParam.channelName }}</text>
+                <text class="b-icon h-icon iconxialajiantou"></text>
+              </view>
+            </view>
+            <view class="statistics">
+              <view class="statistics-text">
+                <view class="clock-in">
+                  <view class="clock-in-icon icon"></view>
+                  <text class="clock-in-info">应打卡：{{ statisticsList.shouldCheckIn }}门店</text>
+                </view>
+                <view class="clock-in">
+                  <view class="clocked-in-icon icon"></view>
+                  <text class="clocked-in-info">已打卡：{{ statisticsList.checkIn }}门店</text>
+                </view>
+                <!-- 时效日期说明，数据更新至当天的前一天日期 -->
+                <view class="expiry-date">数据更新至{{ previousDayDate }}</view>
+              </view>
+              <view class="statistics-chart">
+                <canvas hidden="{{ show1 || purchaseVisable || channelVisable }}" class="canvas" style="width: {{canvasInfo.width}}px; height: {{canvasInfo.height}}px;" canvas-id="myCanvas" disable-scroll='true'></canvas>
+                <image wx:if="{{ show1 || purchaseVisable || channelVisable }}" src="{{canvasImg}}" class="img" style="width: {{canvasInfo.width}}px; height: {{canvasInfo.height}}px;"/>
+
+                <view class="chart-text">
+                 <view class="completed-num">{{ statisticsList.ratio }}</view>
+                 <view class="completed">跑动率</view>
+               </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <scroll-view class="benyuesaixuan" scroll-x>
+          <!-- <view class="picker my-btn" @tap="onOpen1">
+          {{date}}
+            <text class="iconfont xiala-jiantou">&#xe600;</text>
+          </view> -->
+        <view class="my-btn {{type!='all'?'no-check':''}}" @tap="changeType('all')">全部</view>
+        <view class="my-btn {{type=='all'?'no-check':''}}" @tap="changeType('self')">仅看自己</view>
+<!--        <view class="my-btn no-check" @tap="onOpen1">是否巡检</view>-->
+        <view class="my-btn {{!isCheckNotClockIn?'no-check':''}}" @tap="changeClockInType">未打卡</view>
+        <view class="my-btn {{!isQualified?'no-check':''}}" @tap="changeIsQualified">不合格</view>
+      </scroll-view>
+      <view class="benyuRight">
+        <view class="right20">
+          <text>累计打卡</text>
+          <text class="greenNumber">{{signCishu.signDay}}</text>
+          <text>天</text>
+        </view>
+        <view>
+          <text>共</text>
+          <text class="greenNumber">{{signCishu.signCount }}</text>
+          <text>次</text>
+        </view>
+<!--        <navigator url="/pages/terminal/addrecord/index" hover-class="none" class="xinzhenBtn">新增</navigator>-->
+      </view>
+      <view style="text-align: center;margin-bottom: 20rpx" wx:if="{{loading==true}}">
+        <van-loading type="spinner" />
+      </view>
+
+      <!--  未选中未卡打按钮，显示原有打卡列表    -->
+      <view wx:if="{{!isCheckNotClockIn}}" class="check-in-wrapper">
+        <view wx:if="{{recodeList && recodeList.length>0}}" class="check-in-wrapper-inner">
+          <scroll-view @scrolltolower="tolower"  @scrolltoupper="upper" scroll-y="true" class="scroll-view-wrapper">
+            <view  wx:for="{{recodeList}}" wx:for-index="idx" wx:key="idx" class="CardBox">
+              <view class="dakasmallTitle">
+                <view class="dakaLeft">
+                  <view class="b-icon icon-dianpu-shop xundian-icon"></view>
+                  <text class="xundian">巡店</text>
+                </view>
+                <view class="user-name">{{item.userName}}</view>
+                <view class="timeRight">{{item.signTime}}</view>
+              </view>
+              <navigator class="shopItemMsg" url='/pages/terminal/punchList/index?storeCode={{item.storeCode}}' hover-class="none">
+                <view class="store-name">{{item.storeName}}</view>
+                <view class="fubiaotiColor">{{item.signAddress}}</view>
+                <image wx:if="{{item.xjResult == 'T'}}" class="qualified" src="http://3s-static.hisense.com/wechat/1/14722429883/1644215714352_e50f16df1b0d4ee6a386fe5df801b043.png"/>
+              <image wx:if="{{item.xjResult == 'F'}}" class="qualified" src="http://3s-static.hisense.com/wechat/1/14722429883/1644216494020_0107b4ee34c041da89336f25f7211db0.png"/>
+                <view class="img-box">
+                  <block wx:if="{{item.img1[0].length>0}}">
+                    <image  wx:for="{{item.img1}}" wx:key="index" src="{{item}}" data-fatheridx="{{idx}}"  data-arr="img1" data-current="{{item}}" class="imgBLock"></image>
+                  </block>
+                  <block wx:if="{{item.img2[0].length>0}}">
+                    <image  wx:for="{{item.img2}}" wx:key="index" src="{{item}}" data-fatheridx="{{idx}}"  data-arr="img2" data-current="{{item}}"   class="imgBLock"></image>
+                  </block>
+                  <block wx:if="{{item.img3[0].length>0}}">
+                    <image  wx:for="{{item.img3}}" wx:key="index" src="{{item}}" data-fatheridx="{{idx}}"  data-arr="img3" data-current="{{item}}"   class="imgBLock"></image>
+                  </block>
+                  <block wx:if="{{item.img4[0].length>0}}">
+                    <image wx:for="{{item.img4}}"  wx:key="index"src="{{item}}" data-fatheridx="{{idx}}"  data-arr="img4" data-current="{{item}}"   class="imgBLock"></image>
+                  </block>
+                  <block wx:if="{{item.img5[0].length>0}}">
+                    <image  wx:for="{{item.img5}}" wx:key="index" src="{{item}}" data-fatheridx="{{idx}}"  data-arr="img5" data-current="{{item}}"   class="imgBLock"></image>
+                  </block>
+                </view>
+              </navigator>
+              <navigator url='/pages/terminal/punchMsg/index?id={{item.id}}' hover-class="none" class="chakxmBox">
+                <view class="check-details">查看详情</view>
+              </navigator>
+            </view>
+          </scroll-view>
+        </view>
+        <emptyDataType wx:else/>
+      </view>
+
+    <!--  选中未卡打按钮，显示未打卡列表    -->
+      <view wx:if="{{isCheckNotClockIn}}" class="check-in-wrapper">
+        <view wx:if="{{statisticsList.noCheckList && statisticsList.noCheckList.length>0}}" class="check-in-wrapper-inner check-in-wrapper-not-clocked">
+          <scroll-view scroll-y="true" class="scroll-view-wrapper">
+            <view wx:for="{{statisticsList.noCheckList}}" wx:for-index="idx" wx:key="idx" class="not-clocked-in-card" @tap="viewDetail({{item}})">
+              <view class="merchant-info">
+                <view class="merchant-name">{{ item.shopFullName }}</view>
+                <view class="merchant-address">
+                  <text class="b-icon h-icon punch-card-positioning"></text>
+                  <text>{{ item.address}}</text>
+                </view>
+              </view>
+
+              <view class="merchant-footer">
+                <view class="b-icon icon-peixun merchant-icon"></view>
+                <view>巡店</view>
+              </view>
+            </view>
+            <view class="bottom-line">我是有底线的～</view>
+          </scroll-view>
+        </view>
+        <emptyDataType wx:else/>
+      </view>
+    </view>
+
+    <!-- 列表日历弹框-->
+    <van-popup show="{{ show1 }}" position="top" bind:close="onClose1">
+      <view>
+        <view class="TankuanBox1">
+          <view  class="{{today==1?currenClassfy:''}}" @tap="taggleQiehuan" data-id="1">
+            今天
+            <text wx:if="{{today==1}}" class="iconfont jiaobiao">&#xe654;</text>
+          </view>
+          <view class="{{today==2?currenClassfy:''}}" @tap="taggleQiehuan" data-id="2">
+            本周
+            <text wx:if="{{today==2}}" class="iconfont jiaobiao">&#xe654;</text>
+          </view>
+          <view class="{{today==3?currenClassfy:''}}" @tap="taggleQiehuan" data-id="3">
+            本月
+            <text wx:if="{{today==3}}" class="iconfont jiaobiao">&#xe654;</text>
+          </view>
+        </view>
+        <view class="dateBox">
+          <picker class="rlixuanz" mode="date" value="{{startTime}}"  end="{{nowTime}}"
+                  bindchange="bindDateChange">
+            <text class="iconfont" style="margin-right: 15rpx;color: #d2d3d8">&#xe602;</text>
+            <text>{{startTime}}</text>
+          </picker>
+          <view class="line">-</view>
+          <picker class="rlixuanz" mode="date" value="{{endTime}}" start="{{startTime}}" end="{{nowTime}}"
+                  bindchange="bindDateChange1">
+            <text class="iconfont" style="margin-right: 15rpx;color: #d2d3d8">&#xe602;</text>
+            <text>{{endTime}}</text>
+          </picker>
+        </view>
+        <view class="popupqueding" @tap="closeTank">确定</view>
+      </view>
+    </van-popup>
+
+    <!-- 统计日历弹框-->
+    <van-popup
+      show="{{ purchaseVisable }}"
+      round
+      position="bottom"
+      custom-style="height: 50%; border-radius: 24rpx 24rpx 0rpx 0rpx;"
+      custom-class="base-model-popup-picker"
+      bind:close="touchFilter">
+      <view class="datetime-picker-box">
+        <view class="datetime-picker-header">
+          <text></text>
+          <text @tap="handleCancleDatePop" class="b-icon h-icon icon-close"></text>
+        </view>
+        <view class="datetime-picker-container">
+          <scroll-view
+            scroll-y
+            class="purchase-inv-scroll">
+            <view>
+              <view wx:for="{{ dateOption }}" wx:key="month" item="item" class="datetime-picker-item {{item.month == commitParam.month?'active':''}}" data-key="{{item.month}}" data-index="{{ index }}" @tap="oMonthchange({{item.month}})">
+                {{ currentYear }}年{{item.month}}月
+              </view>
+            </view>
+          </scroll-view>
+        </view>
+      </view>
+    </van-popup>
+
+    <!-- 统计渠道弹框-->
+    <van-popup
+      show="{{ channelVisable }}"
+      round
+      position="bottom"
+      custom-style="height: 50%; border-radius: 24rpx 24rpx 0rpx 0rpx;"
+      custom-class="base-model-popup-picker"
+      bind:close="touchFilter">
+      <view class="datetime-picker-box">
+        <view class="datetime-picker-header">
+          <text></text>
+          <text @tap="handleCancleChannelPop" class="b-icon h-icon icon-close"></text>
+        </view>
+        <view class="datetime-picker-container">
+          <scroll-view
+            scroll-y
+            class="purchase-inv-scroll">
+            <view>
+              <view wx:for="{{ channelOption }}" wx:key="id" item="item" class="datetime-picker-item {{item.id == commitParam.channel?'active':''}}" data-key="{{item.id}}" data-index="{{ index }}" @tap="oChannelchange({{item}})">
+                {{item.name}}
+              </view>
+            </view>
+          </scroll-view>
+        </view>
+      </view>
+    </van-popup>
+    <van-toast id="van-toast" />
+  </view>
+</template>
+<style lang="less" src="./index.less"  scoped></style>
+<script lang="typescript" src="./index.ts"></script>

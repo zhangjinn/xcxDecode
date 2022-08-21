@@ -1,0 +1,1 @@
+function _isNumber(e){return"[object Number]"===Object.prototype.toString.call(e)}module.exports=_isNumber;

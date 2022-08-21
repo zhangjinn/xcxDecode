@@ -1,0 +1,55 @@
+<template>
+  <view class="training">
+    <view wx:if="{{ trainingDetails }}" class="training-wrapper">
+      <view class="header">培训信息</view>
+      <view class="info">
+        <text class="label">培训讲师：</text>
+        <text class="value">{{ trainingDetails.trainerName }}</text>
+      </view>
+      <view class="info">
+        <text class="label">培训主题：</text>
+        <text class="value">{{ trainingDetails.title }}</text>
+      </view>
+      <view class="info">
+        <text class="label">培训类型：</text>
+        <text class="value">{{ trainingDetails.type || '' }}</text>
+      </view>
+      <view class="info">
+        <text class="label">培训时间：</text>
+        <text class="value">{{ trainingDetails.trainingDate || '' }}</text>
+      </view>
+      <view class="info">
+        <text class="label">签到时间：</text>
+        <text class="value">{{ trainingDetails.beginTime || '' }}</text>
+      </view>
+      <view class="info">
+        <text class="label">签退时间：</text>
+        <text class="value">{{ trainingDetails.endTime || '' }}</text>
+      </view>
+      <view class="info">
+        <text class="label">培训对象：</text>
+        <text class="value">{{ trainingDetails.trainingObject || '' }}</text>
+      </view>
+      <view class="info">
+        <text class="label">培训人数：</text>
+        <text wx:if="{{ trainingDetails.peopleNum != null }}" class="value">{{ trainingDetails.peopleNum }}</text>
+      </view>
+      <view class="info">
+        <text class="label">培训地址：</text>
+        <text class="value">{{ trainingDetails.submitAddress || '' }}</text>
+      </view>
+      <view class="info">
+        <view class="label">照片：</view>
+      </view>
+      <view class="img-box">
+        <image wx:for="{{imgList}}" class="img-item" src="{{item}}" bindtap="preview" data-src="{{item}}"/>
+      </view>
+    </view>
+    <emptyDataType wx:else/>
+
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

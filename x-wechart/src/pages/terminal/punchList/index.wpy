@@ -1,0 +1,125 @@
+<template>
+  <view>
+    <view>
+      <view class="titleITemBlock">
+        <view class="datitle">
+          <view>{{recodeList[0].storeName}}</view>
+        </view>
+        <view class="datitle1">
+          <view>
+            <text class="iconfont" style="color: #78f2d6;margin-right:10rpx">&#xe618;</text>
+            {{recodeList[0].storeAddress}}
+          </view>
+          <view @tap="openTank">
+            <text class="iconfont" style="font-size: 40rpx">&#xe601;</text>
+          </view>
+        </view>
+      </view>
+      <view class="baiseBlock">
+        <view>
+          <text class="wenzi">次数</text>
+          <text>{{signCishu.signCount}}</text>
+        </view>
+        <view>
+          <text class="wenzi">天数</text>
+          <text>{{signCishu.signDay}}</text>
+        </view>
+      </view>
+      <view>
+        <view class="itemDaka">
+          <view>打卡记录</view>
+          <view>
+            <view @tap="unqualifiedChange">
+              <text class="iconfont" wx:if="{{isUnqualified}}"  style="font-size:27rpx;margin-right: 10rpx;color: #1ca496">&#xe6e9;</text>
+              <text class="iconfont"  wx:else style="font-size:27rpx;margin-right: 10rpx;color: #0ba5a3">&#xe620;</text>
+              <text>不合格</text>
+            </view>
+            <view @tap="onChange">
+              <text class="iconfont" wx:if="{{checked}}"  style="font-size:27rpx;margin-right: 10rpx;color: #1ca496">&#xe6e9;</text>
+              <text class="iconfont"  wx:else style="font-size:27rpx;margin-right: 10rpx;color: #0ba5a3">&#xe620;</text>
+              <text>仅看自己</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view style="text-align: center;margin-bottom: 20rpx" wx:if="{{loading==true}}">
+        <van-loading type="spinner" />
+      </view>
+      <scroll-view @scrolltolower="tolower"  @scrolltoupper="upper" scroll-y="true" style="height: 93vh">
+        <navigator hover-class="none" wx:for="{{recodeList}}" wx:for-index="idx" wx:key="idx"  url="/pages/terminal/punchMsg/index?id={{item.id}}" class="CardBox" >
+          <view class="shopItemMsg">
+            <view class="fubiaotiColor">
+              <view>{{item.signAddress}}</view>
+              <view>{{item.signTime }}</view> 
+              <image wx:if="{{item.xjResult == 'T'}}" class="qualified" src="http://3s-static.hisense.com/wechat/1/14722429883/1644215714352_e50f16df1b0d4ee6a386fe5df801b043.png"/>
+              <image wx:if="{{item.xjResult == 'F'}}" class="qualified" src="http://3s-static.hisense.com/wechat/1/14722429883/1644216494020_0107b4ee34c041da89336f25f7211db0.png"/>
+            </view>
+            <view>
+              <block wx:if="{{item.img1[0].length>0}}">
+                <image  wx:for="{{item.img1}}" wx:key="index" src="{{item}}"  data-fatheridx="{{idx}}"  data-arr="img1" data-current="{{item}}" class="imgBLock"></image>
+              </block>
+              <block wx:if="item.img2[0].length>0">
+                <image  wx:for="{{item.img2}}" wx:key="index" src="{{item}}" data-fatheridx="{{idx}}"  data-arr="img2" data-current="{{item}}" class="imgBLock"></image>
+              </block>
+              <block wx:if="{{item.img3[0].length>0}}">
+                <image  wx:for="{{item.img3}}" wx:key="index" src="{{item}}" data-fatheridx="{{idx}}"  data-arr="img3" data-current="{{item}}" class="imgBLock"></image>
+              </block>
+              <block wx:if="{{item.img4[0].length>0}}">
+                <image wx:for="{{item.img4}}"  wx:key="index"src="{{item}}" data-fatheridx="{{idx}}"  data-arr="img4" data-current="{{item}}" class="imgBLock"></image>
+              </block>
+              <block wx:if="{{item.img5[0].length>0}}">
+                <image  wx:for="{{item.img5}}" wx:key="index" src="{{item}}" data-fatheridx="{{idx}}"  data-arr="img5" data-current="{{item}}" class="imgBLock"></image>
+              </block>
+            </view>
+          </view>
+        </navigator>
+
+      </scroll-view>
+    </view>
+    <navigator url="/pages/terminal/addrecord/index" hover-class="none" class="xinzhenBtn">巡店</navigator>
+<!--    //下面的弹出框-->
+    <van-action-sheet
+      show="{{ show2 }}"
+      overlay="true"
+      close-on-click-overlay="true"
+      bind:close="onClose2"
+    >
+      <view class="tankuangBox">
+        <view class="closeIcon">
+          <view></view>
+          <van-icon name="cross" @click="closeTankuan" color="#00b7b3" size="45rpx" custom-style="text-align:right;display:inlin-block" />
+        </view>
+        <block wx:if="{{storeRenList.length>0}}">
+          <block wx:for="{{storeRenList}}" wx:key="index">
+            <view class="blockItemxx"  wx:if="{{item.tel!=''}}">
+
+                <view >
+                  <view>
+                    <text class="mendian">{{item.positionName}}</text>
+                    <!--              <text class="gongshi">(海信视像科技青岛分公司)</text>-->
+                  </view>
+                  <view class="gonshiName">
+                    <text>{{item.name}}</text>
+                    <text class="left10">{{item.tel1}}</text>
+                  </view>
+                </view>
+                <view class="dianhauBox">
+                  <van-icon name="phone" color="#ffb828" size="40rpx" @tap="telphontFun" data-tel="{{item.tel}}"/>
+                </view>
+
+            </view>
+          </block>
+
+        </block>
+       <block wx:else>
+         <view style="text-align: center">暂无电话信息</view>
+       </block>
+
+
+      </view>
+      </van-action-sheet>
+
+  </view>
+</template>
+<style lang="less" src="./index.css" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

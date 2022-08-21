@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),always=require("./always.js"),over=require("./over.js"),set=_curry3(function(r,e,s){return over(r,always(e),s)});module.exports=set;

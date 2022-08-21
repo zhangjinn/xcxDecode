@@ -1,0 +1,66 @@
+@import '../../../../styles/utils.less';
+@import '../../../../styles/index.less';
+@import '../../../../components/vant/common/style/hairline.less';
+.container {
+  height: 100%;
+  &-scroll {
+    height: 100%;
+    display: flex;
+    flex: 1;
+    .item {
+      background: #ffffff;
+      padding: 0 32rpx 0 40rpx;
+      margin-top: 16rpx;
+      &-title {
+        .row {
+          display: flex;
+          justify-content: space-between;
+          .title {
+            color: #262626;
+            font-size: 32rpx;
+            padding-top: 32rpx;
+            font-weight: 500;
+            display: flex;
+            .reddot {
+              width: 16rpx;
+              height: 16rpx;
+              background: #f26522;
+              margin-left: 8rpx;
+              display: flex;
+              margin-top: 16rpx;
+              border-radius: 20px;
+            }
+          }
+          .status {
+            color: #aaaaaa;
+            font-size: 24rpx;
+            padding-top: 32rpx;
+          }
+          .date {
+            color: #aaaaaa;
+            font-size: 22rpx;
+          }
+        }
+      }
+      &-content {
+        .content {
+          font-size: 28rpx;
+          color: #777777;
+          text-overflow: -o-ellipsis-lastline;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          //-webkit-line-clamp: 3;
+          //line-clamp: 3;
+          -webkit-box-orient: vertical;
+          padding-bottom: 32rpx;
+        }
+      }
+      &-foot {
+        display: flex;
+        justify-content: flex-end;
+        padding: 22rpx;
+      }
+    }
+  }
+}

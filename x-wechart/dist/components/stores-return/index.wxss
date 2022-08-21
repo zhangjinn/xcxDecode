@@ -1,0 +1,249 @@
+.ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+view,
+label,
+text,
+input,
+scroll-view {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+van-icon {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+view[hidden] {
+  display: none !important;
+}
+page {
+  background-color: #F7F7F7;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+.item-order-confirm {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  width: 100%;
+}
+.van-hairline,
+.van-hairline--top,
+.van-hairline--left,
+.van-hairline--right,
+.van-hairline--bottom,
+.van-hairline--top-bottom,
+.van-hairline--surround {
+  position: relative;
+}
+.van-hairline::after,
+.van-hairline--top::after,
+.van-hairline--left::after,
+.van-hairline--right::after,
+.van-hairline--bottom::after,
+.van-hairline--top-bottom::after,
+.van-hairline--surround::after {
+  content: ' ';
+  position: absolute;
+  pointer-events: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transform-origin: center;
+          transform-origin: center;
+  /* cover wechat button:after default transforn-origin */
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+  border: 0 solid #eee;
+}
+.van-hairline--top::after {
+  border-top-width: 1px;
+}
+.van-hairline--left::after {
+  border-left-width: 1px;
+}
+.van-hairline--right::after {
+  border-right-width: 1px;
+}
+.van-hairline--bottom::after {
+  border-bottom-width: 1px;
+}
+.van-hairline--top-bottom::after {
+  border-width: 1px 0;
+}
+.van-hairline--surround::after {
+  border-width: 1px;
+}
+.van-ellipsis {
+  overflow-wrap: break-word;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.van-multi-ellipsis--l2 {
+  white-space: initial;
+  word-break: break-all;
+  /* autoprefixer: ignore next */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+}
+.van-multi-ellipsis--l3 {
+  white-space: initial;
+  word-break: break-all;
+  /* autoprefixer: ignore next */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+}
+.item {
+  width: 100%;
+  position: relative;
+}
+.item .item-header {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+.item .item-header-name {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding-top: 13px;
+  color: #262626;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: left;
+  -webkit-justify-content: left;
+          justify-content: left;
+  font-size: 28rpx;
+  font-weight: 500;
+  min-width: 140rpx;
+}
+.item .item-header-name .redXing {
+  color: #D9161C;
+}
+.item .item-header .item-icons {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding-top: 13px;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+.item .item-header .item-icons .text-named {
+  color: #262626;
+  font-size: 28rpx;
+  padding-right: 10px;
+}
+.item .item-header .item-icons .text-name {
+  color: #aaaaaa;
+  font-size: 13px;
+  padding-right: 10px;
+}
+.item .item-header .item-icons .icons {
+  color: #AAAAAA;
+  font-size: 10px;
+}
+.item .item-bottom {
+  position: relative;
+  right: 0;
+  padding-top: 12rpx;
+  padding-bottom: 10px;
+}
+.item .item-bottom .ex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+.item .item-bottom .ex .item-name {
+  font-size: 22rpx;
+  padding-top: 10rpx;
+  font-weight: 500;
+  color: #AAAAAA;
+  min-width: 140rpx;
+}
+.item .item-bottom .ex .item-btn {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  max-width: 286px;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+  -webkit-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+  -webkit-flex-wrap: wrap;
+          flex-wrap: wrap;
+}
+.item .item-bottom .ex .item-btn .capsule {
+  color: #FC5260;
+  background: rgba(252, 82, 96, 0.1);
+  border-radius: 36rpx;
+  margin-left: 4px;
+  margin-right: 4px;
+  margin-top: 5px;
+  overflow: hidden;
+  position: relative;
+}
+.item .item-bottom .ex .item-btn .capsule::after {
+  content: '';
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+  content: ' ';
+  position: absolute;
+  pointer-events: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transform-origin: center;
+          transform-origin: center;
+  /* cover wechat button:after default transforn-origin */
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+  border: 0 solid #FC5260;
+  border-width: 2rpx;
+  border-radius: 36rpx;
+}
+.item .item-bottom .ex .item-btn .capsule .text {
+  font-size: 20rpx;
+  margin: 4rpx 12rpx;
+}

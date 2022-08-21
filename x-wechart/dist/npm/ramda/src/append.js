@@ -1,0 +1,1 @@
+var _concat=require("./internal/_concat.js"),_curry2=require("./internal/_curry2.js"),append=_curry2(function(r,n){return _concat(n,[r])});module.exports=append;

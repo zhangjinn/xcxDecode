@@ -1,0 +1,25 @@
+<template>
+  <van-popup show="{{ loading.popup.show }}">
+    <view class="popup-error">
+      <view class="b-icon icon-fail icon-error"></view>
+      <view class="popup-error-header">{{ title }}</view>
+      <scroll-view
+        scroll-y
+        enable-flex
+        enable-back-to-top="true"
+        scroll-with-animation="true"
+        class="popup-error-scroll"
+      >
+        <view class="error-text">{{ loading.popup.info }}</view>
+        <view style="padding-top: 100rpx"></view>
+      </scroll-view>
+      <view class="popup-error-footer">
+        <view class="popup-error-footer-bar van-hairline--top">
+          <view @tap="errorBeSure" class="popup-error-footer-bar-btn" hover-class="hover">确定</view>
+        </view>
+      </view>
+    </view>
+  </van-popup>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

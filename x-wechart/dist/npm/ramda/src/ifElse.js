@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),curryN=require("./curryN.js"),ifElse=_curry3(function(r,e,t){return curryN(Math.max(r.length,e.length,t.length),function(){return r.apply(this,arguments)?e.apply(this,arguments):t.apply(this,arguments)})});module.exports=ifElse;

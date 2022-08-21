@@ -1,0 +1,1 @@
+var _Set=require("./internal/_Set.js"),_curry2=require("./internal/_curry2.js"),uniqBy=_curry2(function(r,e){for(var n,u,t=new _Set,i=[],_=0;_<e.length;)u=e[_],n=r(u),t.add(n)&&i.push(u),_+=1;return i});module.exports=uniqBy;

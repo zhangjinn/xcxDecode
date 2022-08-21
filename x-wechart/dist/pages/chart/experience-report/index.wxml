@@ -1,0 +1,253 @@
+<wxs src="../../../wxs/utils.wxs" module="utils" class="_d595444"/>
+
+  <view class="purchase _d595444">
+
+    <scroll-view scroll-y class="purchase-inv-scroll _d595444">
+      <view class="_d595444">
+        <!--  图表  -->
+        <view class="experience-chart _d595444">
+          <view class="experience-chart-inner _d595444">
+            <!-- 时效日期说明，数据更新至当天的前一天日期 -->
+            <view class="expiry-date _d595444">数据更新至{{ previousDayDate }}</view>
+            <view class="chart-box _d595444">
+              <view class="pickup-summary _d595444">
+                <view class="chart-item chart-item-overview _d595444">
+                  <view class="chart-comparison _d595444" hidden="{{ showCharts }}">
+                    
+		<ec-canvas id="{{$chartOverview$canvasId}}" style="width:{{$chartOverview$width}};height:{{$chartOverview$height}}" ec="{{ $chartOverview$ec }}" class="_77c1948 _d595444"/>
+                  </view>
+                  <view class="data-comparison _d595444">
+                    <view class="ranking-box _d595444">
+                      <view class="ranking-current _d595444">
+                        <text class="_d595444">第</text>
+                        <text class="ranking-num _d595444">{{ reportData.overview.ranking }}</text>
+                        <text class="_d595444">名</text>
+                      </view>
+                      <view class="ranking-all _d595444">(共{{ reportData.overview.customerNum }}家)</view>
+                    </view>
+                    <view class="inventory-legend _d595444">
+                      <view class="inventory-legend-item _d595444"  wx:for="{{ reportData.overview.summaryScoreList }}">
+                        <view class="materials-title _d595444">
+                          <view class="materials-icon {{ item.icon }} _d595444"/>
+                          <text class="materials-name _d595444">{{ item.name }}({{ item.fullScore }})</text>
+                        </view>
+                        <text class="materials-num _d595444">{{ item.score }}</text>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+            <view class="date-button _d595444" bindtap="touchFilter" data-wpytouchfilter-a="date">
+              <text class="date-text _d595444">{{ selectDate }}</text>
+              <view class="b-icon h-icon iconxialajiantou _d595444"/>
+            </view>
+          </view>
+        </view>
+        <view class="topBox _d595444" bindtap="goToUrl" data-wpygotourl-a="omniChannelCaliber">
+          <view class="firstBlcok _d595444">
+            <view class="box _d595444">
+              <view class="leftBox _d595444">
+                <p class="_d595444">全渠道口径出货</p>
+                <p class="_d595444">{{salesStructure.score}}</p>
+                <p class="_d595444">{{salesStructure.pm}}<span  wx:if="{{salesStructure.zf}}" class="_d595444">/{{salesStructure.zf}}</span>
+                </p>
+              </view>
+              <view class="IconBox _d595444">
+                <image src="http://3s-static.hisense.com/wechat/1/14722429883/1658396087443_1ba0c84934b842d283d769bffddd2c7c.png" alt="" class="_d595444"/>
+              </view>
+            </view>
+          </view>
+          <view class="textBlock _d595444">
+            <p class="_d595444">当月完成/当月目标 </p>
+          </view>
+          <view class="threeBlock _d595444">
+            <view class="everyBox _d595444"  wx:for="{{salesStructure.materialGroupPerformanceList }}">
+              <p wx:if="{{item.materialGroupName}}" class="_d595444">{{ item.materialGroupName }}</p>
+              <p class="_d595444"><span wx:if="{{item.monthlyCompletion}}" class="_d595444">{{ item. monthlyCompletion}}</span>
+                <span wx:if="{{item.monthlyPlan || item.monthlyCompletion}}" class="_d595444">/</span>
+                <span wx:if="{{item.monthlyPlan}}" class="_d595444">{{item.monthlyPlan}}</span>
+              </p>
+            </view>
+          </view>
+        </view>
+        <!--  统计  -->
+        <view class="experience-statistics _d595444">
+          <view class="statistics-box _d595444">
+            <view class="feeds_col_one _d595444">
+              <view class="everyBox _d595444" bindtap="goToUrl" data-wpygotourl-a="netIncrease">
+                <view class="whiteBox _d595444">
+                  <view class="left _d595444">
+                    <p class="_d595444">分销网络净增</p>
+                    <view class="textBox _d595444">
+                      <p class="_d595444">{{ netIncrease.score }}</p>
+                      <p class="_d595444">{{netIncrease.rankingShow}}</p>
+                    </view>
+                  </view>
+                  <view class="img _d595444">
+                    <image class="image _d595444" src="http://3s-static.hisense.com/wechat/1/14722429883/1658396087437_035b59f546d147ff81a3c7f2e7b2e4fa.png" alt=""/>
+                  </view>
+                </view>
+                <view class="textBox _d595444">
+                  <view class="textBlcok _d595444">
+                    <p class="_d595444">年累目标</p>
+                    <p class="_d595444">{{netIncrease.target}}</p>
+                  </view>
+                  <view class="textBlcok _d595444">
+                    <p class="_d595444">年累完成</p>
+                    <p class="_d595444">{{netIncrease.accomplish}}</p>
+                  </view>
+                </view>
+              </view>
+              <view class="everyBox _d595444" bindtap="goToUrl" data-wpygotourl-a="onlineSalesRate">
+                <view class="whiteBox _d595444">
+                  <view class="left _d595444">
+                    <p class="_d595444">分销网络动销率</p>
+                    <view class="textBox _d595444">
+                      <p class="_d595444">{{onlineSalesRate.score}}</p>
+                      <p class="_d595444">{{onlineSalesRate.rankingShow}}
+<!--                        <span>/327</span>-->
+                      </p>
+                    </view>
+                  </view>
+                  <view class="img _d595444">
+                    <image class="image _d595444" src="http://3s-static.hisense.com/wechat/1/14722429883/1658396087437_035b59f546d147ff81a3c7f2e7b2e4fa.png" alt=""/>
+                  </view>
+                </view>
+                <view class="textBox _d595444">
+                  <view class="textBlcok _d595444">
+                    <p class="_d595444">当月目标</p>
+                    <p class="_d595444">{{onlineSalesRate.target}}</p>
+                  </view>
+                  <view class="textBlcok _d595444">
+                    <p class="_d595444">当月完成</p>
+                    <p class="_d595444">{{onlineSalesRate.accomplish}}</p>
+                  </view>
+                </view>
+              </view>
+            </view>
+            <view class="feeds_col_two _d595444">
+              <view class="everyBox _d595444" bindtap="goToUrl" data-wpygotourl-a="onlineStoreOutput">
+                <view class="whiteBox _d595444">
+                  <view class="left _d595444">
+                    <p class="_d595444">分销网络单店产出</p>
+                    <view class="textBox _d595444">
+                      <p class="_d595444">{{onlineStoreOutput.score}}</p>
+                      <p class="_d595444">{{onlineStoreOutput.rankingShow}}
+<!--                        <span>/327</span>-->
+                      </p>
+                    </view>
+                  </view>
+                  <view class="img _d595444">
+                    <image class="image _d595444" src="http://3s-static.hisense.com/wechat/1/14722429883/1658396087437_035b59f546d147ff81a3c7f2e7b2e4fa.png" alt=""/>
+                  </view>
+                </view>
+                <view class="textBox _d595444">
+                  <view class="textBlcok _d595444">
+                    <p class="_d595444">当月目标</p>
+                    <p class="_d595444">{{onlineStoreOutput.target}}</p>
+                  </view>
+                  <view class="textBlcok _d595444">
+                    <p class="_d595444">当月完成</p>
+                    <p class="_d595444">{{onlineStoreOutput.accomplish}}</p>
+                  </view>
+                </view>
+              </view>
+              <view class="everyBox _d595444" bindtap="goToUrl" data-wpygotourl-a="incrementalBusiness">
+                <view class="whiteBox _d595444">
+                  <view class="left _d595444">
+                    <p class="_d595444">增量业务(前置渠道)</p>
+                    <view class="textBox _d595444">
+                      <p class="_d595444">{{incrementalBusiness.score}}</p>
+                      <p class="_d595444">{{incrementalBusiness.rankingShow}}
+<!--                        <span>/327</span>-->
+                      </p>
+                    </view>
+                  </view>
+                  <view class="img _d595444">
+                    <image class="image _d595444" src="http://3s-static.hisense.com/wechat/1/14722429883/1658396087444_a896c624d56d458fac96933d458a5452.png" alt=""/>
+                  </view>
+                </view>
+                <view class="textBox _d595444">
+                  <view class="textBlcok _d595444">
+                    <p class="_d595444">当月目标</p>
+                    <p class="_d595444">{{incrementalBusiness.target}}</p>
+                  </view>
+                  <view class="textBlcok _d595444">
+                    <p class="_d595444">当月完成</p>
+                    <p class="_d595444">{{incrementalBusiness.accomplish}}</p>
+                  </view>
+                </view>
+              </view>
+            </view>
+            <view class="feeds_col_three _d595444">
+              <view class="everyBox _d595444" bindtap="goToUrl" data-wpygotourl-a="middleHighProportion">
+                <view class="whiteBox _d595444">
+                  <view class="left _d595444">
+                    <p class="_d595444">高中端占比</p>
+                    <view class="textBox _d595444">
+                      <p class="_d595444">{{gaozhongduanZB.score}}</p>
+                      <p class="_d595444">{{gaozhongduanZB.rankingShow}}
+<!--                        <span>/327</span>-->
+                      </p>
+                    </view>
+                  </view>
+                  <view class="img _d595444">
+                    <image class="image _d595444" src="http://3s-static.hisense.com/wechat/1/14722429883/1658396087678_fc30f925717b470b8f24bd09df80a522.png" alt=""/>
+                  </view>
+                </view>
+                <view class="tips _d595444">
+                  <p class="_d595444">当月完成/当月目标</p>
+                </view>
+                <view class="textBox _d595444">
+                  <view class="textBlcok _d595444" wx:for="{{gaozhongduanZB.materialGroupPerformanceList }}">
+                    <p wx:if="{{item.materialGroupName}}" class="_d595444">{{ item.materialGroupName }}</p>
+                    <p class="_d595444"><span wx:if="{{item.monthlyCompletion}}" class="_d595444">{{ item. monthlyCompletion}}</span>
+                      <span wx:if="{{item.monthlyPlan || item.monthlyCompletion}}" class="_d595444">/</span>
+                      <span wx:if="{{item.monthlyPlan}}" class="_d595444">{{item.monthlyPlan}}</span>
+                    </p>
+                  </view>
+                </view>
+              </view>
+              <view class="everyBox _d595444" bindtap="goToUrl" data-wpygotourl-a="machinesProportion">
+                <view class="whiteBox _d595444">
+                  <view class="left _d595444">
+                    <p class="_d595444">专供机占比</p>
+                    <view class="textBox _d595444">
+                      <p class="_d595444">{{machinesProportion.score}}</p>
+                      <p class="_d595444">{{machinesProportion.rankingShow}}
+<!--                        <span>/327</span>-->
+                      </p>
+                    </view>
+                  </view>
+                  <view class="img _d595444">
+                    <image class="image _d595444" src="http://3s-static.hisense.com/wechat/1/14722429883/1658396087678_fc30f925717b470b8f24bd09df80a522.png" alt=""/>
+                  </view>
+                </view>
+                <view class="tips _d595444">
+                  <p class="_d595444">当月完成/当月目标</p>
+                </view>
+                <view class="textBox _d595444">
+                  <view class="textBlcok _d595444" wx:for="{{machinesProportion.materialGroupPerformanceList }}">
+                    <p wx:if="{{item.materialGroupName}}" class="_d595444">{{ item.materialGroupName }}</p>
+                    <p class="_d595444"><span wx:if="{{item.monthlyCompletion}}" class="_d595444">{{ item. monthlyCompletion}}</span>
+                      <span wx:if="{{item.monthlyPlan || item.monthlyCompletion}}" class="_d595444">/</span>
+                      <span wx:if="{{item.monthlyPlan}}" class="_d595444">{{item.monthlyPlan}}</span>
+                    </p>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 选择时间 -->
+    <van-popup show="{{ purchaseVisable }}" position="bottom" custom-class="purchase-top"  bind:close="touchFilter" wx:if="{{CurrentFilterName==='date'}}" class="_d595444">
+      <view class="_d595444">
+        <van-datetime-picker type="year-month" value="{{ currentDate }}" min-date="{{ minDate }}" max-date="{{maxDate}}" bind:input="onInput" bind:confirm="onConfirm" bind:change="getValues" bind:cancel="onCancel" class="_d595444"/>
+      </view>
+    </van-popup>
+
+  </view>

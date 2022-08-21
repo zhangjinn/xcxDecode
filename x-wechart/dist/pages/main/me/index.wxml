@@ -1,0 +1,75 @@
+<wxs src="../../../wxs/utils.wxs" module="utils" class="_3a90086"/>
+
+  <view  wx:if="{{loginStatus}}" class="me _3a90086" style="padding-bottom: {{ customTabBarAllHeight }}px">
+    <view class="me-wrapper _3a90086">
+      <view class="me-status _3a90086">
+        <view class="personal-bg _3a90086">
+<!--          <image class="mg-bg" wx:if="{{imgObj.myBg}}" src="{{imgObj.myBg}}"/>-->
+        </view>
+        <view class="personal-content _3a90086">
+          <view class="personal-info _3a90086">
+            <view wx:if="{{ loginStatus }}" class="account-info _3a90086" bindtap="goSwitchAccount">
+              <view class="avatar-box _3a90086">
+                <image class="trademark-logo _3a90086" src="{{imgObj.myAvatar}}"/>
+              </view>
+              <view class="_3a90086">
+                <view class="name _3a90086">{{currentAccount.name || mixinCurrentUser.userName || ''}}</view>
+                <view class="code _3a90086">{{ currentAccount.account || mixinCurrentUser.account || ''}}</view>
+              </view>
+            </view>
+            <view wx:else class="account-info _3a90086" bindtap="onLogin">
+              <view class="avatar-box _3a90086">
+                <image class="trademark-logo _3a90086" src="{{imgObj.myAvatar}}"/>
+              </view>
+              <view class="_3a90086">点击登录</view>
+            </view>
+            <view class="me-status-options _3a90086">
+              <i class="me-link b-icon b-icon2 icon-setting _3a90086" bindtap="navigateTo" data-wpynavigateto-a="/pages/me/setting/index"/>
+            </view>
+          </view>
+          <view class="personal-center _3a90086">
+            <block wx:for="{{notificationList}}" class="_3a90086">
+              <view wx:if="{{item.isShow}}" class="personal-center-item _3a90086" bindtap="goMessageCenter" data-wpygomessagecenter-a="{{item}}">
+                <i class="b-icon {{item.icon}} _3a90086">
+                  <view wx:if="{{ item.unReadNumber && item.unReadNumber != 0 }}" class="reddot _3a90086">{{ item.unReadNumber }}</view>
+                </i>
+                <p class="_3a90086">{{ item.name }}</p>
+              </view>
+            </block>
+          </view>
+        </view>
+      </view>
+      <view class="me-content _3a90086">
+        <!--    //TODO：权限测试-->
+        <view wx:for="{{permissionList}}" wx:if="{{!utils.isInCurrentList('首页', item.sourceName) && !utils.isInCurrentList('产品采购', item.sourceName)}}" class="me-content-block-out _3a90086">
+          <block wx:if="{{ item.subMenuList && item.subMenuList.length > 0 }}" class="_3a90086">
+            <view class="me-content-block _3a90086">
+              <view class="block-header _3a90086">{{item.sourceName}}</view>
+              <view class="block-content _3a90086">
+                <block wx:for="{{item.subMenuList}}" wx:for-index="idx" wx:for-item="subItem" class="_3a90086">
+                  <block wx:if="{{subItem.sourceName!='搜索框' &&subItem.sourceName!='购物车'}}" class="_3a90086">
+                    <view bindtap="goPage" hover-class="hover" class="block-content-item _3a90086" data-wpygopage-a="{{subItem}}">
+                      <view class="icon-box _3a90086">
+                        <image wx:if="{{subItem.iconUrl}}" class="icon-img _3a90086" src="{{subItem.iconUrl}}"/>
+                        <i wx:else class="b-icon {{subItem.menuCode}} _3a90086"/>
+                      </view>
+                      <view class="block-content-item-label _3a90086">{{ subItem.sourceName }}</view>
+                    </view>
+                  </block>
+                </block>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+    <van-toast id="van-toast" class="_3a90086"/>
+  </view>
+  <block  wx:else class="_3a90086">
+    <view class="no-permission-wrapper _3a90086">
+      <view class="header-divider _3a90086" style="height: {{sys.statusBarHeight + 44 }}px; background-color: #ffffff"/>
+      <view class="no-permission-box _3a90086">
+        <no-permission class="_3a90086"/>
+      </view>
+    </view>
+  </block>

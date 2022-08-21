@@ -1,0 +1,99 @@
+.item-inv._25d639b {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+}
+.item-inv .item-inv-head._25d639b {
+  width: 100%;
+}
+.item-inv .item-inv-head-context._25d639b {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding-left: 64rpx;
+  height: 88rpx;
+  position: relative;
+}
+.item-inv .item-inv-head-context._25d639b::after {
+  border-bottom: 2rpx solid #EEEEEE;
+}
+.item-inv .item-inv-head-context-title._25d639b {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  font-size: 32rpx;
+  color: #262626;
+}
+.item-inv .item-inv-head-context-close._25d639b {
+  padding-right: 40rpx;
+  font-size: 32rpx;
+}
+.item-inv .item-inv-search .search-left-icon._25d639b {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  font-size: 32rpx;
+  color: #AAAAAA;
+  margin-right: 16rpx;
+}
+.item-inv .item-inv-scroll._25d639b {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  overflow-y: auto;
+}
+.item-inv .item-inv-scroll-row._25d639b {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  height: 80rpx;
+  padding: 0 40rpx 0 24rpx;
+  font-size: 26rpx;
+}
+.item-inv .item-inv-scroll-row .checked._25d639b {
+  color: #00AAA6;
+}
+.item-inv .item-inv-scroll-row-checked._25d639b {
+  font-size: 20rpx;
+}
+.item-inv .no-data._25d639b {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  color: #999999;
+}

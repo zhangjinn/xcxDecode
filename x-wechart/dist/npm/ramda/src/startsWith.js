@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),equals=require("./equals.js"),take=require("./take.js"),startsWith=_curry2(function(r,e){return equals(take(r.length,e),r)});module.exports=startsWith;

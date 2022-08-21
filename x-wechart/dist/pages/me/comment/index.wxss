@@ -1,0 +1,258 @@
+@import "./../../../components/empty-data-type/index.wxss";
+.ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+.me-comment {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  position: relative;
+  height: 100%;
+}
+.me-comment .me-comment-filter {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+          justify-content: flex-end;
+  background-color: #fff;
+  padding: 20rpx;
+  margin-bottom: 16rpx;
+}
+.me-comment .me-comment-filter .filter-down {
+  font-size: 28rpx;
+  color: #262626;
+  height: 32rpx;
+  line-height: 32rpx;
+}
+.me-comment .me-comment-scroll {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  position: relative;
+  padding: 0rpx;
+}
+.me-comment .me-comment-scroll-item {
+  background-color: #fff;
+  margin-bottom: 16rpx;
+}
+.me-comment .me-comment-scroll-item:last-child {
+  margin-bottom: 0;
+}
+.me-comment .me-comment-scroll-item .item-header {
+  border-bottom: 2rpx solid #EEEEEE;
+  padding: 24rpx;
+}
+.me-comment .me-comment-scroll-item .item-header-line {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  height: 32rpx;
+}
+.me-comment .me-comment-scroll-item .item-header-line-left {
+  font-size: 24rpx;
+  color: #262626;
+}
+.me-comment .me-comment-scroll-item .item-header-line-right {
+  font-size: 20rpx;
+  color: #777777;
+}
+.me-comment .me-comment-scroll-item .item-card {
+  padding: 24rpx 24rpx 0 24rpx;
+}
+.me-comment .me-comment-scroll-item .item-card .item-card-detail {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+.me-comment .me-comment-scroll-item .item-card .item-card-detail .item-img {
+  width: 128rpx;
+  height: 128rpx;
+}
+.me-comment .me-comment-scroll-item .item-card .item-card-detail .item-info {
+  width: 100%;
+  padding-left: 16rpx;
+}
+.me-comment .me-comment-scroll-item .item-card .item-card-detail .item-info-title {
+  font-size: 26rpx;
+  color: #262626;
+  line-height: 36rpx;
+  height: 36rpx;
+}
+.me-comment .me-comment-scroll-item .item-card .item-card-detail .item-info-other {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  font-size: 24rpx;
+}
+.me-comment .me-comment-scroll-item .item-card .item-card-detail .item-info-price {
+  color: #D9161C;
+  height: 32rpx;
+  line-height: 32rpx;
+}
+.me-comment .me-comment-scroll-item .item-card .item-card-detail .item-info-num {
+  color: #262626;
+  height: 32rpx;
+  line-height: 32rpx;
+}
+.me-comment .me-comment-scroll-item .item-options {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+          justify-content: flex-end;
+  padding: 24rpx;
+}
+.me-comment .me-comment-scroll-item .item-options van-button {
+  margin-left: 32rpx;
+}
+.me-comment-detail-popup {
+  width: 604rpx;
+  padding: 32rpx;
+}
+.me-comment-detail-popup .comment-detail-header {
+  text-align: center;
+  position: relative;
+  padding-bottom: 22rpx;
+  border-bottom: 2rpx solid #EEEEEE;
+}
+.me-comment-detail-popup .comment-detail-header .header-close {
+  position: absolute;
+  top: 4rpx;
+  right: 0;
+  font-size: 26rpx;
+}
+.me-comment-detail-popup .comment-detail-content .comment-detail-time {
+  font-size: 24rpx;
+  color: #777777;
+  height: 32rpx;
+  line-height: 32rpx;
+  margin: 36rpx 0;
+}
+.me-comment-detail-popup .comment-detail-content .comment-level {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-bottom: 36rpx;
+}
+.me-comment-detail-popup .comment-detail-content .comment-level .comment-label {
+  font-size: 28rpx;
+  color: #333333;
+  height: 28rpx;
+  line-height: 28rpx;
+}
+.me-comment-detail-popup .comment-detail-content .comment-content {
+  font-size: 24rpx;
+  color: #262626;
+  line-height: 40rpx;
+}
+.me-comment-filter-popup {
+  width: 672rpx;
+  height: 100%;
+  position: relative;
+}
+.me-comment-filter-popup .input-group {
+  padding: 24rpx;
+  font-size: 24rpx;
+}
+.me-comment-filter-popup .input-group .input-label {
+  font-size: 28rpx;
+  color: #777777;
+  height: 40rpx;
+  line-height: 40rpx;
+  margin-bottom: 16rpx;
+}
+.me-comment-filter-popup .input-group .me-comment-filter-input {
+  font-size: 24rpx;
+  min-height: 32rpx;
+  height: 32rpx;
+  line-height: 32rpx;
+}
+.me-comment-filter-popup .input-group .date-group {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.me-comment-filter-popup .input-group .date-group .date-input {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  width: 288rpx;
+  height: 64rpx;
+  font-size: 24rpx;
+  background-color: #F7F7F7;
+}
+.me-comment-filter-popup .input-group .date-group .date-mid-label {
+  width: 48rpx;
+  color: #AAAAAA;
+  text-align: center;
+}
+.me-comment-filter-popup .me-comment-filter-options {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+.me-comment-filter-popup .me-comment-filter-options .form-submit-button {
+  background: #00AAA6;
+  border-radius: 0;
+  color: #FFF;
+  font-size: 32rpx;
+}
+.date-time-picker-popup {
+  width: 100%;
+}
+.collection {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  height: 100%;
+}
+.collection .scroll-grid {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-flow: row wrap;
+          flex-flow: row wrap;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding: 14rpx;
+}
+.collection .scroll-grid .context {
+  width: 354rpx;
+  padding-bottom: 10rpx;
+}

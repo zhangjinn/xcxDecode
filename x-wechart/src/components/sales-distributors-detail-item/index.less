@@ -1,0 +1,200 @@
+@import '../../styles/utils.less';
+@import '../../styles/index.less';
+@import '../../components/vant/common/style/hairline.less';
+@import '../../components/vant/common/style/ellipsis.less';
+
+.order-item {
+  height: 96rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+  .item-name {
+    color: #262626;
+    font-size: 26rpx;
+    font-weight: 400;
+    padding-left: 24rpx;
+  }
+  .item-title {
+    color: #262626;
+    font-size: 26rpx;
+    font-weight: 400;
+    padding-right: 24rpx;
+    .cart-stepper {
+      border: 2rpx solid #eeeeee !important;
+    }
+    .cart-input-class {
+      width: 72rpx !important;
+      height: 48rpx !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      background-color: #ffffff !important;
+      border-left: 1rpx solid #eeeeee !important;
+      border-right: 1rpx solid #eeeeee !important;
+      box-sizing: border-box;
+    }
+    .cart-action-class {
+      width: 48rpx !important;
+      height: 48rpx !important;
+      margin: 0 !important;
+      background-color: #ffffff !important;
+    }
+  }
+  .item-title-stock {
+    text {
+      color: #262626;
+      font-size: 26rpx;
+      font-weight: 400;
+    }
+    .stock-status-i-icon {
+      font-size: 26rpx;
+      margin-right: 24rpx;
+      margin-left: 8rpx;
+      color: #AAAAAA;
+    }
+  }
+  .item-field {
+    display: flex;
+    color: #262626;
+    font-size: 26rpx;
+    font-weight: 400;
+    padding-right: 24rpx;
+    align-items: center;
+    justify-content: center;
+    .icon {
+      color: #aaaaaa;
+      // font-size: 20rpx;
+      padding-left: 14rpx;
+    }
+  }
+  .item-amount {
+    color: #d9161c;
+    font-size: 26rpx;
+    font-weight: 400;
+    padding-right: 24rpx;
+  }
+}
+
+.item-inv {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  &-head {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    &-context {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-left: 58rpx;
+      height: 88rpx;
+      position: relative;
+      &::after {
+        .hairline(#EEEEEE);
+        border-bottom-width: 1rpx;
+      }
+      &-title {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        font-size: 32rpx;
+        color: #262626;
+      }
+      &-close {
+        padding-right: 40rpx;
+        font-size: 18rpx;
+      }
+    }
+  }
+  &-scroll {
+    padding-top: 88rpx;
+    height: 492rpx;
+    flex: 1;
+    &-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 80rpx;
+      padding: 0 40rpx 0 24rpx;
+      font-size: 26rpx;
+      .checked {
+        color: @primary-color;
+      }
+      &-checked {
+        font-size: 20rpx;
+      }
+    }
+  }
+}
+
+
+// 样式改造
+.detail-box{
+  margin: 0 16rpx;
+  background-color: #fff;
+  overflow: hidden;
+  // padding-left: 24rpx;
+  padding: 8rpx 0 24rpx 24rpx;
+  border-radius: 16rpx;
+
+  .fill-view{
+    margin-top: 16rpx;
+    height: 32rpx;
+    line-height: 32rpx;
+    color: #262626;
+    font-size: 26rpx;
+    font-weight: 400;
+
+    > view{
+      float: left;
+      width: 50%;
+      display: inline-block;
+      view{
+        display: inline-block;
+        margin-left: 10rpx;
+        &.amount{
+          color: #D9161C;
+          margin-left: 14rpx;
+          &.price{
+            color: #262626;
+          }
+        }
+      }
+    }
+    &.line{
+      font-weight: 500;
+      >view{
+        width: auto;
+      }
+    }
+    .quick-gratification{
+      width: 128rpx;
+      height: 40rpx;
+      line-height: 40rpx;
+      text-align: center;
+      background: #ECF8F8;
+      border-radius: 28rpx;
+      font-size: 24rpx;
+      color: #00AAA6;
+      margin-left: 24rpx;
+    }
+  }
+  .this-inventory{
+height: 32rpx;
+font-size: 26rpx;
+color: #AAAAAA;
+line-height: 32rpx;
+margin-top: 40rpx;
+  }
+}
+.item-info-tag{
+  background: linear-gradient(90deg, #FF7C45 0%, #F63737 100%);
+  border-radius: 4rpx;
+  font-size: 20rpx;
+  font-weight: 400;
+  color: #FFFFFF;
+  padding:2rpx 4rpx;
+  margin-right: 8rpx;
+}

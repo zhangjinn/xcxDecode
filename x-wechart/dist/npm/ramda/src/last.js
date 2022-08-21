@@ -1,0 +1,1 @@
+var nth=require("./nth.js"),last=nth(-1);module.exports=last;

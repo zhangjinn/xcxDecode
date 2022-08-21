@@ -1,0 +1,20 @@
+<template>
+  <view class="comment comment-border" wx:if="{{visible}}">
+    <van-cell-group wx:if="{{commentList.length > 0}}">
+      <repeat for="{{commentList}}" key="id" index="index" item="item">
+        <van-cell bind:click="openBill({{index}})">
+          <view class="order-common-value">
+              <view class="order-common-value-con">{{item.serverName}}</view>
+              <view class="order-common-value-label" wx:if="{{!item.scoreArray && item.scoreArray == null}}">待评价</view>
+          </view>
+        </van-cell>
+      </repeat>
+    </van-cell-group>
+    <emptyDataType wx:else/>
+
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

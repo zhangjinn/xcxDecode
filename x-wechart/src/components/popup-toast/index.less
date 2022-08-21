@@ -1,0 +1,79 @@
+@import '../vant/common/style/hairline.less';
+@import '../../styles/utils.less';
+
+
+.popup-error {
+  position: relative;
+  background-color: #ffffff;
+  padding: 0 40rpx;
+  height: 504rpx;
+  width: 604rpx;
+  .icon-error {
+    color: #D9161C;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 72rpx;
+    padding-top: 48rpx;
+  }
+  &-close {
+    .flex-center();
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 88rpx;
+    height: 88rpx;
+    z-index: 100;
+  }
+  &-header {
+    padding-top: 16rpx;
+    padding-bottom: 16rpx;
+    .flex-center();
+    color: #262626;
+    font-size: 32rpx;
+    font-weight: 400;
+  }
+  &-scroll {
+    height: 300rpx;
+    .error-text {
+      color: #777777;
+      font-size: 28rpx;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-bottom: 32rpx;
+    }
+  }
+  &-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    width: 100%;
+    -webkit-user-select: none;
+    user-select: none;
+    height: 132rpx;
+    background-color: #FFFFFF;
+    &-bar {
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      align-items: center;
+      height: 100rpx;
+      position: fixed;
+      bottom: 0;
+      &-btn {
+        width: 100%;
+        height: 100%;
+        .flex-center();
+        background-color: #FFFFFF;
+        font-size: 32rpx;
+        font-weight: 400;
+        color: #00AAA6;
+        &.disabled {
+          background-color: #cccccc;
+        }
+      }
+    }
+  }
+}

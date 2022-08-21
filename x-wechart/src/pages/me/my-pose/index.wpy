@@ -1,0 +1,178 @@
+<template>
+  <!-- 我要提问 -->
+  <view class="pose">
+    <!-- 问题分类 -->
+    <view class="pose-list">
+      <view
+        @tap="openChoose('questionType','questionType','问题分类')"
+        class="pose-classify van-hairline--bottom"
+      >
+        <view class="pose-classify-text">问题分类</view>
+        <view class="pose-classify-selected">
+          <view
+            class="pose-classify-selected-name {{ctQuestion.questionType.name!='请选择'?'selected':''}}  van-ellipsis"
+          >{{ctQuestion.questionType.name}}</view>
+          <view class="b-icon icon-more pose-classify-selected-icon"></view>
+        </view>
+      </view>
+      <!-- 供应商 -->
+      <view
+        @tap="openChoose('salesOrg','salesOrg','供应商')"
+        class="pose-classify van-hairline--bottom"
+      >
+        <view class="pose-classify-text">供应商</view>
+        <view class="pose-classify-selected">
+          <view class="pose-classify-selected-name {{ctQuestion.salesOrg.name!='请选择'?'selected':''}} van-ellipsis">{{ctQuestion.salesOrg.name}}</view>
+          <view class="b-icon icon-more pose-classify-selected-icon"></view>
+        </view>
+      </view>
+      <!-- 物料组 -->
+      <view
+        @tap="openChooseMa('materialCode','poplists','物料组')"
+        class="pose-classify van-hairline--bottom"
+      >
+        <view class="pose-classify-text">物料组</view>
+        <view class="pose-classify-selected">
+          <view
+            class="pose-classify-selected-name {{ctQuestion.materialCode.name!='请选择'?'selected':''}} van-ellipsis"
+          >{{ctQuestion.materialCode.name}}</view>
+          <view class="b-icon icon-more pose-classify-selected-icon"></view>
+        </view>
+      </view>
+    </view>
+    <!-- 问题 -->
+    <view class="pose-issue">
+      <view class="pose-issue-title">
+        <textarea
+          placeholder="请输入您的问题标题"
+          class="pose-issue-title-input"
+          auto-height
+          bindblur="onTitleChange"
+           value={{form.title}}
+        ></textarea>
+      </view>
+      <view class="pose-issue-content">
+        <textarea
+          class="pose-issue-content-textarea"
+          placeholder="请输入您的问题描述～"
+          auto-height
+          bindblur="onDescChange"
+          value={{form.question}}
+        ></textarea>
+      </view>
+    </view>
+    <!-- 提问 -->
+    <view class="pose-question">
+      <view class="pose-question-message">
+        <view class="pose-question-name">提问人姓名</view>
+        <view class="pose-question-value">
+          <input type="text" value="{{form.name}}" bind:change="onNameChange" >
+        </view>
+      </view>
+      <view class="pose-question-message">
+        <view class="pose-question-name">提问人电话</view>
+        <view class="pose-question-value">
+          <input type="text" value="{{form.phone}}" bind:change="onPhoneChange" >
+        </view>
+      </view>
+      <view class="pose-question-message">
+        <view class="pose-question-name">提问人部门</view>
+        <view class="pose-question-value">
+          <input type="text" value="{{form.department}}" bind:change="onDepChange" >
+        </view>
+      </view>
+      <view class="pose-question-message">
+        <view class="pose-question-name">提问人邮箱</view>
+        <view class="pose-question-value">
+          <input type="text" value="{{form.email}}" bind:change="onEmailChange" >
+        </view>
+      </view>
+    </view>
+    <!-- 提交 -->
+    <view class="pose-submit">
+      <button  style="{{color==1 ? 'opacity:0.4' :'opacity:1'}}" class="pose-submit-btn" @tap="onBtnChange">提交</button>
+    </view>
+    <!-- 选择弹窗 -->
+    <van-popup 
+      show="{{ popVisible }}"
+      closeable
+      position="bottom"
+      custom-style="height: 570rpx"
+      bind:click-overlay="onClose"
+    >
+      <view class="pose-inv">
+        <view class="pose-inv-head">
+          <view class="pose-inv-head-context">
+            <view class="pose-inv-head-context-title">{{ popTitle }}</view>
+            <van-icon name="cross" class="pose-inv-head-context-close" bindtap="onClose"/>
+          </view>
+        </view>
+        <scroll-view scroll-y class="pose-inv-scroll">
+          <view
+            wx:for="{{ popList }}"
+            wx:key="{{ item.id }}"
+            item="item"
+            class="pose-inv-scroll-row"
+            data-key="{{ item.id }}"
+            data-index="{{ index }}"
+            bindtap="onChoose"
+          >
+            <view
+              class="pose-inv-scroll-row-desc {{ item.code === compareInfo.code ? 'checked' : ''}}"
+            >{{ item.name }}</view>
+            <block wx:if="{{ item.code === compareInfo.code }}">
+              <view class="b-icon icon-check pose-inv-scroll-row-checked checked"></view>
+            </block>
+          </view>
+         
+        </scroll-view>
+      </view>
+    </van-popup>
+    <!-- 物料组 -->
+
+    <van-popup 
+      show="{{ display }}"
+      closeable
+      position="bottom"
+      custom-style="height: 570rpx"
+      bind:click-overlay="onCloseMa"
+    >
+      <view class="pose-inv">
+        <view class="pose-inv-head">
+          <view class="pose-inv-head-context">
+            <view class="pose-inv-head-context-title">物料组</view>
+            <van-icon name="cross" class="pose-inv-head-context-close" bindtap="onCloseMa"/>
+          </view>
+        </view>
+        <scroll-view scroll-y class="pose-inv-scroll">
+          <view
+            wx:for="{{ materialCode }}"
+            wx:key="{{ item.id}}"
+            item="item"
+            class="pose-inv-scroll-row" 
+            data-key="{{item.id}}"
+            data-index="{{ index }}"
+            bindtap="onChooseMa"
+          >
+            <view
+              class="pose-inv-scroll-row-desc {{ item.code === ctQuestion.materialCode.code ? 'checked' : ''}}"
+            >{{ item.name}}</view>
+            <block wx:if="{{ item.code === ctQuestion.materialCode.code }}">
+              <view class="b-icon icon-check pose-inv-scroll-row-checked checked"></view>
+            </block>
+          </view>
+         
+        </scroll-view>
+      </view>
+    </van-popup>
+    
+    <!-- 提交后提醒 -->
+    <van-toast id="custom-selector"/>
+    <van-toast id="van-toast" />
+  </view>
+</template>
+
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>
+
+    

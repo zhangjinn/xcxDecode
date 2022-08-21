@@ -1,0 +1,67 @@
+
+<template>
+  <block wx:if="{{loginStatus}}">
+    <view class="activity-page" style="padding-bottom: {{ customTabBarAllHeight }}px">
+      <!-- 特殊组件处理 只有 tabs 才会显示 -->
+      <block wx:if="{{ tabs.length > 1 }}">
+        <view class="x-tabs">
+          <scroll-view class="x-tabs-content" style="{{contentStyle}}" scroll-x>
+            <block wx:for="{{tabs}}" wx:key="{{item.id}}_tab_{{index}}">
+              <view
+                data-id="{{item.id}}"
+                data-index="{{index}}"
+                bindtap="onItemTap"
+                class="x-tabs-content-item {{ tabIndex === index ? 'selected' : '' }}"
+              >
+                <view class="name">{{item.name}}</view>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+      </block>
+      <block wx:if="{{ design.items.length > 0 }}">
+        <repeat for="{{ design.items }}" index="index">
+          <block wx:if="{{ item.component === 'tabs' }}">
+            <x-tabs needAutoCallback="{{ true }}" key="{{ item.key || index }}" designIndex="{{ index }}" customStyle="{{ item.style }}" content="{{ item.content }}" bind:callback="tabCallback" />
+          </block>
+          <block wx:if="{{ item.component === 'swiper' }}">
+            <x-swiper customStyle="{{ item.style }}" content="{{ item.content }}" bind:callback="handleCallback" />
+          </block>
+          <block wx:if="{{ item.component === 'image' }}">
+            <x-img customStyle="{{ item.style }}" content="{{ item.content }}" bind:callback="handleCallback" />
+          </block>
+          <block wx:if="{{ item.component === 'thermalZone' }}">
+            <x-thermal-zone customStyle="{{ item.style }}" content="{{ item.content }}" bind:callback="handleCallback" />
+          </block>
+          <block wx:if="{{ item.component === 'title'}}">
+            <x-title i-class="h-icon icon-ic-skip-right" customStyle="{{ item.style }}" content="{{ item.content }}" bind:callback="handleCallback" />
+          </block>
+          <block wx:if="{{ item.component === 'text' }}">
+            <x-text customStyle="{{ item.style }}" content="{{ item.content }}" bind:callback="handleCallback"/>
+          </block>
+          <block wx:if="{{ item.component === 'goodsCard' }}">
+            <x-goods-card customStyle="{{ item.style }}" content="{{ item.content }}" />
+          </block>
+          <block wx:if="{{ item.component === 'goodsSlider' }}">
+            <x-goods-slider customStyle="{{ item.style }}" content="{{ item.content }}" />
+          </block>
+          <block wx:if="{{ item.component === 'navigationBar' }}">
+            <x-navigation-bar i-class="h-icon icon-ic-visible" customStyle="{{ item.style }}" content="{{ item.content }}" bind:callback="handleCallback" />
+          </block>
+        </repeat>
+      </block>
+      <emptyDataType wx:else description="活动"/>
+
+      <view @tap="scrollToTop" hidden="{{ !visibelTop }}" class="scroll-to-top">
+        <icon class="b-icon icon-top"></icon>
+      </view>
+      <van-toast id="van-toast" />
+    </view>
+  </block>
+  <block wx:else>
+    <no-permission />
+  </block>
+
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

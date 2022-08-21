@@ -1,0 +1,167 @@
+@import '../../../components/vant/common/style/hairline.less';
+
+.order-result {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  &.success {
+    .order-result-header {
+      background: linear-gradient(360deg,rgba(13,182,188,1) 0%,rgba(0,170,166,1) 100%);
+    }
+    .order-result-footer {
+      background: linear-gradient(360deg,rgba(13,182,188,1) 0%,rgba(0,170,166,1) 100%);
+    }
+    .order-result-footer-body-card {
+      background: linear-gradient(180deg,rgba(183,236,235,1) 0%,rgba(255,255,255,1) 25%);
+    }
+  }
+  &.fail {
+    .order-result-header {
+      background: linear-gradient(360deg,rgba(238,97,48,1) 0%,rgba(236,56,52,1) 100%);
+    }
+    .order-result-footer {
+      background: linear-gradient(360deg,rgba(238,97,48,1) 0%,rgba(236,56,52,1) 100%);
+    }
+    .order-result-footer-body-card {
+      background: linear-gradient(180deg,rgba(255,210,209,1) 0%,rgba(255,255,255,1) 25%);
+    }
+  }
+  &-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 540rpx;
+    padding: 40rpx 24rpx;
+  }
+  &-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 80rpx;
+    &-title {
+      font-size: 32rpx;
+      font-weight: 400;
+      color: #ffffff;
+      margin-top: 40rpx;
+    }
+  }
+  &-footer {
+    width: 100%;
+    height: 16rpx;
+    padding: 0 24rpx;
+    &-body {
+      position: relative;
+      width: 100%;
+      &-card {
+        position: absolute;
+        left: 0;
+        top: 8rpx;
+        width: 100%;
+        height: 188rpx;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4rpx 20rpx0 rgba(0,0,0,0.08);
+        border-radius: 0 0 8rpx 8rpx;
+        z-index: 10;
+        .error {
+          &-desc {
+            width: 470rpx;
+            font-size: 28rpx;
+            color: #262626;
+            font-weight: 400;
+          }
+        }
+        .success {
+          &-title {
+            font-size: 28rpx;
+            color: #262626;
+            font-weight: 400;
+            margin-bottom: 24rpx;
+          }
+          &-link {
+            font-size: 24rpx;
+            color: #00AAA6;
+            font-weight: 400;
+          }
+        }
+      }
+    }
+    &::after {
+      border-radius: 8rpx;
+      border-color: rgba(0,0,0,0.1);
+    }
+  }
+  &-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .cart-btn {
+      width: 296rpx;
+      height: 80rpx;
+      background-color: transparent;
+      border-radius: 40rpx;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 28rpx;
+      font-weight: 400;
+      color: #EC3834;
+      border: 2rpx solid #EC3834;
+      margin-bottom: 40rpx;
+    }
+    .shop-btn-new {
+      width: 296rpx;
+      height: 80rpx;
+      background-color: transparent;
+      border-radius: 40rpx;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 28rpx;
+      font-weight: 400;
+      color: #00AAA6;
+      border: 2rpx solid #00AAA6;
+      margin-bottom: 40rpx;
+    }
+    .continue-btn {
+      width: 296rpx;
+      height: 80rpx;
+      background-color: #EC3834;
+      border-radius: 40rpx;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 28rpx;
+      font-weight: 400;
+      color: #ffffff;
+    }
+    .shop-btn {
+      width: 296rpx;
+      height: 80rpx;
+      background-color: #00AAA6;
+      border-radius: 40rpx;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 28rpx;
+      font-weight: 400;
+      color: #ffffff;
+    }
+  }
+  &-back {
+    position: absolute;
+    left: 0;
+    width: 88rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 12;
+  }
+}

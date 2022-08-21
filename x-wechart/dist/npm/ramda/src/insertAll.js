@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),insertAll=_curry3(function(r,e,l){return r=r<l.length&&r>=0?r:l.length,[].concat(Array.prototype.slice.call(l,0,r),e,Array.prototype.slice.call(l,r))});module.exports=insertAll;

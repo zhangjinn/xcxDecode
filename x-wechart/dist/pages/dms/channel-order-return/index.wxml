@@ -1,0 +1,198 @@
+<wxs src="../../../wxs/utils.wxs" module="utils"/>
+
+  <view class="order">
+    <van-popup show="{{selectBatchVisible}}" position="bottom"  bind:close="closePolicy">
+      <view class="policy">
+        <view bindtap="closePolicy" class="policy-close" hover-class="hover">
+          <van-icon color="#262626" name="cross"/>
+        </view>
+        <view class="policy-header van-hairline--bottom">批次</view>
+        <scroll-view scroll-y enable-flex="enable-flex" enable-back-to-top="true" scroll-with-animation="true" class="policy-scroll">
+          <block wx:for="{{channelReturnInfo.items[itemindex].outTabs[tabsIndex].selectInfo[index].invBatchList}}" wx:for-index="in" wx:for-item="item" wx:key="key">
+            <view class="warehouse-list-container">
+              <view bindtap="choosePc" class="warehouse-list-{{ channelReturnInfo.items[itemindex].outTabs[tabsIndex].selectInfo[index].info.invBatchId == item.key ? 'name': 'named' }}" data-wpychoosepc-a="{{item.value}}" data-wpychoosepc-b="{{item.key}}">{{item.value}}</view>
+              <view class="b-icon {{channelReturnInfo.items[itemindex].outTabs[tabsIndex].selectInfo[index].info.invBatchId == item.key ? 'icon-check': '' }} warehouse-list-icon"/>
+            </view>
+          </block>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-popup show="{{WarehouseListVisible}}" position="bottom"  bind:close="closePolicy">
+      <view class="policy">
+        <view bindtap="closePolicy" class="policy-close" hover-class="hover">
+          <van-icon color="#262626" name="cross"/>
+        </view>
+        <view class="policy-header van-hairline--bottom">入库仓库</view>
+        <scroll-view scroll-y enable-flex="enable-flex" enable-back-to-top="true" scroll-with-animation="true" class="policy-scroll">
+          <block wx:for="{{channelReturnInfo.items[itemindex].baseData}}" wx:for-index="in" wx:for-item="item" wx:key="key">
+            <view class="warehouse-list-container">
+              <view bindtap="chooseWarehouse" class="warehouse-list-{{ channelReturnInfo.items[itemindex].outTabs[tabsIndex].selectInfo[index].info.warehouseId == item.key ? 'name': 'named' }}" data-wpychoosewarehouse-a="{{item.key}}" data-wpychoosewarehouse-b="{{item.value}}">{{item.value}}</view>
+              <view class="b-icon {{channelReturnInfo.items[itemindex].outTabs[tabsIndex].selectInfo[index].info.warehouseId == item.key ? 'icon-check': '' }} warehouse-list-icon"/>
+            </view>
+          </block>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ywyListVisible}}" position="bottom" bind:close="closePolicy">
+      <view class="policy">
+        <view bindtap="closePolicy" class="policy-close" hover-class="hover">
+          <van-icon color="#262626" name="cross"/>
+        </view>
+        <view class="policy-header van-hairline--bottom">业务员</view>
+        <scroll-view scroll-y enable-flex="enable-flex" enable-back-to-top="true" scroll-with-animation="true" class="policy-scroll">
+          <block wx:for="{{ywyList}}" wx:for-index="in" wx:for-item="item" wx:key="key">
+            <view class="warehouse-list-container">
+              <view bindtap="chooseYwy" class="warehouse-list-{{ ywyId == item.id ? 'name': 'named' }}" data-wpychooseywy-a="{{item.name}}" data-wpychooseywy-b="{{item.id}}">{{item.name}}</view>
+              <view class="b-icon {{ywyId == item.id ? 'icon-check': '' }} warehouse-list-icon"/>
+            </view>
+          </block>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-popup show="{{WarehouseStatus}}" position="bottom" bind:close="closePolicy">
+      <view class="policy">
+        <view bindtap="closePolicy" class="policy-close" hover-class="hover">
+          <van-icon color="#262626" name="cross"/>
+        </view>
+        <view class="policy-header van-hairline--bottom">库存状态</view>
+        <scroll-view scroll-y enable-flex="enable-flex" enable-back-to-top="true" scroll-with-animation="true" class="policy-scroll">
+          <block wx:for="{{orderdetail.purchaseOrderItem[itemindex].InvStatusList}}" wx:for-index="in" wx:for-item="item" wx:key="key">
+            <view class="warehouse-list-container">
+              <view bindtap="WarehouseStatuse" class="warehouse-list-{{orderdetail.purchaseOrderItem[itemindex].selectInfo[index].info.invStatusId == item.key ? 'name': 'named' }}" data-wpywarehousestatuse-a="{{item.key}}" data-wpywarehousestatuse-b="{{item.value}}">{{item.value}}</view>
+              <view class="b-icon {{orderdetail.purchaseOrderItem[itemindex].selectInfo[index].info.invStatusId == item.key ? 'icon-check': '' }} warehouse-list-icon"/>
+            </view>
+          </block>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <scroll-view scroll-y="true" class="order-scroll" enable-flex="true">
+      <view class="order-container">
+        <view class="order-header">
+          <view class="order-id">{{channelReturnInfo.documentNum}}</view>
+          <block  wx:if="{{channelReturnInfo.returnBy}}">
+            <view wx:if="{{channelReturnInfo.returnBy == 'bySales'}}" class="order-status">代理发起</view>
+            <view wx:else class="order-status">分销发起</view>
+          </block>
+        </view>
+        <view class="order-come">{{channelReturnInfo.supplierName}}</view>
+      </view>
+      <view class="order-list">
+        <view class="order-item">
+          <view class="item van-hairline--bottom ">
+            <view class="left">出库日期</view>
+            <view class="right">{{date}}</view>
+          </view>
+          <view bindtap="openYwyList" class="item van-hairline--bottom ">
+            <view class="left">业务员</view>
+            <view class="ex-line">
+              <view class="text-value">{{ywyName || '请选择'}}</view>
+              <view class="b-icon icon-more icon"/>
+            </view>
+          </view>
+          <view class="item van-hairline--bottom ">
+            <view class="left">备注</view>
+            <view class="right">
+              <van-field value="{{ note }}" placeholder="请填写备注" border="{{ false }}" input-align="right" bind:change="onNoteChange" class="dms-order-note"/>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="order-card">
+        <view class="order-details">
+          <text class="order-details-name">订单明细</text>
+        </view>
+        <block wx:for="{{channelReturnInfo.items}}" wx:for-index="itemindex" wx:for-item="item" wx:key="key">
+          <view class="order-card-container">
+            <view class="order-card-container-name">
+              <view class="shop-name">
+                <view class="shop-id">{{item.model}}</view>
+              </view>
+              <view class="shop-type">
+                <view class="shop-type-one">颜色:
+                  <view class="text">{{item.colour}}</view>
+                </view>
+                <view class="shop-type-one">采购数量:
+                  <view class="text">{{item.orderedQty}}</view>
+                </view>
+                <view class="shop-type-one">入库数量:
+                  <view class="text">{{item.shippedQty}}</view>
+                </view>
+                <view class="shop-type-one">退货数量:
+                  <view class="text">{{item.returnQty}}</view>
+                </view>
+                <view class="shop-type-one">已出库数量:
+                  <view class="text">{{item.hasOutQty}}</view>
+                </view>
+                <view class="shop-type-one">价格:
+                  <view class="text">{{item.showPrice}}</view>
+                </view>
+                <view class="shop-type-one">金额小计:
+                  <view class="text">{{item.showAmount}}</view>
+                </view>
+              </view>
+            </view>
+            <block wx:for="{{item.outTabs}}" wx:for-index="tabsIndex" wx:for-item="tabsItem" wx:key="key">
+              <block wx:for="{{tabsItem.selectInfo}}" wx:for-index="index" wx:for-item="cardItem" wx:key="key">
+                <view class="order-card-list">
+                  <view class="card-number van-hairline--bottom">
+                    <view class="card-number-text">出库数量</view>
+                    <view class="card-number-text-index">
+                      <van-stepper integer="integer" value="{{cardItem.info.realBuy}}" min="0" max="{{cardItem.info.canOutQty}}" custom-class="cart-stepper" input-class="cart-input-class" plus-class="cart-action-class" minus-class="cart-action-class" data-item-index="{{itemindex}}" data-out-index="{{tabsIndex}}" data-index="{{index}}" bind:change="onShippedBqtyChg"/>
+                    </view>
+                  </view>
+                  <view bindtap="besureHouse" class="card-warehouse van-hairline--bottom" data-wpybesurehouse-a="{{itemindex}}" data-wpybesurehouse-b="{{tabsIndex}}" data-wpybesurehouse-c="{{index}}" data-wpybesurehouse-d="{{item.productCode}}" data-wpybesurehouse-e="{{tabsItem.invStatusId}}">
+                    <view class="warehouse-text">仓库</view>
+                    <view class="warehouse-select">
+                      <view class="morencangku">{{cardItem.morencangku}}</view>
+                      <view class="b-icon icon-more warehouse-select-icon"/>
+                    </view>
+                  </view>
+                  <view class="card-warehouse-style van-hairline--bottom">
+                    <view class="warehouse-text">库存状态</view>
+                    <view class="warehouse-select">
+                      <view class="morencangku">{{cardItem.info.invStatusName}}</view>
+                      <!-- <view class="b-icon icon-more warehouse-select-icon"></view> -->
+                    </view>
+                  </view>
+                  <view bindtap="selectBatch" class="card-warehouse van-hairline--bottom" data-wpyselectbatch-a="{{itemindex}}" data-wpyselectbatch-b="{{tabsIndex}}" data-wpyselectbatch-c="{{index}}" data-wpyselectbatch-d="{{item.productCode}}" data-wpyselectbatch-e="{{tabsItem.invStatusId}}">
+                    <view class="warehouse-text">批次</view>
+                    <view class="warehouse-select">
+                      <view  wx:if="{{!cardItem.info.invBatchId}}" style="color:#AAAAAA" class="morencangku">选择批次</view>
+                      <view wx:else style="max-width: 400rpx" class="morencangku van-ellipsis">{{cardItem.info.invBatchIdName}}</view>
+                      <view class="b-icon icon-more warehouse-select-icon"/>
+                    </view>
+                  </view>
+                  <view class="card-warehouse-style van-hairline--bottom">
+                    <view class="warehouse-text">可用库存</view>
+                    <view class="warehouse-select">
+                      <view class="morencangku">{{cardItem.info.bavailqty}}</view>
+                      <!-- <view class="b-icon icon-more warehouse-select-icon"></view> -->
+                    </view>
+                  </view>
+                  <view class="card-list-del">
+                    <view/>
+                    <view bindtap="delItem" class="del-container" data-wpydelitem-a="{{itemindex}}" data-wpydelitem-b="{{tabsIndex}}" data-wpydelitem-c="{{index}}">
+                      <view class="b-icon icon-remove del-icon"/>
+                      <view class="del-text">删除</view>
+                    </view>
+                  </view>
+                </view>
+              </block>
+              <view bindtap="addItem" class="order-card-footer" data-wpyadditem-a="{{item.productCode}}" data-wpyadditem-b="{{itemindex}}" data-wpyadditem-c="{{tabsIndex}}" data-wpyadditem-d="{{index}}">
+                <view class="b-icon icon-add-full footer-icon">
+                  <text>添加</text>
+                </view>
+              </view>
+            </block>
+          </view>
+        </block>
+      </view>
+    </scroll-view>
+    <view class="order-footer van-hairline--top">
+      <view class="order-footer-bar">
+        <view bindtap="submitOrder" class="order-footer-bar-btn" hover-class="hover">退货并出库</view>
+      </view>
+    </view>
+    <van-toast id="van-toast"/>
+    <van-dialog id="van-dialog"/>
+  </view>

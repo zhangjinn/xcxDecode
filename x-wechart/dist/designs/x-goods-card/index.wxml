@@ -1,0 +1,27 @@
+<view class="x-goods-card {{type}}" style="{{contentStyle}}">
+  <navigator
+    wx:for="{{items}}"
+    wx:key="good_card_{{item.key}}"
+    url="/pages/goods/item/index?code={{item.id}}&orgId={{item.orgId}}&orgCode={{item.orgCode}}"
+    class="googs-card-item"
+  >
+    <view class="header">
+      <image mode="aspectFit" lazy-load="{{true}}" class="img" src="{{item.src}}" alt="商品图片" />
+    </view>
+    <view class="content">
+      <view class="left">
+        <view class="title">{{item.title || item.name}}</view>
+        <view class="desc" wx:if="{{item.desc}}">{{item.desc}}</view>
+      </view>
+      <view class="right">
+        <view class="price">
+          <block wx:if="{{item.price > 0}}">
+            <text>¥{{item.price}}</text>
+          </block>
+          <text class="sub-price" wx:if="{{item.originPrice}}">¥{{item.originPrice}}</text>
+        </view>
+        <view class="btn" wx:if="{{buyButton}}">立即购买</view>
+      </view>
+    </view>
+  </navigator>
+</view>

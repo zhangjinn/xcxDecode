@@ -1,0 +1,203 @@
+<template>
+    <view class="container">
+        <view class="signature-top">
+            <view class="signature-name">{{fundDetail.rsUnitName}}和{{fundDetail.customerName}}电子对账单</view>
+            <view class="signature-logo">
+                <view class="b-icon h-icon icon-hisense"/>
+                <view class="barcode">
+                    <canvas canvas-id="barcode"/>
+                    <view class="code">{{fundDetail.sheetNo}}</view>
+                </view>
+            </view>
+            <view class="signature-category">
+                <view class="signature-category-li">产品品类：{{fundDetail.prfcName}}</view>
+                <view class="signature-category-li">
+                    <view class="signature-category-li-1">对账截止日期：{{fundDetail.periodEndDate}}</view>
+                    <view class="signature-category-li-1">{{fundDetail.currencyName}}（单位：元）</view>
+                </view>
+            </view>
+            <view class="signature-hisin">{{fundDetail.rsUnitName}}(应收)</view>
+            <view class="signature-from {{up===true ? 'show':'hidden'}}">
+                <view class="signature-from-li">
+                    <view class="signature-from-left">应收账款</view>
+                    <view
+                        class="signature-from-right"
+                    ><text wx:if="{{fundDetail.rows!=''}}" >{{fundDetail.amount}}</text>
+
+                    </view>
+                </view>
+                <view class="signature-from-li">
+                    <view class="signature-from-left">未达及差异</view>
+                    <view class="signature-from-right">{{fundDetail.diffAmt}}</view>
+                </view>
+                <view class="signature-from-li">
+                    <view class="signature-from-left">调整后余额</view>
+                    <view class="signature-from-right">{{fundDetail.adjustBalance}}</view>
+                </view>
+            </view>
+            <view class="signature-from1 {{up===true ? 'hidden':'show'}}">
+                <view class="signature-from1-li">
+                    <view>应收账款</view>
+                    <view></view>
+                    <view><text wx:if="{{fundDetail.rows!=''}}">{{fundDetail.amount}}</text></view>
+                </view>
+                <view class="signature-from1-li">
+                    <view></view>
+                    <view>账面余额</view>
+                    <view>{{fundDetail.arBalance}}</view>
+                </view>
+                <view class="signature-from1-li">
+                    <view></view>
+                    <view>(加)海信方已发货未开票</view>
+                    <view>{{fundDetail.sniAmt}}</view>
+                </view>
+                <view class="signature-from1-li">
+                    <view></view>
+                    <view>(减)客户方已退货未退税</view>
+                    <view>{{fundDetail.rnrAmt}}</view>
+                </view>
+                <view class="signature-from1-li">
+                    <view>未达标差异</view>
+                    <view></view>
+                    <view>{{fundDetail.diffAmt}}</view>
+                </view>
+                <view class="signature-from1-li">
+                    <view></view>
+                    <view class="right">(加)发票差异</view>
+                    <view><text wx:if="{{fundDetail.rows!=''}}">{{fundDetail.invoice}}</text></view>
+                </view>
+                <view class="signature-from1-li">
+                    <view></view>
+                    <view class="right">(减)回款差异</view>
+                    <view><text wx:if="{{fundDetail.rows!=''}}">{{fundDetail.notInvoice}}</text></view>
+                </view>
+                <view class="signature-from1-li">
+                    <view></view>
+                    <view class="right">(加)发货差异</view>
+                    <view><text wx:if="{{fundDetail.rows!=''}}">{{fundDetail.delivery}}</text></view>
+                </view>
+                <view class="signature-from1-li">
+                    <view></view>
+                    <view class="right">(减)退货差异</view>
+                    <view><text wx:if="{{fundDetail.rows!=''}}">{{fundDetail.returnvariance}}</text></view>
+                </view>
+                <view class="signature-from1-li">
+                    <view>调整后余额</view>
+                    <view></view>
+                    <view>{{fundDetail.adjustBalance}}</view>
+                </view>
+            </view>
+            <view class="signature-show" @tap="onshowClick">
+                <view>{{contents}}</view>
+                <view
+                    class="h-down b-icon {{up===true ? 'iconliebiaoshaixuanjiantou-down':'iconliebiaoshaixuanjiantou-up'}}"
+                ></view>
+            </view>
+            <view class="signature-cleck">
+                <view class="signature-cleck-li1">海信对账人：
+                    <text class="color26">{{fundDetail.rsUserName}}</text>
+                </view>
+                <view class="signature-cleck-li2">海信公司名称：
+                    <text class="color26">{{fundDetail.rsUnitName}}</text>
+                </view>
+            </view>
+            <view class="signature-hisin">{{fundDetail.customerName}}(应付)</view>
+            <view class="signature-from {{up1===true ? 'show':'hidden'}}">
+                <view class="signature-from-li">
+                    <view class="signature-from-left">应付账款</view>
+                    <view class="signature-from-right"><text wx:if="{{fundCustom.rows!=''}}">{{fundCustom.rows.amount}}</text></view>
+                </view>
+                <view class="signature-from-li">
+                    <view class="signature-from-left">未达及差异</view>
+                    <view class="signature-from-right">{{fundCustom.rows.diffAmt}}</view>
+                </view>
+                <view class="signature-from-li">
+                    <view class="signature-from-left">调整后余额</view>
+                    <view class="signature-from-right">{{fundCustom.rows.adjustBalance}}</view>
+                </view>
+            </view>
+            <view class="signature-from1 {{up1===true ? 'hidden':'show'}}">
+                <view class="signature-from1-li">
+                    <view>应付账款</view>
+                    <view></view>
+                    <view><text wx:if="{{fundCustom.rows!=''}}">{{fundCustom.rows.amount}}</text></view>
+                </view>
+                <view class="signature-from1-li">
+                    <view></view>
+                    <view>账面余额</view>
+                    <view>{{fundCustom.rows.arBalance}}</view>
+                </view>
+                <view class="signature-from1-li">
+                    <view></view>
+                    <view>(加)已收货未收票</view>
+                    <view>{{fundCustom.rows.sniAmt}}</view>
+                </view>
+                <view class="signature-from1-li">
+                    <view></view>
+                    <view>(减)客户方已退货未退税</view>
+                    <view>{{fundCustom.rows.rnrAmt}}</view>
+                </view>
+                <view class="signature-from1-li">
+                    <view>未达标差异</view>
+                    <view></view>
+                    <view>{{fundCustom.rows.diffAmt}}</view>
+                </view>
+                <view class="signature-from1-li">
+                    <view></view>
+                    <view class="right">(加)发票未达</view>
+                    <view><text wx:if="{{fundCustom.rows!=''}}">{{fundCustom.rows.notInvoice}}</text></view>
+                </view>
+                <view class="signature-from1-li">
+                    <view></view>
+                    <view class="right">(加)发货未达</view>
+                    <view><text wx:if="{{fundCustom.rows!=''}}">{{fundCustom.rows.notDelivery}}</text></view>
+                </view>
+                <view class="signature-from1-li">
+                    <view>调整后余额</view>
+                    <view></view>
+                    <view>{{fundCustom.rows.adjustBalance}}</view>
+                </view>
+            </view>
+            <view class="signature-show" @tap="onshowClick1">
+                <view>{{contents1}}</view>
+                <view
+                    class="h-down b-icon {{up1===true ? 'iconliebiaoshaixuanjiantou-down':'iconliebiaoshaixuanjiantou-up'}}"
+                ></view>
+            </view>
+            <view class="signature-cleck">
+                <view class="signature-cleck-li1">客户对账人：
+                    <text class="color26">{{fundDetail.portalUserName}}</text>
+                </view>
+                <view class="signature-cleck-li2">客户名称：
+                    <text class="color26">{{fundCustom.rows.customerName}}</text>
+                </view>
+            </view>
+            <view class="signature-btn" wx:if="{{fundDetail.onlineFlag === '1'}}">
+                <block wx:if="{{ statusFlag !== 'A' && statusFlag !== '3' && statusFlag !== '1' }}">
+                  <button class="signature-btn-click signature-{{ doType === '0' ? 'disable' : 'enable'}}-click" @tap="signature">签章</button>
+                </block>
+                <block wx:else>
+                  <button class="signature-btn-click signature-{{ doType === '0' ? 'disable' : 'enable'}}-click" @tap="view">查看</button>
+                </block>
+            </view>
+        </view>
+        <view
+            class="signature-bottom"
+        >
+            <view class="signature-bottom-title">注：</view>
+            <view
+                class="signature-bottom-content"
+            >1.未达项账包括但不限于：a.海信方发出货物未发出发票，贵方未接受货物或发票。b.贵方收到发票，但未记账 c.贵方已退回货物，办理退税证明或倒开发票，而海信方未收到货物或未冲账。d.对贵方奖励或促销支持等，贵方未记账或我方未记账等情况。</view>
+            <view class="signature-bottom-content">2.该对账单对期末余额进行确认。</view>
+            <view class="signature-bottom-content">3.若双方期末余额不一致，存在未达项，后期需要凭海信方确认的见证性资料原件进行解决。</view>
+            <view class="signature-bottom-content">4.下次双方对账自本次对账截止日期开始。</view>
+            <view
+                class="signature-bottom-content"
+            >5.所有已确认或驳回的申诉，若从反馈日期算起，5天内不关闭，或重新追加申诉，则系统将自动关闭该申诉。</view>
+        </view>
+        <van-toast id="van-toast"/>
+    </view>
+</template>
+
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

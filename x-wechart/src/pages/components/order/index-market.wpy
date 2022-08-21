@@ -1,0 +1,14 @@
+<template>
+  <view class="order-common">
+    <van-cell-group>
+      <van-cell title-class="order-title-class" title="活动名称">
+        <view class="order-common-value">{{common.custActivity.activityName}}</view>
+      </van-cell>
+      <van-cell title-class="order-title-class" title="有效期截至">
+        <view class="order-common-value gray">{{common.custActivity.endDate || '-'}}</view>
+      </van-cell>
+    </van-cell-group>
+  </view>
+</template>
+<style lang="less" src="@/components/order/index.less" scoped></style>
+<script lang="typescript" src="@/components/order/index.ts"></script>

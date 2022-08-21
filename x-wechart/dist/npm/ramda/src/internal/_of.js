@@ -1,0 +1,1 @@
+function _of(o){return[o]}module.exports=_of;

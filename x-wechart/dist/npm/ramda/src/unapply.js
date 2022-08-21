@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),unapply=_curry1(function(r){return function(){return r(Array.prototype.slice.call(arguments,0))}});module.exports=unapply;

@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),_indexOf=require("./internal/_indexOf.js"),_isArray=require("./internal/_isArray.js"),indexOf=_curry2(function(r,e){return"function"!=typeof e.indexOf||_isArray(e)?_indexOf(e,r,0):e.indexOf(r)});module.exports=indexOf;

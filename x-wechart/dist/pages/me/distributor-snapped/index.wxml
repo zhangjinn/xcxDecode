@@ -1,0 +1,569 @@
+
+  <view class="snapped _16f921a">
+    <block  wx:if="{{ pagingActivityResult.total === 0 && loading }}" class="_16f921a">
+      <!-- 总数为0，并且loading状态说明刚进页面，展示为空 -->
+    </block>
+    <block  wx:elif="{{ pagingActivityResult.total === 0 }}" class="_16f921a">
+      
+  <view class="empty-data _16f921a">
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+    </block>
+    <block  wx:else class="_16f921a">
+      <scroll-view class="snapped-scroll _16f921a" enable-flex="enable-flex" scroll-y bindscrolltolower="loadNextPage" bindscroll="onScroll" scroll-top="{{ scrollPosition }}">
+        <block class="_16f921a" wx:for="{{ pagingActivityResult.list }}" wx:for-index="index" wx:for-item="item" wx:key="{{ item.id }}">
+          
+  <view class="item _0682bac _16f921a">
+    <block  wx:if="{{ currentPage === 'distributor' }}" class="_0682bac">
+      <view class="item-header _0682bac">
+        {{ item.custInfoName }}
+      </view>
+    </block>
+    <view class="item-body {{ currentPage === 'my' ? 'item-my-body' : '' }} _0682bac">
+
+      <!-- 组合购 -->
+      <view class="item-body-content _0682bac"  wx:if="{{item.discountTypeId=='90605'}}">
+        <view wx:for="{{ item.slaveList }}" wx:for-index="idx" wx:key="idx" wx:for-item="modelList" class="card-wrapper _0682bac">
+          <view class="modelSeriesHeader _0682bac">
+            <view class="series-name van-ellipsis _0682bac">{{ modelList.actPro.productGroupRemark }}</view>
+            <view class="series-label _0682bac">
+              <view wx:if="{{idx == 0}}" class="org _0682bac">
+                <view class="item-body-content-title-Type combinationPurchaseLabel _0682bac">
+                  {{modelList.discountTypeName}}
+                </view>
+                <view class="item-body-content-title-org _0682bac">
+                  {{ modelList.actPro.fwOrgName }}
+                </view>
+              </view>
+              <view class="condition _0682bac">x{{ modelList.actPro.packageNum }}</view>
+            </view>
+          </view>
+          <view class="item-body-content-productList _0682bac" wx:for="{{modelList.child}}" wx:for-item="ListItem" wx:key="{{index}}">
+            <view class="item-body-img _0682bac">
+              <img src="{{ ListItem.actPro.img }}" class="item-body-img-image _0682bac" errSrc="{{ ListItem.actPro.defaultImg }}"/>
+              <block wx:if="{{ ListItem.status === 1 && !ListItem.disabledSubmit}}" class="_0682bac">
+                <view class="item-body-img-status _0682bac">
+                  已作废
+                </view>
+              </block>
+              <block wx:if="{{ListItem.disabledSubmit }}" class="_0682bac">
+                <view class="item-body-img-status _0682bac">
+                  已过期
+                </view>
+              </block>
+            </view>
+
+            <view class="item-body-content-title _0682bac">
+              <view class="topBlock _0682bac">
+                <view class="item-body-content-title-model _0682bac">
+                  {{ ListItem.actPro.productInfoZzprdmodel }}
+                </view>
+              </view>
+
+              <view class="bottomBlock _0682bac">
+                <view class="content-price _0682bac">
+                  <view class="price-item _0682bac">
+                    <text class="price-symbol _0682bac">¥</text>
+                    <text class="price-num _0682bac">{{ListItem.actPro.billPrice}}</text>
+                    <text class="price-color _0682bac" wx:if="{{ListItem.actPro.color}}">({{ListItem.actPro.color}})</text>
+                  </view>
+                  <view class="content-count _0682bac">x{{ListItem.buyNum}}</view>
+                </view>
+              </view>
+
+              <view class="bottom-block-view _0682bac">
+                <text class="desc _0682bac" wx:if="{{ListItem.actPro.priceGroupName}}">{{ ListItem.actPro.priceGroupName }}</text>
+                <text class="desc _0682bac" wx:if="{{ListItem.actPro.deposit != $item$null}}">定金￥{{ ListItem.actPro.deposit }}</text>
+                <text class="desc _0682bac" wx:if="{{ListItem.actPro.rebateMoney != $item$null}}">返利￥{{ ListItem.actPro.rebateMoney }}</text>
+              </view>
+
+            </view>
+          </view>
+        </view>
+
+        <view class="item-body-content-productInfo _0682bac">
+
+          <view class="item-body-content-info _0682bac">
+            <view class="info-label _0682bac">
+              参与活动
+            </view>
+            <view class="info-value _0682bac">
+              <view class="item-body-content-activity-name _0682bac">
+                {{ item.actPro.activityName }}
+              </view>
+              <view class="item-body-content-info-quantity _0682bac">
+                已认购 {{ item.setsNumber }}
+              </view>
+            </view>
+          </view>
+          <view class="item-body-content-info _0682bac">
+            <view class="info-label _0682bac">
+              参与编码
+            </view>
+            <view class="info-value _0682bac">
+              <view class="item-body-content-activity-name _0682bac">
+                {{ item.orderCode }}
+              </view>
+              <view class="item-body-content-info-quantity order _0682bac">
+                已下单 {{ item.orderNumber }}
+              </view>
+            </view>
+          </view>
+
+          <!--分销的抢单增加活动类型-->
+          <view wx:if="{{currentPage === 'distributor'}}" class="item-body-content-info _0682bac">
+            <view class="info-label _0682bac">
+              活动类型
+            </view>
+            <view class="info-value _0682bac">
+              <view class="item-body-content-activity-name _0682bac">
+                {{ item.actPro.activityType }}
+              </view>
+            </view>
+          </view>
+          <view class="item-body-content-info _0682bac">
+            <view class="info-label _0682bac">
+              转单有效期
+            </view>
+            <view class="info-value _0682bac">
+              <view class="item-body-content-activity-name _0682bac">
+                {{ item.transferExpireDateDesc }}
+              </view>
+            </view>
+          </view>
+          <view class="item-body-content-info _0682bac">
+            <view class="info-label _0682bac">
+              单据状态
+            </view>
+            <view class="info-value _0682bac">
+              <view class="item-body-content-activity-name _0682bac">
+                {{ item.statusName }}
+              </view>
+            </view>
+          </view>
+
+          <view class="item-body-content-info _0682bac">
+            <view class="info-label _0682bac">
+              主单号
+            </view>
+            <view class="info-value _0682bac">
+              <view class="item-body-content-activity-name _0682bac">
+                {{ item.mainOrderCode || '' }}
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 套购或者跨品类套购 -->
+      <view class="item-body-content _0682bac"  wx:if="{{item.discountTypeId===90603 || item.discountTypeId===90604}}">
+        <view class="org-content _0682bac">
+          <view class="org _0682bac">
+            <view class="item-body-content-title-Type normalLabel _0682bac">
+              {{ item.discountTypeName }}
+            </view>
+            <view class="item-body-content-title-org _0682bac">
+              {{ item.actPro.fwOrgName }}
+            </view>
+          </view>
+        </view>
+        <view class="item-body-content-productList van-hairline--bottom _0682bac" wx:for="{{item.slaveList}}" wx:for-item="ListItem" wx:key="{{index}}">
+            <view class="item-body-img _0682bac">
+              <img src="{{ ListItem.actPro.img }}" class="item-body-img-image _0682bac" errSrc="{{ ListItem.actPro.defaultImg }}"/>
+              <block wx:if="{{ ListItem.status === 1 && !ListItem.disabledSubmit}}" class="_0682bac">
+                <view class="item-body-img-status _0682bac">
+                  已作废
+                </view>
+              </block>
+              <block wx:if="{{ListItem.disabledSubmit }}" class="_0682bac">
+                <view class="item-body-img-status _0682bac">
+                  已过期
+                </view>
+              </block>
+            </view>
+
+            <view class="item-body-content-title _0682bac">
+              <view class="topBlock _0682bac">
+                <view class="item-body-content-title-box _0682bac">
+                  <view class="item-body-content-title-model _0682bac">
+                    {{ ListItem.actPro.productInfoZzprdmodel }}
+                  </view>
+                </view>
+              </view>
+
+              <view class="bottomBlock _0682bac">
+                <view class="content-price _0682bac">
+                  <view class="price-item _0682bac">
+                    <text class="price-symbol _0682bac">¥</text>
+                    <text class="price-num _0682bac">{{ListItem.actPro.billPrice}}</text>
+                    <text class="price-color _0682bac" wx:if="{{ListItem.actPro.color}}">({{ListItem.actPro.color}})</text>
+                  </view>
+                  <view class="content-count _0682bac">x{{ListItem.actPro.packageNum}}</view>
+                </view>
+              </view>
+
+              <view class="bottom-block-view _0682bac">
+                <text class="desc _0682bac" wx:if="{{ListItem.actPro.priceGroupName}}">{{ ListItem.actPro.priceGroupName }}</text>
+                <text class="desc _0682bac" wx:if="{{ListItem.actPro.deposit != $item$null}}">定金￥{{ ListItem.actPro.deposit }}</text>
+                <text class="desc _0682bac" wx:if="{{ListItem.actPro.rebateMoney != $item$null}}">返利￥{{ ListItem.actPro.rebateMoney }}</text>
+              </view>
+            </view>
+        </view>
+
+        <view class="item-body-content-productInfo _0682bac">
+          <view class="item-body-content-info _0682bac">
+            <view class="info-label _0682bac">
+              参与活动
+            </view>
+            <view class="info-value _0682bac">
+              <view class="item-body-content-activity-name _0682bac">
+                {{ item.actPro.activityName }}
+              </view>
+              <view class="item-body-content-info-quantity _0682bac">
+                已认购 {{ item.buyNum /item.packageNum}}
+              </view>
+            </view>
+          </view>
+           <view class="item-body-content-info _0682bac">
+             <view class="info-label _0682bac">
+               参与编码
+             </view>
+             <view class="info-value _0682bac">
+               <view class="item-body-content-activity-name _0682bac">
+                 {{ item.orderCode }}
+               </view>
+               <view class="item-body-content-info-quantity order _0682bac">
+                 已下单 {{ item.transNum ? (item.transNum / item.packageNum) : 0 }}
+               </view>
+             </view>
+          </view>
+          <view wx:if="{{currentPage === 'distributor'}}" class="item-body-content-info _0682bac">
+            <view class="info-label _0682bac">
+              活动类型
+            </view>
+            <view class="info-value _0682bac">
+              <view class="item-body-content-activity-name _0682bac">
+                {{ item.actPro.activityType }}
+              </view>
+            </view>
+          </view>
+          <view class="item-body-content-info _0682bac">
+            <view class="info-label _0682bac">
+              转单有效期
+            </view>
+            <view class="info-value _0682bac">
+              <view class="item-body-content-activity-name _0682bac">
+                {{ item.transferExpireDateDesc }}
+              </view>
+            </view>
+          </view>
+          <view class="item-body-content-info _0682bac">
+            <view class="info-label _0682bac">
+              单据状态
+            </view>
+            <view class="info-value _0682bac">
+              <view class="item-body-content-activity-name _0682bac">
+                {{ item.statusName }}
+              </view>
+            </view>
+          </view>
+          <view class="item-body-content-info _0682bac">
+            <view class="info-label _0682bac">
+              主单号
+            </view>
+            <view class="info-value _0682bac">
+              <view class="item-body-content-activity-name _0682bac">
+                {{ item.mainOrderCode || ''}}
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 直降或后返 -->
+      <view class="item-body-content _0682bac" wx:if="{{item.discountTypeId===90601 || item.discountTypeId===90602 }}">
+        <view class="org-content _0682bac">
+          <view class="org _0682bac">
+            <view class="item-body-content-title-Type normalLabel _0682bac">
+              {{ item.discountTypeName }}
+            </view>
+            <view class="item-body-content-title-org _0682bac">
+              {{ item.actPro.fwOrgName }}
+            </view>
+          </view>
+        </view>
+        <view class="item-body-content-productList van-hairline--bottom _0682bac">
+            <view class="item-body-img _0682bac">
+              <img src="{{ item.actPro.img }}" class="item-body-img-image _0682bac" errSrc="{{ item.actPro.defaultImg }}"/>
+              <block wx:if="{{ item.status === 1 && !item.disabledSubmit}}" class="_0682bac">
+                <view class="item-body-img-status _0682bac">
+                  已作废
+                </view>
+              </block>
+              <block wx:if="{{item.disabledSubmit}}" class="_0682bac">
+                <view class="item-body-img-status _0682bac">
+                  已过期
+                </view>
+              </block>
+            </view>
+
+            <view class="item-body-content-title _0682bac">
+              <view class="topBlock _0682bac">
+                <view class="item-body-content-title-box _0682bac">
+                  <view class="item-body-content-title-model _0682bac">
+                    {{ item.actPro.productInfoZzprdmodel }}
+                  </view>
+                </view>
+              </view>
+
+              <view class="bottomBlock _0682bac">
+                <view class="content-price _0682bac">
+                  <view class="price-item _0682bac">
+                    <text class="price-symbol _0682bac">¥</text>
+                    <text class="price-num _0682bac">{{item.actPro.billPrice}}</text>
+                    <text class="price-color _0682bac" wx:if="{{item.actPro.color}}">({{item.actPro.color}})</text>
+                  </view>
+                  <view class="content-count _0682bac">x{{item.buyNum}}</view>
+                </view>
+              </view>
+
+              <view class="bottom-block-view _0682bac">
+                <text class="desc _0682bac" wx:if="{{item.actPro.priceGroupName}}">{{ item.actPro.priceGroupName }}</text>
+                <text class="desc _0682bac" wx:if="{{item.actPro.deposit != $item$null}}">定金￥{{ item.actPro.deposit }}</text>
+                <text class="desc _0682bac" wx:if="{{item.actPro.rebateMoney != $item$null}}">返利￥{{ item.actPro.rebateMoney }}</text>
+              </view>
+
+            </view>
+        </view>
+        <!-- item.status == 1 ? '全部转单' :
+          item.status == 3 ? '待付款' :
+          item.status == 4 ? '等待支付结果' :
+          item.status == 0 ? '未转单' : '部分转单'  -->
+        <view class="item-body-content-productInfo _0682bac">
+
+          <view class="item-body-content-info _0682bac">
+            <view class="info-label _0682bac">
+              参与编码
+            </view>
+            <view class="info-value _0682bac">
+              <view class="item-body-content-activity-name _0682bac">
+                {{ item.orderCode }}
+              </view>
+              <view class="item-body-content-info-quantity _0682bac">
+                已认购 {{ item.buyNum }}
+              </view>
+            </view>
+          </view>
+          <!--分销的抢单增加活动类型-->
+          <view wx:if="{{currentPage === 'distributor'}}" class="item-body-content-info _0682bac">
+            <view class="info-label _0682bac">
+              活动类型
+            </view>
+            <view class="info-value _0682bac">
+              <view class="item-body-content-activity-name _0682bac">
+                {{ item.actPro.activityType }}
+              </view>
+              <view class="item-body-content-info-quantity order _0682bac">
+                已下单 {{ item.transNum ? item.transNum : 0}}
+              </view>
+            </view>
+          </view>
+
+          <view class="item-body-content-info _0682bac">
+            <view class="info-label _0682bac">
+              转单有效期
+            </view>
+            <view class="info-value _0682bac">
+              <view class="item-body-content-activity-name _0682bac">
+                {{ item.transferExpireDateDesc }}
+              </view>
+              <view wx:if="{{currentPage !== 'distributor'}}" class="item-body-content-info-quantity order _0682bac">
+                已下单 {{ item.transNum ? item.transNum : 0}}
+              </view>
+            </view>
+          </view>
+
+          <view class="item-body-content-info _0682bac">
+            <view class="info-label _0682bac">
+              单据状态
+            </view>
+            <view class="info-value _0682bac">
+              <view class="item-body-content-activity-name _0682bac">
+                {{ item.statusName }}
+              </view>
+            </view>
+          </view>
+
+        </view>
+      </view>
+    </view>
+    <view class="item-footer _0682bac">
+      <view class="item-footer-top _0682bac">
+        <view class="left _0682bac">
+          <view class="left-name _0682bac">
+            <icon style="color:#ccc;font-size:26rpx" class="b-icon iconqiangdanfenxiaoyuan item-footer-name-icon _0682bac"/> {{ item.account }}
+          </view>
+          <view class="left-time _0682bac">
+            {{ item.activityTime }}
+          </view>
+        </view>
+        <view wx:if="{{currentPage === 'my'&&!item.disabledSubmit && item.transFlag== '3'}}" class="right _0682bac" bindtap="$item$goPay" data-com-index="{{index}}" data-wpygopay-a="{{item}}">
+          <view wx:if="{{item.statusName == '待付款'  }}" class="box  gopay _0682bac">去支付</view>
+        </view>
+
+        <!-- 0未转单  1已转订单 2转单中 3待付款 4等待支付结果 11 部分转单 -->
+        <view wx:if="{{currentPage === 'my' && item.status!== 1 && !item.isExpired && (item.transFlag =='11' || item.transFlag =='0') && item.actPro.activityType != '抢购'}}" class="right _0682bac" bindtap="$item$goOrder" data-com-index="{{index}}" data-wpygoorder-a="{{item}}">
+          <view wx:if="{{!item.disabledSubmit }}" class="box goOrder _0682bac">去下单</view>
+          <view wx:if="{{item.disabledSubmit}}" class="box box-disabled _0682bac">去下单</view>
+        </view>
+      </view>
+
+        <!--   支付有效期 item.transFlag== '3'并且去支付状态下才显示  -->
+      <view wx:if="{{currentPage === 'my'&&!item.disabledSubmit && item.transFlag== '3'}}" class="item-footer-bottom _0682bac">
+        <view wx:if="{{item.statusName == '待付款'  }}" class="_0682bac">
+          <text class="payment-time-limit-label _0682bac">支付有效期至：</text>
+          <text class="payment-time-limit-value _0682bac">{{ item.purchasePaymentTimeLimitStr }}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+        </block>
+      </scroll-view>
+    </block>
+
+    
+  <view class="filter _908b062 _16f921a">
+    <van-popup show="{{ $filter$calendarShow }}" position="bottom"  bind:close="$filter$closeCalendar" z-index="200" class="_908b062">
+      <calendar calendarConfig="{{ $filter$calendarConfig }}" bind:afterTapDay="$filter$chooseDay" class="_908b062"/>
+    </van-popup>
+    <van-popup show="{{ $filter$filterVisible }}" position="right"  bind:close="$filter$closeDrawer" custom-style="height: 100%;" class="_908b062">
+      <view class="filter-drawer _908b062">
+        <view class="filter-drawer-attr _908b062">
+          <!-- <view class="header-divider" style="height: {{sys.statusBarHeight}}px" /> -->
+          <!-- <view class="header-divider" style="height: 35px">筛选</view> -->
+          <scroll-view class="filter-drawer-attr-scroll _908b062" scroll-y>
+            <view class="attr-item _908b062">
+              <view bindtap="$filter$openChoose" class="attr-item-header _908b062" hover-class="hover" data-wpyopenchoose-a="org">
+                <view class="title _908b062">供应商</view>
+                <view class="right _908b062">
+                  <view class="address _908b062">{{ $filter$chooseOrg.name }}</view>
+                  <view class="b-icon h-icon icon-more _908b062"/>
+                </view>
+              </view>
+              <block  wx:if="{{ $filter$currentPage === 'distributor' }}" class="_908b062">
+                <view class="attr-item-mid-one _908b062" hover-class="hover">
+                  <view class="item-name _908b062">商家名称</view>
+                  <!-- <view class="item-customer"> -->
+                  <navigator url="/pages/dms/order-customer-choose/index" class="item-customer _908b062">
+                    <view class="item-customer-name {{ $filter$chooseCustomerInfo.customerName ? '' : 'item-customer-placeholder' }} _908b062">
+                      {{ $filter$chooseCustomerInfo.customerName ? $filter$chooseCustomerInfo.customerName : '请输入老板名称/商家名称/商家编码' }}
+                    </view>
+                    <block wx:if="{{ $filter$chooseCustomerInfo.customerCode }}" class="_908b062">
+                      <view class="item-customer-code _908b062">
+                        ,{{ $filter$chooseCustomerInfo.customerCode }}
+                      </view>
+                    </block>
+                    <view class="item-customer-code _908b062">
+                      {{ $filter$chooseCustomerInfo.customerCode ? '' : '' }}
+                    </view>
+                  </navigator>
+                </view>
+
+              </block>
+              <view bindtap="$filter$openChoose" class="attr-item-mid _908b062" hover-class="hover" data-wpyopenchoose-a="matkl">
+                <view class="title _908b062">物料组</view>
+                <view class="right _908b062">
+                  <view class="address _908b062">{{ $filter$chooseMatkl.name }}</view>
+                  <view class="b-icon h-icon icon-more _908b062"/>
+                </view>
+              </view>
+              <view class="attr-item-mid-one _908b062" hover-class="hover">
+                <view class="item-name _908b062">产品型号</view>
+                <van-field placeholder="请输入产品型号" value="{{ $filter$form.productModel }}" placeholder-style="font-size: 24rpx;color: #AAAAAA;" border="{{ $filter$false }}" bind:change="$filter$onModelChange" custom-style="background-color: #f7f7f7;height: 80rpx" clearable="clearable" class="_908b062"/>
+              </view>
+              <view class="attr-item-mid-one _908b062" hover-class="hover">
+                <view class="item-name _908b062">活动名称</view>
+                <van-field placeholder="请输入活动名称/活动编码" value="{{ $filter$form.activityName }}" placeholder-style="font-size: 24rpx;color: #AAAAAA;" border="{{ $filter$false }}" bind:change="$filter$onZzprdmodelChange" custom-style="background-color: #f7f7f7;height: 80rpx" clearable="clearable" class="_908b062"/>
+              </view>
+              <view class="order-data _908b062">
+                <view class="project _908b062">
+                  <text style="font-size: 13px;color: #777777" class="_908b062">抢购日期</text>
+                </view>
+                <view class="order-data-input _908b062">
+                  <view class="order-data-input-one _908b062" data-name="startDate" bindtap="$filter$openCalendar">
+                    <view data-name="startDate" class="text _908b062">{{$filter$form.startDate|| '开始日期'}}</view>
+                    <view class="order-data-input-one-clear _908b062" catchtap="$filter$clearCalendar" data-wpyclearcalendar-a="startDate">
+                      <van-icon  wx:if="{{$filter$form.startDate}}" custom-style="font-size: 24rpx;color: #aaaaaa;padding-right: 15rpx" name="clear" class="_908b062"/>
+                    </view>
+                  </view>
+                  <view class="order-data-input-line _908b062">-</view>
+                  <view class="order-data-input-one _908b062" data-name="endDate" bindtap="$filter$openCalendar">
+                    <view data-name="endDate" class="text _908b062">{{$filter$form.endDate || '结束日期'}}</view>
+                    <view class="order-data-input-one-clear _908b062" catchtap="$filter$clearCalendar" data-wpyclearcalendar-a="endDate">
+                      <van-icon  wx:if="{{$filter$form.endDate}}" custom-style="font-size: 24rpx;color: #aaaaaa;padding-right: 15rpx" name="clear" class="_908b062"/>
+                    </view>
+                  </view>
+                </view>
+              </view>
+              <view class="attr-item-mid-one _908b062">
+                <view class="item-name _908b062">是否有效</view>
+                <view class="item-status _908b062">
+                  <view class="item-status-choose {{ $filter$form.status === '0' ? 'item-status-active' : '' }} _908b062" bindtap="$filter$chooseStatus" data-wpychoosestatus-a="0">
+                    是
+                  </view>
+                  <view class="item-status-choose {{ $filter$form.status === '1' ? 'item-status-active' : '' }} _908b062" bindtap="$filter$chooseStatus" data-wpychoosestatus-a="1">
+                    否
+                  </view>
+                </view>
+              </view>
+
+            </view>
+          </scroll-view>
+          <view class="filter-drawer-attr-footer _908b062">
+            <view bindtap="$filter$resetSearch" class="filter-drawer-attr-footer-btn reset _908b062" hover-class="filter-drawer-attr-footer-btn-hover">重置</view>
+            <view bindtap="$filter$confirmSearch" class="filter-drawer-attr-footer-btn confirm _908b062" hover-class="filter-drawer-attr-footer-btn-hover">确认</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ $filter$chooseVisible }}" position="right" overlay="{{ $filter$true }}"  bind:close="$filter$closeDrawer" custom-style="height: 100%;" overlay-style="overlay" class="_908b062">
+      <view class="filter-drawer _908b062">
+        <view class="filter-drawer-attr _908b062">
+          <!-- <view class="header-divider" style="height: {{sys.statusBarHeight}}px" /> -->
+          <view class="info _908b062">
+            <van-icon name="arrow-left" class="icons _908b062" bind:click="$filter$closeChoose"/>
+            <view class="title _908b062">{{ $filter$chooseTitle }}</view>
+          </view>
+          <scroll-view class="filter-drawer-attr-scroll _908b062" scroll-y>
+            <view class="attr-item _908b062">
+              <view class="attr-item-content _908b062">
+                <block class="_908b062" wx:for="{{ $filter$chooseList }}" wx:for-index="$filter$index" wx:for-item="$filter$item" wx:key="$filter$key">
+                  <view class="attr-item-content-line _908b062" bindtap="$filter$onSelect" data-wpyonselect-a="{{ $filter$item }}">
+                    <view class="text {{$filter$compareInfo.id === $filter$item.id ? 'active' : ''}} _908b062">{{$filter$item.name}}</view>
+                    <van-icon wx:if="{{ $filter$compareInfo.id === $filter$item.id }}" name="success" class="time-selected _908b062" size="32rpx"/>
+                  </view>
+                </block>
+              </view>
+            </view>
+          </scroll-view>
+        </view>
+      </view>
+    </van-popup>
+
+  </view>
+
+    <button class="screening shareBar _16f921a" lang="zh_CN" bindtap="openFilter">
+      <text class="shareBarname _16f921a">筛选</text>
+    </button>
+    <!-- 回到上方 -->
+    <button hidden="{{!visibelTop}}" bindtap="scrollToTop" class="screen shareBar _16f921a" lang="zh_CN">
+      <view class="b-icon icon-top _16f921a"/>
+    </button>
+
+
+    <van-toast id="van-toast" class="_16f921a"/>
+  </view>

@@ -1,0 +1,1 @@
+var _objectAssign=require("./internal/_objectAssign.js"),_curry1=require("./internal/_curry1.js"),mergeAll=_curry1(function(r){return _objectAssign.apply(null,[{}].concat(r))});module.exports=mergeAll;

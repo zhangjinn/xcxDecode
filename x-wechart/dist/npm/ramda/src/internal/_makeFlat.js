@@ -1,0 +1,1 @@
+function _makeFlat(e){return function r(t){for(var i,n,a,l=[],o=0,s=t.length;o<s;){if(_isArrayLike(t[o]))for(i=e?r(t[o]):t[o],a=0,n=i.length;a<n;)l[l.length]=i[a],a+=1;else l[l.length]=t[o];o+=1}return l}}var _isArrayLike=require("./_isArrayLike.js");module.exports=_makeFlat;

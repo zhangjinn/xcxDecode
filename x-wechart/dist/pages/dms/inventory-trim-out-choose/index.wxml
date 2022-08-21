@@ -1,0 +1,66 @@
+
+  <view class="sarch _edcd1ba">
+    <view class="search-container _edcd1ba">
+      <view class="search-container-label _edcd1ba">
+        产品信息
+      </view>
+      <van-search class="search-container-input _edcd1ba" value="{{ productCode }}" leftSearchIconSow="{{ false }}" placeholder="请输入产品信息" custom-class="dms-item-search-input" placeholder-style="font-size:26rpx;" focus="{{ true }}"  bind:search="onSearch" bind:change="onChange" clearable="{{ true }}"/>
+    </view>
+
+    <!--<repeat for="{{ likePaging }}" item="item">
+      <view class="search-result-row" bindtap="chooseItem('{{ index }}')">
+        <view class="search-result-row-product">
+          <view class="search-result-row-product-name">
+            {{ item.productName }}
+          </view>
+          <view class="search-result-row-product-colour">
+            {{ item.colour }}
+          </view>
+        </view>
+
+        <view class="search-result-row-qty">
+          可供量{{ item.bigQty }}
+          <span class="volume" wx:if="{{item.volume}}">,体积:{{item.volume}}m³</span>
+        </view>
+
+      </view>
+    </repeat>-->
+
+    <!---->
+    <view class="order-scroll _edcd1ba">
+      <block class="_edcd1ba" wx:for="{{inventoryList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="order-container _edcd1ba" bindtap="chooseItem" data-wpychooseitem-a="{{ index }}">
+          <view class="order-top _edcd1ba">
+            <view class="order-name _edcd1ba">
+              <view class="order-rel-name _edcd1ba">
+                <view class="order-name-left _edcd1ba">{{item.model}}{{item.colour ? '/' + item.colour : ''}}</view>
+              </view>
+              <!-- <view class="order-number" style="margin-left: 40rpx;">{{item.invStatusName}}{{item.quvlitylv ? '/' + item.quvlitylv : ''}}{{item.invStatusTypeName ? ' / ' + item.invStatusTypeName : ''}}</view> -->
+              <view class="order-number _edcd1ba" style="margin-left: 40rpx;">{{item.invStatusName}}{{item.invStatusTypeName ? ' / ' + item.invStatusTypeName : ''}}</view>
+            </view>
+          </view>
+          <view class="order-options _edcd1ba">
+            <view class="item is-lock _edcd1ba">
+              <span class="_edcd1ba">可用</span>
+              ({{item.bigQty || '无'}})</view>
+            <view class="item _edcd1ba">
+              <span class="_edcd1ba">实际</span>
+              ({{item.totalBig}})
+            </view>
+            <view class="item _edcd1ba">
+              <span class="_edcd1ba">锁定</span>
+              ({{item.bigQtyLock}})
+            </view>
+          </view>
+          <view class="order-content _edcd1ba">
+            <view class="order-content-laster _edcd1ba">仓库: {{item.warehouseName}}</view>
+            <view class="order-content-items _edcd1ba">物料组: {{item.materialGroupName}}</view>
+            <!-- <view class="order-content-items">物料组: {{item.materialGroupName}}  <span style="margin-left: 40rpx;"></span>  库存类型: {{item.invTypeName}}</view> -->
+          </view>
+        </view>
+
+      </block>
+    </view>
+
+
+  </view>

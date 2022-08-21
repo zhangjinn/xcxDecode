@@ -1,0 +1,24 @@
+export const GET_CART_COUNT = 'GET_CART_COUNT';
+
+export const GET_CART_LIST = 'GET_CART_LIST';
+
+export const GET_CART_PRICE_LIST = 'GET_CART_PRICE_LIST';
+
+export const GET_CART_STOCK_LIST = 'GET_CART_STOCK_LIST';
+
+export const GET_CART_POLICY_ITEM = 'GET_CART_POLICY_ITEM';
+
+export const RESET_CART_ITEM_POLICY = 'RESET_CART_ITEM_POLICY';
+
+export const UPDATE_CART_ITEM_COUNT = 'UPDATE_CART_ITEM_COUNT';
+
+export const REMOVE_CART_ITEM = 'REMOVE_CART_ITEM';
+
+export const RESET_CART_ITEM_QUANTITY = 'RESET_CART_ITEM_QUANTITY';
+
+// 三期新加供应商和物料组 以前不得不动 但是不用了
+export const GET_CART_SUPPLY_AND_ITEM_GROUP = 'GET_CART_SUPPLY_AND_ITEM_GROUP'
+// 批量获取dms价格，价格id, 库存id
+export const GET_DMS_PRIDE_AND_ID = 'GET_DMS_PRIDE_AND_ID'
+// 批量获取dms库存
+export const GET_CART_DMS_STOCK_LIST = 'GET_CART_DMS_STOCK_LIST';

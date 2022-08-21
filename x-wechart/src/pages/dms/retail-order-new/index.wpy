@@ -1,0 +1,366 @@
+<template>
+  <view class="order">
+    <!-- 提示部分内容 -->
+    <van-popup
+      show="{{ isNoticePopupShow }}"
+      closeable
+      position="bottom"
+      bind:close="noticePopupClose"
+    >
+      <view class="noticeCon">
+        <view class="noticeCon-title van-hairline--bottom">
+          物流费用规则
+          <i
+            @tap="noticePopupClose"
+            class="b-icon iconyiquxiao"
+          ></i>
+        </view>
+        <scroll-view
+          scroll-y="true"
+          class="noticeCon-scroll"
+        >
+          <view class="noticeCon-scroll-con">
+            <text>{{expressFee}}</text>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <popup title="创建零售订单失败" />
+    <view class="order-scroll">
+      <view class="free-shipping-tip">
+        {{ dynamicMessage.freeShippingTip }}
+      </view>
+      <view class="order-scroll-head">
+        <view
+          class="item-row clear-height-border"
+          @tap="openChoose('stores', 'store', '所属门店')"
+        >
+          <stores
+            style="width:100%;"
+            return_title="{{ store.name }}"
+            List="{{ storeMaterial }}"
+          />
+        </view>
+        <view
+          class="item-row"
+          @tap="openChoose('saleTypes', 'saleType', '销售类型')"
+        >
+          <view class="item-row-left">
+            <text>销售类型</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory {{ saleType.id ? '' : 'placeholder' }}">
+              {{ saleType.name }}
+            </view>
+            <van-icon
+              name="arrow"
+              custom-class="dms-item-row-right-arrow"
+            />
+          </view>
+        </view>
+        <view
+          class="item-row"
+          @tap="openChoose('oldNews', 'oldNew', '以旧换新')"
+        >
+          <view class="item-row-left">
+            <text>以旧换新</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory {{ oldNew.id ? '' : 'placeholder' }}">
+              {{ oldNew.name }}
+            </view>
+            <van-icon
+              name="arrow"
+              custom-class="dms-item-row-right-arrow"
+            />
+          </view>
+        </view>
+        <view wx-if='{{oldNew.id == 1}}'
+          class="item-row"
+          @tap="openChoose('completeOlds', 'completeOld', '完成收旧')"
+        >
+          <view class="item-row-left">
+            <text>完成收旧</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory {{ completeOld.id ? '' : 'placeholder' }}">
+              {{ completeOld.name }}
+            </view>
+            <van-icon
+              name="arrow"
+              custom-class="dms-item-row-right-arrow"
+            />
+          </view>
+        </view>
+        <view wx-if='{{oldNew.id == 1}}'
+          class="item-row"
+          @tap="openChoose('oldMachCategoryList', 'oldMachCategory', '旧机品类')"
+        >
+          <view class="item-row-left">
+            <text>旧机品类</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory {{ oldMachCategory.id ? '' : 'placeholder' }}">
+              {{ oldMachCategory.name || '请选择'}}
+            </view>
+            <van-icon
+              name="arrow"
+              custom-class="dms-item-row-right-arrow"
+            />
+          </view>
+        </view>
+        <view wx-if='{{oldNew.id == 1}}'
+          class="item-row"
+          @tap="openChoose('oldMachTreatWayList', 'oldMachTreatWay', '旧机处理途径')"
+        >
+          <view class="item-row-left">
+            <text>旧机处理途径</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory {{ oldMachTreatWay.id ? '' : 'placeholder' }}">
+              {{ oldMachTreatWay.name || '请选择'}}
+            </view>
+            <van-icon
+              name="arrow"
+              custom-class="dms-item-row-right-arrow"
+            />
+          </view>
+        </view>
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>客户</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-note">
+              <van-field
+                value="{{ customerName }}"
+                placeholder="请填写客户名称"
+                border="{{ false }}"
+                input-align="right"
+                bind:change="onCustomerNameChange"
+                class="dms-order-note"
+              />
+            </view>
+          </view>
+        </view>
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>客户联系电话</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-note">
+              <van-field
+                value="{{ customerPhone }}"
+                placeholder="请填写客户联系方式"
+                border="{{ false }}"
+                input-align="right"
+                bind:change="onCustomerPhoneChange"
+                class="dms-order-note"
+              />
+            </view>
+          </view>
+        </view>
+        <view
+          class="item-row"
+          @tap="openTopAddress"
+        >
+          <view class="item-row-left">
+            <text>省市区县</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory {{ chooseProvinceInfo.id ? '' : 'placeholder' }}">
+              {{ addressTip }}
+            </view>
+            <van-icon
+              name="arrow"
+              custom-class="dms-item-row-right-arrow"
+            />
+          </view>
+        </view>
+        <addressDetail
+          :chooseRegionId.sync="chooseRegionId"
+          :isRequired.sync="addressDetailRequired"
+        />
+        <view
+          class="item-row"
+          @tap="openChoose('deliveryMode', 'deliveryMethod', '配送方式')"
+        >
+          <view class="item-row-left">
+            <text>配送方式</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory {{ deliveryMethod.id ? 'item-row-right-delivery' : 'placeholder' }}">
+              {{ deliveryMethod.name }}
+            </view>
+            <van-icon
+              name="arrow"
+              custom-class="dms-item-row-right-arrow"
+            />
+          </view>
+        </view>
+
+        <view
+          class="item-row"
+          @tap="openChooseDayPopup"
+        >
+          <view class="item-row-left">
+            <text>期望到货日期</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory {{ expectedDeliveryDate ? '' : 'placeholder' }}">
+              {{ expectedDeliveryDate || '请选择' }}
+            </view>
+            <van-icon
+              name="arrow"
+              custom-class="dms-item-row-right-arrow"
+            />
+          </view>
+        </view>
+        <view class="item-row">
+          <view class="item-row-left">
+            备注
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-note">
+              <van-field
+                value="{{ note }}"
+                placeholder="请填写备注"
+                border="{{ false }}"
+                input-align="right"
+                bind:change="onNoteChange"
+                class="dms-order-note"
+              />
+            </view>
+          </view>
+        </view>
+        <view class="annex-content-info">
+          <text class="annex-content-info-text">附件</text>
+          <view class="pose-issue-content annex-upload">
+            <van-uploader
+              accept="image"
+              file-list="{{ fileList }}"
+              bind:before-read="beforeRead"
+              bind:after-read="afterRead"
+              bind:delete="delImg"
+            />
+          </view>
+        </view>
+      </view>
+      <order
+        :out.sync="sendInventoryInfo"
+        :outInv.sync="outInv"
+        :orgId.sync="fiBook"
+        :requiredParameters.sync="requiredParameters"
+        :ly.sync="ly"
+        :isDisabled.sync="isDisabled"
+      />
+
+    </view>
+
+    <van-submit-bar
+      button-text="提交并出库"
+      custom-class="order-bottom"
+      button-class-container="dms-order-bottom-button-save"
+      button-class="dms-order-bottom-button-save-submit"
+      bind:submit="submit"
+    >
+      <view
+        slot="top"
+        class="order-bottom-amount"
+      >
+        <view class="order-bottom-volume-num">体积:{{volume}}m³</view>
+        <i
+          class="b-icon iconwenti"
+          @tap="noticePopupOpen"
+        ></i>
+        <view class="order-bottom-amount-tip">
+          合计
+        </view>
+        <view class="order-bottom-amount-num">
+          ￥{{ amount }}
+        </view>
+      </view>
+    </van-submit-bar>
+
+    <!--  期望到货日期  -->
+    <van-popup
+      show="{{calendarShow}}"
+      position="bottom"
+      bind:close="closeCalendar"
+      z-index="200"
+    >
+      <view>
+        <van-datetime-picker
+          value="{{ currentDate }}"
+          bind:confirm="chooseDay"
+          bind:cancel="closeCalendar"
+        />
+      </view>
+    </van-popup>
+    <van-popup
+      show="{{ popVisible }}"
+      closeable
+      position="bottom"
+      custom-style="height: 570rpx"
+      bind:click-overlay="onClose"
+    >
+      <view class="order-inv">
+        <view class="order-inv-head">
+          <view class="order-inv-head-context">
+            <view class="order-inv-head-context-title">{{ popTitle }}</view>
+            <van-icon
+              name="cross"
+              class="order-inv-head-context-close"
+              bindtap="onClose"
+            />
+          </view>
+        </view>
+        <scroll-view
+          scroll-y
+          class="order-inv-scroll"
+        >
+          <view
+            wx:for="{{ popList }}"
+            wx:key="{{ item.id }}"
+            item="item"
+            class="order-inv-scroll-row"
+            data-key="{{ item.id }}"
+            data-index="{{ index }}"
+            bindtap="onChoose"
+          >
+            <view wx:if="{{ popTitle === '所属门店'}}" class="store-type">
+              <text wx:if="{{item.isSpeclalShop === '1'}}" class="storePaizi specialShopBgColor">专卖</text>
+              <text wx:else class="storePaizi">门店</text>
+              <view class="order-inv-scroll-row-desc {{ item.id === compareInfo.id ? 'checked' : ''}}">
+                {{ item.name }}
+              </view>
+            </view>
+            <view wx:else class="order-inv-scroll-row-desc {{ item.id === compareInfo.id ? 'checked' : ''}}">
+              {{ item.name }}
+            </view>
+            <block wx:if="{{ item.id === compareInfo.id }}">
+              <view class="b-icon icon-check order-inv-scroll-row-checked checked">
+              </view>
+            </block>
+          </view>
+
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-dialog id="van-dialog" />
+    <address />
+    <van-toast id="van-toast" />
+  </view>
+
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

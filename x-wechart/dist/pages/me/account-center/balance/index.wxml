@@ -1,0 +1,164 @@
+
+  <view class="balance">
+    <view class="balance-filter">
+      <van-cell-group>
+        <van-cell title-class="title" value-class="value" title="售达方编码" value="{{ customer.customerCode }}"/>
+        <van-cell title-class="title" value-class="value" title="售达方名称" value="{{ customer.customerName }}"/>
+        <van-cell bindtap="openOrgList" title-class="title" value-class="valuen" is-link="is-link" title="销售组织" value="{{ orgName }}"/>
+        <van-cell bindtap="openMatklList" title-class="title" value-class="valuen" is-link="is-link" title="物料组" value="{{ matklName }}"/>
+      </van-cell-group>
+    </view>
+
+    <van-popup show="{{ orgListShow }}" custom-class="pop" position="bottom" close-on-click-overlay="true" safe-area-inset-bottom="true"  bind:close="onOrgClose">
+      <view class="org">
+        <view class="org-head">
+          <view class="org-head-name">
+            销售组织
+          </view>
+          <view class="org-head-close" bindtap="onOrgClose">
+            <icon class="b-icon icon-close"/>
+          </view>
+        </view>
+        <view>
+          <scroll-view scroll-y class="org-body">
+            <block id="id" wx:for="{{ orgs }}" wx:for-index="index" wx:for-item="item" wx:key="id">
+              <view class="org-body-item {{ item.organizationCode === orgCode ? 'active' : '' }}" bindtap="chooseOrg" data-wpychooseorg-a="{{ item.id }}">
+                <view class="org-body-item-name ">
+                  {{ item.organizationName }}
+                </view>
+                <icon class="b-icon icon-check"  wx:if="{{ item.organizationCode === orgCode }}"/>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+      </view>
+    </van-popup>
+
+    <van-popup show="{{ matklListShow }}" custom-class="pop" position="bottom" close-on-click-overlay="true" safe-area-inset-bottom="true"  bind:close="onMatklClose">
+      <view class="org">
+        <view class="org-head">
+          <view class="org-head-name">
+            物料组
+          </view>
+          <view class="org-head-close" bindtap="onMatklClose">
+            <icon class="b-icon icon-close"/>
+          </view>
+        </view>
+        <view>
+          <scroll-view scroll-y class="org-body">
+            <block id="id" wx:for="{{ matkls }}" wx:for-index="index" wx:for-item="item" wx:key="id">
+              <view class="org-body-item {{ item.matklCode === matklCode ? 'active' : '' }}" bindtap="chooseMatkl" data-wpychoosematkl-a="{{ item.id }}">
+                <view class="org-body-item-name ">
+                  {{ item.matklName }}
+                </view>
+                <icon class="b-icon icon-check"  wx:if="{{ item.matklCode === matklCode }}"/>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+      </view>
+    </van-popup>
+
+    <view class="balance-submit" bindtap="submit">
+         <van-button color="#00AAA6" custom-class="submit" type="primary" size="large">查询</van-button>
+    </view>
+    <!-- 始终展示部分 -->
+    <view class="balance-result" wx:if="{{ balance.show }}">
+      <view class="balance-result-account">
+        <view class="balance-result-account-desc balance-result-account-desc-ret">
+          账户可用金额
+        </view>
+        <view class="balance-result-account-fee balance-result-account-fee-ret">
+          ￥{{ balance.balanceAccount-balance.waitBalance }}
+        </view>
+      </view>
+
+      <view class="balance-result-account">
+        <view class="balance-result-account-desc">
+          账户金额
+        </view>
+        <view class="balance-result-account-fee">
+          ￥{{ balance.balanceAccount }}
+        </view>
+      </view>
+      <view class="balance-result-account">
+        <view class="balance-result-account-desc">
+          预占用金额
+        </view>
+        <view class="balance-result-account-fee">
+          ￥{{ balance.waitBalance }}
+        </view>
+      </view>
+      <view class="balance-result-account">
+        <view class="balance-result-account-desc">
+          返利金额
+        </view>
+        <view class="balance-result-account-fee">
+          ￥{{ balance.rebateAccount }}
+        </view>
+      </view>
+    </view>
+
+    <view class="balance-more" wx:if="{{ balance.show }}">
+      <view class="item-more" bindtap="showDetail" hidden="{{ showDetail }}">
+        <view class="item-more-tip">
+          展开预占用金额明细
+        </view>
+        <van-icon name="arrow-down" class="detailIcon"/>
+      </view>
+      <view class="item-more" bindtap="hiddenDetail" hidden="{{ !showDetail }}">
+        <view class="item-more-tip">
+          收起预占用金额明细
+        </view>
+        <van-icon name="arrow-up" class="detailIcon"/>
+      </view>
+    </view>
+
+    <!--<scroll-view
+      wx:if="{{showDetail && inventoryList.length !== 0}}"
+      scroll-y="true"
+      class="order-scroll"
+      enable-flex
+      bindscrolltolower="onGetOrderListNext"
+    >-->
+    <view wx:if="{{showDetail && waitBalanceList.dataList.length !== 0}}" class="order-scroll">
+      <block wx:for="{{waitBalanceList.dataList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="order-container">
+          <view class="order-top">
+            <view class="order-name">
+              <view class="order-rel-name">
+                <view class="order-name-title">
+                  <view class="order-name-left">{{item.orgName}}</view>
+                  <view class="order-name-code">{{item.orderCode}}</view>
+                </view>
+                <view class="order-name-fkStatus">{{item.fkStatus}}</view>
+              </view>
+            </view>
+          </view>
+          <view class="order-content">
+            <view class="order-content-items">
+              <view class="order-number">物料组：({{item.matklName}})</view>
+            </view>
+            <view class="order-content-items">
+              <view class="order-number">订单类型：{{item.orderType}}</view>
+            </view>
+            <view class="order-content-items">
+              <view class="order-number">订单状态：{{item.status}}</view>
+            </view>
+            <view class="order-content-items">
+              <view class="order-content-item">要求到货周次: {{item.weekName}}</view>
+              <view class="order-content-item">订单金额: ￥{{item.orderAmt}}</view>
+            </view>
+            <view class="order-content-items">
+              <view class="order-content-item">下单日期: {{item.createdDate}}</view>
+              <view class="order-content-item">预占用金额: <view class="waitBalance">￥{{item.waitBalance}}</view></view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+    <!--</scroll-view>-->
+
+
+
+  </view>

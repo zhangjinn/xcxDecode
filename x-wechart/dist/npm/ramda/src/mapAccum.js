@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),mapAccum=_curry3(function(r,u,c){for(var e=0,n=c.length,a=[],m=[u];e<n;)m=r(m[0],c[e]),a[e]=m[1],e+=1;return[m[0],a]});module.exports=mapAccum;

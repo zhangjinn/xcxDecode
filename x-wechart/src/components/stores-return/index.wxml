@@ -1,0 +1,25 @@
+<view class="item">
+  <view class="item-header">
+    <view class="item-header-name">
+      <text>所属门店</text>
+      <text class="redXing">*</text>
+    </view>
+    <view class="item-icons">
+      <view wx:if="{{return_title == '请选择'}}" class="text-name">{{return_title}}</view>
+      <view wx:if="{{return_title !== '请选择'}}" class="text-named">{{return_title}}</view>
+      <view class="b-icon icon-more icons"></view>
+    </view>
+  </view>
+  <view class="item-bottom">
+    <view class="ex">
+      <view wx:if="{{ List.length !== 0}}" class="item-name">可售物料组：</view>
+      <block wx:if="{{ List.length !== 0}}">
+        <view class="item-btn">
+          <view wx:for="{{ List }}" wx:key="in" class="capsule">
+            <view class="text">{{item.value}}</view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>

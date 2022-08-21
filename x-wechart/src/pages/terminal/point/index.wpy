@@ -1,0 +1,58 @@
+<template>
+  <view class="page-wrap">
+    <view class="top-wrap">
+      <view>
+        <view class="b-icon niaoxing"/>
+      </view>
+      <view class="font">
+        <view>终端巡查</view>
+        <view>请按终端管理要求，逐条点检并勾选</view>
+      </view>
+    </view>
+    <view class="botm-wrap">
+      <repeat for="{{list}}" item="item" index="index">
+        <view class="card">
+          <view class="head">
+            <text class="b-icon mendian"/>
+            <text class="mendian-text">{{ item.checkProject }}</text>
+          </view>
+          <view class="list">
+            <repeat for="{{item.listStandar}}" item="itemChild" index="indexChild">
+              <view class="item">
+                <text class="index">{{indexChild+1}}</text>
+                <text class="name">{{itemChild.contentRead}}</text>
+                <text class="{{itemChild.checkResult=='T'?'type':'type type-disabled'}}" @tap="changeType({{index}},{{indexChild}})">合格</text>
+              </view>
+            </repeat>
+          </view>
+        </view>
+      </repeat>
+    </view>
+    <view class="submit-wrap">
+      <view class="rest">
+        <text class="rest-text">点检结果</text>
+        <text class="{{checkResult=='F'?'rest-type rest-type-disabled':'rest-type'}}">{{ checkResult=='T'?'合格':'不合格' }}</text>
+      </view>
+      <view class="btn" @tap="nextStep">下一步</view>
+    </view>
+    <view
+      @tap="onClose"
+      data-type="close"
+      hidden="{{ !showSing }}"
+      class="sing-bg"
+    >
+      <view class="sign-wrap"  hover-stop-propagation='true'>
+        <view class="draw-wrap">
+          <canvas class="can"  disable-scroll='true' canvas-id="firstCanvas" id='firstCanvas' bindtouchstart="bindtouchstart"
+                  bindtouchmove="bindtouchmove"></canvas>
+        </view>
+        <view class="btns-wrap">
+          <view class="btn" @tap="clear">重新输入</view>
+          <view class="btn btn-ok" @tap="exportImg">确定签字</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

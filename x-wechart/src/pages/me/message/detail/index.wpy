@@ -1,0 +1,39 @@
+<template>
+  <view class="container">
+    <emptyDataType wx:if="{{ messageList.length == 0 }}" description="消息"/>
+    <scroll-view wx:else bindscrolltolower="loadNextPage" class="container-scroll" scroll-y>
+      <repeat for="{{messageList}}" item="item">
+        <view class="item">
+          <view class="item-title">
+            <view class="row">
+              <view class="title">
+                {{ item.title }}
+                <view wx:if="{{item.status == '0' }}" class="reddot"></view>
+              </view>
+              <!-- <view class="status">
+                {{ item.status }}
+              </view> -->
+            </view>
+            <view class="row" style="padding-bottom: 32rpx">
+              <view class="date">
+                {{ item.createdDate }}
+              </view>
+            </view>
+          </view>
+          <view class="item-content van-hairline--bottom">
+            <view class="content">
+              {{ item.content || ''}}
+            </view>
+          </view>
+          <view wx:if="{{ isCanJump }}" @tap="viewDetail({{item.sourceId}},{{item.typeCode}},{{item.id}},{{item.orgCode}})"  class="item-foot">
+            <view class="card-footer-handle">查看详情</view>
+          </view>
+        </view>
+      </repeat>
+    </scroll-view>
+    <van-toast id="van-toast" />
+  </view>
+</template>
+
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

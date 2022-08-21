@@ -1,0 +1,265 @@
+
+  <view class="order _ef861e4">
+    <van-popup show="{{ beDismissed }}" overlay="{{ true }}" class="_ef861e4">
+      <view class="orderpopup _ef861e4">
+        <view class="text _ef861e4">确认是否驳回</view>
+        <view class="operation _ef861e4">
+          <view catchtap="cancelDismissed" class="operation-one _ef861e4">取消</view>
+          <view catchtap="beDismissed" class="operation-two _ef861e4">确定</view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ reviewConsent }}" overlay="{{ true }}" class="_ef861e4">
+      <view class="orderpopup _ef861e4">
+        <view class="text _ef861e4">{{beConsentMsg}}</view>
+        <view class="operation _ef861e4">
+          <view catchtap="cancelConsent" class="operation-one _ef861e4">取消</view>
+          <view catchtap="beConsent" class="operation-two _ef861e4">确定</view>
+        </view>
+      </view>
+    </van-popup>
+    <view class="order-scroll _ef861e4">
+      <view class="order-scroll-head _ef861e4">
+        <!-- 始终展示部分 -->
+        <view class="item-alway-show _ef861e4">
+          <view class="item-row item-row-top _ef861e4">
+            <view class="item-row-left _ef861e4">
+              <text class="item-name _ef861e4">{{orderdetail.data.documentNum}}</text>
+            </view>
+            <view class="item-row-right _ef861e4">
+              <text class="item-status _ef861e4">{{orderdetail.data.statusName}}</text>
+            </view>
+          </view>
+          <view class="item-row _ef861e4">
+            <view class="item-row-left _ef861e4">
+              <text class="item-money _ef861e4">订单金额：￥{{orderdetail.data.acknowledgedTotalAmount}}</text>
+            </view>
+          </view>
+          <view class="item-row _ef861e4">
+            <view class="item-row-left _ef861e4">
+              <text class="item-money _ef861e4">客户名称：{{orderdetail.data.customerName}}</text>
+            </view>
+          </view>
+           <!-- 订单为活动订单显示 -->
+          <view class="item-row _ef861e4"  wx:if="{{orderdetail.data.activityName}}">
+            <view class="active-block _ef861e4">
+              <p class="activeType {{orderdetail.data.discountType == '90605'?'combinationPurchaseLabel':'normalLabel'}} _ef861e4">{{orderdetail.data.discountTypeName}}</p>
+              <text class="item-money _ef861e4">活动名称：{{orderdetail.data.activityName}}</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 收起部分 -->
+        <view class="item-more-container _ef861e4">
+          <view  wx:if="{{orderdetail.data.purchaseNum}}" class="item-row _ef861e4">
+            <view class="item-row-left wth25 _ef861e4">
+              <text class="item-title _ef861e4">渠道采购单号：</text>
+            </view>
+            <view class="item-row-right _ef861e4">
+              <text class="item-content _ef861e4">{{orderdetail.data.purchaseNum}}</text>
+            </view>
+          </view>
+          <view hidden="{{ !showMore }}" class="_ef861e4">
+            <view class="item-row _ef861e4">
+              <view class="item-row-left wth25 _ef861e4">
+                <text class="item-title _ef861e4">单据类型：</text>
+              </view>
+              <view class="item-row-right _ef861e4">
+                <text class="item-content _ef861e4">{{orderdetail.data.documentType}}</text>
+              </view>
+            </view>
+            <view class="item-row _ef861e4">
+              <view class="item-row-left wth25 _ef861e4">
+                <text class="item-title _ef861e4">结算单位：</text>
+              </view>
+              <view class="item-row-right _ef861e4">
+                <text class="item-content _ef861e4">{{orderdetail.data.billToName}}</text>
+              </view>
+            </view>
+            <view class="item-row _ef861e4">
+              <view class="item-row-left wth25 _ef861e4">
+                <text class="item-title _ef861e4">业务员：</text>
+              </view>
+              <view class="item-row-right _ef861e4">
+                <text class="item-content _ef861e4">{{orderdetail.data.sellerName}}</text>
+              </view>
+            </view>
+            <view class="item-row _ef861e4">
+              <view class="item-row-left wth25 _ef861e4">
+                <text class="item-title _ef861e4">单据日期：</text>
+              </view>
+              <view class="item-row-right _ef861e4">
+                <text class="item-content _ef861e4">{{orderdetail.data.documentDate}}</text>
+              </view>
+            </view>
+            <view class="item-row _ef861e4">
+              <view class="item-row-left wth25 _ef861e4">
+                <text class="item-title _ef861e4">期望到货日期：</text>
+              </view>
+              <view class="item-row-right _ef861e4">
+                <text class="item-content _ef861e4">{{orderdetail.data.edt}}</text>
+              </view>
+            </view>
+            <view class="item-row _ef861e4">
+              <view class="item-row-left wth25 _ef861e4">
+                <text class="item-title _ef861e4">发货仓库：</text>
+              </view>
+              <view class="item-row-right _ef861e4">
+                <text class="item-content _ef861e4">{{orderdetail.data.warehouseName}}</text>
+              </view>
+            </view>
+            <view class="item-row _ef861e4">
+              <view class="item-row-left wth25 _ef861e4">
+                <text class="item-title _ef861e4">配送方式：</text>
+              </view>
+              <view class="item-row-right _ef861e4">
+                <text class="item-content _ef861e4">{{orderdetail.data.deliveryTypeTitleValue}}</text>
+              </view>
+            </view>
+            <view class="item-row _ef861e4">
+              <view class="item-row-left wth25 _ef861e4">
+                <text class="item-title _ef861e4">下单员：</text>
+              </view>
+              <view class="item-row-right _ef861e4">
+                <text class="item-content _ef861e4">{{orderdetail.data.lastSubmitPerson}}</text>
+              </view>
+            </view>
+            <view class="item-row _ef861e4">
+              <view class="item-row-left wth25 _ef861e4">
+                <text class="item-title _ef861e4">收货地址：</text>
+              </view>
+              <view class="item-row-right _ef861e4">
+                <text class="item-content _ef861e4">{{orderdetail.data.address}}</text>
+              </view>
+            </view>
+            <view class="item-row _ef861e4">
+              <view class="item-row-left wth25 _ef861e4">
+                <text class="item-title _ef861e4">联系人：</text>
+              </view>
+              <view class="item-row-right _ef861e4">
+                <text class="item-content _ef861e4">{{orderdetail.data.contact == null ? '': orderdetail.data.contact}}</text>
+              </view>
+            </view>
+            <view class="item-row _ef861e4">
+              <view class="item-row-left wth25 _ef861e4">
+                <text class="item-title _ef861e4">联系方式：</text>
+              </view>
+              <view class="item-row-right _ef861e4">
+                <text class="item-content _ef861e4">{{orderdetail.data.contactInfo == null ? '' : orderdetail.data.contactInfo}}</text>
+              </view>
+            </view>
+            <view class="item-row _ef861e4">
+              <view class="item-row-left wth25 _ef861e4">
+                <text class="item-title _ef861e4">备注：</text>
+              </view>
+              <view class="item-row-right _ef861e4">
+                <text class="item-content _ef861e4">{{orderdetail.data.message}}</text>
+              </view>
+            </view>
+          </view>
+
+          <view class="item-more _ef861e4" hidden="{{ showMore }}">
+            <view class="item-more-tip _ef861e4" bindtap="showMore">
+              展开完整信息<van-icon name="arrow-down" class="icon _ef861e4"/>
+            </view>
+          </view>
+
+          <view class="item-more hidden _ef861e4" hidden="{{ !showMore }}">
+            <view class="item-more-tip _ef861e4" bindtap="hiddenMore">
+              收起<van-icon name="arrow-up" class="icon _ef861e4"/>
+            </view>
+          </view>
+
+        </view>
+      </view>
+      <view class="mx _ef861e4">明细信息</view>
+      <view class="order-container _ef861e4">
+        <block class="_ef861e4" wx:for="{{orderdetail.data.salesOrderItem}}" wx:for-index="itemIndex" wx:for-item="item" wx:key="key">
+          <sales-distributors-detail-item item="{{item}}" productItem="{{orderdetail}}" itemIndex="{{itemIndex}}"  bind:goodInfo="goodInfo" bind:quickGratification="quickGratification" class="_ef861e4"/>
+
+          <!--出库信息-->
+          <block class="_ef861e4" wx:for="{{item.outItems}}" wx:for-index="outIndex" wx:for-item="outItem" wx:key="order_detail_item_{{orderItem.itemId}}_out_{{outIndex}}">
+            <view class="order-detail-item-out-info _ef861e4">
+              <view class="order-detail-item-inner-info _ef861e4">
+                <view class="detail-item-title _ef861e4">
+                  <view class="_ef861e4">{{ item.model }}<text  wx:if="{{ item.colour }}" class="_ef861e4">/{{ item.colour }}</text></view>
+                  <view class="detail-item-status _ef861e4">{{ outItem.invStatus }}{{ outItem.invStatusTypeName }}</view>
+                </view>
+                <view class="detail-item-desc _ef861e4">
+                  <text class="desc _ef861e4">物料编码：{{ outItem.materialCode }}</text>
+                  <text class="desc _ef861e4">可用：{{ outItem.bavailQty }}</text>
+                </view>
+                <view class="detail-item-desc _ef861e4">
+                  <text class="desc _ef861e4">仓库：{{ outItem.warehouseName }}</text>
+                </view>
+                <view class="detail-item-desc _ef861e4">
+                  <text class="desc _ef861e4">入库时间：{{ outItem.inInvDate }}</text>
+                </view>
+                <view class="detail-item-num _ef861e4">
+                  <view class="item-info-line-out-quantity _ef861e4">出库数量</view>
+                  <view class="item-info-line-out-quantity-input _ef861e4">
+                    <van-stepper integer="integer" value="{{outItem.bactualQty}}" min="0" custom-class="order-wrapper-stepper" input-class="cart-input-class" plus-class="cart-action-class" minus-class="cart-action-class" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}"  bind:change="onShippedBqtyChg" bind:plus="onShippedBqtyChg" bind:minus="onShippedBqtyChg" disabled="{{outItem.barCodes && outItem.barCodes.length > 0}}" class="_ef861e4"/>
+                  </view>
+                </view>
+                <view class="order-detail-item-out-info-footer _ef861e4">
+                  <view class="footer-handle-item _ef861e4" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}" bindtap="jumpClick">
+                    <i class="b-icon xiugai footer-remove _ef861e4"/>
+                    <text class="_ef861e4">修改</text>
+                  </view>
+                  <view class="footer-handle-item _ef861e4" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}" bindtap="onRemoveOutItem">
+                    <i class="b-icon shanchu footer-remove _ef861e4"/>
+                    <text class="_ef861e4">删除</text>
+                  </view>
+                </view>
+              </view>
+
+              <!-- 条码展示 -->
+              <view wx:if="{{outItem.barCodes.length > 0}}" class="order_detail-item-out-barcode _ef861e4">
+                <view class="order_detail-item-out-barcode-title _ef861e4">
+                  <view class="order_detail-item-out-barcode-title-first _ef861e4">已添加条码</view>
+                  <view class="order_detail-item-out-barcode-title-second _ef861e4">(型号{{orderItem.model}})</view>
+                </view>
+                <view class="order_detail-item-out-barcode-body _ef861e4">
+                  <block class="_ef861e4" wx:for="{{outItem.barCodes}}" wx:for-index="barIndex" wx:for-item="item" wx:key="barCode_{{barIndex}}">
+                    <view class="order_detail-item-out-barcode-body-content _ef861e4">
+                      <van-checkbox disabled="{{!item.isChecked}}" value="{{item.checked}}" checked-color="#00AAA6" custom-class="barCode-checkbox"  bind:change="onChangeBarCode" class="_ef861e4" data-wpyonchangebarcode-a="{{orderItem.model}}" data-wpyonchangebarcode-b="{{item.barCode}}" data-wpyonchangebarcode-c="{{outIndex}}">
+                        <view class="label-checkbox _ef861e4">
+                          {{item.barCode}}
+                        </view>
+                      </van-checkbox>
+                      <view class="b-icon icon-fail icon-error _ef861e4" bindtap="onDelBarCode" data-wpyondelbarcode-a="{{orderItem.model}}" data-wpyondelbarcode-b="{{item.barCode}}" data-wpyondelbarcode-c="{{outIndex}}"/>
+                    </view>
+                  </block>
+                </view>
+              </view>
+            </view>
+          </block>
+          <view class="order-detail-item-out-add _ef861e4" wx:if="{{orderdetail.data.statusName == '待代理商审核'}}" data-item-index="{{itemIndex}}" bindtap="jumpClick">
+            <i class="b-icon icon-add out-add _ef861e4"/>
+            <text class="out-add-text _ef861e4">添加出库信息</text>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <block wx:if="{{ orderdetail.data.statusName == '待代理商审核'}}" class="_ef861e4">
+      <van-submit-bar button-text="通过" custom-class="order-bottom" button-class-container="dms-order-bottom-button-save" button-class="dms-order-bottom-button-save-submit" bind:submit="orderConsent" class="_ef861e4">
+        <view class="order-bottom-button-temp van-hairline--top _ef861e4" style="background-color: #FFFFFF; color: #666666" bindtap="orderDismissed">
+          驳回
+        </view>
+      </van-submit-bar>
+    </block>
+
+    <van-popup show="{{warehouseVisible}}" position="bottom" bind:close="onCloseWarehouse" z-index="300" class="_ef861e4">
+      <van-picker id="out-warehouse-detail-warehouse-picker" show-toolbar="show-toolbar" title="出库仓库" value-key="value" columns="{{warehouseList}}" bind:cancel="onWarehouseCancel" bind:confirm="onWarehouseConfirm" class="_ef861e4"/>
+    </van-popup>
+    <van-popup show="{{invStatusVisible}}" position="bottom" bind:close="onCloseInvStatus" z-index="300" class="_ef861e4">
+      <van-picker id="out-warehouse-detail-status-picker" show-toolbar="show-toolbar" title="库存状态" value-key="value" columns="{{invStatusList}}" bind:cancel="onInvStatusCancel" bind:confirm="onInvStatusConfirm" class="_ef861e4"/>
+    </van-popup>
+
+    <van-popup show="{{invStatusTypeVisible}}" position="bottom" bind:close="onCloseInvStatusType" z-index="300" class="_ef861e4">
+      <van-picker id="out-warehouse-detail-status-type-picker" show-toolbar="show-toolbar" title="补差类型" value-key="name" columns="{{invStatusTypeList}}" bind:cancel="onInvStatusTypeCancel" bind:confirm="onInvStatusTypeConfirm" class="_ef861e4"/>
+    </van-popup>
+
+    <van-toast id="van-toast" class="_ef861e4"/>
+  </view>

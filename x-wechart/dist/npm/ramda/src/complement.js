@@ -1,0 +1,1 @@
+var lift=require("./lift.js"),not=require("./not.js"),complement=lift(not);module.exports=complement;

@@ -1,0 +1,1 @@
+function _filter(e,r){for(var t=0,l=r.length,n=[];t<l;)e(r[t])&&(n[n.length]=r[t]),t+=1;return n}module.exports=_filter;

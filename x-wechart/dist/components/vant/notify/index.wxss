@@ -1,0 +1,15 @@
+.van-notify {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 6px 15px;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  word-break: break-all;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.van-notify__safe-top {
+  height: 44px;
+}

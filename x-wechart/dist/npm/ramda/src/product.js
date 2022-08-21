@@ -1,0 +1,1 @@
+var multiply=require("./multiply.js"),reduce=require("./reduce.js"),product=reduce(multiply,1);module.exports=product;

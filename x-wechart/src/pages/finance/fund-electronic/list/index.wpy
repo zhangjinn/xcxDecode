@@ -1,0 +1,401 @@
+<template>
+  <view class="container">
+    <!-- 阻止弹框 -->
+    <van-popup show="{{ IKnow }}" overlay="{{ true }}">
+    <!-- <van-popup show="{{ true }}" overlay="{{ true }}"> -->
+      <view class="todo-popup">
+        <view class="text">
+          <view class="text-first">小程序端支持查看详情及操作上上签电子签章</view>
+          <view class="text-last">U盾签章请在PC端操作</view>
+        </view>
+        <view @tap="allIKnow" class="operation">
+          <view class="operation-text">我知道了</view>
+        </view>
+      </view>
+    </van-popup>
+    <!-- 时间弹窗 -->
+    <van-popup show="{{calendarShow}}" position="bottom" bind:close="closeCalendar" z-index="200">
+      <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay"/>
+    </van-popup>
+    <!-- 时间弹窗结束 -->
+
+     <!-- 状态选择开始 -->
+    <van-popup
+      show="{{staVisible}}"
+      position="right"
+      overlay="{{ true }}"
+      z-index="200"
+      custom-style="height: 100%;"
+      close-on-click-overlay="{{false}}"
+    >
+      <view class="container-drawer">
+        <view class="container-drawer-time">
+          <view class="container-drawer-time-header">
+            <van-icon
+              name="arrow-left"
+              class="container-drawer-time-header-back"
+              bind:click="onToggleSta"
+            ></van-icon>
+            <view class="container-drawer-time-header-title">状态</view>
+          </view>
+          <view class="container-drawer-time-content">
+            <repeat for="{{recList}}" item="item">
+              <view
+                class="container-drawer-time-content-line"
+                @tap="onStaOrg({{item.value}})"
+              >
+                <view
+                  class="text {{filterForm.rows.statusFlag === item.value? 'active' : ''}}"
+                >{{item.label}}</view>
+                <van-icon
+                  wx:if="{{filterForm.rows.statusFlag === item.value}}"
+                  name="success"
+                  class="time-selected"
+                  size="32rpx"
+                />
+              </view>
+            </repeat>
+          </view>
+          <view class="container-drawer-attr-footer">
+            <view
+              @tap="onToggleSta"
+              class="container-drawer-attr-footer-btn confirm"
+              hover-class="container-drawer-attr-footer-btn-hover"
+            >确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <!-- 状态选择结束 -->
+    <!-- 时间段选择开始 -->
+    <van-popup
+      show="{{timeFrameVisible}}"
+      position="right"
+      overlay="{{ true }}"
+      z-index="200"
+      custom-style="height: 100%;"
+      close-on-click-overlay="{{false}}"
+    >
+      <view class="container-drawer">
+        <view class="container-drawer-time">
+          <view class="container-drawer-time-header">
+            <van-icon
+              name="arrow-left"
+              class="container-drawer-time-header-back"
+              bind:click="onToggleTimeFrame"
+            ></van-icon>
+            <view class="container-drawer-time-header-title">订单日期</view>
+          </view>
+          <view class="container-drawer-time-content">
+            <repeat for="{{timeList}}" item="item">
+              <view
+                class="container-drawer-time-content-line"
+                @tap="onSelectTimeFrame({{item.value}})"
+              >
+                <view
+                  class="text {{filterForm.rows.queryType === item.value? 'active' : ''}}"
+                >{{item.label}}</view>
+                <van-icon
+                  wx:if="{{filterForm.rows.queryType === item.value}}"
+                  name="success"
+                  class="time-selected"
+                  size="32rpx"
+                />
+              </view>
+            </repeat>
+          </view>
+          <view class="container-drawer-attr-footer">
+            <view
+              @tap="onToggleTimeFrame"
+              class="container-drawer-attr-footer-btn confirm"
+              hover-class="container-drawer-attr-footer-btn-hover"
+            >确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <!-- 时间段选择结束 -->
+    <!-- 销售组织弹窗开始 -->
+    <van-popup
+      show="{{fibookVisible}}"
+      position="right"
+      overlay="{{ true }}"
+      z-index="200"
+      custom-style="height: 100%;"
+      close-on-click-overlay="{{false}}"
+    >
+      <view class="container-drawer">
+        <view class="container-drawer-time">
+          <view class="container-drawer-time-header">
+            <van-icon
+              name="arrow-left"
+              class="container-drawer-time-header-back"
+              bind:click="onToggleOrg"
+            ></van-icon>
+            <view class="container-drawer-time-header-title">销售组织</view>
+          </view>
+          <view class="container-drawer-time-content">
+            <repeat for="{{fibookList}}" item="item">
+              <view
+                class="container-drawer-time-content-line"
+                @tap="onSelectOrg({{item.bookCode}},{{item.shortName}})"
+              >
+                <view class="text {{filterForm.rows.fiBookCode === item.bookCode ? 'active' : ''}}">{{item.shortName}}</view>
+                <van-icon
+                  wx:if="{{filterForm.rows.fiBookCode === item.bookCode}}"
+                  name="success"
+                  class="time-selected"
+                  size="32rpx"
+                />
+              </view>
+            </repeat>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <!-- 销售组织弹窗结束 -->
+    <!-- 产品品类弹窗开始 -->
+    <van-popup
+      show="{{prfcVisible}}"
+      position="right"
+      overlay="{{ true }}"
+      z-index="200"
+      custom-style="height: 100%;"
+      close-on-click-overlay="{{false}}"
+    >
+      <view class="container-drawer">
+        <view class="container-drawer-time">
+          <view class="container-drawer-time-header">
+            <van-icon
+              name="arrow-left"
+              class="container-drawer-time-header-back"
+              bind:click="onToggleType"
+            ></van-icon>
+            <view class="container-drawer-time-header-title">产品品类</view>
+          </view>
+          <view class="container-drawer-time-content">
+            <repeat for="{{profitList}}" item="item">
+              <view
+                class="container-drawer-time-content-line"
+                @tap="onSelectType({{item.codeValue}},{{item.codeName}})"
+              >
+                <view class="text {{filterForm.rows.prfcCode === item.codeValue ? 'active' : ''}}">{{item.codeName}}</view>
+                <van-icon
+                  wx:if="{{filterForm.rows.prfcCode ===  item.codeValue}}"
+                  name="success"
+                  class="time-selected"
+                  size="32rpx"
+                />
+              </view>
+            </repeat>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <!-- 产品品类弹窗结束 -->
+    <!-- 筛选项弹窗开始 -->
+    <van-popup
+      show="{{visible}}"
+      position="right"
+      overlay="{{ true }}"
+      bind:close="orderfiltering"
+      custom-style="height: 100%;"
+      z-index="130"
+    >
+      <view class="container-drawer">
+        <view class="container-drawer-attr">
+          <scroll-view class="container-drawer-attr-scroll" scroll-y>
+            <view class="attr-item">
+              <view class="projectem">
+                <view class="project">
+                  <text style="font-size: 28rpx;color: #777777">单据号</text>
+                </view>
+                <van-field
+                  placeholder="请输入单据号"
+                  placeholder-style="font-size: 24rpx;"
+                  border="{{ false }}"
+                  bind:change="onsheetNoChange"
+                  custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;"
+                  clearable
+                  value="{{filterForm.rows.sheetNo}}"
+                />
+              </view>
+              <view class="container-data">
+                <view class="project">
+                  <text style="font-size: 28rpx;color: #777777">销售组织</text>
+                  <view
+                    class="text"
+                    style="font-size: 24rpx;color: #AAAAAA"
+                    @tap="onToggleOrg"
+                  >{{shortName||"请选择"}} ></view>
+                </view>
+              </view>
+              <view class="container-data">
+                <view class="project">
+                  <text style="font-size: 28rpx;color: #777777">产品品类</text>
+                  <view
+                    class="text"
+                    style="font-size: 24rpx;color: #AAAAAA"
+                    @tap="onToggleType"
+                  >{{prfcName||"请选择"}} ></view>
+                </view>
+              </view>
+
+
+              <view class="container-data">
+                <view class="project">
+                  <text style="font-size: 28rpx;color: #777777">状态</text>
+                     <text
+                    wx:if="{{!filterForm.rows.statusFlag}}"
+                    class="text"
+                    @tap="onToggleSta"
+                  >请选择 ></text>
+
+
+                  <text
+                    wx:if="{{filterForm.rows.statusFlag === '2'}}"
+                    class="text"
+                    @tap="onToggleSta"
+                  >待确认 ></text>
+                  <text
+                    wx:if="{{filterForm.rows.statusFlag === '3'}}"
+                    class="text"
+                    @tap="onToggleSta"
+                  >已确认 ></text>
+                  <text
+                    wx:if="{{filterForm.rows.statusFlag === '4'}}"
+                    class="text"
+                    @tap="onToggleSta"
+                  >人工确认中 ></text>
+
+                   <text
+                    wx:if="{{filterForm.rows.statusFlag === 'A'}}"
+                    class="text"
+                    @tap="onToggleSta"
+                  >对账完成 ></text>
+                </view>
+                 </view>
+              <view class="container-data">
+                <view class="project">
+                  <text style="font-size: 28rpx;color: #777777">对账时间</text>
+                  <text
+                    wx:if="{{!filterForm.rows.queryType}}"
+                    class="text"
+                    @tap="onToggleTimeFrame"
+                  >全部日期 ></text>
+                  <text
+                    wx:if="{{filterForm.rows.queryType === '1'}}"
+                    class="text"
+                    @tap="onToggleTimeFrame"
+                  >最近一个月 ></text>
+                  <text
+                    wx:if="{{filterForm.rows.queryType === '2'}}"
+                    class="text"
+                    @tap="onToggleTimeFrame"
+                  >最近三个月 ></text>
+                  <text
+                    wx:if="{{filterForm.rows.queryType === '3'}}"
+                    class="text"
+                    @tap="onToggleTimeFrame"
+                  >最近一年 ></text>
+                </view>
+                <view class="container-data-input">
+                  <view
+                    class="container-data-input-one"
+                    data-name="periodStartDate"
+                    data-type="sapDate"
+                    @tap="openCalendar"
+                  >
+                    {{filterForm.rows.periodStartDate || '开始日期'}}
+                    <van-icon
+                      wx:if="{{filterForm.rows.periodStartDate}}"
+                      class="close-icon"
+                      name="clear"
+                      @tap="clearCalendar('periodStartDate')"
+                    />
+                  </view>
+                  <view class="container-data-input-line">-</view>
+                  <view
+                    class="container-data-input-one"
+                    data-name="periodEndDate"
+                    data-type="sapDate"
+                    @tap="openCalendar"
+                  >
+                    {{filterForm.rows.periodEndDate|| '结束日期'}}
+                    <van-icon
+                      wx:if="{{filterForm.rows.periodEndDate}}"
+                      class="close-icon"
+                      name="clear"
+                      @tap="clearCalendar('periodEndDate')"
+                    />
+                  </view>
+                </view>
+              </view>
+            </view>
+          </scroll-view>
+          <!-- 底部按钮 -->
+          <view class="container-drawer-attr-footer">
+            <view
+              @tap="onResetFilterForm"
+              class="container-drawer-attr-footer-btn reset"
+              hover-class="container-drawer-attr-footer-btn-hover"
+            >重置</view>
+            <view
+              @tap="onSubmitFilterForm"
+              class="container-drawer-attr-footer-btn confirm"
+              hover-class="container-drawer-attr-footer-btn-hover"
+            >确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <!-- 筛选项弹窗结束 -->
+
+    <headerTab
+      :showArrowIcon="showArrowIcon"
+      :tabList.sync="headerTabList"
+      @onTabChange.user="touchStatusFilter"
+      @onSideFilter.user="orderfiltering"
+    />
+    <scroll-view wx:if="{{fundList.totalPage !== 0}}" bindscrolltolower="loadNextPage" scroll-y="true" class="item-scroll">
+      <repeat for="{{fundList.rows}}" item="item">
+        <view class="item">
+          <view class="header van-hairline--bottom">
+            <view class="code" @tap="gotodetail({{item.rowId}})">{{item.sheetNo}}</view>
+            <view class="b-icon h-icon icon-more"/>
+            <view class="status">
+              <text wx:if="{{item.statusFlag==1}}">新增</text>
+              <text wx:if="{{item.statusFlag==2}}">待确认</text>
+              <text wx:if="{{item.statusFlag==3}}">已确认</text>
+                <text wx:if="{{item.statusFlag==4}}">人工确认中</text>
+              <text wx:if="{{item.statusFlag==5}}">已作废</text>
+              <text wx:if="{{item.statusFlag=='C'}}">关闭</text>
+              <text wx:if="{{item.statusFlag=='A'}}">对账完成</text>
+            </view>
+          </view>
+          <view class="content">
+            <view class="name van-ellipsis">销售组织：{{item.rsUnitName}}</view>
+            <view class="name">客户名称：{{item.customerName}}</view>
+            <view class="name">产品品类：{{item.prfcName}}</view>
+            <view class="name">年度/月度：{{item.rsYear}}/{{item.periodIdx}}</view>
+            <view class="money">期末余额：{{item.arBalance}}</view>
+            <view class="btn">
+              <van-button
+                plain
+                size="small"
+                type="default"
+                bind:click="viewSignature({{item.rowId}}, {{item.statusFlag}},{{item.ssqBind}})"
+              >查看</van-button>
+            </view>
+          </view>
+        </view>
+      </repeat>
+    </scroll-view>
+    <emptyDataType wx:else description="资金电子账单"/>
+
+    <van-toast id="van-toast"/>
+  </view>
+</template>
+
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

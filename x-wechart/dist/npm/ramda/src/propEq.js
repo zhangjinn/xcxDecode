@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),equals=require("./equals.js"),propEq=_curry3(function(r,e,u){return equals(e,u[r])});module.exports=propEq;

@@ -1,0 +1,30 @@
+
+  <view class="container">
+    
+  <view class="empty-data" wx:if="{{ list.pageSize === 0 }}">
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+    <scroll-view  wx:else bindscrolltolower="loadNextPage" scroll-y enable-back-to-top="enable-back-to-top" class="scroll">
+      <block wx:for="{{ list.notices }}" wx:for-index="id" wx:for-item="item" wx:key="id">
+        <view class="item-wrapper" bindtap="goDetails" data-wpygodetails-a="{{item.id}}">
+          <view class="item">
+            <view class="item-title">
+              <view class="item-title-content">{{ item.title==null ? '' : item.title }}</view>
+              <view class="item-title-new-tag" wx:if="{{ item.newMessage }}">New</view>
+            </view>
+
+            <view class="item-info">
+              <view class="item-info-org">{{ item.organizationName }}</view>
+              <view class="item-info-time">{{ item.publishAt }}</view>
+            </view>
+          </view>
+        </view>
+
+      </block>
+    </scroll-view>
+    <van-toast id="van-toast"/>
+  </view>

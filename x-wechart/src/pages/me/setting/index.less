@@ -1,0 +1,52 @@
+@import '../../../styles/utils.less';
+
+.setting {
+  .setting-list{
+    border-radius: 0 0 16rpx 16rpx;
+    overflow: hidden;
+    .setting-custom{
+      padding: 30rpx 24rpx;
+      .van-cell__title{
+        font-size: 32rpx;
+      }
+      .van-cell__right-icon-wrap{
+        color: #AAAAAA;
+      }
+    }
+    .setting-custom-last{
+      &::after{
+        border-bottom-width: 0;
+      }
+    }
+  }
+
+  &-logout {
+    margin-top: 24rpx;
+    .logout-btn{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 96rpx;
+      font-size: 32rpx;
+      background: #FFFFFF;
+      border-radius: 16rpx;
+    }
+  }
+  .wechat-popup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 36rpx;
+    height: 752rpx;
+    &-actions {
+      width: 580rpx;
+      &-title {
+        font-size: 38rpx;
+        font-weight: 500;
+        color: #262626;
+        margin-bottom: 140rpx;
+      }
+    }
+  }
+}

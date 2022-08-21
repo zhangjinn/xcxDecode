@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),assoc=require("./assoc.js"),lens=require("./lens.js"),prop=require("./prop.js"),lensProp=_curry1(function(r){return lens(prop(r),assoc(r))});module.exports=lensProp;

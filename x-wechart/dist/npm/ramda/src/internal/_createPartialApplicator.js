@@ -1,0 +1,1 @@
+function _createPartialApplicator(r){return _curry2(function(t,a){return _arity(Math.max(0,t.length-a.length),function(){return t.apply(this,r(a,arguments))})})}var _arity=require("./_arity.js"),_curry2=require("./_curry2.js");module.exports=_createPartialApplicator;

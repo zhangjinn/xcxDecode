@@ -1,0 +1,325 @@
+<template>
+  <view class="order">
+    <filter
+      :tabList.sync="tabList"
+      :tabActive.sync="tabActive"
+      @tabChange.user="tabChange"
+      :showSearch.sync="showSearch"
+    />
+    <view class="store" wx:if="{{tabActive==0}}">
+      <view class="store-wrapper">
+        <!--          门店-->
+        <view class="form-wrapper">
+          <view class="item-row" data-name="门店" @tap="onPopOpen">
+            <view class="item-row-left">
+              <text>门店</text>
+              <text class="redXing">*</text>
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right">
+                <view
+                  class="item-row-right-inventory {{ formData.storeName ? '' : 'placeholder' }} ">
+                  {{ formData.storeName || '请选择' }}
+                </view>
+                <van-icon name="arrow"
+                          custom-class="dms-item-row-right-arrow"/>
+              </view>
+            </view>
+          </view>
+
+          <view class="item-row">
+            <view class="item-row-left">
+              <text>门店类别</text>
+<!--              <text class="redXing">*</text>-->
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-note">
+                <van-field
+                  disabled
+                  value="{{ formData.storeType }}"
+                  placeholder=""
+                  border="{{ false }}"
+                  input-align="right"
+                  data-name="activityTheme"
+                  bind:change="onFilterFormChange"
+                  class="add-store-note"
+                />
+              </view>
+            </view>
+          </view>
+          <!--物料组-->
+          <view class="item-row" data-name="物料组" @tap="onPopOpen">
+            <view class="item-row-left">
+              <text>物料组</text>
+              <text class="redXing">*</text>
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right">
+                <view
+                  class="item-row-right-inventory {{ formData.materialGroup ? '' : 'placeholder' }}">
+                  {{ formData.materialGroupName || '请选择' }}
+                </view>
+                <van-icon name="arrow"
+                          custom-class="dms-item-row-right-arrow"/>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="item-title">产品信息</view>
+        <view class="sales-info-wrapper">
+          <view class="sales-info-item" wx:for="{{ProductInfo}}">
+            <view class="item-row" data-name="型号" data-key="model" data-index="{{index}}" @tap="onPopOpen">
+              <view class="item-row-left">
+                <text>型号</text>
+                <text class="redXing">*</text>
+              </view>
+              <view class="item-row-right">
+                <view class="item-row-right">
+                  <view class="item-row-right-inventory " wx:if="{{item.model.name}}">
+                    {{item.model.name}}({{'库存' +item.model.qty}})
+                  </view>
+                  <view class="item-row-right-inventory " wx:else>
+                    {{ '请选择' }}
+                  </view>
+                  <van-icon name="arrow" custom-class="dms-item-row-right-arrow"/>
+                </view>
+              </view>
+            </view>
+            <view class="upload">
+              <text class="text">效果图</text>
+              <van-uploader
+                max-count="1"
+                accept="image"
+                sizeType="compressed"
+                file-list="{{ item.fileList }}"
+                bind:after-read="afterRead"
+                bind:delete="deleteImg"
+                data-index="{{index}}"
+              >
+                <view class="upload-customize">
+                  <text class="b-icon h-icon photograph"></text>
+                  <text class="upload-text">拍照上传</text>
+                </view>
+              </van-uploader>
+            </view>
+            <view class="sales-info-item-footer">
+              <view class="handle-btn" data-index="{{index}}" @tap="delSales">
+                <i class="b-icon shanchu"></i>
+                <text class="del">删除</text>
+              </view>
+            </view>
+          </view>
+          <view class="add-sales"
+                @tap="addProInfo"><i class="b-icon icon-add"></i>添加型号
+
+          </view>
+        </view>
+      </view>
+      <view class="add-store-footer">
+        <view class="submit-btn add-store-btn" @tap="toAddStore()">提交</view>
+      </view>
+      <!-- 选择列表 -->
+      <van-popup
+        show="{{ isPopShow }}"
+        closeable
+        position="bottom"
+        custom-style="height: 570rpx"
+        zIndex="400"
+        bind:click-overlay="onClose"
+      >
+        <view class="item-inv">
+          <view class="item-inv-head">
+            <view class="item-inv-head-context">
+              <view class="item-inv-head-context-title">{{ popTitle }}</view>
+              <van-icon name="cross" class="item-inv-head-context-close" bindtap="onPopClose"/>
+            </view>
+          </view>
+          <scroll-view scroll-y class="item-inv-scroll">
+            <!--             门店 -->
+            <view wx:if="{{ popTitle === '门店' }}" wx:for="{{ storeNameOptions }}" wx:key="{{ item.code }}"
+                  wx:for-item="item" class="item-inv-scroll-row" @tap="chooseStore({{item}})">
+              <view data-key="{{ item.code }}"
+                    class="item-inv-scroll-row-desc {{ item.code === formData.store ? 'checked' : ''}}">
+                {{ item.name }}
+              </view>
+              <block wx:if="{{ item.code === formData.store }}">
+                <view class="b-icon icon-check item-inv-scroll-row-checked checked"></view>
+              </block>
+
+
+            </view>
+
+            <!--物料组-->
+            <view wx:if="{{ popTitle === '物料组' }}" wx:for="{{ materialGroupOptions }}" wx:key="{{ item.code }}"
+                  wx:for-item="item" class="item-inv-scroll-row" @tap="chooseMaterialGroup({{item}})">
+              <view data-key="{{ item.code }}"
+                    class="item-inv-scroll-row-desc {{ item.code === formData.materialGroup ? 'checked' : ''}}">
+                {{ item.name }}
+              </view>
+              <block wx:if="{{ item.code === formData.materialGroup }}">
+                <view class="b-icon icon-check item-inv-scroll-row-checked checked"></view>
+              </block>
+            </view>
+
+          </scroll-view>
+        </view>
+      </van-popup>
+      <!-- 型号选择列表弹框 -->
+      <popupCustomize
+        :options.sync="currentOptions"
+        :selectedOption.sync="popSelectedOption"
+        :title.sync="popTitle"
+        :multiple.sync="multiple"
+        :isSearch.sync="isSearch"
+        @onSelect.user="chooseOption"
+        @onSearch.user="onSearchOption"
+        :search="Searchvalue"
+      />
+      <van-toast id="van-toast"/>
+      <van-dialog id="van-dialog"/>
+    </view>
+    <!--    撤样-->
+    <view class="store" wx:if="{{tabActive==1}}">
+      <view class="store-wrapper">
+        <view class="form-wrapper">
+          <!--          门店-->
+          <view class="item-row" data-name="门店撤样" @tap="onPopOpen">
+            <view class="item-row-left">
+              <text>门店</text>
+              <text class="redXing">*</text>
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right">
+                <view
+                  class="item-row-right-inventory {{ SampleformData.storeName ? '' : 'placeholder' }} ">
+                  {{ SampleformData.storeName || '请选择' }}
+                </view>
+                <van-icon name="arrow"
+                          custom-class="dms-item-row-right-arrow"/>
+              </view>
+            </view>
+          </view>
+          <!--门店类别-->
+          <view class="item-row">
+            <view class="item-row-left">
+              <text>门店类别</text>
+<!--              <text class="redXing">*</text>-->
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-note">
+                <van-field
+                  disabled
+                  value="{{ SampleformData.storeType }}"
+                  placeholder=""
+                  border="{{ false }}"
+                  input-align="right"
+                  data-name="activityTheme"
+                  bind:change="onFilterFormChange"
+                  class="add-store-note"
+                />
+              </view>
+            </view>
+          </view>
+          <!--类型-->
+          <view class="item-row">
+            <view class="item-row-left">
+              <text>类型</text>
+              <text class="redXing">*</text>
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-note">
+                <van-field
+                  style="item-row-right-note-Input"
+                  value="{{ SampleformData.type }}"
+                  placeholder="请输入"
+                  border="{{ false }}"
+                  input-align="right"
+                  data-name="activityTheme"
+                  bind:change="onFilterFormChange"
+                  class="add-store-note"
+                  disabled
+                />
+              </view>
+            </view>
+          </view>
+          <view class="item-row" data-name="型号" data-key="cModel" data-index="{{index}}" @tap="onPopOpen">
+            <view class="item-row-left">
+              <text>型号</text>
+              <text class="redXing">*</text>
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right">
+                <view class="item-row-right-inventory2" >
+                  {{ SampleformData.model.name || '请选择' }}
+                </view>
+                <van-icon name="arrow" custom-class="dms-item-row-right-arrow"/>
+              </view>
+            </view>
+          </view>
+
+        </view>
+
+      </view>
+      <view class="add-store-footer">
+        <view class="submit-btn add-store-btn" @tap="toAddStoreCY">提交</view>
+      </view>
+      <van-popup
+        show="{{ isPopShowC}}"
+        closeable
+        position="bottom"
+        custom-style="height: 570rpx"
+        zIndex="400"
+        bind:click-overlay="onClose"
+      >
+        <view class="item-inv">
+          <view class="item-inv-head">
+            <view class="item-inv-head-context">
+              <view class="item-inv-head-context-title">{{ popTitle }}</view>
+              <van-icon name="cross" class="item-inv-head-context-close" bindtap="onPopClose"/>
+            </view>
+          </view>
+          <scroll-view scroll-y class="item-inv-scroll">
+            <!--             门店 -->
+            <view wx:if="{{ popTitle === '门店' }}" wx:for="{{ storeNameOptions }}" wx:key="{{ item.code }}"
+                  wx:for-item="item" class="item-inv-scroll-row" @tap="chooseStorec({{item}})">
+              <view data-key="{{ item.code }}"
+                    class="item-inv-scroll-row-desc {{ item.code === SampleformData.store ? 'checked' : ''}}">
+                {{ item.name }}
+              </view>
+              <block wx:if="{{ item.code === SampleformData.store }}">
+                <view class="b-icon icon-check item-inv-scroll-row-checked checked"></view>
+              </block>
+            </view>
+          </scroll-view>
+        </view>
+      </van-popup>
+      <popupCustomize
+        :options.sync="currentOptions"
+        :selectedOption.sync="popSelectedOption"
+        :title.sync="popTitle"
+        :multiple.sync="multiple"
+        :isSearch.sync="isSearch"
+        @onSelect.user="chooseOption"
+        @onSearch.user="onSearchOption"
+        :search="Searchvalue"
+      />
+      <van-toast id="van-toast"/>
+      <van-dialog id="van-dialog"/>
+    </view>
+
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<style lang="less">
+.add-store-note {
+  .van-cell {
+    padding: 0rpx 0;
+  }
+}
+.add-store-note {
+  .van-cell {
+    padding: 0rpx 0;
+  }
+}
+</style>
+<script lang="typescript" src="./index.ts"></script>

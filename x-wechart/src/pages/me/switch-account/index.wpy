@@ -1,0 +1,30 @@
+<template>
+  <view class="switch-account">
+    <view class="header">
+      <view class="title">切换账户登录</view>
+      <view class="tip">轻触账户以登录</view>
+    </view>
+    <scroll-view
+      wx:if="{{ accountList && accountList.length}}"
+      scroll-y="true"
+      class="switch-account-scroll"
+      enable-flex
+    >
+      <repeat for="{{ accountList }}" item="item">
+        <view class="account-info" @tap="changeAccount({{item}})">
+          <view class="avatar-box"><image class="trademark-logo" src="{{imgObj.trainingClockLogo}}"/></view>
+          <view>
+            <view class="name">{{ item.name }}</view>
+            <view class="code">{{ item.account }}</view>
+          </view>
+          <view wx:if="{{ currentAccount.account == item.account }}" class="currently-logged-in-tip">当前登录</view>
+        </view>
+      </repeat>
+    </scroll-view>
+
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

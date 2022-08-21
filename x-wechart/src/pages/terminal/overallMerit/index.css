@@ -1,0 +1,55 @@
+@font-face {
+  font-family: 'iconfont';  /* project id 2037285 */
+  src: url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.eot');
+  src: url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.woff') format('woff'),
+  url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.svg#iconfont') format('svg');
+}
+.iconfont{
+  font-style: normal;
+  font-size: 16px;
+  font-family: 'iconfont' !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.dakaBox{
+  padding: 20rpx;
+  font-size: 25rpx;
+  color: #333333;
+}
+.hanBox{
+  display: flex;
+  padding: 10rpx 0;
+}
+.hanBox>view{
+  flex: 1;
+  text-align: center;
+}
+.table{
+  margin-top: 10rpx;
+}
+.titleBgc{
+  background-color: #0ba5a3;
+  color: #FFFFFF;
+  font-weight: bold;
+  border: 1px solid #0ba5a3;
+}
+.block1Bgc{
+  border: 1px solid #fff;
+}
+.block2Bgc{
+  background-color: #fff;
+  border: 1px solid #fff;
+}
+.introduce{
+  font-size: 22rpx;
+  color:#b2b2b2;
+  margin-top: 30rpx;
+  line-height:40rpx;
+  font-family: "PingFang SC";
+}
+.paddingLeft20{
+  padding-left: 20rpx;
+}

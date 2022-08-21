@@ -1,0 +1,35 @@
+<wxs src="../../../wxs/utils.wxs" module="utils" class="_0b90d99"/>
+
+  <view class="buyout-items _0b90d99">
+    <scroll-view scroll-y enable-back-to-top="true" scroll-with-animation="true" class="buyout-items-scroll _0b90d99">
+      <view class="buyout-items-scroll-item _0b90d99">
+        <block class="_0b90d99" wx:for="{{items}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="content van-hairline--bottom _0b90d99">
+            <view class="buyout-title _0b90d99">
+              <view  wx:if="{{utils.isFreeShipping(item.productLabel)}}" class="item-info-tag _0b90d99">免运费</view>
+              <view class="_0b90d99">商品: {{item.productName}}</view>
+            </view>
+            <view class="buyout-item _0b90d99">
+              <view class="buyout-item-tag _0b90d99">套购单价</view>
+              <view class="buyout-item-price _0b90d99">¥{{utils.formatPrice(item.singlePrice)}}</view>
+              <view class="buyout-item-desc _0b90d99">(提货价¥{{utils.formatPrice(item.standardPrice)}}，直扣¥{{utils.formatPrice(item.deduct)}})</view>
+              <view class="buyout-item-count _0b90d99">x{{item.amount}}</view>
+            </view>
+          </view>
+        </block>
+        <view class="buyout-footer _0b90d99">
+          <view class="buyout-footer-price _0b90d99">¥{{utils.formatPrice(totalPrice)}}</view>
+          <van-stepper disabled="{{items.length === 0}}" disabled-input="{{items.length === 0}}" integer="{{true}}" value="{{totalNum}}" min="0"  bind:change="onCountChange" custom-class="cart-stepper" input-class="cart-input-class" plus-class="cart-action-class" minus-class="cart-action-class" class="_0b90d99"/>
+        </view>
+      </view>
+    </scroll-view>
+    <van-submit-bar disabled="{{totalNum === 0}}" button-text="去结算"  bind:submit="confirmChoose" button-class-container="order-btn" button-class="order-confirm" class="_0b90d99">
+      <view class="buyout-items-footer _0b90d99">
+        <view class="buyout-items-footer-item _0b90d99">
+          <view class="buyout-items-footer-item-unit _0b90d99">合计</view>
+          <view class="buyout-items-footer-item-price _0b90d99">¥{{utils.formatPrice(totalPrice)}}</view>
+        </view>
+      </view>
+    </van-submit-bar>
+    <van-toast id="van-toast" class="_0b90d99"/>
+  </view>

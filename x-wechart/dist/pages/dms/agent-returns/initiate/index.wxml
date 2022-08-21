@@ -1,0 +1,89 @@
+
+  <view class="order _2eca178">
+    <view class="scroll-wrapper _2eca178">
+      <scroll-view class="card-scroll _2eca178" scroll-y>
+      <view class="scroll-wrapper-inner _2eca178">
+        <view class="return-goods-header-card _2eca178">
+          <view class="return-goods-header-info _2eca178">
+            <view class="return-goods-header-info-inner _2eca178">
+              <view class="return-info _2eca178">
+                <view class="name-box _2eca178">
+                  <view class="tip _2eca178">退货信息</view>
+                </view>
+                <view class="return-back _2eca178" bindtap="returnBack">更改 <van-icon name="arrow" class="location _2eca178"/></view>
+              </view>
+              <view class="desc _2eca178">{{ orderdetail.customerName }}</view>
+              <view class="desc _2eca178">地址：{{ orderdetail.addressDesc }}</view>
+            </view>
+          </view>
+          <view class="document-info _2eca178">
+            <view class="document-info-inner _2eca178">
+              <!--     退货发起     -->
+              <view class="document-desc _2eca178">
+                <view class="_2eca178"><text class="label _2eca178">销售单号：</text>{{ orderdetail.documentNum }}</view>
+                <view class="status _2eca178">代理发起</view>
+              </view>
+              <view class="document-desc _2eca178">
+                <view class="_2eca178"><text class="label _2eca178">出库仓库：</text>{{ orderdetail.outWarehouseList }}</view>
+              </view>
+              <view class="document-desc _2eca178">
+                <!--  非零售单时为空  -->
+                <view class="_2eca178"><text class="label _2eca178">所属门店：</text>{{ orderdetail.storeName }}</view>
+              </view>
+              <view class="document-desc _2eca178">
+                <view class="_2eca178"><text class="label _2eca178">单据日期：</text>{{ orderdetail.documentDateStr }}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="form-info _2eca178">
+          <view class="msgItem-filed _2eca178">
+            <text class="label _2eca178">备注</text>
+            <view class="training-filed-item _2eca178">
+              <van-field value="{{ formData.remark }}" data-key="remark" placeholder="请输入" input-align="right" cell-class="field-cell"  bind:change="onRemarkChange" class="_2eca178" data-wpyonremarkchange-a="{{$event}}"/>
+            </view>
+          </view>
+        </view>
+        <view class="details-title _2eca178">明细信息</view>
+        <block class="_2eca178" wx:for="{{orderdetail.itemList}}" wx:for-index="itemIndex" wx:for-item="item" wx:key="key">
+          <view class="details-wrapper _2eca178">
+            <view class="details-info _2eca178">
+              <view class="product-name _2eca178">{{ item.model }}</view>
+              <view class="product-num _2eca178">
+                <text class="_2eca178">销售数量：{{ item.shippedBqty }}</text>
+                <text class="_2eca178">未退货数量：{{ item.borderedQty}}</text>
+              </view>
+            </view>
+            <block class="_2eca178" wx:for="{{item.outItems}}" wx:for-index="outIndex" wx:for-item="outItem" wx:key="order_detail_item_{{itemIndex}}_out_{{outIndex}}">
+              <view class="details-list _2eca178">
+                <view class="order-detail-item-inner-info _2eca178">
+                  <view class="detail-item-num _2eca178">
+                    <view class="item-info-line-out-quantity _2eca178">退货数量</view>
+                    <view class="item-info-line-out-quantity-input _2eca178">
+                      <van-stepper integer="integer" value="{{outItem.bactualQty}}" min="0" max="{{item.borderedQty}}" custom-class="order-wrapper-stepper" input-class="cart-input-class" plus-class="cart-action-class" minus-class="cart-action-class" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}"  bind:change="onShippedBqtyChg" bind:plus="onShippedBqtyChg" bind:minus="onShippedBqtyChg" class="_2eca178"/>
+                    </view>
+                  </view>
+                  <view class="msgItem-filed return-price _2eca178">
+                    <text class="label _2eca178">退货价格(元)</text>
+                    <view class="training-filed-item _2eca178">
+                      <van-field value="{{outItem.bprice}}" disabled placeholder="请输入" input-align="right" cell-class="field-cell" class="_2eca178"/>
+                    </view>
+                  </view>
+
+                  <view class="order-detail-item-out-info-footer _2eca178">
+                    <view class="footer-handle-item _2eca178">
+                      <text class="_2eca178">小计：¥{{ outItem.subtotal }}</text>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </block>
+          </view>
+        </block>
+      </view>
+      </scroll-view>
+    </view>
+    <view class="handle-footer _2eca178" bindtap="onInitSubmit">提交</view>
+    <van-toast id="van-toast" class="_2eca178"/>
+    <van-dialog id="van-dialog" class="_2eca178"/>
+  </view>

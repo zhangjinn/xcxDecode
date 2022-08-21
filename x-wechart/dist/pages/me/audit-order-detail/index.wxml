@@ -1,0 +1,91 @@
+<wxs src="../../../wxs/utils.wxs" module="utils"/>
+
+  <view class="audit-order-detail">
+    <scroll-view enable-flex="enable-flex" scroll-y enable-back-to-top="enable-back-to-top" class="audit-order-detail-body">
+      <view class="header">
+        <view class="header-title">
+          <view class="num">{{order.orderHeader.orderCode}}</view>
+          <view class="status">{{order.orderHeader.orderStatus}}</view>
+        </view>
+        <view class="header-desc">分销商编码：{{order.orderHeader.customerCode}}</view>
+        <view class="header-desc">分销商全称：{{order.orderHeader.fullName}}</view>
+      </view>
+      <view class="body van-hairline--top">
+        <view class="body-item">
+          <view class="body-item-title">上级代理：</view>
+          <view class="body-item-name">{{order.orderHeader.agentName}}</view>
+        </view>
+        <view class="body-item">
+          <view class="body-item-title">订单类型：</view>
+          <view class="body-item-name">{{order.orderHeader.orderType}}</view>
+        </view>
+        <view class="body-item">
+          <view class="body-item-title">订单来源：</view>
+          <view class="body-item-name">{{order.orderHeader.orderSource}}</view>
+        </view>
+        <view class="body-item">
+          <view class="body-item-title">开票户头：</view>
+          <view class="body-item-name">{{order.orderHeader.customerName}}</view>
+        </view>
+        <view class="body-item">
+          <view class="body-item-title">配送方式：</view>
+          <view class="body-item-name">{{order.orderHeader.deliveryType}}</view>
+        </view>
+        <view class="body-item">
+          <view class="body-item-title">联系人：</view>
+          <view class="body-item-name">{{order.orderHeader.contact}}</view>
+        </view>
+        <view class="body-item">
+          <view class="body-item-title">联系方式：</view>
+          <view class="body-item-name">{{order.orderHeader.contactPhone}}</view>
+        </view>
+        <view class="body-item">
+          <view class="body-item-title">收货地址：</view>
+          <view class="body-item-name">{{order.orderHeader.address2}}</view>
+        </view>
+        <view class="body-item">
+          <view class="body-item-title">使用返利：</view>
+          <view class="body-item-name">{{order.orderHeader.isRebate === "N" ? '否':'是'}}</view>
+        </view>
+        <view class="body-item">
+          <view class="body-item-title">有效截至：</view>
+          <view class="body-item-name">{{order.expireDate}}</view>
+        </view>
+      </view>
+      <view class="footer">
+        <block wx:for="{{order.orderLines}}" wx:for-index="index" wx:for-item="good" wx:key="itemId">
+          <view class="item-body van-hairline--bottom">
+            <view class="item-body-left">
+              <van-img class="item-body-left-img" src="{{good.img}}" errSrc="{{good.errImg}}"/>
+            </view>
+            <view class="item-body-right">
+              <view class="item-body-right-title">{{good.b2bName}}</view>
+              <view class="item-body-right-desc">{{good.color}}，补差类型：{{good.policyType || '无'}}</view>
+              <view class="item-body-right-count">
+                <view class="price">¥{{good.billPrice}}({{good.priceGroupName}})</view>
+                <view class="num">x{{good.qty}}</view>
+              </view>
+            </view>
+          </view>
+        </block>
+        <view class="total-item">
+          <view class="total">
+            <text>合计 </text>
+            <strong>¥{{order.totalPrice}}</strong>
+          </view>
+        </view>
+      </view>
+
+    </scroll-view>
+    <view class="audit-order-detail-footer">
+      <view bindtap="reject" class="btn reject">驳回</view>
+      <view bindtap="accept" class="btn accept">通过</view>
+    </view>
+    <van-toast id="van-toast"/>
+    <van-dialog id="van-dialog"/>
+    <van-dialog use-slot="{{true}}" title="确认审核驳回？" show="{{ rejectShow }}" show-cancel-button="show-cancel-button"  bind:cancel="closeRejectDialog" bind:confirm="confirmReject">
+      <view class="reject-text">
+        <textarea bindinput="onRemarkChange" placeholder="请输入驳回原因～" placeholder-class="reject-text-placeholder"/>
+      </view>
+    </van-dialog>
+  </view>

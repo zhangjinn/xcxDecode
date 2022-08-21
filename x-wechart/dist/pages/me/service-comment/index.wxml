@@ -1,0 +1,24 @@
+
+  <view class="comment comment-border _6e8dd42"  wx:if="{{visible}}">
+    <van-cell-group wx:if="{{commentList.length > 0}}" class="_6e8dd42">
+      <block class="_6e8dd42" wx:for="{{commentList}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+        <van-cell  bind:click="openBill" class="_6e8dd42" data-wpyopenbill-a="{{index}}">
+          <view class="order-common-value _6e8dd42">
+              <view class="order-common-value-con _6e8dd42">{{item.serverName}}</view>
+              <view class="order-common-value-label _6e8dd42" wx:if="{{!item.scoreArray && item.scoreArray == null}}">待评价</view>
+          </view>
+        </van-cell>
+      </block>
+    </van-cell-group>
+    
+  <view class="empty-data _6e8dd42" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <van-toast id="van-toast" class="_6e8dd42"/>
+    <van-dialog id="van-dialog" class="_6e8dd42"/>
+  </view>

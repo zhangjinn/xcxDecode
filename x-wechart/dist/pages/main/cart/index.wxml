@@ -1,0 +1,424 @@
+<wxs src="../../../wxs/utils.wxs" module="utils" class="_402e1ce"/>
+
+   <!-- 提示部分内容 -->
+  <van-popup show="{{ isNoticePopupShow }}" closeable="closeable" position="bottom"  bind:close="noticePopupClose" class="_402e1ce">
+    <view class="noticeCon _402e1ce">
+      <view class="noticeCon-title van-hairline--bottom _402e1ce">
+        物流费用规则
+        <i bindtap="noticePopupClose" class="b-icon iconyiquxiao _402e1ce"/>
+      </view>
+      <scroll-view scroll-y="true" class="noticeCon-scroll _402e1ce">
+        <view class="noticeCon-scroll-con _402e1ce">
+          <text class="_402e1ce">{{expressFee}}</text>
+        </view>
+      </scroll-view>
+    </view>
+  </van-popup>
+  <block  wx:if="{{ login }}" class="_402e1ce">
+    <block wx:if="{{ user.id && shoppingCartPermissions }}" class="_402e1ce">
+      <view class="cart _402e1ce" style="padding-bottom: {{ customTabBarAllHeight }}px">
+        <view class="header-tab _402e1ce">
+          <view class="left-btn _402e1ce">
+            <view class="btn-item _402e1ce" bindtap="toggleServicesVisible" data-wpytoggleservicesvisible-a="gys">
+              <text wx:if="{{MerchantAbbreviation.length<=0}}" class="_402e1ce">全部</text>
+              <text wx:else class="active _402e1ce">已选{{MerchantAbbreviation.length}}项</text>
+              <i class="b-icon iconxialajiantou {{MerchantAbbreviation.length<=0 ? '' : 'active'}} _402e1ce"/>
+            </view>
+          </view>
+          <view class="right-btn _402e1ce" bindtap="allEdit" data-wpyalledit-a="">
+            <view class="line-shadow _402e1ce"/>
+            <view class="side-filter-btn _402e1ce">
+              <text wx:if="{{editStatus}}" class="_402e1ce">编辑</text>
+              <text wx:else style="color: #00AAA6" class="_402e1ce">完成</text>
+            </view>
+          </view>
+        </view>
+        <view class="free-shipping-tip _402e1ce">{{ freeShippingTip }}</view>
+        <!-- 如果没有组织列表选择，需要上边距为240rpx -->
+        <!-- style="{{ orgAndGroups.length === 0 ? 'margin-top:240rpx;' : '' }}"  现在需用新的组合数据结构判断是否有数据-->
+        <block wx:if="{{ newGroupList.length === 0 }}" class="_402e1ce">
+          
+  <view class="empty-data _402e1ce">
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+        </block>
+        <block wx:elif="{{gowhere == 'P'}}" class="_402e1ce">
+          <scroll-view scroll-y enable-flex="enable-flex" enable-back-to-top="true" scroll-with-animation="true" scroll-top="{{visibelTop}}" id="cart-scroll-view" class="cart-scroll _402e1ce">
+            <block wx:for="{{newGroupList}}" wx:for-item="groupItem" wx:for-index="groupIndex" class="_402e1ce">
+              <view class="group-card _402e1ce">
+                <view class="group-header _402e1ce">
+                  <!--   是否全选当前组    -->
+                  <view bindtap="currGroupCheckAll" class="radio-content _402e1ce" hover-class="hover" data-wpycurrgroupcheckall-a="{{groupIndex}}">
+                    <view class="radio-content-el {{groupItem.isCheckAll ? 'checked' : ''}} _402e1ce">
+                      <view class="b-icon icon-check _402e1ce"/>
+                    </view>
+                  </view>
+                  <view class="group-header-gys _402e1ce">
+                    <text class="gys-text _402e1ce">供应商：<text wx:if="{{groupItem.agentName}}" class="_402e1ce">{{groupItem.agentName}}-</text>{{groupItem.orgName}}</text>
+                    <text class="_402e1ce">物料组：{{groupItem.materialGroupName}}</text>
+                  </view>
+                </view>
+                <block class="_402e1ce" wx:for="{{groupItem.cartDTOs}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+                  <van-swipe-cell key="{{item.id}}" right-width="{{ 148 }}" class="_402e1ce">
+                    <view class="cart-scroll-item _402e1ce">
+                      <view bindtap="dmstoggleCart" class="radio-content _402e1ce" hover-class="hover" data-wpydmstogglecart-a="{{item.id}}" data-wpydmstogglecart-b="{{item.dmsIsSell}}" data-wpydmstogglecart-c="{{groupIndex}}">
+                        <view class="radio-content-el item-el {{!editStatus ? '' : !item.dmsIsSell ? 'disabled' : ''}}  {{utils.includes(item.id, groupItem.selectees) ? 'checked' : ''}} _402e1ce">
+                          <view class="b-icon icon-check _402e1ce"/>
+                        </view>
+                      </view>
+                      <navigator url="/pages/goods/item/index?code={{item.productId}}&orgId={{item.orgId}}&agentCisCode={{item.agentCisCode}}&orgCode={{item.orgCode}}&isFenXiao=Y" class="img _402e1ce">
+                        <img class="image _402e1ce" src="{{item.img}}" errSrc="{{item.errImg}}"/>
+                      </navigator>
+                      <view class="content _402e1ce">
+                        <view class="content-header _402e1ce">
+                          <view wx:if="{{utils.isFreeShipping(item.productLabel)}}" class="free-shipping-tag _402e1ce">免运费</view>
+                          <view class="content-title _402e1ce">
+                            {{item.name}}
+                          </view>
+                        </view>
+
+                        <view class="content-color _402e1ce">
+                          <block wx:if="{{item.color}}" class="_402e1ce">{{item.color}}</block>
+                        </view>
+                        <view class="content-footer _402e1ce">
+                          <view class="content-footer-left _402e1ce">
+                            <block wx:if="{{item.standardPrice !== undefined}}" class="_402e1ce">
+                              <text wx:if="{{item.standardPrice !== ''}}" class="price price-item _402e1ce"><text class="price-symbol _402e1ce">¥</text><text class="price-num _402e1ce">{{item.standardPrice}}</text></text>
+                              <text wx:else class="price _402e1ce">暂无价格</text>
+                              <text class="volume _402e1ce">({{item.loadVolume}}m³)</text>
+                            </block>
+                            <block wx:else class="_402e1ce">
+                              <van-loading size="24rpx" class="_402e1ce"/>
+                            </block>
+                          </view>
+                          <van-stepper disabled="{{!item.dmsIsSell}}" integer="{{true}}" value="{{item.quantity}}"  bind:blur="onCountBlur" bind:plus="onCountPlus" bind:minus="onCountMinus" custom-class="order-wrapper-stepper" input-class="cart-input-class" plus-class="cart-action-class" minus-class="cart-action-class" class="_402e1ce" data-wpyoncountblur-a="{{item.id}}" data-wpyoncountblur-b="{{ item.productId }}" data-wpyoncountblur-c="{{groupIndex}}" data-wpyoncountblur-d="{{index}}" data-wpyoncountplus-a="{{item.id}}" data-wpyoncountplus-b="{{ item.productId }}" data-wpyoncountplus-c="{{groupIndex}}" data-wpyoncountplus-d="{{index}}" data-wpyoncountminus-a="{{item.id}}" data-wpyoncountminus-b="{{ item.productId }}" data-wpyoncountminus-c="{{groupIndex}}" data-wpyoncountminus-d="{{index}}"/>
+                        </view>
+
+                        <!-- 库存显示 -->
+                        <view class="content-count _402e1ce">
+                          <!--分销商对应的代理商启用共享显示自由仓、共享仓-->
+                          <block wx:if="{{ item.isFenXiao === 'Y' && item.agentShareFlag === 'Y' }}" class="_402e1ce">
+                            <!-- 分销商，如果有invQty字段则显示自由仓，如果没有invQty字段则不显示 -->
+                           <view wx:if="{{item.invQty !== undefined}}" class="text content-count-left _402e1ce"><text class="_402e1ce">自有仓 {{item.invQty}}</text></view>
+                            <view class="text content-count-right _402e1ce"><text class="_402e1ce">共享仓 {{item.gicInvQty}}</text></view>
+                          </block>
+                          <block wx:else class="_402e1ce">
+                            <view wx:if="{{item.invQty !== undefined}}" class="text content-count-right _402e1ce"><text class="_402e1ce">库存 {{item.invQty}}</text></view>
+                          </block>
+                        </view>
+                      </view>
+                    </view>
+                    <view class="cart-scroll-item-action _402e1ce" slot="right">
+                      <view bindtap="itemStar" hover-class="hover" class="cart-scroll-item-action-star _402e1ce" data-wpyitemstar-a="{{item.productId}}" data-wpyitemstar-b="{{item.orgId}}">加入收藏</view>
+                      <view bindtap="itemRemove" hover-class="hover" class="cart-scroll-item-action-delete _402e1ce" data-wpyitemremove-a="{{item.id}}">删除</view>
+                    </view>
+                  </van-swipe-cell>
+                </block>
+              </view>
+            </block>
+
+          </scroll-view>
+        </block>
+        <block wx:else class="_402e1ce">
+          <scroll-view scroll-y enable-flex="enable-flex" enable-back-to-top="true" scroll-with-animation="true" scroll-top="{{visibelTop}}" id="cart-scroll-view" class="cart-scroll _402e1ce">
+            <block wx:for="{{newGroupList}}" wx:for-item="groupItem" wx:for-index="groupIndex" class="_402e1ce">
+              <view class="group-card _402e1ce">
+                <view class="group-header _402e1ce">
+                  <!--   是否全选当前组    -->
+                  <view bindtap="currGroupCheckAll" class="radio-content _402e1ce" hover-class="hover" data-wpycurrgroupcheckall-a="{{groupIndex}}">
+                    <view class="radio-content-el {{groupItem.isCheckAll ? 'checked' : ''}} _402e1ce">
+                      <view class="b-icon icon-check _402e1ce"/>
+                    </view>
+                  </view>
+                  <view class="group-header-gys _402e1ce">
+                    <text class="gys-text _402e1ce">供应商：{{groupItem.orgName}}</text>
+                    <text class="_402e1ce">物料组：{{groupItem.materialGroupName}}</text>
+                  </view>
+                </view>
+                <block class="_402e1ce" wx:for="{{groupItem.cartDTOs}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+                  <van-swipe-cell key="{{item.id}}" right-width="{{ 148 }}" class="_402e1ce">
+                    <view class="cart-scroll-item _402e1ce">
+                      <view bindtap="toggleCart" class="radio-content _402e1ce" hover-class="hover" data-wpytogglecart-a="{{item.id}}" data-wpytogglecart-b="{{item.isSell}}" data-wpytogglecart-c="{{groupIndex}}">
+                        <view class="radio-content-el item-el {{ !editStatus ? '' : (!item.isSell ? 'disabled' : '')}} {{utils.includes(item.id, groupItem.selectees) ? 'checked' : ''}} _402e1ce">
+                          <view class="b-icon icon-check _402e1ce"/>
+                        </view>
+                      </view>
+                      <navigator url="/pages/goods/item/index?code={{item.productId}}&orgId={{item.orgId}}&orgCode={{item.orgCode}}" class="img _402e1ce">
+                        <img class="image _402e1ce" src="{{item.img}}" errSrc="{{item.errImg}}"/>
+                      </navigator>
+                      <view class="content _402e1ce">
+                        <view class="content-header _402e1ce">
+                          <view wx:if="{{utils.isFreeShipping(item.productLabel)}}" class="free-shipping-tag _402e1ce">免运费</view>
+                          <view class="content-title _402e1ce">
+                            {{item.name}}
+                            <block wx:if="{{item.color}}" class="_402e1ce">/{{item.color}}</block>
+                          </view>
+                        </view>
+
+                        <view class="content-desc _402e1ce">
+                          固定折扣:
+                          <block wx:if="{{item.fixedDiscount !== undefined}}" class="_402e1ce">{{item.policy.fixedDiscount || item.fixedDiscount}}%</block>
+                          <block wx:else class="_402e1ce">
+                            <van-loading size="24rpx" class="_402e1ce"/>
+                          </block>
+                          <block wx:if="{{item.makeUpType}}" class="_402e1ce">, 补差类型: {{item.policy.makeUpType || item.makeUpType}}</block>
+                        </view>
+                        <view class="content-desc _402e1ce">
+                          提货价:
+                          <block wx:if="{{item.standardPrice !== undefined}}" class="_402e1ce">
+                            ¥{{item.policy.standardPrice || item.standardPrice}}
+                            <block wx:if="{{item.policy.pricingGroupName || item.pricingGroupName}}" class="_402e1ce">(</block>
+                            {{item.policy.pricingGroupName || item.pricingGroupName}}
+                            <block wx:if="{{item.policy.pricingGroupName || item.pricingGroupName}}" class="_402e1ce">)</block>
+                          </block>
+                          <block wx:else class="_402e1ce">
+                            <van-loading size="24rpx" class="_402e1ce"/>
+                          </block>
+                        </view>
+                        <block wx:if="{{newGroupPolicies[item.productId]}}" class="_402e1ce">
+                          <view class="content-policy {{ item.policy ? 'selected' : '' }} _402e1ce" hover-class="hover" bindtap="openPolicy" data-wpyopenpolicy-a="{{item}}" data-wpyopenpolicy-b="{{groupIndex}}">
+                            <view class="text _402e1ce">政策选择</view>
+                            <block wx:if="{{item.policy}}" class="_402e1ce">
+                              <view class="value-text van-ellipsis _402e1ce">
+                                {{item.policy.policyName}}
+                                <block wx:if="{{item.policy.versionCode}}" class="_402e1ce">[{{item.policy.versionCode}}]</block>
+                              </view>
+                            </block>
+                            <van-icon name="arrow" size="20rpx" color="#D9161C" class="_402e1ce"/>
+                          </view>
+                        </block>
+                        <view class="content-footer _402e1ce">
+                          <view class="content-footer-left _402e1ce">
+<!--                            <text class="price">¥{{item.policy.policyPrice || item.discountPrice}}</text>-->
+                            <text class="price price-item _402e1ce"><text class="price-symbol _402e1ce">¥</text><text class="price-num _402e1ce">{{item.policy.policyPrice || item.discountPrice}}</text></text>
+                            <text class="volume _402e1ce">({{item.loadVolume}}m³)</text>
+                            <!-- <block wx:if="{{item.discountPrice !== undefined}}">
+                              <text class="price">¥{{item.policy.policyPrice || item.discountPrice}}</text>
+                              <block wx:if="{{item.isFenXiao}}">
+                                <text class="tip">({{item.stock !== '0' ? '库存充足' : '库存不足'}})</text>
+                              </block>
+                              <block wx:else>
+                                <van-loading size="24rpx" />
+                              </block>
+                            </block>
+                            <block wx:else>
+                              <van-loading size="24rpx" />
+                            </block> -->
+                          </view>
+                          <van-stepper disabled="{{!item.isSell}}" integer="{{true}}" value="{{item.quantity || 1}}"  bind:blur="onCountBlur" bind:plus="onCountPlus" bind:minus="onCountMinus" custom-class="order-wrapper-stepper" input-class="cart-input-class" plus-class="cart-action-class" minus-class="cart-action-class" class="_402e1ce" data-wpyoncountblur-a="{{item.id}}" data-wpyoncountblur-b="{{ item.productId }}" data-wpyoncountblur-c="{{groupIndex}}" data-wpyoncountblur-d="{{index}}" data-wpyoncountplus-a="{{item.id}}" data-wpyoncountplus-b="{{ item.productId }}" data-wpyoncountplus-c="{{groupIndex}}" data-wpyoncountplus-d="{{index}}" data-wpyoncountminus-a="{{item.id}}" data-wpyoncountminus-b="{{ item.productId }}" data-wpyoncountminus-c="{{groupIndex}}" data-wpyoncountminus-d="{{index}}"/>
+                        </view>
+                        <!-- 采购类型显示 -->
+                        <view class="content-desc _402e1ce">
+                          <text class="text _402e1ce" wx:if="{{item.isFenXiao !== 'Y' && (item.purchaseType == '1'||item.purchaseType == '3')}}">支持应急采购</text>
+                          <text class="text _402e1ce" wx:if="{{item.isFenXiao !== 'Y' && (item.purchaseType == '2'||item.purchaseType == '3')}}">支持常规采购</text>
+                        </view>
+                        <!-- 库存显示 -->
+                        <view class="content-count _402e1ce">
+                          <!-- <view wx:if="{{item.inventory || item.inventory === 0}}" class="text content-count-left" >{{item.isFenXiao != 'Y' ? '海信' : '自有'}} {{item.inventory}}</view>
+                          <view wx:if="{{item.sharedInv || item.sharedInv === 0}}" class="text content-count-right">共享 {{item.sharedInv}}</view> -->
+
+                          <!-- <view wx:if="{{item.isFenXiao == 'Y'}}">
+                            <view wx:if="{{item.invQty || item.invQty === 0}}" class="text content-count-left" >自有 {{item.invQty}}</view>
+                            <view wx:if="{{item.gicInvQty || item.gicInvQty === 0}}" class="text content-count-right">共享 {{item.gicInvQty}}</view>
+                          </view>
+                          <view wx:else> -->
+                          <view wx:if="{{item.inventory || item.inventory === 0}}" class="text content-count-left _402e1ce"><text class="_402e1ce">海信{{item.inventory}}</text></view>
+                          <view wx:if="{{item.sharedInv || item.sharedInv === 0}}" class="text content-count-right _402e1ce"><text class="_402e1ce">共享{{item.sharedInv}}</text></view>
+                          <!-- </view> -->
+                        </view>
+                      </view>
+                    </view>
+
+                    <view class="cart-scroll-item-action _402e1ce" slot="right">
+                      <view bindtap="itemStar" hover-class="hover" class="cart-scroll-item-action-star _402e1ce" data-wpyitemstar-a="{{item.productId}}" data-wpyitemstar-b="{{item.orgId}}">加入收藏</view>
+                      <view bindtap="itemRemove" hover-class="hover" class="cart-scroll-item-action-delete _402e1ce" data-wpyitemremove-a="{{item.id}}">删除</view>
+                    </view>
+                  </van-swipe-cell>
+                </block>
+              </view>
+            </block>
+
+          </scroll-view>
+        </block>
+        <view wx:if="{{gowhere == 'C'}}" class="cart-footer van-hairline--top _402e1ce" style="bottom: {{ customTabBarAllHeight }}px">
+          <view class="cart-footer-bar _402e1ce">
+            <view class="cart-footer-bar-content _402e1ce">
+              <view bindtap="checkAll" class="check-all _402e1ce" hover-class="hover" data-wpycheckall-a="">
+                <view class="radio-el {{isCheckAll ? 'checked' : ''}} _402e1ce">
+                  <view class="b-icon icon-check _402e1ce"/>
+                </view>
+                <view class="radio-text _402e1ce">全选</view>
+              </view>
+              <view wx:if="{{editStatus}}" class="desc _402e1ce">
+                <view class="price-box _402e1ce">
+                  <view class="desc-label _402e1ce">合计</view>
+                  <view class="desc-value _402e1ce">¥{{totalPrice}}</view>
+                </view>
+                <view class="desc-volume _402e1ce" wx:if="{{totalVolume}}">体积:{{totalVolume}}m³</view>
+              </view>
+            </view>
+            <!--常规订单-->
+            <view wx:if="{{editStatus}}" bindtap="submitOrder" class="cart-footer-bar-btncg {{selectees.length === 0 ? 'disabled': ''}} _402e1ce" hover-class="hover" data-wpysubmitorder-a="2">常规下单</view>
+
+            <!--原下单逻辑-->
+            <view wx:if="{{editStatus}}" bindtap="submitOrder" class="cart-footer-bar-btn {{selectees.length === 0 ? 'disabled': ''}} _402e1ce" hover-class="hover" data-wpysubmitorder-a="1">应急下单</view>
+            <view wx:else bindtap="allDelete" class="cart-footer-bar-btn {{selectees.length === 0 ? 'disabled': ''}} _402e1ce" hover-class="hover">删除</view>
+          </view>
+        </view>
+        <view wx:else class="cart-footer van-hairline--top _402e1ce" style="bottom: {{ customTabBarAllHeight }}px">
+          <view class="cart-footer-bar _402e1ce">
+            <view class="cart-footer-bar-content _402e1ce">
+              <view bindtap="checkAll" class="check-all _402e1ce" hover-class="hover" data-wpycheckall-a="">
+                <view class="radio-el {{isCheckAll ? 'checked' : ''}} _402e1ce">
+                  <view class="b-icon icon-check _402e1ce"/>
+                </view>
+                <view class="radio-text _402e1ce">全选</view>
+              </view>
+              <!-- <view wx:if="{{editStatus}}" class="desc">
+                <view class="desc-label">合计</view>
+                <view class="desc-value">¥{{dmsTotalPrice}}</view>
+              </view> -->
+              <view wx:if="{{editStatus}}" class="desc _402e1ce">
+                <view class="price-box _402e1ce">
+                  <view class="desc-label _402e1ce">合计</view>
+                  <view class="desc-value _402e1ce">¥{{dmsTotalPrice}}</view>
+                </view>
+                <view class="desc-volume _402e1ce" wx:if="{{totalVolume}}">体积:{{totalVolume}}m³<i class="b-icon iconwenti _402e1ce" bindtap="noticePopupOpen"/></view>
+              </view>
+            </view>
+            <view wx:if="{{editStatus}}" bindtap="submitOrder" class="cart-footer-bar-btn {{selectees.length === 0 ? 'disabled': ''}} _402e1ce" hover-class="hover">去结算</view>
+            <view wx:else bindtap="allDelete" class="cart-footer-bar-btn {{selectees.length === 0 ? 'disabled': ''}} _402e1ce" hover-class="hover">删除</view>
+          </view>
+        </view>
+        <van-popup show="{{servicesVisible && editStatus}}" position="top"  bind:close="toggleServicesVisible" custom-style="height: 50%; border-radius: 0rpx 0rpx 24rpx 24rpx;" class="_402e1ce">
+          <view class="popup-wrapper _402e1ce">
+            <view class="cart-top _402e1ce">
+              <view class="cart-top-header _402e1ce">
+                <view class="cart-top-header-label _402e1ce">
+                  <text wx:if="{{MerchantAbbreviation.length<=0}}" class="_402e1ce">全部</text>
+                  <text wx:else class="_402e1ce">已选{{MerchantAbbreviation.length}}项</text>
+                  <view class="b-icon icon-shangshengjiantou icon _402e1ce"/>
+                </view>
+                <!--              <view wx:if="{{MerchantAbbreviationChild.length > 0}}" class="cart-top-header-label">-->
+                <!--                <text>{{MerchantAbbreviationChildFirstName}}</text>-->
+                <!--                <view class="b-icon icon-shangshengjiantou icon"></view>-->
+                <!--              </view>-->
+              </view>
+            </view>
+            <!--   TODO: 供应商和物料组合为一个选项   -->
+            <block wx:if="{{whichPopupShow == 'gys'}}" class="_402e1ce">
+              <view class="order-s-filter-container _402e1ce">
+                <view class="order-operation _402e1ce" bindtap="chooseServices" data-wpychooseservices-a="">
+                  <view class="operation-text van-hairline--bottom _402e1ce">
+                    <view class="operation-status {{ MerchantAbbreviationkey.length <=0 ? 'active' : '' }} _402e1ce">全部</view>
+                    <view wx:if="{{ MerchantAbbreviationkey.length <=0 }}" class="b-icon icon-check operation-icon _402e1ce"/>
+                  </view>
+                </view>
+                <block class="_402e1ce" wx:for="{{orgList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                  <view class="order-operation _402e1ce">
+                    <view class="operation-text van-hairline--bottom _402e1ce" bindtap="chooseServices" data-wpychooseservices-a="{{item.key}}">
+                      <view class="operation-status {{ utils.includesKeyInArr(item.key, MerchantAbbreviationkey)? 'active' : '' }} _402e1ce">{{item.value}}</view>
+                      <view wx:if="{{ utils.includesKeyInArr(item.key, MerchantAbbreviationkey) }}" class="b-icon icon-check operation-icon _402e1ce"/>
+                    </view>
+                  </view>
+                </block>
+              </view>
+              <view class="filter-footer _402e1ce">
+                <view class="filter-Sure _402e1ce" bindtap="filterSure">
+                  确定
+                </view>
+              </view>
+            </block>
+
+            <!-- TODO: 循环物料组 -->
+            <!--            <block wx:else>-->
+            <!--              <view-->
+            <!--                wx:if="{{MerchantAbbreviationChild.length > 0}}"-->
+            <!--                class="services-list van-hairline&#45;&#45;top"-->
+            <!--              >-->
+            <!--                <van-row>-->
+            <!--                  <repeat for="{{MerchantAbbreviationChild}}" key="key">-->
+            <!--                    <view-->
+            <!-- bindtap="chooseItemgroup({{item.code}},{{item.name}})"-->
+            <!--                      class="services-list-item van-hairline&#45;&#45;bottom"-->
+            <!--                      hover-class="hover"-->
+            <!--                    >-->
+            <!--                      <view-->
+            <!--                        class="services-list-item-radio {{ item.code === MerchantAbbreviationChildFirstKey ? 'checked' : '' }}"-->
+            <!--                      >-->
+            <!--                        <view class="b-icon icon-check" />-->
+            <!--                      </view>-->
+            <!--                      <view class="services-list-item-text">{{item.name}}</view>-->
+            <!--                    </view>-->
+            <!--                  </repeat>-->
+            <!--                </van-row>-->
+            <!--              </view>-->
+            <!--            </block>-->
+          </view>
+        </van-popup>
+        <van-popup show="{{policyVisible}}" position="bottom" bind:close="closePolicy" class="_402e1ce">
+          <view class="policy _402e1ce" style="padding-bottom: {{ customTabBarAllHeight }}px">
+            <view bindtap="closePolicy" class="policy-close _402e1ce" hover-class="hover">
+              <van-icon color="#262626" name="cross" class="_402e1ce"/>
+            </view>
+            <view class="policy-header van-hairline--bottom _402e1ce">政策选择</view>
+            <scroll-view scroll-y enable-flex="enable-flex" enable-back-to-top="true" scroll-with-animation="true" class="policy-scroll _402e1ce">
+              <block class="_402e1ce" wx:for="{{policyArr}}" wx:for-index="index" wx:for-item="item" wx:key="polycy_{{id}}">
+                <block wx:if="{{ item.disabled }}" class="_402e1ce">
+                  <view hover-class="hover" class="policy-scroll-item van-hairline--bottom _402e1ce">
+                    <view class="policy-scroll-item-radio {{item.checked ? 'checked' : ''}} _402e1ce">
+                      <view class="b-icon icon-check policy-scroll-item-radio-disabled _402e1ce"/>
+                    </view>
+                    <view class="policy-scroll-item-content policy-scroll-item-content-disabled _402e1ce">
+                      <view class="policy-scroll-item-content-title _402e1ce">
+                        <text class="black _402e1ce">{{item.policyName}}</text>
+                        <text class="red _402e1ce" wx:if="{{item.versionCode}}">[{{item.versionCode}}]</text>
+                      </view>
+                      <view class="policy-scroll-item-content-value _402e1ce">
+                        <view class="policy-info _402e1ce">折扣 {{utils.formatPrice(item.discount)}}%，直扣 ￥{{utils.formatPrice(item.reduce)}}，开票价 ￥{{utils.formatPrice(item.price)}}</view>
+                        <view class="_402e1ce">总数量 {{item.total}}，可购数量 {{item.canQuantity}}，已购数量 {{item.remain}}</view>
+                      </view>
+                    </view>
+                  </view>
+                </block>
+                <block wx:else class="_402e1ce">
+                  <view bindtap="choosePolicy" hover-class="hover" class="policy-scroll-item van-hairline--bottom _402e1ce" data-wpychoosepolicy-a="{{item}}">
+                    <view class="policy-scroll-item-radio {{item.checked ? 'checked' : ''}} _402e1ce">
+                      <view class="b-icon icon-check _402e1ce"/>
+                    </view>
+                    <view class="policy-scroll-item-content _402e1ce">
+                      <view class="policy-scroll-item-content-title _402e1ce">
+                        <text class="black _402e1ce">{{item.policyName}}</text>
+                        <text class="red _402e1ce" wx:if="{{item.versionCode}}">[{{item.versionCode}}]</text>
+                      </view>
+                      <view class="policy-scroll-item-content-value _402e1ce">
+                        <view class="policy-info _402e1ce">折扣 {{utils.formatPrice(item.discount)}}%，直扣 ￥{{utils.formatPrice(item.reduce)}}，开票价 ￥{{utils.formatPrice(item.price)}}</view>
+                        <view class="_402e1ce">总数量 {{item.total}}，可购数量 {{item.canQuantity}}，已购数量 {{item.remain}}</view>
+                      </view>
+                    </view>
+                  </view>
+                </block>
+              </block>
+            </scroll-view>
+          </view>
+        </van-popup>
+        <van-toast id="van-toast" class="_402e1ce"/>
+        <van-dialog id="van-dialog" class="_402e1ce"/>
+      </view>
+    </block>
+    
+  <view class="empty-data _402e1ce" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataAuth$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataAuth$descriptionText }}</view>
+    </view>
+  </view>
+
+  </block>
+  <block  wx:else class="_402e1ce">
+    <no-permission class="_402e1ce"/>
+  </block>

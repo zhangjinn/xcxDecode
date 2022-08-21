@@ -1,0 +1,72 @@
+@import '../../../styles/utils.less';
+
+.search {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  &-container {
+    display: flex;
+    background-color: #FFF;
+    &-label {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-left: 24rpx;
+      font-size: 26rpx;
+      color: #262626;
+    }
+    &-input {
+      flex: 1;
+    }
+  }
+  &-result {
+    height: 200rpx;
+    flex: 1;
+  }
+
+  &-result-row {
+    padding: 24rpx;
+    background-color: #FFF;
+    color: #262626;
+    font-size: 26rpx;
+    position: relative;
+    &:not(:last-child) {
+      &::after {
+        .hairline(#EEE);
+        border-bottom-width: 1rpx;
+      }
+    }
+    &-head {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 16rpx;
+      &-legal {
+        flex: 1;
+        .ellipsis();
+      }
+      &-name {
+        padding-right: 40rpx;
+        min-width: 140rpx;
+        padding-left: 20rpx;
+      }
+    }
+    &-address {
+      color: #777777;
+      .ellipsis();
+    }
+
+    &-single {
+      display: flex;
+      &-address {
+        color: #777777;
+        flex: 1;
+        .ellipsis();
+      }
+      &-name {
+        padding-right: 40rpx;
+        min-width: 140rpx;
+        padding-left: 20rpx;
+      }
+    }
+  }
+}

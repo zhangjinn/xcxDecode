@@ -1,0 +1,130 @@
+@font-face {
+  font-family: 'iconfont';
+  /* project id 2037285 */
+  src: url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.eot');
+  src: url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.eot?#iefix') format('embedded-opentype'), url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.woff2') format('woff2'), url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.woff') format('woff'), url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.ttf') format('truetype'), url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.svg#iconfont') format('svg');
+}
+.iconfont._222f0e4 {
+  font-style: normal;
+  font-size: 16px;
+  font-family: 'iconfont' !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+page._222f0e4 {
+  background-color: #fff;
+}
+.storeBox._222f0e4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding: 20rpx 20rpx 0 20rpx;
+  color: #00aaa7;
+  position: relative;
+}
+.searchaa._222f0e4 {
+  font-size: 30rpx;
+  margin-left: 20rpx;
+  color: #00aaa7;
+}
+.selectBoxItem._222f0e4 {
+  /*padding:0 20rpx 20rpx 20rpx;*/
+}
+.search-box._222f0e4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  background: #fff;
+}
+.search-item._222f0e4 {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+}
+.add-store._222f0e4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  padding-right: 32rpx;
+  font-size: 28rpx;
+  color: #00AAA6;
+}
+.history._222f0e4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #262626;
+  margin: 40rpx 0 24rpx;
+  padding-left: 30rpx;
+}
+.sulinBlock._222f0e4 {
+  background-color: #fff;
+  padding: 10rpx 20rpx;
+  font-size: 20rpx;
+  margin: 10rpx -20rpx;
+}
+.sulinItem._222f0e4 {
+  background-color: #f8f8f8;
+  padding: 10rpx;
+  display: inline-block;
+  border-radius: 5rpx;
+  margin-right: 15rpx;
+}
+.storeItemBox._222f0e4 {
+  position: relative;
+  font-size: 25rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  background-color: #fff;
+  padding: 26rpx 30rpx;
+}
+.storeItemBox._222f0e4:after {
+  position: absolute;
+  content: '';
+  height: 2rpx;
+  bottom: 0;
+  left: 30rpx;
+  right: 0;
+  background: #EEEEEE;
+}
+.swiper._222f0e4 {
+  width: 100vw;
+  margin: 0 -20rpx;
+}
+.swiperItem._222f0e4 {
+  width: 100%;
+}
+.storeRiht._222f0e4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+.treeDaoliu._222f0e4 {
+  background-color: #fff;
+  color: #00aaa7;
+  text-align: center;
+  font-size: 25rpx;
+  padding-bottom: 10rpx;
+}
+.search-item .van-search .van-search__content {
+  background: #F7F7F7;
+  border-radius: 32rpx;
+}

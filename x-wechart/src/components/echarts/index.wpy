@@ -1,0 +1,6 @@
+<template lang="wxml" >
+		<ec-canvas id="{{canvasId}}" style="width:{{width}};height:{{height}}" ec="{{ ec }}"></ec-canvas>
+</template>
+
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

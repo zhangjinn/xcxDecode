@@ -1,0 +1,45 @@
+
+    <view class="container _03a9a30">
+        <scroll-view class="_03a9a30">
+            <view class="warn _03a9a30">
+                您的销售订单对应分销商的多个采购订单，请选择对应的单号发起退货
+            </view>
+            <block class="_03a9a30" wx:for="{{outOrder}}" wx:for-index="index" wx:for-item="order" wx:key="key">
+                <view class="card _03a9a30">
+                    <view class="header _03a9a30" bindtap="checkOrder" data-wpycheckorder-a="{{order.purchaseId}}">
+                        <view class="first _03a9a30">
+                            <view class="first-left _03a9a30">  
+                                <van-checkbox value="{{order.checked}}" checked-color="#00AAA6" class="_03a9a30"/>
+                                <view class="order-no _03a9a30">采购单号 {{order.purchaseNum}}</view>
+                            </view>
+                            <view  wx:if="{{order.returnStatus === 'unreturn'}}" class="_03a9a30">
+                                <view class="first-right _03a9a30">未退货</view>
+                            </view>
+                            <view  wx:elif="{{order.returnStatus === 'part-returned'}}" class="_03a9a30">
+                                <view class="first-right _03a9a30">部分退货</view>
+                            </view>
+                            <view  wx:elif="{{order.returnStatus === 'returned'}}}}" class="_03a9a30">
+                                <view class="first-right _03a9a30">已退货</view>
+                            </view>
+                            
+                        </view>
+                        <view class="second _03a9a30">{{order.documentDate}}</view>
+                    </view>
+                    <block class="_03a9a30" wx:for="{{order.items}}" wx:for-index="index" wx:for-item="item" wx:key="key">    
+                        <view class="item _03a9a30">
+                            <view class="item-name _03a9a30">型号 {{item.model}}</view>
+                            <view class="item-color _03a9a30">颜色 {{item.colour}}</view>
+                            <block class="_03a9a30" wx:for="{{item.itemTabs}}" wx:for-index="index" wx:for-item="stock" wx:key="key">
+                                <view class="item-stock _03a9a30">
+                                    <view class="item-stock-detail _03a9a30">库存状态：{{stock.invStatusName}}</view>
+                                    <view class="item-stock-detail _03a9a30">采购数量：{{stock.purchaseQty}}</view>
+                                    <view class="item-stock-detail _03a9a30">可退货数量：{{stock.canReturnQty}}</view>
+                                </view>
+                            </block>
+                        </view>
+                    </block>
+                </view>
+            </block>
+        </scroll-view>
+        <view bindtap="goNext" class="footer _03a9a30">下一步</view>
+    </view>

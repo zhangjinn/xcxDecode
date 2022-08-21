@@ -1,0 +1,9 @@
+<view  class="x-design-title" style="{{contentStyle}}" hover-class="x-design-title-hover"  bindtap="onTap" >
+    <view class="x-design-title-left">{{title}}</view>
+    <view class="x-design-title-right" wx:if="{{moreSwitch}}">
+      <view class="x-design-title-link" >更多</view>
+      <view class="x-design-title-arrow">
+        <view class="i-class icon"></view>
+      </view>
+    </view>
+</view>

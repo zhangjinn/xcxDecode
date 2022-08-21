@@ -1,0 +1,60 @@
+@import '../../../../components/vant/common/style/ellipsis.less';
+
+.item-content{
+  display: flex;
+  width: 100%;
+  font-weight: 400;
+  .item-content-img{
+    width: 120rpx;
+    height: 120rpx;
+    background: #F7F7F7;
+    border-radius: 8rpx;
+    margin-right: 16rpx;
+  }
+  .item-content-right{
+    flex: 1;
+    .item-info-title{
+      font-size: 28rpx;
+      font-weight: 500;
+      color: #262626;
+    }
+    .item-info-line{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8rpx;
+      .item-info-line-price{
+        font-size: 24rpx;
+        .order-code{
+          font-size: 20rpx;
+          font-weight: 500;
+          color: #262626;
+        }
+        .order-num{
+          font-size: 32rpx;
+          font-weight: 500;
+          color: #262626;
+        }
+
+        .order-color{
+          font-size: 24rpx;
+          color: #777777;
+          margin-left: 8rpx;
+        }
+      }
+      .item-info-line-quantity{
+        font-size: 24rpx;
+        color: #AAAAAA;
+      }
+    }
+    .order-goods-detail-desc{
+      display: flex;
+      font-size: 24rpx;
+      color: #777777;
+      view{
+        margin-top: 8rpx;
+        margin-right: 24rpx;
+      }
+    }
+  }
+}

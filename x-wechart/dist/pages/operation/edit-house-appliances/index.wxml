@@ -1,0 +1,328 @@
+
+  <view class="order _107d5c6">
+    <view class="order-scroll _107d5c6">
+      <view class="basic-info-wrapper _107d5c6">
+        <view class="basic-info-container _107d5c6">
+          <view class="order-scroll-info _107d5c6">
+            <view class="item-row _107d5c6">
+              <view class="item-row-left _107d5c6">
+                <text class="_107d5c6">小区名称</text>
+              </view>
+              <view class="item-row-right _107d5c6">
+                <view class="item-row-right-note _107d5c6">
+                  <van-field value="{{ baseFormData.communityName }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="communityName"  bind:change="onBaseFieldChange" class="dms-order-note _107d5c6"/>
+                </view>
+              </view>
+            </view>
+            <view class="item-row _107d5c6" data-name="户型" data-key="houseType" data-options="houseTypeOption">
+              <view class="mask _107d5c6"  wx:if="{{maskShow && houseTypeOption && houseTypeOption.length>0}}" data-index="{{index}}" bindtap="popHide"/>
+              <view class="item-row-info _107d5c6">
+                <view class="item-row-left _107d5c6">
+                  <text class="_107d5c6">户型</text>
+                </view>
+                <view class="item-row-right _107d5c6">
+                  <view class="item-row-right-note _107d5c6">
+                    <van-field value="{{ baseFormData.houseType }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="houseType"  bind:change="onBaseFieldChange" class="dms-order-note _107d5c6"/>
+                  </view>
+                </view>
+              </view>
+              <!--    产品模糊搜索列表   -->
+              <view class="prod-scroll-view _107d5c6"  wx:if="{{maskShow && houseTypeOption && houseTypeOption.length>0}}">
+                <scroll-view class="prod-scroll-view-inner _107d5c6" scroll-y bindscroll="onScroll">
+                  <block class="_107d5c6" wx:for="{{houseTypeOption}}" wx:for-index="index" wx:for-item="productItem" wx:key="key">
+                    <view class="order-operation _107d5c6">
+                      <view class="operation-text {{index < houseTypeOption.length-1 ? 'van-hairline--bottom' : ''}} _107d5c6" bindtap="onProductSelect" data-wpyonproductselect-a="{{productItem}}">
+                        <view class="operation-status _107d5c6">{{productItem.name}}</view>
+                      </view>
+                    </view>
+                  </block>
+                </scroll-view>
+              </view>
+
+            </view>
+            <view class="item-row _107d5c6" bindtap="openTopAddress">
+              <view class="item-row-left _107d5c6">
+                <text class="_107d5c6">用户所在地区</text>
+                <text class="redXing _107d5c6">*</text>
+              </view>
+              <view class="item-row-right _107d5c6">
+                <view class="item-row-right-inventory {{ baseFormData.chooseProvinceInfo.id ? '' : 'placeholder' }} _107d5c6">
+                  {{ baseFormData.addressTip }}
+                </view>
+                <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_107d5c6"/>
+              </view>
+            </view>
+            
+  <view class="goods-toper _cb2c9ee address-detail-row _107d5c6">
+    <view class="mask _cb2c9ee" bindtap="$addressDetail$popHide"  wx:if="{{$addressDetail$popShow && $addressDetail$addressOptions && $addressDetail$addressOptions.length>0}}"/>
+    <view class="item-row _cb2c9ee">
+      <view class="item-row-left _cb2c9ee">
+        <text class="_cb2c9ee">详细地址</text>
+        <text class="redXing _cb2c9ee"  wx:if="{{$addressDetail$isRequired}}">*</text>
+      </view>
+      <view class="item-row-right _cb2c9ee">
+        <view class="item-row-right-note _cb2c9ee">
+          <van-field type="textarea" autosize="autosize" value="{{ $addressDetail$formData.addressName }}" placeholder="请填写详细地址" border="{{ $addressDetail$false }}" clearable="clearable" custom-style="font-size: 28rpx;" class="dms-order-note _cb2c9ee" input-align="right"  bind:change="$addressDetail$onAddressChange" bind:focus="$addressDetail$onFocus"/>
+        </view>
+      </view>
+    </view>
+    <view class="prod-scroll-view _cb2c9ee"  wx:if="{{$addressDetail$popShow && $addressDetail$addressOptions && $addressDetail$addressOptions.length>0}}">
+      <scroll-view class="prod-scroll-view-inner _cb2c9ee" scroll-y bindscroll="$addressDetail$onScroll">
+        <block class="_cb2c9ee" wx:for="{{$addressDetail$addressOptions}}" wx:for-index="$addressDetail$index" wx:for-item="$addressDetail$item" wx:key="$addressDetail$key">
+          <view class="order-operation _cb2c9ee">
+            <view class="operation-text {{$addressDetail$index < $addressDetail$addressOptions.length-1 ? 'van-hairline--bottom' : ''}} _cb2c9ee" bindtap="$addressDetail$onAddressSelect" data-wpyonaddressselect-a="{{$addressDetail$item}}">
+              <view class="operation-status _cb2c9ee">{{$addressDetail$item.name}}</view>
+            </view>
+          </view>
+        </block>
+      </scroll-view>
+    </view>
+  </view>
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{details.hourseProductDtoList && details.hourseProductDtoList.length>0}}" class="basic-info-wrapper _107d5c6">
+        <view class="basic-info-container _107d5c6">
+          <view class="house-card _107d5c6">
+            <view class="title _107d5c6">家电信息</view>
+            <view class="house-group _107d5c6">
+              <view class="house-item _107d5c6" wx:for="{{details.hourseProductDtoList}}">
+                <view class="name _107d5c6">{{ item.spartName }}</view>
+                <view class="desc _107d5c6">
+                  <view class="date _107d5c6"><text wx:if="{{item.productAge}}" class="_107d5c6">{{item.productAge}}年</text></view>
+                  <view class="image-tip _107d5c6">
+                      <image src="{{item.categoryPicture}}" class="bg _107d5c6"/>
+                  </view>
+                </view>
+                <view class="del-tip _107d5c6" data-index="{{index}}" bindtap="delProduct">
+                  <i class="b-icon a-shanchu _107d5c6" style="color: #cccccc"/>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      
+  <view class="purchase-intention-wrapper _107d5c6">
+    <block  wx:if="{{$homeAppliances$purchaseIntention.length>0}}">
+      <view class="basic-info-wrapper">
+        <view class="basic-info-container">
+          <view class="order-scroll-info" wx:for="{{$homeAppliances$purchaseIntention}}">
+            <view class="item-row" data-title="品类" data-index="{{index}}" data-key="intendedCategory" data-options="intendedCategoryOption" bindtap="$homeAppliances$openChoose">
+              <view class="item-row-left">
+                <text>品类</text>
+                <text class="redXing">*</text>
+              </view>
+              <view class="item-row-right">
+                <view class="item-row-right-inventory {{ item.intendedCategory.id ? '' : 'placeholder' }}">
+                  {{ item.intendedCategory.name || '请选择'}}
+                </view>
+                <van-icon name="arrow" custom-class="dms-item-row-right-arrow"/>
+              </view>
+            </view>
+            <view class="item-row">
+              <view class="item-row-left">
+                品牌
+              </view>
+              <view class="item-row-right">
+                <view class="item-row-right-note">
+                  <van-field value="{{ item.brand }}" placeholder="请输入" border="{{ $homeAppliances$false }}" input-align="right" data-index="{{index}}" data-key="brand"  bind:change="$homeAppliances$onBaseFieldChange" class="dms-order-note"/>
+                </view>
+              </view>
+            </view>
+            <view class="item-row">
+              <view class="mask" wx:if="{{item.popShow && $homeAppliances$intendedProductOption && $homeAppliances$intendedProductOption.length>0}}" data-index="{{index}}" bindtap="$homeAppliances$popHide"/>
+              <view class="item-row-info">
+                <view class="item-row-left">
+                  产品
+                </view>
+                <view class="item-row-right">
+                  <view class="item-row-right-note">
+                    <van-field value="{{ item.intendedProduct }}" placeholder="请输入" border="{{ $homeAppliances$false }}" input-align="right" data-index="{{index}}" data-key="intendedProduct"  bind:change="$homeAppliances$onBaseFieldChange" class="dms-order-note"/>
+                  </view>
+                </view>
+              </view>
+              <!--    产品模糊搜索列表   -->
+              <view class="prod-scroll-view" wx:if="{{item.popShow &&$homeAppliances$intendedProductOption && $homeAppliances$intendedProductOption.length>0}}">
+                <scroll-view class="prod-scroll-view-inner" scroll-y bindscroll="$homeAppliances$onScroll">
+                  <block wx:for="{{$homeAppliances$intendedProductOption}}" wx:for-index="$homeAppliances$index" wx:for-item="$homeAppliances$productItem" wx:key="$homeAppliances$key">
+                    <view class="order-operation">
+                      <view class="operation-text {{index < $homeAppliances$intendedProductOption.length-1 ? 'van-hairline--bottom' : ''}}" bindtap="$homeAppliances$onProductSelect" data-wpyonproductselect-a="{{$homeAppliances$productItem}}">
+                        <view class="operation-status">{{$homeAppliances$productItem.name}}</view>
+                      </view>
+                    </view>
+                  </block>
+                </scroll-view>
+              </view>
+
+            </view>
+            <view class="item-row">
+              <view class="item-row-left">
+                年限
+              </view>
+              <view class="item-row-right">
+                <view class="item-row-right-note">
+                  <van-field type="digit" value="{{ item.years }}" placeholder="请输入数字" border="{{ $homeAppliances$false }}" input-align="right" data-index="{{index}}" data-key="years" bind:change="$homeAppliances$onBaseFieldChange" class="dms-order-note"/>
+                </view>
+              </view>
+            </view>
+            <view class="item-row">
+              <view class="item-row-left">
+                备注
+              </view>
+              <view class="item-row-right">
+                <view class="item-row-right-note">
+                  <van-field value="{{ item.remark }}" placeholder="请填写备注(不超过10个字)" border="{{ $homeAppliances$false }}" input-align="right" data-index="{{index}}" data-key="remark" maxlength="10" bind:change="$homeAppliances$onBaseFieldChange" class="dms-order-note"/>
+                </view>
+              </view>
+            </view>
+            <view class="sales-info-item-footer">
+              <view class="handle-btn" data-index="{{index}}" bindtap="$homeAppliances$onDelete">
+                <i class="b-icon shanchu"/>
+                <text>删除</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="basic-info-wrapper">
+        <view class="add-sales" bindtap="$homeAppliances$onAdd"><i class="b-icon icon-add"/>继续添加</view>
+      </view>
+    </block>
+    <block  wx:else>
+      <view class="basic-info-wrapper">
+        <view class="add-sales" bindtap="$homeAppliances$onAdd"><i class="b-icon icon-add"/>新增家电信息</view>
+      </view>
+    </block>
+
+    <van-popup show="{{ $homeAppliances$popVisible }}" closeable="closeable" position="bottom" custom-style="height: 570rpx" bind:click-overlay="$homeAppliances$onClose">
+      <view class="order-inv">
+        <view class="order-inv-head">
+          <view class="order-inv-head-context">
+            <view class="order-inv-head-context-title">{{ $homeAppliances$popTitle }}</view>
+            <van-icon name="cross" class="order-inv-head-context-close" bindtap="$homeAppliances$onClose"/>
+          </view>
+        </view>
+        <scroll-view scroll-y class="order-inv-scroll">
+          <view wx:for="{{ $homeAppliances$popList }}" wx:key="{{ item.id }}" item="item" class="order-inv-scroll-row" data-key="{{ item.id }}" data-index="{{ index }}" bindtap="$homeAppliances$onChoose">
+            <view class="order-inv-scroll-row-desc {{ item.id === $homeAppliances$compareInfo.id ? 'checked' : ''}}">
+              {{ item.name }}
+            </view>
+            <block wx:if="{{ item.id === $homeAppliances$compareInfo.id }}">
+              <view class="b-icon icon-check order-inv-scroll-row-checked checked">
+              </view>
+            </block>
+          </view>
+
+        </scroll-view>
+      </view>
+    </van-popup>
+
+    <van-toast id="van-toast"/>
+  </view>
+
+
+    </view>
+
+    <view class="order-footer _107d5c6" data-type="add" data-id="" bindtap="submit">
+      <view class="btn _107d5c6">确认提交</view>
+    </view>
+
+    <!-- 选择列表弹框 -->
+    <wxs src="../../../wxs/utils.wxs" module="utils" class="_25d639b"/>
+
+  <van-popup show="{{ $popupCustomize$show }}" closeable="closeable" position="bottom" custom-style="height: 720rpx" zIndex="400"  bind:click-overlay="$popupCustomize$onClose" class="_25d639b _107d5c6">
+    <view class="item-inv _25d639b">
+      <view class="item-inv-head _25d639b">
+        <view class="item-inv-head-context _25d639b">
+          <view class="item-inv-head-context-title _25d639b">{{ $popupCustomize$title }}</view>
+          <i class="b-icon iconyiquxiao item-inv-head-context-close _25d639b" bindtap="$popupCustomize$onClose"/>
+        </view>
+      </view>
+      <view class="item-inv-search _25d639b"  wx:if="{{ $popupCustomize$isSearch }}">
+        <van-search custom-class="header-search" shape="round" use-action-slot="use-action-slot" use-left-icon-slot="{{ $popupCustomize$true }}" leftSearchIconSow="{{ $popupCustomize$false }}" placeholder="请输入搜索关键字" placeholder-style="color: #AAAAAA; font-size: 28rpx;" bind:change="$popupCustomize$onChange" class="_25d639b">
+          <view slot="label" class="search-left-icon _25d639b">
+            <i class="b-icon shouyesousuo _25d639b"/>
+          </view>
+        </van-search>
+      </view>
+      <scroll-view scroll-y class="item-inv-scroll _25d639b">
+        <block  wx:if="{{$popupCustomize$options && $popupCustomize$options.length>0}}" class="_25d639b">
+          <view wx:for="{{ $popupCustomize$options }}" wx:key="{{ item.id }}" wx:for-item="item" class="item-inv-scroll-row _25d639b" data-item="{{item}}" bindtap="$popupCustomize$chooseOption">
+            <block wx:if="{{$popupCustomize$multiple}}" class="_25d639b">
+              <view class="item-inv-scroll-row-desc  {{ utils.includes(item.id, $popupCustomize$selectedOption.id) ? 'checked' : '' }} _25d639b">{{ item.name }}</view>
+              <view wx:if="{{ utils.includes(item.id, $popupCustomize$selectedOption.id) }}" class="b-icon icon-check item-inv-scroll-row-checked checked _25d639b"/>
+            </block>
+            <block wx:else class="_25d639b">
+              <view class="item-inv-scroll-row-desc {{ item.id == $popupCustomize$selectedOption.id ? 'checked' : ''}} _25d639b">{{ item.name }}</view>
+              <view wx:if="{{ item.id == $popupCustomize$selectedOption.id }}" class="b-icon icon-check item-inv-scroll-row-checked checked _25d639b"/>
+            </block>
+          </view>
+        </block>
+        <view  wx:else class="no-data _25d639b">暂无数据</view>
+      </scroll-view>
+    </view>
+  </van-popup>
+    <!--  地址选择框  -->
+    
+  <van-popup show="{{ $address$addressVisible }}" position="bottom" z-index="9999999"  bind:close="$address$closeAddressPopup" class="_c859d82 _107d5c6">
+    <view class="area _c859d82">
+      <view class="area-header _c859d82">
+        <view class="area-header-content _c859d82">
+          <view class="area-header-content-title _c859d82">{{ $address$title }}</view>
+        </view>
+        <view bindtap="$address$closeAddressPopup" class="area-header-close _c859d82">
+          <icon class="h-icon icon-ic-close _c859d82"/>
+        </view>
+      </view>
+
+      <view class="area-tab _c859d82">
+        <view bindtap="$address$chooseAddressTap" class="area-tab-item _c859d82" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="province">
+          <view class="area-tab-item-title _c859d82">
+            <text class="{{ $address$areaCurrentTab === 'province' ? 'active' : '' }} _c859d82">{{ $address$province.name }}</text>
+            <view hidden="{{ !($address$areaCurrentTab === 'province') }}" class="area-tab-item-title-bar _c859d82"/>
+          </view>
+        </view>
+
+        <view bindtap="$address$chooseAddressTap" class="area-tab-item _c859d82" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="city">
+          <view class="area-tab-item-title _c859d82" hidden="{{ $address$city.items.length === 0 }}">
+            <text class="{{ $address$areaCurrentTab === 'city' ? 'active' : '' }} _c859d82">{{ $address$city.name }}</text>
+            <view hidden="{{ !($address$areaCurrentTab === 'city') }}" class="area-tab-item-title-bar _c859d82"/>
+          </view>
+        </view>
+
+        <view bindtap="$address$chooseAddressTap" class="area-tab-item _c859d82" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="area">
+          <view class="area-tab-item-title _c859d82" hidden="{{ $address$area.items.length === 0 }}">
+            <text class="{{ $address$areaCurrentTab === 'area' ? 'active' : '' }} _c859d82">{{ $address$area.name }}</text>
+            <view hidden="{{ !($address$areaCurrentTab === 'area') }}" class="area-tab-item-title-bar _c859d82"/>
+          </view>
+        </view>
+        <view bindtap="$address$chooseAddressTap" class="area-tab-item _c859d82" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="town">
+          <view class="area-tab-item-title _c859d82" hidden="{{ $address$town.items.length === 0 }}">
+            <text class="{{ $address$areaCurrentTab === 'town' ? 'active' : '' }} _c859d82">{{ $address$town.name }}</text>
+            <view hidden="{{ !($address$areaCurrentTab === 'town') }}" class="area-tab-item-title-bar _c859d82"/>
+          </view>
+        </view>
+      </view>
+
+      <view class="area-body _c859d82">
+        <view hidden="{{!$address$loading}}" class="area-body-loading _c859d82">
+          <i-spin fix="fix" class="_c859d82"/>
+        </view>
+        <scroll-view class="area-body-content _c859d82" scroll-y>
+          <block class="_c859d82" wx:for="{{$address$addressItems}}" wx:for-index="$address$index" wx:for-item="$address$item" wx:key="$address$id">
+            <view bindtap="$address$chooseAddress" class="area-body-content-item _c859d82" hover-class="area-body-content-item-hover" data-wpychooseaddress-a="{{ $address$item }}">
+              <text class="area-body-content-item-label {{ $address$item.code === $address$addressTempId && $address$item.code !== '' ? 'active' : '' }} _c859d82">{{ $address$item.name }}</text>
+              <view hidden="{{$address$item.code !== $address$addressTempId || $address$item.code === ''}}" class="_c859d82">
+                <van-icon name="success" color="#00AAA6" class="_c859d82"/>
+              </view>
+            </view>
+          </block>
+        </scroll-view>
+      </view>
+    </view>
+  </van-popup>
+    <van-dialog id="van-dialog" class="_107d5c6"/>
+    <van-toast id="van-toast" class="_107d5c6"/>
+  </view>

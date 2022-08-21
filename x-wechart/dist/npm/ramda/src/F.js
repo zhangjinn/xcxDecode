@@ -1,0 +1,1 @@
+var F=function(){return!1};module.exports=F;

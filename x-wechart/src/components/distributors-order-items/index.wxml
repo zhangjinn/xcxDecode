@@ -1,0 +1,42 @@
+<view class="item-parameters van-hairline--bottom">
+  <view class="img">
+    <img class="rel-img" flag="{{item.id}}" src="{{item.img}}"
+         errSrc="{{item.errImg}}" lazyLoad="{{ lazyLoad }}" bind:lose="imgLose" />
+  </view>
+  <view class="content">
+    <view class="content-title">{{item.model}}</view>
+    <view class="content-price">
+      <view class="price-item">
+        <text class="price-symbol">¥</text>
+        <text class="price-num">{{item.price}}</text>
+        <text class="price-color" wx:if="{{item.colour}}">({{item.colour}})</text>
+      </view>
+    </view>
+    <view class="item-num-wrapper">
+      <view class="bottom-block-view">
+        <text class="desc" wx:if="{{item.priceGroupName}}">{{ item.priceGroupName }}</text>
+        <text class="desc" wx:if="{{item.retainer!=null && item.retainer!=''}}">定金￥{{ item.retainer }}</text>
+        <text class="desc" wx:if="{{item.rebateMoney!=null && item.rebateMoney!=''}}">返利￥{{ item.rebateMoney }}</text>
+      </view>
+      <view class="item-num-box">
+        <view class="item-number" wx:if="{{userActId }}">
+          <van-stepper
+            disabled="{{custId ? true : false}}"
+            integer="{{true}}"
+            disable-input="{{userActId && !custId ? true : false}}"
+            value="{{orderedQty}}"
+            min="0"
+            max="{{custId ? 100 : item.orderedQty}}"
+            bind:change="onShippedBqtyChg"
+            custom-class="order-stepper"
+            input-class="cart-input-class"
+            plus-class="cart-action-class"
+            minus-class="cart-action-class"
+          />
+        </view>
+        <view wx:if="{{!userActId }}"  class="item-number">×{{item.orderedQty}}</view>
+      </view>
+    </view>
+  </view>
+
+</view>

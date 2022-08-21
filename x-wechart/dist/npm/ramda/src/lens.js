@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),map=require("./map.js"),lens=_curry2(function(r,n){return function(u){return function(e){return map(function(r){return n(r,e)},u(r(e)))}}});module.exports=lens;

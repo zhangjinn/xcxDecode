@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),zipObj=_curry2(function(r,e){for(var n=0,t=Math.min(r.length,e.length),u={};n<t;)u[r[n]]=e[n],n+=1;return u});module.exports=zipObj;

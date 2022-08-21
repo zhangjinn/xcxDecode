@@ -1,0 +1,22 @@
+
+  <view class="switch-account _52ec0c3">
+    <view class="header _52ec0c3">
+      <view class="title _52ec0c3">切换账户登录</view>
+      <view class="tip _52ec0c3">轻触账户以登录</view>
+    </view>
+    <scroll-view  wx:if="{{ accountList && accountList.length}}" scroll-y="true" class="switch-account-scroll _52ec0c3" enable-flex="enable-flex">
+      <block class="_52ec0c3" wx:for="{{ accountList }}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="account-info _52ec0c3" bindtap="changeAccount" data-wpychangeaccount-a="{{item}}">
+          <view class="avatar-box _52ec0c3"><image class="trademark-logo _52ec0c3" src="{{imgObj.trainingClockLogo}}"/></view>
+          <view class="_52ec0c3">
+            <view class="name _52ec0c3">{{ item.name }}</view>
+            <view class="code _52ec0c3">{{ item.account }}</view>
+          </view>
+          <view wx:if="{{ currentAccount.account == item.account }}" class="currently-logged-in-tip _52ec0c3">当前登录</view>
+        </view>
+      </block>
+    </scroll-view>
+
+    <van-toast id="van-toast" class="_52ec0c3"/>
+    <van-dialog id="van-dialog" class="_52ec0c3"/>
+  </view>

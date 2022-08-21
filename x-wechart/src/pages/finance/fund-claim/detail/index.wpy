@@ -1,0 +1,93 @@
+<template>
+  <view class="order">
+    <!-- <block wx:if="{{Object.keys(detailList).length==0}}"> -->
+    <!-- <block wx:if="{{true}}">
+      <van-loading size="24px" vertical>加载中...</van-loading>
+    </block> -->
+    <!-- 滚动区域列表 -->
+    <!-- <scroll-view wx:if="{{orderList.totalPages !== 0}}" scroll-y="true" class="order-scroll" enable-flex bindscrolltolower="onGetOrderListNext"> -->
+    <scroll-view wx:if="{{view_show}}" scroll-y="true" class="order-scroll" enable-flex>
+      <view class="order-container">
+        <view class="order-container-box">
+          <view class="order-title">
+            <text class="order-id">{{detailList.billno}}<text wx:if="{{detailList.hifi_flowstatus=='account'||detailList.hifi_flowstatus=='pos'}}" class="order-type">收款</text>
+            <text wx:else class="order-type">收票</text></text>
+
+            <text wx:if="{{detailList.claimstatus==2}}" class="order-status" style="color:#777777;">已认领</text>
+            <text wx:elif="{{detailList.claimstatus==1}}" class="order-status" style="color:#D9161C;">部分认领</text>
+            <text wx:elif="{{detailList.claimstatus==0}}" class="order-status" style="color:#00AAA6;">待认领</text>
+            <text wx:elif="{{detailList.claimstatus==3}}" class="order-status" style="color:#00AAA6;">已确认</text>
+            <text wx:elif="{{detailList.claimstatus==4}}" class="order-status" style="color:#00AAA6;">申诉中</text>
+            <text wx:elif="{{detailList.claimstatus==5}}" class="order-status" style="color:#00AAA6;">变更中</text>
+          </view>
+          <view class="order-hr" style="border-top:1rpx solid #eee;height:1rpx;width:100%;"></view>
+          <view class="order-content">
+            <view class="order-content-money">
+              <view class="order-content-money-item">
+                <text class="order-money-zi">收款金额</text>
+                <text class="order-money-num">￥{{detailList.reamount}}</text>
+              </view>
+              <view class="order-content-money-item">
+                <text class="order-money-zi">待认领金额</text>
+                <text class="order-money-num">￥{{detailList.unclaimamount}}</text>
+              </view>
+            </view>
+            <view wx:if="{{detailList.hifi_flowstatus=='account'||detailList.hifi_flowstatus=='pos'}}" class="order-content-info">
+              <text class="order-content-info-text">收款账户：{{detailList.accountbank.bankaccountnumber}}</text>
+              <text class="order-content-info-text">打款账户：{{detailList.oppbanknumber?detailList.oppbanknumber:'test数据1232435546'}}</text>
+              <text class="order-content-info-text">打款户名：{{detailList.oppunit}}</text>
+              <text class="order-content-info-text">交易日期：{{detailList.tradetime}}</text>
+            </view>
+            <view wx:else class="order-content-info">
+              <text class="order-content-info-text">票据类型：{{detailList.hifi_draftbilltype}}</text>
+              <text class="order-content-info-text">票据号：{{detailList.tradedetailno}}</text>
+              <text class="order-content-info-text">交票人：{{detailList.oppunit}}</text>
+              <text class="order-content-info-text">票据到期日期：{{detailList.hifi_draftbillexpiredate}}</text>
+              <text class="order-content-info-text">出票人名称：{{detailList.hifi_drawername}}</text>
+              <text class="order-content-info-text">承兑人名称：{{detailList.hifi_acceptername}}</text>
+            </view>
+          </view>
+          <!-- 按钮 -->
+          <!-- <view class="order-operation">
+            <view class="order-operation-the" wx:if="{{detailList.claimstatus==1||detailList.claimstatus==0}}" >
+              <van-button style="margin-left:16rpx;"
+                borderIs="true"
+                color="#262626"
+                plain
+                hairline
+                size="small"
+                type="primary"
+                bind:click="viewhandle()"
+              >认领</van-button>
+            </view>
+          </view> -->
+        </view>
+      </view>
+      <view class="claim-detail-title">认领明细</view>
+      <repeat for="{{detailList.entryentity}}" item="item">
+        <view class="claim-detail-container">
+          <view class="claim-detail-container-item">
+            <text class="claim-detail-zi">收款金额</text>
+            <text wx:if="{{item.e_claimtype==0}}" class="claim-detail-state">认领</text>
+            <text wx:elif="{{item.e_claimtype==1}}" class="claim-detail-state">变更</text>
+            <text wx:elif="{{item.e_claimtype==2}}" class="claim-detail-state">申诉</text>
+            <text wx:elif="{{item.e_claimtype==3}}" class="claim-detail-state">调整</text>
+            <text wx:elif="{{item.e_claimtype==4}}" class="claim-detail-state">作废</text>
+            <text class="claim-detail-num">￥{{item.e_actamt}}</text>
+            <text class="claim-tv-both">{{item.hifi_e_product.name?item.hifi_e_product.name:'测试数据电视'}}</text>
+            <text class="claim-tv-both">{{item.hifi_debeitrange== 'N' || item.hifi_debeitrange== N ? "正常机":"样机"}}</text>
+            <text class="claim-info-both">{{item.hifi_agency.name?item.hifi_agency.name:''}}</text>
+            <text class="claim-info-both">认领人：{{item.e_claimperson.name}}</text>
+            <text class="claim-info-both">认领时间：{{item.e_modifytime}}</text>
+          </view>
+        </view>
+      </repeat>
+    </scroll-view>
+    <!-- <view wx:if="{{view_show}}" style="height:10rpx;background:#000;width:268rpx;margin-left:240rpx;margin-bottom:16rpx;"></view> -->
+
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

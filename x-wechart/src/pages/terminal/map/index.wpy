@@ -1,0 +1,64 @@
+<template>
+<!--<view>fsdhjk0s0kfj000</view>-->
+  <view class="mapClass" hover-class="none"   hover-stop-propagation="false" style="width: 100vw; height: 100vh;">
+    <map id="map1"
+         longitude="{{longitude}}"
+         latitude=" {{latitude}}"
+         scale="{{scale}}"
+         markers="{{markers}}"
+         circles="{{circle}}"
+         show-location="{{true}}"
+         bindtap="mapTap"
+         regionchange ="regionchange"
+         style="width: 100%;height: 100%"></map>
+<!--    <cover-view class="pulsBox">-->
+<!--      <cover-view class="fuhao" @tap="scaleJia">+</cover-view>-->
+<!--      <cover-view class="fuhao" @tap="scaleJian">-</cover-view>-->
+<!--    </cover-view>-->
+<!--    <cover-view class="pulsBox1">-->
+<!--      <cover-view class="fuhao" @tap="location">-->
+<!--        <cover-image src="/images/location/dangqianweizhi.png"  class="mapImage" style="width: 40rpx;height: 40rpx;"></cover-image>-->
+<!--      </cover-view>-->
+<!--    </cover-view>-->
+    <view class="qingdaofont">
+       <view class="top-wrap">
+         <view class="cont cont-bod">
+           <view class="wrap">
+             <view class="lab">当前定位</view>
+             <view  class="val address-input">
+               <van-field
+                 value="{{ shAddress }}"
+                 placeholder=""
+                 border="{{ false }}"
+                 bind:change="onShAddressChange"
+               /></view>
+           </view>
+           <view class="b-icon refresh" @tap="location"></view>
+         </view>
+         <view class="cont wrap-flex" @tap="openAddress">
+           <view  class="lab">所在地区</view>
+           <view  class="val">{{city}}</view>
+         </view>
+       </view>
+      <view class="btns-wrap">
+        <view class="btn" @tap="reset">
+          重置
+        </view>
+        <view class="btn btn-ok" @tap="recovery">
+          纠错
+        </view>
+      </view>
+    </view>
+    <address />
+  </view>
+</template>
+<style lang="less" src="./index.less"></style>
+<style lang="less">
+.address-input{
+  width: 500rpx;
+  .van-cell{
+    padding: 0;
+  }
+}
+</style>
+<script lang="typescript" src="./index.ts"></script>

@@ -1,0 +1,171 @@
+<template>
+    <view class="container">
+        <view class="invoice-top">
+            <view class="invoice-top-num">{{pageInfo.sheetNo}}</view>
+            <view class="invoice-top-message">
+                <view class="invoice-top-detail">
+                    <view class="invoice-top-detail-li1">产品品类:{{pageInfo.prfcName}}</view>
+                    <view class="invoice-top-detail-li2">
+                        <view>对账截止日期：{{pageInfo.periodEndDate}}</view>
+                        <view>{{pageInfo.currencyName}}(单位：元)</view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="invoice-main" style="height:{{height}}px">
+            <scroll-view bindscrolltolower="loadNextPage" scroll-y="true" class="invoice-scroll">
+            <!-- 发票  -->
+            <repeat for="{{list.rows}}" item="item">
+                <view class="invoice-sale" style="{{pagetype===1 ? 'display:block' : 'display:none'}}">
+                    <view class="invoice-sale-li">
+                        <view class="invoice-sale-li-left">
+                            <view class="invoice-sale-li-left1">销售订单号</view>
+                            <view class="invoice-sale-li-left2">{{item.orderNo}}</view>
+                        </view>
+                        <view class="invoice-sale-li-right">
+                            <view class="invoice-sale-li-right1">开票日期</view>
+                            <view class="invoice-sale-li-right2">{{item.invoiceDate}}</view>
+                        </view>
+                    </view>
+                    <view class="invoice-sale-li">
+                        <view class="invoice-sale-li-detail">
+                            <view class="invoice-sale-li-detail-left">金税发票号：
+                                <text>{{item.taxInvoiceNo}}</text>
+                            </view>
+                            <view class="invoice-sale-li-detail-right">数量 x
+                                <text>{{item.qty}}</text>
+                            </view>
+                        </view>
+                        <view class="invoice-sale-li-detail">
+                            <view class="invoice-sale-li-detail-left">型号：
+                                <text>{{item.materialModel}}</text>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="invoice-sale-li">
+                        <view class="invoice-sale-li-detail">
+                            <view class="invoice-sale-li-detail-left">提货单价
+                                <text>{{item.siglePrice}}</text>
+                            </view>
+                            <view class="invoice-sale-li-detail-right">单台返利折扣
+                                <text>{{item.sigleRbAmt}}</text>
+                            </view>
+                        </view>
+                        <view class="invoice-sale-li-detail">
+                            <view class="invoice-sale-li-detail-left">发票单价
+                                <text>{{item.invoicePrice}}</text>
+                            </view>
+                            <view class="invoice-sale-li-detail-right">返利折扣合计
+                                <text>{{item.totalRbAmt}}</text>
+                            </view>
+                        </view>
+                        <view class="invoice-sale-li-detail">
+                            <view class="invoice-sale-li-detail-left">价税合计
+                                <text>{{item.invoiceAmt}}</text>
+                            </view>
+                        </view>
+                    </view>
+                
+            </view>
+            </repeat>
+            <!-- 回款明细 -->
+            <repeat for="{{list.rows}}" item="item">
+            <view class="invoice-sale" style="{{pagetype===2 ? 'display:block' : 'display:none'}}">
+                <view class="invoice-sale-li">
+                    <view class="invoice-sale-li-left">
+                        <view class="invoice-sale-li-left1">凭证日期</view>
+                        <view class="invoice-sale-li-left2">{{item.voucherDate}}</view>
+                    </view>
+                    <view class="invoice-sale-li-right">
+                        <view class="invoice-sale-li-right1">期间</view>
+                        <view class="invoice-sale-li-right2">{{item.rsYear}}-{{item.periodIdx}}</view>
+                    </view>
+                </view>
+                <view class="invoice-detail">
+                    <view class="invoice-detail-li">凭证号：{{item.voucherNo}}</view>
+                    <view class="invoice-detail-li">摘要：{{item.digest}}</view>
+                    <view class="invoice-detail-li">回款金额
+                        <text class="color26">{{item.incomeAmt}}</text>
+                    </view>
+                </view>
+            </view>
+            </repeat>
+            <!-- 已发货未开票 -->
+            <repeat for="{{list.rows}}" item="item">
+            <view class="invoice-sale" style="{{pagetype===3 ? 'display:block' : 'display:none'}}">
+                <view class="invoice-sale-li">
+                    <view class="invoice-sale-li-left">
+                        <view class="invoice-sale-li-left1">海信订单号</view>
+                        <view class="invoice-sale-li-left2">{{item.orderNo}}</view>
+                    </view>
+                    <view class="invoice-sale-li-right">
+                        <view class="invoice-sale-li-right1">发货日期</view>
+                        <view class="invoice-sale-li-right2">{{item.sendDate}}</view>
+                    </view>
+                </view>
+                <view class="invoice-sale-li">
+                    <view class="invoice-sale-li-detail">
+                        <view class="invoice-sale-li-detail-left">型号：
+                            <text>{{item.materialModel}}</text>
+                        </view>
+                        <view class="invoice-sale-li-detail-right">数量 x
+                            <text>{{item.qty}}</text>
+                        </view>
+                    </view>
+                </view>
+                <view class="invoie-unbilled">
+                    <view class="invoie-unbilled-li">
+                        <view class="invoie-unbilled-li1">单价
+                            <text class="color26">{{item.materialPrice}}</text>
+                        </view>
+                        <view class="invoie-unbilled-li1">金额
+                            <text class="color26">{{item.amt}}</text>
+                        </view>
+                    </view>
+                    <view class="invoie-unbilled-li">备注{{item.remark}}</view>
+                </view>
+            </view>
+            </repeat>
+            <!-- 已退货未退税 -->
+            <repeat for="{{list.rows}}" item="item">
+            <view class="invoice-sale" style="{{pagetype===4 ? 'display:block' : 'display:none'}}">
+                <view class="invoice-sale-li">
+                    <view class="invoice-sale-li-left">
+                        <view class="invoice-sale-li-left1">退货订单号</view>
+                        <view class="invoice-sale-li-left2">{{item.orderNo}}</view>
+                    </view>
+                    <view class="invoice-sale-li-right">
+                        <view class="invoice-sale-li-right1">收货日期</view>
+                        <view class="invoice-sale-li-right2">{{item.sendDate}}</view>
+                    </view>
+                </view>
+                <view class="invoice-sale-li">
+                    <view class="invoice-sale-li-detail">
+                        <view class="invoice-sale-li-detail-left">型号：
+                            <text>{{item.materialModel}}</text>
+                        </view>
+                        <view class="invoice-sale-li-detail-right">数量 x
+                            <text>{{item.sendQty}}</text>
+                        </view>
+                    </view>
+                </view>
+                <view class="invoie-unbilled">
+                    <view class="invoie-unbilled-li">
+                        <view class="invoie-unbilled-li1">单价
+                            <text class="color26">{{item.materialPrice}}</text>
+                        </view>
+                        <view class="invoie-unbilled-li1">金额
+                            <text class="color26">{{item.sendAmt}}</text>
+                        </view>
+                    </view>
+                    <view class="invoie-unbilled-li">备注{{item.remark}}</view>
+                </view>
+            </view>
+            </repeat>
+            </scroll-view>
+        </view>
+    </view>
+</template>
+
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

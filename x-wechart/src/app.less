@@ -1,0 +1,425 @@
+@bg-color: #f5f5f5;
+@primary-color: #00AAA6;
+@cBlue: #3699E6;
+@cGreen: #00AAA6;
+@cOrange: #F39E33;
+view,
+label,
+text,
+input,
+scroll-view {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+view[hidden] {
+  display: none !important;
+}
+
+page {
+  background-color: @bg-color;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+.hover {
+  opacity: 0.9;
+}
+
+van-icon {
+  display: flex;
+}
+
+.margin-bottom-16 {
+  margin-bottom: 16rpx;
+}
+
+// 确认订单
+.order-confirm {
+  background-color: #D9161C !important;
+  border-color: #D9161C !important;
+  font-size: 32rpx !important;
+  font-weight: 400;
+}
+.order-title-class {
+  flex: 0 !important;
+  min-width: 160rpx;
+  font-size: 26rpx;
+  color: #262626;
+  font-weight: 400;
+}
+.input-placeholder-class {
+  font-size: 26rpx;
+  font-weight: 400;
+  color:red;
+}
+.order-checkbox {
+  align-items: center;
+  .van-checkbox__icon-wrap {
+    line-height: initial !important;
+  }
+  .van-checkbox__icon {
+    width: 24rpx !important;
+    height: 24rpx !important;
+    font-size: 20rpx;
+  }
+  .van-icon {
+    line-height: initial !important;
+  }
+}
+// 模糊搜索
+.items-search {
+  padding: 20rpx 0 !important;
+}
+// 授权页面
+.auth-vant-btn {
+  height: 84rpx !important;
+  margin-bottom: 48rpx;
+}
+.login-vant-btn {
+  height: 84rpx !important;
+  margin: 40rpx 0 32rpx 0;
+}
+// 登录页面
+.login-input {
+  padding: 20rpx 0 !important;
+  &-sms {
+    font-size: 27rpx;
+    font-weight: 400;
+    &.success {
+      color: #00AAA6;
+    }
+    &.disabled {
+      color: #777777;
+    }
+  }
+  &-code {
+    width: 134rpx;
+    height: 48rpx;
+    image {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  &::after {
+    left: 0 !important;
+  }
+}
+.login-van-collapse {
+  padding: 20rpx 0 !important;
+}
+
+// 商品详情定义按钮
+.item-order-btn {
+  display: flex;
+  flex: 1;
+}
+.item-order-confirm {
+  background-color: #D9161C !important;
+  border-color: #D9161C !important;
+  font-size: 32rpx !important;
+  font-weight: 400;
+}
+.items-tab-container {
+  margin-top: 16rpx;
+}
+.items-attr-confirm-btn {
+  height: 100rpx !important;
+  width: 100%;
+  font-size: 32rpx !important;
+  font-weight: 300;
+  line-height: initial !important;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  border: none;
+}
+
+// 购物车覆盖 stepper 样式
+.cart-stepper {
+  border: 2rpx solid #EEEEEE !important;
+}
+// 我的抢单覆盖 stepper 样式
+.order-stepper {
+
+  width: 180rpx;
+
+  .van-stepper__input{
+    background: #EDEFF2;
+    border-radius: 4rpx;
+  }
+}
+.cart-input-class {
+  width: 84rpx !important;
+  height: 48rpx !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: #EDEFF2 !important;
+  box-sizing: border-box;
+  border-radius: 4rpx !important;
+}
+.cart-action-class {
+  width: 48rpx !important;
+  height: 48rpx !important;
+  margin: 0!important;
+  background-color: #ffffff !important;
+}
+// 登录
+.confirm-account-tel {
+  padding: 10px 0 !important;
+  &::after {
+    left: 0 !important;
+  }
+}
+// 自定义微信轮播图
+.wx-swiper-dot {
+  width: 10rpx !important;
+  height: 10rpx !important;
+  &.wx-swiper-dot-active {
+    background-color: #262626 !important;
+  }
+}
+
+// dms 订单提交
+.dms {
+  &-order {
+    &-bottom {
+      &-button-save {
+        font-size: 32rpx;
+        flex: 1;
+        &-submit {
+          border: 1px solid @primary-color !important;
+          background-color: @primary-color !important;
+        }
+      }
+    }
+  }
+}
+
+.dms-item-search-input {
+  padding: 16rpx 24rpx 16rpx 14rpx;
+
+  .van-search__content {
+    background-color: #F7F7F7;
+    border-radius: 12rpx;
+  }
+}
+
+.dms-item-row-right-arrow {
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  color: #AAAAAA;
+  font-size: 20rpx;
+}
+
+.dms-order-note {
+  .van-cell {
+    padding: 0;
+  }
+}
+
+.dms-input-field-style {
+  font-size: 24rpx;
+  min-height: 32rpx !important;
+  height: 32rpx !important;
+  line-height: 32rpx !important;
+}
+.activity-icon-front {
+  padding-left: 8rpx;
+  color: #ffffff;
+}
+
+// 覆盖分销商查询底部横线的全局样式
+.filter {
+  .van-cell {
+    &:after {
+      border-bottom: 0 solid #00aaa6 !important;
+    }
+  }
+}
+.order-distributors {
+  .van-cell__title {
+    font-size: 26rpx;
+  }
+}
+.input-text {
+  color: #AAAAAA !important;
+  font-size: 28rpx;
+}
+
+// 1.购物车，2.下单确认页面 3.零售采购 4.渠道采购  提示框样式
+.noticeCon {
+  height: 50vh;
+  &-title {
+    font-size: 32rpx;
+    color: #333333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 90rpx;
+    position: relative;
+    .iconyiquxiao {
+      position: absolute;
+      right: 40rpx;
+      top: 32rpx;
+      color: #ccc;
+    }
+  }
+  &-scroll {
+    height: calc(100% - 90rpx);
+    overflow: hidden;
+    &-con {
+      box-sizing: border-box;
+      padding: 30rpx !important;
+      font-size: 28rpx;
+      color: #333;
+    }
+  }
+}
+.iconwenti {color: #ccc;margin-right: 10rpx}
+
+// 底部提交按钮
+.order-submit-bar{
+  background: #fff;
+  padding-bottom: 68rpx;
+}
+
+.order-confirm {
+  width: 198rpx !important;
+  height: 88rpx !important;
+  line-height: 88rpx !important;
+  background: linear-gradient(90deg, #FF3E2A 0%, #FF9C3B 100%) !important;
+  box-shadow: 0 0 12rpx 0 rgba(0, 0, 0, 0.08) !important;
+  border-radius: 48rpx !important;
+  border: none !important;
+  margin: 14rpx 16rpx 0 0;
+}
+.order-confirm-fx{
+  width: 300rpx !important;
+  height: 88rpx !important;
+  line-height: 88rpx !important;
+  background: linear-gradient(90deg, #FF3E2A 0%, #FF9C3B 100%) !important;
+  box-shadow: 0 0 12rpx 0 rgba(0, 0, 0, 0.08) !important;
+  border-radius: 48rpx !important;
+  border: none !important;
+  margin: 14rpx 16rpx 0 0;
+}
+
+.order-submit-bar-disabled{
+  background: #fff;
+  padding-bottom: 68rpx;
+
+  .order-confirm{
+    opacity: 0.5 !important;
+  }
+  .order-confirm-fx{
+    opacity: 0.5 !important;
+  }
+}
+
+.order-common-value{
+  font-size: 26rpx;
+  color: #262626;
+  font-weight: 400;
+}
+
+// 活动专区-组合购和其他活动类型背景颜色
+.normalLabel{
+  background: linear-gradient(90deg, #FC3F85 0%, #FD3D23 100%);
+}
+
+.combinationPurchaseLabel{
+  background: linear-gradient(90deg, #7267F3 0%, #F169E6 100%);
+}
+
+// 时效日期说明，数据更新至当天的前一天日期
+.expiry-date{
+  background: #FFFFFF;
+  font-size: 24rpx;
+  color: #AAAAAA;
+  padding: 12rpx 36rpx !important;
+}
+.cBlue{
+  color: @cBlue;
+}
+.cGreen{
+  color: @cGreen;
+}
+.cOrange{
+  color: @cOrange;
+}
+// 底部按钮样式
+.card-footer-handle{
+  width: 168rpx;
+  height: 64rpx;
+  line-height: 64rpx;
+  text-align: center;
+  border-radius: 32rpx;
+  border: 2rpx solid #CCCCCC;
+  padding: 0 !important;
+  font-size: 28rpx;
+  color: #262626;
+
+  &:not(:first-child){
+    margin-left: 28rpx;
+  }
+}
+// 底部按钮样式激活状态
+.card-footer-handle-active{
+  background-color: #00AAA6;
+  color: #FFFFFF;
+  border: none;
+}
+// 门店类型标签样式例如：门店、下沉、专卖
+.storePaizi{
+  font-size: 20rpx;
+  margin-right: 10rpx !important;
+  background-color: #e4b777;
+  color: #ffffff;
+  display:inline-block;
+  padding: 5rpx 10rpx !important;
+  border-radius: 5rpx;
+}
+.specialShopBgColor{
+  background-color: #87cec7;
+}
+.sinkChannelBgColor{
+  background-color: #ad87ce;
+}
+
+// 根类为agency-tab-wrapper van-tab 样式
+.agency-tab-wrapper{
+  .van-tabs__wrap .van-tabs__wrap--scrollable{
+    height: 80rpx !important;
+  }
+  .van-tab{
+    flex: 0 0 26% !important;
+  }
+  .van-tabs__line{
+    display: none;
+  }
+  .tabs-bored-ed{
+    width: 148rpx !important;
+    height: 64rpx !important;
+    background-color: #EEEEEE !important;
+    border-radius: 34rpx;
+    font-size: 28rpx !important;
+    color: #AAAAAA;
+  }
+  .tabs-bored{
+    width: 148rpx !important;
+    height: 64rpx !important;
+    background-color: #00B7B3 !important;
+    border-radius: 34rpx;
+    font-size: 28rpx !important;
+    color: #FFFFFF;
+    font-weight: 400;
+    box-shadow: 0 6rpx 8rpx #C6EFEF;
+  }
+}
+@import './styles/iconfont';

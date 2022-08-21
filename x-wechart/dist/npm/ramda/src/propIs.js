@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),is=require("./is.js"),propIs=_curry3(function(r,e,s){return is(r,s[e])});module.exports=propIs;

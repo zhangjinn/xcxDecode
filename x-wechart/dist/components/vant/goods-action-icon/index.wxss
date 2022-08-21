@@ -1,0 +1,23 @@
+.van-goods-action-icon {
+  width: 50px !important;
+  border: none !important;
+}
+.van-goods-action-icon__content {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  height: 100%;
+  font-size: 10px;
+  line-height: 1;
+  color: #7d7e80;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+.van-goods-action-icon__icon {
+  margin-bottom: 4px;
+}

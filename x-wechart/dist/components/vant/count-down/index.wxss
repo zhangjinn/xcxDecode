@@ -1,0 +1,5 @@
+.van-count-down {
+  color: #262626;
+  font-size: 14px;
+  line-height: 20px;
+}

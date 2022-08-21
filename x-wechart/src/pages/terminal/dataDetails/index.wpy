@@ -1,0 +1,88 @@
+<template>
+  <view>
+    <view style="text-align: center;padding-top: 10rpx;margin-top: 20rpx" wx:if="{{loading==true}}">
+      <van-loading type="spinner" />
+    </view>
+    <view scroll-y="true" class="dakaBox"   @scrolltolower="tolower">
+      <view class="dakaTItle">
+        <view @tap="onOpen1()">
+          <text>{{date}}</text>
+          <text class="iconfont" style="color: #ccc;margin-right:10rpx;font-size: 20rpx">&#xe600;</text>
+        </view>
+        <view @tap="onOpen()">
+          <text class="quanbuBox">{{selMaterialName}}</text>
+          <text class="iconfont" style="color: #ccc;margin-left:10rpx;font-size: 20rpx;vertical-align: 6rpx">&#xe600;</text>
+        </view>
+      </view>
+      <view class="mainBox" wx:if="{{storeDetail.length>0}}">
+        <view class="tableTitle table">
+          <view class="table1">型号</view>
+          <view class="table2">数量(台)</view>
+          <view class="table3">销售额(元)</view>
+          <view class="table4">物料组</view>
+        </view>
+        <view wx:for="{{storeDetail}}" wx:key="index" class="table">
+          <view class="table1">{{item.modelCode}}</view>
+          <view class="table2">{{item.sumSales}}</view>
+          <view class="table3">{{item.sumPrice}}</view>
+          <view class="table4">{{item.materialGroupName}}</view>
+        </view>
+      </view>
+      <view wx:else>
+        <view class="nodata">暂无数据</view>
+      </view>
+    </view>
+
+    <van-popup show="{{ show }}" position="top" bind:close="onClose">
+      <view>
+        <view class="TankuanBox">
+          <view class="{{item.sel?'currenClassfy':''}}" data-index="{{index}}" data-name="{{item.materialName}}" @tap="taggleMaterial" wx:for="{{MaterialGroup}}" wx:key="index">
+            {{item.materialName}}
+<!--            <text class="iconfont jiaobiao" wx:if="{{selMaterial==index}}">&#xe654;</text>-->
+            <text class="iconfont jiaobiao" wx:if="{{item.sel}}">&#xe654;</text>
+          </view>
+        </view>
+        <view class="popupBottomBtn">
+          <view @tap="resetMaterial">重置</view>
+          <view class="btncomfig" @tap="onClose">完成</view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ show1 }}" position="top" bind:close="onClose1">
+      <view>
+        <view class="TankuanBox1">
+          <view class="{{today==1?currenClassfy:''}}" @tap="taggleQiehuan" data-id="1">
+            今天
+            <text wx:if="{{today==1}}" class="iconfont jiaobiao">&#xe654;</text>
+          </view>
+          <view class="{{today==2?currenClassfy:''}}" @tap="taggleQiehuan" data-id="2">
+            本周
+            <text wx:if="{{today==2}}" class="iconfont jiaobiao">&#xe654;</text>
+          </view>
+          <view class="{{today==3?currenClassfy:''}}" @tap="taggleQiehuan" data-id="3">
+            本月
+            <text wx:if="{{today==3}}" class="iconfont jiaobiao">&#xe654;</text>
+          </view>
+        </view>
+        <view class="dateBox">
+          <picker class="rlixuanz" mode="date" value="{{startTime}}" end="{{nowTime}}"
+                  bindchange="bindDateChange">
+            <text class="iconfont" style="margin-right: 15rpx;color: #d2d3d8">&#xe602;</text>
+            <text>{{startTime}}</text>
+          </picker>
+          <view class="line">-</view>
+          <picker class="rlixuanz" mode="date" value="{{endTime}}" start="{{startTime}}" end="{{nowTime}}"
+                  bindchange="bindDateChange1">
+            <text class="iconfont" style="margin-right: 15rpx;color: #d2d3d8">&#xe602;</text>
+            <text>{{endTime}}</text>
+          </picker>
+        </view>
+        <view class="popupqueding" @tap="comfireTime">确定</view>
+      </view>
+    </van-popup>
+
+
+  </view>
+</template>
+<style lang="less" src="./index.css" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

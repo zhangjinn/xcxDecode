@@ -1,0 +1,53 @@
+
+{
+  "compilerOptions": {
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es2016",
+    "allowJs": false,
+    "experimentalDecorators": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "alwaysStrict": true,
+    "importHelpers": true,
+    "sourceMap": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "removeComments": true,
+    "pretty": true,
+    "strictPropertyInitialization": true,
+    "lib": [
+      "es2015",
+      "es2015.promise",
+      "es2015.generator",
+      "es2016",
+      "dom"
+    ],
+    "baseUrl": "./src",
+    "rootDirs": [
+      "./src"
+    ],
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "typeRoots": [
+      "node_modules/@types",
+      "typings"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "typings/**/*.ts",
+    "node_modules/miniprogram-api-typings/index.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.spec.ts"
+  ]
+}

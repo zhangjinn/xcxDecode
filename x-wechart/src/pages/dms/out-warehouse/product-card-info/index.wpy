@@ -1,0 +1,23 @@
+<template>
+  <view class="item-content">
+    <img class="item-content-img" src="{{ orderItem.img }}" errSrc="{{ orderItem.err }}" />
+    <view class="item-content-right">
+      <view class="item-info-title">{{ orderItem.model }}</view>
+      <view class="item-info-line">
+        <view class="item-info-line-price">
+          <text class="order-code">￥</text>
+          <text class="order-num">{{ orderItem.bprice }}</text>
+          <text wx:if="{{ orderItem.colour }}" class="order-color">({{ orderItem.colour }})</text>
+        </view>
+        <view class="item-info-line-quantity">x{{ orderItem.backnowledgedQty }}</view>
+      </view>
+      <view class="order-goods-detail-desc">
+        <view class="model" wx:if="{{ orderItem.priceGroupName }}">{{ orderItem.priceGroupName }}</view>
+        <view class="deposit" wx:if="{{ orderItem.retainer && orderItem.retainer > 0 }}">定金￥{{ orderItem.retainer }}</view>
+        <view class="rebate" wx:if="{{ orderItem.rebateMoney && orderItem.rebateMoney > 0 }}">返利金￥{{ orderItem.rebateMoney }}</view>
+      </view>
+    </view>
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

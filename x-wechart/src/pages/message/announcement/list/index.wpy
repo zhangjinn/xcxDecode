@@ -1,0 +1,45 @@
+<template>
+  <view class="order">
+    <filter
+      :tabList.sync="tabList"
+      :tabActive.sync="tabActive"
+      @tabChange.user="tabChange"
+      @searchChange.user="searchChange"
+    />
+    <view class="scroll-wrapper">
+      <scroll-view
+        wx:if="{{ msgList.notices && msgList.notices.length }}"
+        class="card-scroll"
+        scroll-y
+        enable-back-to-top
+        scroll-top="{{ scrollTop }}"
+        bindscroll="onScroll"
+        bindscrolltolower="onGetOrderListNext">
+        <repeat for="{{ msgList.notices }}" item="item">
+          <view class="card-container" @tap="viewDetail({{item.id}})">
+            <view class="card-img-box">
+              <image wx:if="{{ item.titleImgUrl }}" class="card-img" src="{{ item.titleImgUrl }}"/>
+            </view>
+            <view class="card-info-box">
+              <view class="info-title">
+                <text class="name">{{ item.title }}</text>
+                <text wx:if="{{ item.priority == 1 }}" class="type">重要</text>
+              </view>
+              <view class="info-desc">
+                <text>{{ item.organizationName || '' }}</text>
+                <text>|</text>
+                <text>{{ item.createDateStr || '' }}</text>
+                <text>{{ item.classifyName || '' }}</text>
+              </view>
+            </view>
+          </view>
+        </repeat>
+      </scroll-view>
+      <emptyDataType wx:else description="公告"/>
+    </view>
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

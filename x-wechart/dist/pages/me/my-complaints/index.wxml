@@ -1,0 +1,119 @@
+
+  <!-- 总裁热线 -->
+  <view class="pose _687bce4">
+    <!-- 问题分类 -->
+    <view class="pose-list _687bce4">
+      <view bindtap="openChoose" class="pose-classify van-hairline--bottom _687bce4" data-wpyopenchoose-a="questionType" data-wpyopenchoose-b="questionType" data-wpyopenchoose-c="问题分类">
+        <view class="pose-classify-text _687bce4">问题分类</view>
+        <view class="pose-classify-selected _687bce4">
+          <view class="pose-classify-selected-name {{ctQuestion.questionType.name!='请选择'?'selected':''}}  van-ellipsis _687bce4">{{ctQuestion.questionType.name}}</view>
+          <view class="b-icon icon-more pose-classify-selected-icon _687bce4"/>
+        </view>
+      </view>
+      <!-- 供应商 -->
+      <view bindtap="openChoose" class="pose-classify van-hairline--bottom _687bce4" data-wpyopenchoose-a="salesOrg" data-wpyopenchoose-b="salesOrg" data-wpyopenchoose-c="供应商">
+        <view class="pose-classify-text _687bce4">供应商</view>
+        <view class="pose-classify-selected _687bce4">
+          <view class="pose-classify-selected-name {{ctQuestion.salesOrg.name!='请选择'?'selected':''}} van-ellipsis _687bce4">{{ctQuestion.salesOrg.name}}</view>
+          <view class="b-icon icon-more pose-classify-selected-icon _687bce4"/>
+        </view>
+      </view>
+      <!-- 物料组 -->
+      <view bindtap="openChooseMa" class="pose-classify van-hairline--bottom _687bce4" data-wpyopenchoosema-a="materialCode" data-wpyopenchoosema-b="poplists" data-wpyopenchoosema-c="物料组">
+        <view class="pose-classify-text _687bce4">物料组</view>
+        <view class="pose-classify-selected _687bce4">
+          <view class="pose-classify-selected-name {{ctQuestion.materialCode.name!='请选择'?'selected':''}} van-ellipsis _687bce4">{{ctQuestion.materialCode.name}}</view>
+          <view class="b-icon icon-more pose-classify-selected-icon _687bce4"/>
+        </view>
+      </view>
+    </view>
+    <!-- 问题 -->
+    <view class="pose-issue _687bce4">
+      <view class="pose-issue-title _687bce4">
+        <textarea placeholder="请输入您的问题标题" class="pose-issue-title-input _687bce4" auto-height bindblur="onTitleChange" value="{{form.title}}"/>
+      </view>
+      <view class="pose-issue-content _687bce4">
+        <textarea class="pose-issue-content-textarea _687bce4" placeholder="请输入您的问题描述～" auto-height bindblur="onDescChange" value="{{form.question}}"/>
+      </view>
+      <view class="pose-issue-content _687bce4">
+        <view  wx:if="{{form.needPicture}}" class="pose_issue-label _687bce4">备注：需提供机型条码照片及整机实景照</view>
+        <van-uploader accept="image" file-list="{{ form.fileList }}"  bind:after-read="afterRead" bind:delete="delImg" class="_687bce4"/>
+      </view>
+    </view>
+    <!-- 提问 -->
+    <view class="pose-question _687bce4">
+      <view class="pose-question-message _687bce4">
+        <view class="pose-question-name _687bce4">提问人姓名</view>
+        <view class="pose-question-value _687bce4">
+          <input type="text" value="{{form.name}}"  bind:change="onNameChange" class="_687bce4"/>
+        </view>
+      </view>
+      <view class="pose-question-message _687bce4">
+        <view class="pose-question-name _687bce4">提问人电话</view>
+        <view class="pose-question-value _687bce4">
+          <input type="text" value="{{form.phone}}"  bind:change="onPhoneChange" class="_687bce4"/>
+        </view>
+      </view>
+      <view class="pose-question-message _687bce4">
+        <view class="pose-question-name _687bce4">提问人部门</view>
+        <view class="pose-question-value _687bce4">
+          <input type="text" value="{{form.department}}" bind:change="onDepChange" class="_687bce4"/>
+        </view>
+      </view>
+      <view class="pose-question-message _687bce4">
+        <view class="pose-question-name _687bce4">提问人邮箱</view>
+        <view class="pose-question-value _687bce4">
+          <input type="text" value="{{form.email}}" bind:change="onEmailChange" class="_687bce4"/>
+        </view>
+      </view>
+    </view>
+    <!-- 提交 -->
+    <view class="pose-submit _687bce4">
+      <button style="{{color==1 ? 'opacity:0.4' :'opacity:1'}}" class="pose-submit-btn _687bce4" bindtap="onBtnChange">提交</button>
+    </view>
+    <!-- 选择弹窗 -->
+    <van-popup show="{{ popVisible }}" closeable="closeable" position="bottom" custom-style="height: 570rpx" bind:click-overlay="onClose" class="_687bce4">
+      <view class="pose-inv _687bce4">
+        <view class="pose-inv-head _687bce4">
+          <view class="pose-inv-head-context _687bce4">
+            <view class="pose-inv-head-context-title _687bce4">{{ popTitle }}</view>
+            <van-icon name="cross" class="pose-inv-head-context-close _687bce4" bindtap="onClose"/>
+          </view>
+        </view>
+        <scroll-view scroll-y class="pose-inv-scroll _687bce4">
+          <view  wx:for="{{ popList }}" wx:key="{{ item.id }}" item="item" class="pose-inv-scroll-row _687bce4" data-key="{{ item.id }}" data-index="{{ index }}" bindtap="onChoose">
+            <view class="pose-inv-scroll-row-desc {{ item.code === compareInfo.code ? 'checked' : ''}} _687bce4">{{ item.name }}</view>
+            <block wx:if="{{ item.code === compareInfo.code }}" class="_687bce4">
+              <view class="b-icon icon-check pose-inv-scroll-row-checked checked _687bce4"/>
+            </block>
+          </view>
+
+        </scroll-view>
+      </view>
+    </van-popup>
+    <!-- 物料组 -->
+
+    <van-popup show="{{ display }}" closeable="closeable" position="bottom" custom-style="height: 570rpx" bind:click-overlay="onCloseMa" class="_687bce4">
+      <view class="pose-inv _687bce4">
+        <view class="pose-inv-head _687bce4">
+          <view class="pose-inv-head-context _687bce4">
+            <view class="pose-inv-head-context-title _687bce4">物料组</view>
+            <van-icon name="cross" class="pose-inv-head-context-close _687bce4" bindtap="onCloseMa"/>
+          </view>
+        </view>
+        <scroll-view scroll-y class="pose-inv-scroll _687bce4">
+          <view  wx:for="{{ materialCode }}" wx:key="{{ item.id}}" item="item" class="pose-inv-scroll-row _687bce4" data-key="{{item.id}}" data-index="{{ index }}" bindtap="onChooseMa">
+            <view class="pose-inv-scroll-row-desc {{ item.code === ctQuestion.materialCode.code ? 'checked' : ''}} _687bce4">{{ item.name}}</view>
+            <block wx:if="{{ item.code === ctQuestion.materialCode.code }}" class="_687bce4">
+              <view class="b-icon icon-check pose-inv-scroll-row-checked checked _687bce4"/>
+            </block>
+          </view>
+
+        </scroll-view>
+      </view>
+    </van-popup>
+
+    <!-- 提交后提醒 -->
+    <van-toast id="custom-selector" class="_687bce4"/>
+    <van-toast id="van-toast" class="_687bce4"/>
+  </view>

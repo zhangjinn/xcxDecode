@@ -1,0 +1,1 @@
+var _checkForMethod=require("./internal/_checkForMethod.js"),_curry3=require("./internal/_curry3.js"),slice=_curry3(_checkForMethod("slice",function(r,e,c){return Array.prototype.slice.call(c,r,e)}));module.exports=slice;

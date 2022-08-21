@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),curryN=require("./curryN.js"),nth=require("./nth.js"),nthArg=_curry1(function(r){return curryN(r<0?1:r+1,function(){return nth(r,arguments)})});module.exports=nthArg;

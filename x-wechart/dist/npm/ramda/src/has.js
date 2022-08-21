@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),hasPath=require("./hasPath.js"),has=_curry2(function(r,a){return hasPath([r],a)});module.exports=has;

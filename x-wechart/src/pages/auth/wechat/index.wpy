@@ -1,0 +1,35 @@
+<template>
+  <view class="wechat">
+    <view class="wechat-avatar">
+      <open-data type="userAvatarUrl"></open-data>
+    </view>
+    <view class="wechat-name">
+      <open-data type="userNickName" lang="zh_CN"></open-data>
+    </view>
+    <view class="wechat-info">
+      <view class="wechat-info-tip">该小程序由海信信天翁开发，请提供以下授权，即可继续操作
+      </view>
+      <view class="wechat-info-desc">·获得你的公开信息（昵称、头像等）</view>
+    </view>
+    <view class="wechat-footer">
+      <block wx:if="{{canIUse}}">
+        <van-button loading="{{!sessionCode}}" open-type="getUserInfo" bind:getuserinfo="userAuth" color="#00AAA6" square="{{true}}" block="{{true}}">确认授权</van-button>
+      </block>
+      <block wx:else>
+        请升级微信版本
+      </block>
+    </view>
+    <van-popup show="{{isAuth}}" bind:close="onClose">
+      <view class="wechat-popup">
+        <view class="wechat-popup-actions">
+          <view class="wechat-popup-actions-title">请选择登录方式</view>
+          <van-button @tap="chooseLoginType('account')" custom-class="auth-vant-btn" color="#00AAA6" square="{{true}}" block="{{true}}">密码登录</van-button>
+          <van-button @tap="chooseLoginType('mobile')" custom-class="auth-vant-btn" color="#00AAA6" square="{{true}}" block="{{true}}">验证码登录</van-button>
+        </view>
+      </view>
+    </van-popup>
+    <van-toast id="van-toast" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

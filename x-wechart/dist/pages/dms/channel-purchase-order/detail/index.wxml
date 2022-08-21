@@ -1,0 +1,327 @@
+<wxs src="../../../../wxs/utils.wxs" module="utils" class="_46f9bc7"/>
+
+  <view class="order _46f9bc7">
+    <scroll-view scroll-y class="order-scroll _46f9bc7">
+      <view class="order-scroll-head _46f9bc7">
+
+        <!-- 始终展示部分 -->
+        <view class="item-alway-show _46f9bc7">
+          <view class="item-row item-row-top _46f9bc7">
+            <view class="item-row-left _46f9bc7">
+              <text class="item-name _46f9bc7">{{orderdetail.data.documentNum}}</text>
+              <view  wx:if="{{ orderdetail.data.returnStatusValue && orderdetail.data.returnStatusValue !== '未退货'}}" class="item-return _46f9bc7">
+                {{orderdetail.data.returnStatusValue}}
+              </view>
+            </view>
+            <view class="item-row-right _46f9bc7">
+              <text class="item-status _46f9bc7">{{orderdetail.data.statusValue}}</text>
+            </view>
+          </view>
+          <view class="item-row _46f9bc7">
+            <view class="item-row-left _46f9bc7">
+              <view class="item-customername _46f9bc7">
+                <text class="_46f9bc7">{{orderdetail.data.supplierName}}</text>
+              </view>
+            </view>
+          </view>
+          <view class="item-row _46f9bc7">
+            <view class="item-row-left _46f9bc7">
+              <view  wx:if="{{orderdetail.data.orgName}}" class="item-customercode _46f9bc7">
+                <text class="_46f9bc7">{{orderdetail.data.orgName}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view  wx:if="{{orderdetail.data.BHOnum}}" class="item-row _46f9bc7">
+          <view class="item-row-left wth25 _46f9bc7">
+            <text class="item-title _46f9bc7">BHO单号：</text>
+          </view>
+          <view class="item-row-right _46f9bc7">
+            <text class="item-content _46f9bc7">{{orderdetail.data.BHOnum}}</text>
+          </view>
+        </view>
+        <view class="item-row _46f9bc7">
+          <view class="item-row-left wth25 _46f9bc7">
+            <text class="item-title _46f9bc7">单据日期：</text>
+          </view>
+          <view class="item-row-right _46f9bc7">
+            <text class="item-content _46f9bc7">{{orderdetail.data.documentDate}}</text>
+          </view>
+        </view>
+        <view class="item-row _46f9bc7">
+          <view class="item-row-left wth25 _46f9bc7">
+            <text class="item-title _46f9bc7">期望到货期：</text>
+          </view>
+          <view class="item-row-right _46f9bc7">
+            <text class="item-content _46f9bc7">{{orderdetail.data.edt}}</text>
+          </view>
+        </view>
+        <view class="item-row _46f9bc7">
+          <view class="item-row-left wth25 _46f9bc7">
+            <text class="item-title _46f9bc7">配送方式：</text>
+          </view>
+          <view class="item-row-right _46f9bc7">
+            <text class="item-content _46f9bc7">{{orderdetail.data.deliveryTypeTitleValue}}</text>
+          </view>
+        </view>
+        <view class="item-row _46f9bc7">
+          <view class="item-row-left wth25 _46f9bc7">
+            <text class="item-title _46f9bc7">收货地址：</text>
+          </view>
+          <view class="item-row-right _46f9bc7">
+            <text class="item-content _46f9bc7">{{orderdetail.data.address}}</text>
+          </view>
+        </view>
+        <view class="item-row _46f9bc7">
+          <view class="item-row-left wth25 _46f9bc7">
+            <text class="item-title _46f9bc7">联系人：</text>
+          </view>
+          <view class="item-row-right _46f9bc7">
+            <text class="item-content _46f9bc7">{{orderdetail.data.contact}}</text>
+          </view>
+        </view>
+        <view class="item-row _46f9bc7">
+          <view class="item-row-left wth25 _46f9bc7">
+            <text class="item-title _46f9bc7">联系方式：</text>
+          </view>
+          <view class="item-row-right _46f9bc7">
+            <text class="item-content _46f9bc7">{{orderdetail.data.contactInfo}}</text>
+          </view>
+        </view>
+        <view class="item-row _46f9bc7">
+          <view class="item-row-left wth25 _46f9bc7">
+            <text class="item-title _46f9bc7">入库仓库：</text>
+          </view>
+          <view class="item-row-right _46f9bc7">
+            <text class="item-content _46f9bc7">{{orderdetail.data.warehouseName}}</text>
+          </view>
+        </view>
+        <view class="item-row _46f9bc7">
+          <view class="item-row-left wth25 _46f9bc7">
+            <text class="item-title _46f9bc7">采购人员：</text>
+          </view>
+          <view class="item-row-right _46f9bc7">
+            <text class="item-content _46f9bc7">{{orderdetail.data.userName}}</text>
+          </view>
+        </view>
+        <view class="item-row _46f9bc7">
+          <view class="item-row-left wth25 _46f9bc7">
+            <text class="item-title _46f9bc7">采购金额：</text>
+          </view>
+          <view class="item-row-right _46f9bc7">
+            <text class="item-content _46f9bc7">￥{{orderdetail.data.totalAmount}}</text>
+          </view>
+        </view>
+        <view class="item-row _46f9bc7">
+          <view class="item-row-left wth25 _46f9bc7">
+            <text class="item-title _46f9bc7">采购件数：</text>
+          </view>
+          <view class="item-row-right _46f9bc7">
+            <text class="item-content _46f9bc7">{{orderdetail.data.totalOrderedQty}}</text>
+          </view>
+        </view>
+        <view class="item-row _46f9bc7" wx:if="{{orderdetail.data.activityName}}">
+          <view class="item-row-left wth25 _46f9bc7">
+            <text class="item-title _46f9bc7">活动名称：</text>
+          </view>
+          <view class="item-row-right _46f9bc7">
+            <text class="item-content _46f9bc7">{{orderdetail.data.activityName}}</text>
+          </view>
+        </view>
+        <view class="item-row _46f9bc7" wx:if="{{orderdetail.data.userActivityCode}}">
+          <view class="item-row-left wth25 _46f9bc7">
+            <text class="item-title _46f9bc7">认购单号：</text>
+          </view>
+          <view class="item-row-right _46f9bc7">
+            <text class="item-content _46f9bc7">{{orderdetail.data.userActivityCode}}</text>
+          </view>
+        </view>
+        <view class="item-row _46f9bc7">
+          <view class="item-row-left wth25 _46f9bc7">
+            <text class="item-title _46f9bc7">备注：</text>
+          </view>
+          <view class="item-row-right _46f9bc7">
+            <text class="item-content _46f9bc7">{{orderdetail.data.message}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="mx _46f9bc7">明细信息</view>
+      <block class="_46f9bc7" wx:for="{{orderdetail.data.purchaseOrderItem}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="order-container order_items _46f9bc7">
+          <view class="order-goods _46f9bc7">
+            <view class="order-goods-detail _46f9bc7">
+              <view class="order-goods-detail-name _46f9bc7">
+                <view class="order-goods-detail-name-left _46f9bc7">
+                  <view wx:if="{{utils.isFreeShipping(item.productLabel)}}" class="free-shipping-tag _46f9bc7">免运费</view>
+                  <text class="detail-text _46f9bc7">{{item.model}}</text>
+                </view>
+                <text class="goods-number _46f9bc7">￥{{item.price}}</text>
+              </view>
+              <view class="order-goods-detail-explain _46f9bc7">
+                <text class="explain-text van-ellipsis _46f9bc7">颜色：{{item.colour}}<text wx:if="{{item.invStatusName}}" class="_46f9bc7">，{{item.invStatusName}}</text></text>
+                <text class="goods-number _46f9bc7">×{{item.orderedQty}}</text>
+              </view>
+              <view class="order-goods-detail-num _46f9bc7">
+                <text class="_46f9bc7">已入库({{utils.transInt(item.shippedQty || 0)}})，已发货({{utils.transInt(item.outQty ||
+                  0)}})，已取消({{utils.transInt(item.cancelQty || 0)}})
+                </text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+
+      <!--代理商审核信息-->
+      <view wx:if="{{purchaseExamInfo.data.examBy}}" class="order-container _46f9bc7">
+        <view class="order-audit-exam _46f9bc7">
+          <view class="order-audit-one _46f9bc7">代理商审核人: {{purchaseExamInfo.data.examBy}}</view>
+          <view class="order-audit-one _46f9bc7">代理商审核时间: {{purchaseExamInfo.data.examTime}}</view>
+<!--          <view class="order-audit-two">审核意见: {{purchaseExamInfo.data.examOpinion}}</view>-->
+        </view>
+      </view>
+
+      <!--审核单信息-->
+      <view wx:if="{{channelOrderdetail.erpList.length}}" class="order-container _46f9bc7">
+        <view class="order-audit-form _46f9bc7">
+          <view class="order-audit-form-text _46f9bc7">审核单信息</view>
+        </view>
+        <view class="order-audit-now _46f9bc7">
+          <view class="audit-text _46f9bc7">{{channelOrderdetail.nowgoods.sapOrderCode}}</view>
+          <view bindtap="viewmore" class="audit-icon _46f9bc7">
+            查看更多审核单
+            <view class="b-icon icon-more icon _46f9bc7"/>
+          </view>
+        </view>
+        <view class="{{ viewmore ? 'order-audit-list-active': 'order-audit-list'}} van-hairline--bottom _46f9bc7">
+          <block class="_46f9bc7" wx:for="{{channelOrderdetail.erpList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <view bindtap="chose" class="{{ item.active ? 'audit-text' : 'audit-now-text'}} _46f9bc7" data-wpychose-a="{{item.sapOrderCode}}">
+              {{item.sapOrderCode}}
+            </view>
+          </block>
+        </view>
+        <view class="order-audit-status van-hairline--bottom _46f9bc7">
+          <view class="order-audit-one _46f9bc7">状态: {{channelOrderdetail.nowgoods.statusName}}</view>
+          <view class="order-audit-two _46f9bc7">创建日期: {{channelOrderdetail.nowgoods.createdDate}}</view>
+        </view>
+        <view class="order-audit-delivery _46f9bc7">
+          <block class="_46f9bc7" wx:for="{{channelOrderdetail.sapOrderItems[channelOrderdetail.nowgoods.id]}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <view class="_46f9bc7">
+              <!--<view class="order-audit-delivery-goods">{{item.zzprdmodel}}/{{item.z_color || ''}}</view>-->
+              <view class="order-audit-delivery-number _46f9bc7">
+                <text class="good-price _46f9bc7">{{item.zzprdmodel}}/{{item.z_color || ''}}</text>
+                <text class="good-number _46f9bc7">×{{item.erpQty}}</text>
+              </view>
+              <view class="order-audit-agreements _46f9bc7">
+                <view class="order-audit-agreements-number _46f9bc7">
+                  <text wx:if="{{item.shQty}}" class="_46f9bc7">已甩货({{item.shQty}})</text>
+                  <text wx:if="{{item.rejectionQty}}" class="_46f9bc7">已拒收({{item.rejectionQty}})</text>
+                  <text wx:if="{{item.outboundQty}}" class="_46f9bc7">发货中({{item.outboundQty}})</text>
+                  <text wx:if="{{item.waitSendQty}}" class="_46f9bc7">待发货({{item.waitSendQty}})</text>
+                  <text wx:if="{{item.signQty}}" class="_46f9bc7">已签收({{item.signQty}})</text>
+                  <text wx:if="{{item.cancelQty}}" class="_46f9bc7">已取消({{item.cancelQty}})</text>
+                </view>
+              </view>
+            </view>
+          </block>
+          <view class="order-audit-final van-hairline--bottom _46f9bc7">
+
+            <!--<text class="order-audit-final-price">合计 ￥{{channelOrderdetail.nowgoods.amt}}</text>-->
+            <text wx:if="{{(channelOrderdetail.nowStatuses[channelOrderdetail.nowgoods.id] === 'O8' || channelOrderdetail.nowStatuses[channelOrderdetail.nowgoods.id] === 'O11') && !channelOrderdetail.nowgoods.havaOrderEvaluation}}" class="btn-comment _46f9bc7" bindtap="onToggleComment" data-wpyontogglecomment-a="{{channelOrderdetail.nowgoods}}">评价
+            </text>
+            <text wx:if="{{channelOrderdetail.nowgoods.havaOrderEvaluation}}" class="btn-comment _46f9bc7" bindtap="onToggleCommentDetail" data-wpyontogglecommentdetail-a="{{channelOrderdetail.nowgoods}}">评价
+            </text>
+          </view>
+          <view wx:if="{{channelOrderdetail.nowgoods.logisticsStatus}}" class="order-audit-logistics-information _46f9bc7">
+            <view class="order-audit-logistics-information-status _46f9bc7">物流状态</view>
+            <view class="order-audit-logistics-information-steps _46f9bc7">
+              <van-steps steps="{{ channelOrderdetail.nowgoods.logisticsStatus }}" active="{{ active }}" direction="vertical" active-color="#00aaa6" class="_46f9bc7"/>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 出库明细 -->
+      <view class="delivery-detail _46f9bc7" wx:if="{{orderdetail.data.outBoundItem.length>0}}">
+        <h2 class="delivery-detail-title pd _46f9bc7">出库明细</h2>
+        <view class="bills-box pd {{ isBillsShow  ? 'active' : '' }} _46f9bc7">
+          <view class="bills-box-top _46f9bc7">
+            <span class="bill _46f9bc7">{{orderdetail.data.documentNum}}</span>
+            <span class="isshow _46f9bc7" bindtap="isBillsShowFun">
+              查看更多出库单
+              <view class="b-icon iconkucunliushui-zhankai1 icon _46f9bc7"/>
+            </span>
+          </view>
+
+          <view class="bills-box-bottom _46f9bc7">
+            <block class="_46f9bc7" wx:for="{{orderdetail.data.outBoundItem}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <!-- <span class="bill {{ outActiveIdx == index ? 'active' : '' }}" bindtap="outActiveShowFun({{index}})">{{item.orderNum}}</span> -->
+              <span class="bill {{ item.isActive == true ? 'active' : '' }} _46f9bc7" bindtap="outActiveShowFun" data-wpyoutactiveshowfun-a="{{index}}">{{item.documentNum}}</span>
+            </block>
+          </view>
+        </view>
+
+        <view class="top-info-box pd info-box _46f9bc7" wx:if="{{orderdetail.data && orderdetail.data.outBoundItem && orderdetail.data.outBoundItem.length > 0}}">
+            <ul class="_46f9bc7">
+                <li class="_46f9bc7">出库状态：{{orderdetail.data.outBoundItem[0].status}}</li>
+                <li class="_46f9bc7">物流状态：{{orderdetail.data.outBoundItem[0].omsOrderStatusName||'--'}}</li>
+                <li class="fill-li _46f9bc7">预计送达时间：{{orderdetail.data.outBoundItem[0].reserveTime||'--'}}</li>
+                <li class="fill-li _46f9bc7">收货地址：{{orderdetail.data.outBoundItem[0].address}}</li>
+                <li class="fill-li _46f9bc7">创建日期：{{orderdetail.data.outBoundItem[0].outDate}}</li>
+            </ul>
+        </view>
+        <!-- <repeat for="{{orderdetail.data.outBoundItem}}" item="item" index="index" wx:if="{{index == outActiveIdx }}"> -->
+        <block wx:if="{{e.isActive == true}}" class="_46f9bc7" wx:for="{{orderdetail.data.outBoundItem}}" wx:for-index="idx" wx:for-item="e" wx:key="key">
+            <block class="_46f9bc7" wx:for="{{e.child}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                <view class="btm-info-box pd info-box _46f9bc7">
+                    <view class="model _46f9bc7">{{item.model}},{{item.colour}}</view>
+                    <ul class="_46f9bc7">
+                        <li class="_46f9bc7">出库仓库：{{item.warehouseName}}</li>
+                        <li class="_46f9bc7">出库数量：{{item.bactualQty}}</li>
+                        <li class="_46f9bc7">出库库存状态：{{item.invStatusName}}</li>
+                        <li class="_46f9bc7">出库金额：{{item.price}}</li>
+                        <li class="_46f9bc7">补差类型：{{item.invStatusTypeName}}</li>
+                        <li class="_46f9bc7">业务员：{{item.outUserName}}</li>
+                    </ul>
+                </view>
+                <view class="button-wrapper _46f9bc7" bindtap="receiptEffect" wx:if="{{item.lastOmsStatusName=='到货确认(直送用户)'}}" data-wpyreceipteffect-a="{{item}}">
+                    <view class="button-text _46f9bc7">回单影像</view>
+                </view>
+                <view wx:if="{{item.omsOrderStatus&&item.omsOrderStatus.length>0}}" class="order-audit-logistics-information _46f9bc7">
+                    <view class="order-audit-logistics-information-status _46f9bc7">物流状态</view>
+                    <view class="order-audit-logistics-information-steps _46f9bc7">
+                    <van-steps custom-class="order-audit-logistics-information-steps-inner" steps="{{ item.omsOrderStatus}}" active="{{ active }}" direction="vertical" active-color="#00aaa6" class="_46f9bc7"/>
+                    </view>
+                </view>
+            </block>
+        </block>
+      </view>
+
+      <!-- 退货信息 -->
+      <view wx:if="{{orderdetail.data.purchaseReturnOrder && orderdetail.data.purchaseReturnOrder.length > 0}}" class="order-return-msg _46f9bc7">
+        <view class="order-return-title _46f9bc7">退货信息</view>
+        <view class="order-return-warn _46f9bc7">仅展示已出库的退货信息，未出库的退货单在渠道退货页面查询</view>
+        <block class="_46f9bc7" wx:for="{{orderdetail.data.purchaseReturnOrder}}" wx:for-index="index" wx:for-item="returnOrder" wx:key="key">
+          <view class="order-return-items _46f9bc7">
+            <view class="order-return-items-title _46f9bc7">
+              <view class="order-return-items-no _46f9bc7">单号：{{returnOrder.returnNum}}</view>
+              <view class="order-return-items-time _46f9bc7">{{returnOrder.returnDate}}</view>
+            </view>
+            <block class="_46f9bc7" wx:for="{{returnOrder.purchaseReturnItem}}" wx:for-index="index" wx:for-item="returnItem" wx:key="key">
+              <view class="order-return-item _46f9bc7">
+                <view class="order-return-item-type _46f9bc7">型号：{{returnItem.returnModel}}, {{returnItem.returnColour}}</view>
+                <view class="order-return-item-price _46f9bc7">单价：¥{{returnItem.returnPrice}}</view>
+                <view class="order-return-item-num _46f9bc7">数量：{{returnItem.returnQty}}</view>
+              </view>
+            </block>
+          </view>
+        </block>
+      </view>
+
+    </scroll-view>
+    <van-popup show="{{isImg}}"  bind:close="onClose" class="_46f9bc7">
+      <view class="_46f9bc7">
+        <image wx:for="{{ImgArr}}" wx:key="{{index}}" src="{{item}}" alt="" class="_46f9bc7"/>
+      </view>
+    </van-popup>
+    <van-toast id="van-toast" class="_46f9bc7"/>
+  </view>

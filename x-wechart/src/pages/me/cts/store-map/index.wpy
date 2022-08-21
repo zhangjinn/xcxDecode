@@ -1,0 +1,7 @@
+<template>
+  <view class="" hover-class="none" hover-stop-propagation="false" style="width: 100vw; height: 100vh;">
+    <map id="map" longitude="{{longitude}}" latitude=" {{latitude}}" markers="{{markers}}" scale="15" bindmarkertap="markertap" show-location style="width: 100%; height: 100%;"></map>
+  </view>
+</template>
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts"></script>

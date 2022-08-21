@@ -1,0 +1,1 @@
+var _includes=require("./internal/_includes.js"),_curry2=require("./internal/_curry2.js"),_filter=require("./internal/_filter.js"),flip=require("./flip.js"),uniq=require("./uniq.js"),intersection=_curry2(function(r,e){var i,n;return r.length>e.length?(i=r,n=e):(i=e,n=r),uniq(_filter(flip(_includes)(i),n))});module.exports=intersection;

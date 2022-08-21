@@ -1,0 +1,68 @@
+<template>
+  <view class="comment">
+    <view class="comment comment-border">
+      <repeat for="{{ scoreList }}" item="items" index="index">
+        <view class="slider" wx:if="{{index <= 5}}">
+          <!-- 标题 -->
+          <view class="slider-title">第{{questionIndex[index]}}题 {{items.name}}<span>*</span></view>
+          <view class="slider-wrap">
+            <!-- 左侧分数 -->
+            <view class="slider-score">{{ filterForm['q' + (index + 1)] }}</view>
+            <view class="slider-box">
+              <!-- 顶部描述 -->
+              <view class="slider-box-top">
+                <view class="slider-desc">不满意0</view>
+                <view class="slider-desc">满意{{items.maxScore}}</view>
+              </view>
+              <!-- 滑块内容 --> 
+              <view class="slider-box-con">
+                <van-slider
+                  disabled = "{{ isEdit }}"
+                  value="{{ items.score }}"
+                  use-button-slot
+                  bind:change="onDrag({{index}})"
+                  bar-height="16px"
+                  active-color="#00AAA6" 
+                  step="{{items.step}}"
+                >
+                  <view class="custom-button" slot="button"></view>
+                </van-slider>
+              </view>
+              <!-- 底部step分 -->
+              <view class="slider-box-bottom" wx:if="{{items.maxScore == 20}}">
+                <repeat for="{{currentStep}}" item="item">
+                  <view class="slider-box-bottom-step">
+                    <view class="slider-box-bottom-step-desc">{{ item }}</view>
+                  </view>
+                </repeat>
+              </view> 
+              <view class="slider-box-bottom" wx:if="{{items.maxScore == 10}}">
+                <repeat for="{{currentStep2}}" item="item">
+                  <view class="slider-box-bottom-step slider-box-bottom-step2">
+                    <view class="slider-box-bottom-step-desc">{{ item }}</view>
+                  </view>
+                </repeat>
+              </view> 
+            </view>
+          </view>
+        </view> 
+      </repeat>
+    </view>
+    <view class="comment">
+      <view class="slider">
+        <!-- 标题 -->
+        <view class="slider-title">{{questionList[6].titleName}}</view>
+        <view class="slider-wrap">
+          <textarea class="slider-wrap-textarea" disabled="{{ isEdit }}" value="{{ filterForm.q7 }}" bindinput="textChange" placeholder="请输入内容"></textarea>
+        </view>
+      </view>
+    </view>
+    <view class="button-warp" wx:if="{{ !isEdit }}">
+      <view class="button-warp-content" @tap="submitInfo">提交</view>
+    </view>
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

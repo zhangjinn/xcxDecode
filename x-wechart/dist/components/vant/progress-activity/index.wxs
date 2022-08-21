@@ -1,0 +1,6 @@
+module.exports = {
+  text: function(pivotText, progress) {
+    progress = '已抢' + progress
+    return pivotText || progress + '%'
+  }
+};

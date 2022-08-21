@@ -1,0 +1,234 @@
+
+  <view class="order _825b411">
+    
+  <van-popup show="{{ $popup$loading.popup.show }}" class="_ec80a94 _825b411">
+    <view class="popup-error _ec80a94">
+      <view class="b-icon icon-fail icon-error _ec80a94"/>
+      <view class="popup-error-header _ec80a94">{{ $popup$title }}</view>
+      <scroll-view scroll-y enable-flex="enable-flex" enable-back-to-top="true" scroll-with-animation="true" class="popup-error-scroll _ec80a94">
+        <view class="error-text _ec80a94">{{ $popup$loading.popup.info }}</view>
+        <view style="padding-top: 100rpx" class="_ec80a94"/>
+      </scroll-view>
+      <view class="popup-error-footer _ec80a94">
+        <view class="popup-error-footer-bar van-hairline--top _ec80a94">
+          <view bindtap="$popup$errorBeSure" class="popup-error-footer-bar-btn _ec80a94" hover-class="hover">确定</view>
+        </view>
+      </view>
+    </view>
+  </van-popup>
+    <view class="order-scroll _825b411">
+      <view class="order-scroll-head _825b411">
+        <block  wx:if="{{ !chooseCustomerInfo.customerName}}" class="_825b411">
+          <navigator url="../order-customer-choose/index" class="item-row item-row-no-border _825b411">
+            <view class="item-row-left _825b411">
+              客户信息
+            </view>
+            <view class="item-row-right _825b411">
+              <view class="item-product _825b411">
+                请输入老板名称/客户名称/客户编码
+              </view>
+            </view>
+          </navigator>
+        </block>
+        <block  wx:else class="_825b411">
+          <view class="item-customer-container _825b411">
+            <navigator url="../order-customer-choose/index" class="item-customer _825b411">
+              <view class="item-customer-title _825b411">
+                <view class="item-customer-title-left _825b411">
+                  <view class="item-customer-title-left-tag _825b411">
+                    客户
+                  </view>
+                  <view class="item-customer-title-left-name _825b411">
+                    {{ chooseCustomerInfo.legalPerson }}
+                  </view>
+                </view>
+                <view class="item-customer-title-right _825b411">
+                  <view class="item-customer-title-right-update _825b411">
+                    更改
+                  </view>
+                  <van-icon name="arrow" class="item-customer-title-right-icon _825b411" customer-class="item-customer-title-right-content"/>
+                </view>
+              </view>
+              <block wx:if="{{ chooseCustomerInfo.legalPerson }}" class="_825b411">
+                <view class="item-customer-legal _825b411">
+                  {{ chooseCustomerInfo.customerName }}
+                </view>
+              </block>
+              <view class="item-customer-address _825b411">
+                地址: {{ chooseCustomerInfo.address }}
+              </view>
+            </navigator>
+          </view>
+        </block>
+        <view class="item-row _825b411" bindtap="openChoose" data-wpyopenchoose-a="orgList" data-wpyopenchoose-b="org" data-wpyopenchoose-c="供应商">
+          <view class="item-row-left _825b411">
+            供应商
+          </view>
+          <view class="item-row-right _825b411">
+            <view class="item-row-right-inventory {{ org.id ? '' : 'placeholder' }} _825b411">
+              {{ org.name }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_825b411"/>
+          </view>
+        </view>
+        <view class="item-row _825b411" bindtap="openChoose" data-wpyopenchoose-a="fhckList" data-wpyopenchoose-b="sendInventoryInfo" data-wpyopenchoose-c="发货仓库">
+          <view class="item-row-left _825b411">
+            发货仓库
+          </view>
+          <view class="item-row-right _825b411">
+            <view class="item-row-right-inventory {{ sendInventoryInfo.id ? '' : 'placeholder' }} _825b411">
+              {{ sendInventoryInfo.name }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_825b411"/>
+          </view>
+        </view>
+        <view class="item-row _825b411" bindtap="openChoose" data-wpyopenchoose-a="inWarehouseList" data-wpyopenchoose-b="receiveInventoryInfo" data-wpyopenchoose-c="入库仓库">
+          <view class="item-row-left _825b411">
+            入库仓库
+          </view>
+          <view class="item-row-right _825b411">
+            <view class="item-row-right-inventory {{ receiveInventoryInfo.id ? '' : 'placeholder' }} _825b411">
+              {{ receiveInventoryInfo.name }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_825b411"/>
+          </view>
+        </view>
+
+        <view class="item-more _825b411" bindtap="showMore" hidden="{{ showMore }}">
+          <view class="item-more-tip _825b411">
+            查看更多
+          </view>
+          <van-icon name="arrow-down" class="icon _825b411"/>
+        </view>
+
+        <!---->
+        <view hidden="{{ !showMore }}" class="item-more-container _825b411">
+          <view class="item-row _825b411" bindtap="openChoose" data-wpyopenchoose-a="customerAddressAllList" data-wpyopenchoose-b="receiverInfo" data-wpyopenchoose-c="收货地址">
+            <view class="item-row-left _825b411">
+              收货地址
+            </view>
+            <view class="item-row-right _825b411">
+              <view class="item-row-right-inventory {{ receiverInfo.id ? '' : 'placeholder' }} _825b411">
+                {{ receiverInfo.name }}
+              </view>
+              <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_825b411"/>
+            </view>
+          </view>
+          <view class="item-row _825b411" bindtap="openChoose" data-wpyopenchoose-a="saleTypes" data-wpyopenchoose-b="saleType" data-wpyopenchoose-c="销售类型">
+            <view class="item-row-left _825b411">
+              销售类型
+            </view>
+            <view class="item-row-right _825b411">
+              <view class="item-row-right-inventory {{ saleType.id ? '' : 'placeholder' }} _825b411">
+                {{ saleType.name }}
+              </view>
+              <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_825b411"/>
+            </view>
+          </view>
+          <view class="item-row _825b411" bindtap="openChoose" data-wpyopenchoose-a="kpfList" data-wpyopenchoose-b="invoiceInfo" data-wpyopenchoose-c="开票方">
+            <view class="item-row-left _825b411">
+              开票方
+            </view>
+            <view class="item-row-right _825b411">
+              <view class="item-row-right-inventory {{ invoiceInfo.id ? '' : 'placeholder' }} _825b411">
+                {{ invoiceInfo.name }}
+              </view>
+              <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_825b411"/>
+            </view>
+          </view>
+          <view class="item-row _825b411" bindtap="openChoose" data-wpyopenchoose-a="ywyList" data-wpyopenchoose-b="saler" data-wpyopenchoose-c="业务员">
+            <view class="item-row-left _825b411">
+              业务员
+            </view>
+            <view class="item-row-right _825b411">
+              <view class="item-row-right-inventory {{ saler.id ? '' : 'placeholder' }} _825b411">
+                {{ saler.name }}
+              </view>
+              <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_825b411"/>
+            </view>
+          </view>
+          <view class="item-row _825b411">
+            <view class="item-row-left _825b411">
+              备注
+            </view>
+            <view class="item-row-right _825b411">
+              <view class="item-row-right-note _825b411">
+                <van-field value="{{ note }}" placeholder="请填写备注" border="{{ false }}" input-align="right"  bind:change="onNoteChange" class="dms-order-note _825b411"/>
+              </view>
+            </view>
+          </view>
+
+          <view class="item-more hidden _825b411" bindtap="hiddenMore">
+            <view class="item-more-tip _825b411">
+              收起更多
+            </view>
+            <van-icon name="arrow-up" class="icon _825b411"/>
+          </view>
+        </view>
+      </view>
+      
+  <view class="detail _a2e17ce _825b411">
+    <view class="detail-title _a2e17ce">
+      明细信息
+    </view>
+    <block  wx:if="{{ $order$from === 'retail' }}" class="_a2e17ce">
+      <view class="detail-tip _a2e17ce">
+        特别提醒订单开立时，单张订单避免出现同一型号的不同质量等级
+      </view>
+    </block>
+
+    <item id="item"  wx:for="{{ $order$details }}" from="{{ $order$from }}" wx:key="*this" index="{{index}}" itemId="{{ item }}" ly="{{$order$ly}}" isDisabled="{{ $order$isDisabled }}" requiredParameters="{{ $order$requiredParameters }}" warehouseId="{{$order$out.id}}" orgId="{{$order$orgId.id}}" outInv="{{$order$outInv}}" itemInfo="{{ $order$additionOrderDetailItem.itemInfo[item] }}" bindvolumeChange="$order$volumeChange" bindamountChange="$order$amountChange" bindchooseItem="$order$chooseItem" binditemDel="$order$delItem" bindserviceChange="$order$serviceChange" bindquantityChange="$order$quantityChange" class="_a2e17ce"/>
+
+    <view class="detail-add _a2e17ce">
+      <view class="detail-add-inner _a2e17ce" catchtap="$order$addItem">
+        <view class="b-icon icon-add _a2e17ce"/>
+        <view class="detail-add-tip _a2e17ce">
+          <block  wx:if="{{ $order$details.length > 0 }}" class="_a2e17ce">继续</block>
+          <block class="_a2e17ce">添加</block>
+        </view>
+      </view>
+    </view>
+  </view>
+    </view>
+
+    <van-submit-bar button-text="确认提交" custom-class="order-bottom" button-class-container="dms-order-bottom-button-save" button-class="dms-order-bottom-button-save-submit"  bind:submit="submit" class="_825b411">
+      <view class="order-bottom-button-temp _825b411" bindtap="cache">
+        暂存
+      </view>
+      <view slot="top" class="order-bottom-amount _825b411">
+        <view class="order-bottom-amount-tip _825b411">
+          合计
+        </view>
+
+        <view class="order-bottom-amount-num _825b411">
+          ￥{{ amount }}
+        </view>
+      </view>
+    </van-submit-bar>
+
+    <van-popup show="{{ popVisible }}" closeable="closeable" position="bottom" custom-style="height: 570rpx"  bind:click-overlay="onClose" class="_825b411">
+    <view class="order-inv _825b411">
+      <view class="order-inv-head _825b411">
+        <view class="order-inv-head-context _825b411">
+          <view class="order-inv-head-context-title _825b411">{{ popTitle }}</view>
+        <van-icon name="cross" class="order-inv-head-context-close _825b411" bindtap="onClose"/>
+        </view>
+      </view>
+      <scroll-view scroll-y class="order-inv-scroll _825b411">
+        <view wx:for="{{ popList }}" wx:key="{{ item.id }}" item="item" class="order-inv-scroll-row _825b411" data-key="{{ item.id }}" data-index="{{ index }}" bindtap="onChoose">
+          <view class="order-inv-scroll-row-desc {{ item.id === compareInfo.id ? 'checked' : ''}} _825b411">
+            {{ item.name }}
+          </view>
+          <block wx:if="{{ item.id === compareInfo.id }}" class="_825b411">
+            <view class="b-icon icon-check order-inv-scroll-row-checked checked _825b411">
+            </view>
+          </block>
+        </view>
+
+      </scroll-view>
+    </view>
+    </van-popup>
+    <van-dialog id="van-dialog" class="_825b411"/>
+
+    <van-toast id="van-toast" class="_825b411"/>
+  </view>

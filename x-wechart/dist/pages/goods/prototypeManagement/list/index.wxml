@@ -1,0 +1,296 @@
+
+  <view class="order _a20e1b3">
+    <!--    侧边筛选-->
+    <van-popup show="{{visible}}" position="right" overlay="{{ true }}"  bind:close="orderfiltering" custom-style="height: 100%; border-radius: 16px 0px 0px 16px" z-index="1000000" class="_a20e1b3">
+      <wxs src="../../../../wxs/utils.wxs" module="utils"/>
+
+  <view class="filter-side _a20e1b3">
+    <!-- 筛选侧边弹框内容 -->
+    <view class="order-drawer">
+      <view class="order-drawer-attr">
+        <scroll-view class="order-drawer-attr-scroll" style="padding-top:{{$sideFilter$drawerTopHeight}}rpx" scroll-y>
+          <view class="attr-item">
+            <block  wx:for="{{$sideFilter$formData}}">
+              <view wx:if="{{ item.type==='field' }}" class="projectem">
+                <view class="project">
+                  <text class="project-name">{{ item.label }}</text>
+                </view>
+                <van-field placeholder="{{ item.placeholder || '请输入' }}" placeholder-style="font-size: 24rpx;" value="{{ item.value }}" border="{{ $sideFilter$false }}" data-index="{{ index }}"  bind:change="$sideFilter$onFieldChange" custom-style="background-color: #f7f7f7; border-radius: 32rpx; padding: 8rpx 30rpx; font-size: 24rpx;" clearable="clearable"/>
+              </view>
+              <view wx:if="{{ item.type==='select' }}" class="parent-agent">
+                <view class="agent-name">{{ item.label }}</view>
+                <view bindtap="$sideFilter$selectagentPopup" class="agent-select" data-popupTitle="{{ item.label }}" data-index="{{ index }}">
+                  <block wx:if="{{ item.multiple}}">
+                    <text wx:if="{{ item.name && item.name.length }}">{{ item.name }}</text>
+                    <text wx:else>{{ item.placeholder || '请选择' }}</text>
+                  </block>
+                  <block wx:else>
+                    <text wx:if="{{ item.name }}">{{ item.name }}</text>
+                    <text wx:else>{{ item.placeholder || '请选择' }}</text>
+                  </block>
+
+                  <view class="b-icon iconliebiaoshaixuanjiantou-down icons"/>
+                </view>
+              </view>
+              <view wx:if="{{ item.type==='yearMonth' }}" class="parent-agent">
+                <view class="agent-name">{{ item.label }}</view>
+                <view bindtap="$sideFilter$selectYearMonthPopup" class="agent-select" data-popupTitle="{{ item.label }}" data-index="{{ index }}">
+                  <text wx:if="{{ item.value }}">{{ item.value }}</text>
+                  <text wx:else>{{ item.placeholder || '请选择' }}</text>
+                  <view class="b-icon iconliebiaoshaixuanjiantou-down icons"/>
+                </view>
+              </view>
+              <view wx:if="{{ item.type==='date' }}" class="order-data">
+                <view class="project">
+                  <text class="project-name">{{ item.label }}</text>
+                </view>
+                <view class="order-data-input">
+                  <view class="order-data-input-one" data-name="startDate" data-index="{{ index }}" bindtap="$sideFilter$openCalendar">
+                    <text wx:if="{{ item.startDate }}">{{ item.startDate }}</text>
+                    <text wx:else>{{ item.placeholderStart || '请选择'}}</text>
+                    <van-icon wx:if="{{ item.startDate }}" class="close-icon" name="clear" data-name="startDate" data-index="{{ index }}" bindtap="$sideFilter$clearCalendar"/>
+                  </view>
+                  <view class="order-data-input-line">-</view>
+                  <view class="order-data-input-one" data-name="endDate" data-index="{{ index }}" bindtap="$sideFilter$openCalendar">
+                    <text wx:if="{{ item.endDate }}">{{ item.endDate }}</text>
+                    <text wx:else>{{ item.placeholderEnd || '请选择'}}</text>
+                    <van-icon wx:if="{{ item.endDate }}" class="close-icon" name="clear" data-name="endDate" data-index="{{ index }}" bindtap="$sideFilter$clearCalendar"/>
+                  </view>
+                </view>
+              </view>
+              <view wx:if="{{ item.type==='quickDate' }}" class="quick-filter-date">
+                <block wx:for="{{$sideFilter$quickFilterDateOption}}" wx:for-item="quickDate" wx:for-index="quickDateIndex">
+                  <view class="quick-date-item {{item.value === quickDate.id ? 'active' : '' }}" data-index="{{ index }}" data-item="{{ quickDate }}" bindtap="$sideFilter$onChangeQuickDate">{{ quickDate.value }}</view>
+                </block>
+              </view>
+            </block>
+          </view>
+        </scroll-view>
+        <!-- 底部按钮 -->
+        <view class="order-drawer-attr-footer">
+          <view class="order-drawer-attr-row">
+            <view bindtap="$sideFilter$onResetFilterForm" class="order-drawer-attr-footer-btn reset" hover-class="order-drawer-attr-footer-btn-hover">重置</view>
+            <view bindtap="$sideFilter$onSubmitFilterForm" class="order-drawer-attr-footer-btn confirm" hover-class="order-drawer-attr-footer-btn-hover">确定</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 日历弹框 -->
+    <van-popup show="{{$sideFilter$calendarShow}}" position="bottom"  bind:close="$sideFilter$closeCalendar" z-index="200">
+      <calendar calendarConfig="{{$sideFilter$calendarConfig}}" bind:afterTapDay="$sideFilter$chooseDay"/>
+    </van-popup>
+
+    <!-- 选择年月 -->
+    <van-popup show="{{ $sideFilter$yearsVisable }}" position="bottom" custom-class="purchase-top" bind:close="$sideFilter$touchFilter"  wx:if="{{ $sideFilter$yearsVisable }}">
+      <view>
+        <van-datetime-picker type="year-month" value="{{ $sideFilter$currentDate }}" min-date="{{ $sideFilter$minDate }}" max-date="{{ $sideFilter$maxDate }}" bind:input="$sideFilter$onInput" bind:confirm="$sideFilter$onConfirm" bind:cancel="$sideFilter$onCancel"/>
+      </view>
+    </van-popup>
+
+    <!-- 筛选侧边单选、多选弹框列表 -->
+    <van-popup show="{{ $sideFilter$agentPopup }}" position="right" overlay="{{ $sideFilter$true }}" z-index="200" custom-style="height: 100%;" close-on-click-overlay="{{$sideFilter$false}}">
+      <view wx:if="{{ $sideFilter$popupTitle }}" class="order-drawer" style="padding-top:{{$sideFilter$drawerTopHeight}}rpx">
+        <view class="order-drawer-time">
+          <view class="order-drawer-time-header">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back" bind:click="$sideFilter$closeAgentPopup"/>
+            <view class="order-drawer-time-header-title">{{$sideFilter$popupTitle}}</view>
+          </view>
+
+          <view class="item-inv-search" wx:if="{{ $sideFilter$formData[$sideFilter$currIndex].isSearch }}">
+            <van-search custom-class="header-search" shape="round" value="{{ $sideFilter$searchStr }}" use-action-slot="use-action-slot" use-left-icon-slot="{{ $sideFilter$true }}" leftSearchIconSow="{{ $sideFilter$false }}" placeholder="请输入搜索关键字" placeholder-style="color: #AAAAAA; font-size: 28rpx;" data-key="{{ $sideFilter$formData[$sideFilter$currIndex].key }}" bind:change="$sideFilter$onSearch">
+              <view slot="label" class="search-left-icon">
+                <i class="b-icon shouyesousuo"/>
+              </view>
+            </van-search>
+          </view>
+
+          <scroll-view class="order-drawer-time-content" scroll-y>
+            <block wx:if="{{$sideFilter$selectOptions && $sideFilter$selectOptions.length>0}}">
+              <view wx:for="{{$sideFilter$selectOptions}}">
+                <view class="order-drawer-time-content-line" data-item="{{ item }}" bindtap="$sideFilter$selectChangeFilterStatus">
+                  <block wx:if="{{$sideFilter$formData[$sideFilter$currIndex].multiple}}">
+                    <view class="text {{utils.includes(item.id, $sideFilter$formData[$sideFilter$currIndex].value) ? 'active' : ''}}">{{item.value}}</view>
+                    <van-icon wx:if="{{utils.includes(item.id, $sideFilter$formData[$sideFilter$currIndex].value) }}" name="success" class="time-selected" size="32rpx"/>
+                  </block>
+                  <block wx:else>
+                    <view class="text {{$sideFilter$formData[$sideFilter$currIndex].value === item.id ? 'active' : ''}}">{{item.value}}</view>
+                    <van-icon wx:if="{{$sideFilter$formData[$sideFilter$currIndex].value === item.id }}" name="success" class="time-selected" size="32rpx"/>
+                  </block>
+                </view>
+              </view>
+            </block>
+            <block wx:else>
+              <view class="no-data">暂无数据~</view>
+            </block>
+          </scroll-view>
+        </view>
+      </view>
+    </van-popup>
+  </view>
+
+    </van-popup>
+    <!-- 快捷筛选顶部弹框 状态 -->
+    <van-popup show="{{OrderSFilterVisible}}" position="top" overlay="{{ true }}" custom-style="height: 50%; padding: 0 12px;border-radius: 0rpx 0rpx 24rpx 24rpx;"  bind:close="touchOrderSFilter" class="_a20e1b3">
+      <!--       mendian-->
+      <view  wx:if="{{CurrentOrderSFilterName === 'shop'}}" class="order-s-filter-container _a20e1b3">
+        <view class="order-operation _a20e1b3">
+          <view class="operation-text van-hairline--bottom _a20e1b3" bindtap="onSelectType" data-wpyonselecttype-a="" data-wpyonselecttype-b="">
+            <view class="operation-status {{ filterForm.storeCode === '' ? 'active' : '' }} _a20e1b3">全部</view>
+            <view wx:if="{{ filterForm.storeCode === '' }}" class="b-icon icon-check operation-icon _a20e1b3"/>
+          </view>
+        </view>
+        <view class="order-operation _a20e1b3" wx:for="{{shopOptions}}">
+          <view class="operation-text van-hairline--bottom _a20e1b3" bindtap="onSelectType" data-wpyonselecttype-a="{{ item.code}}" data-wpyonselecttype-b="{{ item.name}}">
+            <view class="operation-status {{ filterForm.storeCode === item.code ? 'active' : '' }} _a20e1b3">{{ item.name }}
+            </view>
+            <view wx:if="{{ filterForm.storeCode ===  item.code }}" class="b-icon icon-check operation-icon _a20e1b3"/>
+          </view>
+        </view>
+      </view>
+      <!--      wuliaou-->
+      <view  wx:if="{{CurrentOrderSFilterName === 'material'}}" class="order-s-filter-container _a20e1b3">
+        <view class="order-operation _a20e1b3">
+          <view class="operation-text van-hairline--bottom _a20e1b3" bindtap="onSelectMaterial" data-wpyonselectmaterial-a="" data-wpyonselectmaterial-b="">
+            <view class="operation-status {{ filterForm.matklCode === '' ? 'active' : '' }} _a20e1b3">全部</view>
+            <view wx:if="{{ filterForm.matklCode === '' }}" class="b-icon icon-check operation-icon _a20e1b3"/>
+          </view>
+        </view>
+        <view class="order-operation _a20e1b3" wx:for="{{materialOptions}}">
+          <view class="operation-text van-hairline--bottom _a20e1b3" bindtap="onSelectMaterial" data-wpyonselectmaterial-a="{{item.code}}" data-wpyonselectmaterial-b="{{item.name}}">
+            <view class="operation-status {{ filterForm.matklCode === item.code ? 'active' : '' }} _a20e1b3">{{ item.name }}
+            </view>
+            <view wx:if="{{ filterForm.matklCode ===  item.code }}" class="b-icon icon-check operation-icon _a20e1b3"/>
+          </view>
+        </view>
+      </view>
+      <!--       yishangyang-->
+      <view  wx:if="{{CurrentOrderSFilterName === 'status'}}" class="order-s-filter-container _a20e1b3">
+        <view class="order-operation _a20e1b3">
+          <view class="operation-text van-hairline--bottom _a20e1b3" bindtap="onSelectStatus" data-wpyonselectstatus-a="" data-wpyonselectstatus-b="">
+            <view class="operation-status {{ filterForm.orderStatus === '' ? 'active' : '' }} _a20e1b3">全部</view>
+            <view wx:if="{{ filterForm.orderStatus === '' }}" class="b-icon icon-check operation-icon _a20e1b3"/>
+          </view>
+        </view>
+        <view class="order-operation _a20e1b3" wx:for="{{statusOptions}}">
+          <view class="operation-text van-hairline--bottom _a20e1b3" bindtap="onSelectStatus" data-wpyonselectstatus-a="{{ item.id}}" data-wpyonselectstatus-b="{{ item.value}}">
+            <view class="operation-status {{ filterForm.orderStatus === item.id ? 'active' : '' }} _a20e1b3">{{ item.value }}
+            </view>
+            <view wx:if="{{ filterForm.orderStatus ===  item.id }}" class="b-icon icon-check operation-icon _a20e1b3"/>
+          </view>
+        </view>
+      </view>
+
+    </van-popup>
+    
+  <view class="custom-class filter-header _a20e1b3">
+    <view  wx:if="{{ $filter$showTab && $filter$tabList && $filter$tabList.length > 0 }}" class="tabs">
+      <view class="tab" wx:for="{{ $filter$tabList }}" bindtap="$filter$changeTab" data-wpychangetab-a="{{index}}">
+        <view class="tab-title {{ $filter$tabActive == index ? 'active' : ''}}">
+          <view class="title-text">{{ item.name }}</view>
+          <view class="title-line" style="width: {{$filter$activeLineStyle.width ? $filter$activeLineStyle.width : '32rpx'}}; height: {{$filter$activeLineStyle.height ? $filter$activeLineStyle.height : '8rpx'}}; borderRadius: {{$filter$activeLineStyle.borderRadius ? $filter$activeLineStyle.borderRadius : '4rpx'}}"/>
+          <text wx:if="{{ item.count }}" class="reddot {{ item.count > 99 ? 'moreAmount' : '' }}">{{ item.count > 99 ? '99+' :  item.count }}</text>
+        </view>
+      </view>
+    </view>
+    <view  wx:if="{{ $filter$showSearch }}" class="search">
+      <van-search custom-class="header-search" value="{{ $filter$searchKey }}" shape="round" use-left-icon-slot="{{ $filter$true }}" leftSearchIconSow="{{ $filter$false }}" placeholder="请输入关键字" placeholder-style="color: #AAAAAA; font-size: 28rpx;"  bind:change="$filter$onChange" bind:clear="$filter$onCancel">
+        <view slot="label" class="search-left-icon">
+          <i bindtap="$filter$onSearch" class="b-icon shouyesousuo" data-wpyonsearch-a=""/>
+        </view>
+      </van-search>
+    </view>
+  </view>
+
+
+    
+  <view class="header-tab _a20e1b3">
+    <view class="left-btn">
+      <block  wx:for="{{ $headerTab$tabListNew }}">
+        <view class="btn-item {{ item.selectValue ? 'active' : '' }}" bindtap="$headerTab$changeTab" data-wpychangetab-a="{{item}}">
+          <text>{{ item.name }}</text>
+          <i wx:if="{{ $headerTab$showArrowIcon }}" class="b-icon iconxialajiantou"/>
+        </view>
+      </block>
+    </view>
+    <view class="right-btn"  wx:if="{{ $headerTab$showRightBtn }}" bindtap="$headerTab$onSideFilter">
+      <view class="line-shadow" wx:if="{{ $headerTab$showRightBtnLine }}"/>
+      <view class="side-filter-btn">
+        <text>筛选</text>
+        <i class="b-icon shaixuan"/>
+      </view>
+    </view>
+  </view>
+
+
+    <scroll-view wx:if="{{ activityList && activityList.length }}" scroll-y="true" class="order-scroll _a20e1b3" enable-flex="enable-flex" scroll-top="{{ scrollTop }}" bindscroll="onScroll" bindscrolltolower="onGetOrderListNext">
+      <block class="_a20e1b3" wx:for="{{activityList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="order-container _a20e1b3">
+          <view class="card-header _a20e1b3">
+            <view class="card-title _a20e1b3">
+              <view class="card-coding _a20e1b3">
+                <text class="_a20e1b3">{{ item.modeName }}/{{ item.baseMatklName }}</text>
+              </view>
+              <view class="card-status _a20e1b3">
+                <text class="reporting _a20e1b3" wx:if="{{item.storeOrderStatusName !== '已上样'}}">{{ item.storeOrderStatusName }}</text>
+                <text class="reportingGreen _a20e1b3" wx:if="{{item.storeOrderStatusName == '已上样'}}">{{ item.storeOrderStatusName }}</text>
+              </view>
+            </view>
+            <view class="card-desc1 _a20e1b3">
+              <text class="{{'gaponeActive'}} _a20e1b3">
+                {{item.isExclusiveShop == '1'?'专卖店':'非专卖店'}}
+              </text>
+              <text wx:if="{{item.storeOrderStatus == 'YWC'}}" class="{{item.storeOrderStatus == 'YWC'?'gaponeActive':'gaponeNotActive'}} _a20e1b3">
+                非铺借
+              </text>
+              <text wx:if="{{item.storeOrderStatus == 'YWC'}}" class="{{item.isEnjoyPolicy == 'T'?'gaponeActive':'gaponeNotActive'}} _a20e1b3">
+                {{item.isEnjoyPolicy == 'T'?'已补贴':'未补贴'}}
+              </text>
+            </view>
+            <view class="card-desc _a20e1b3">
+              <text class="gap _a20e1b3" wx:if="{{ item.storeName }}">所属门店：{{item.storeName}} </text>
+              <view class="gapFlex _a20e1b3">
+                <view class="_a20e1b3">
+                上样编号：{{item.workOrderDetailNo}}
+                </view>
+                <view style="margin-left: 48rpx" class="_a20e1b3">
+                  样机库存：{{item.totalActQty}}
+                </view>
+              </view>
+
+            </view>
+            <view class="card-desc _a20e1b3" wx:if="{{item.xtwSyStartDate && item.xtwSyEndDate}}">
+              <text class="gap _a20e1b3">上样期限：{{item.xtwSyStartDate?item.xtwSyStartDate:''}}{{item.xtwSyEndDate?'~':''}}{{item.xtwSyEndDate?item.xtwSyEndDate:''}} </text>
+            </view>
+            <view class="card-desc _a20e1b3" wx:if="{{item.cisOrderCode}}">
+              <text class="gap _a20e1b3">出库单号：{{item.cisOrderCode?item.cisOrderCode:''}} </text>
+            </view>
+
+            <view class="card-desc _a20e1b3">
+              <text class="gap _a20e1b3">效果图</text>
+
+              <view class="img _a20e1b3">
+                <image class="image _a20e1b3" src="{{item.yjCheckPictureHref}}" mode="aspectFill"/>
+
+              </view>
+            </view>
+
+          </view>
+
+
+        </view>
+      </block>
+    </scroll-view>
+    
+  <view class="empty-data _a20e1b3" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+
+    <van-toast id="van-toast" class="_a20e1b3"/>
+    <van-dialog id="van-dialog" class="_a20e1b3"/>
+  </view>

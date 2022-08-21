@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),_isString=require("./internal/_isString.js"),reverse=_curry1(function(r){return _isString(r)?r.split("").reverse().join(""):Array.prototype.slice.call(r,0).reverse()});module.exports=reverse;

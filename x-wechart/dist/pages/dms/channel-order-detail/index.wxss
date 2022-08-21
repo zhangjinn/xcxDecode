@@ -1,0 +1,399 @@
+@import "./../../../components/popup-toast/index.wxss";
+@import "./../../../components/dms-order-addition-detail/index.wxss";
+.ellipsis._825b411 {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+view._825b411,
+label._825b411,
+text._825b411,
+input._825b411,
+scroll-view._825b411 {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+van-icon._825b411 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+view[hidden]._825b411 {
+  display: none !important;
+}
+page._825b411 {
+  background-color: #F7F7F7;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+.item-order-confirm._825b411 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  width: 100%;
+}
+.order._825b411 {
+  height: 100%;
+  position: relative;
+}
+.order-scroll._825b411 {
+  position: relative;
+  height: 100%;
+}
+.order-scroll-head._825b411 {
+  padding: 0 24rpx;
+  background-color: #FFF;
+  color: #262626;
+  font-size: 26rpx;
+}
+.order-scroll-head .item-customer-container._825b411 {
+  padding: 24rpx 0;
+}
+.order-scroll-head .item-customer-container .item-customer._825b411 {
+  background-color: #F7F7F7;
+  padding: 16rpx 26rpx 16rpx 16rpx;
+  position: relative;
+  color: #262626;
+  font-size: 24rpx;
+}
+.order-scroll-head .item-customer-container .item-customer._825b411::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+  pointer-events: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border: 0 solid #EEEEEE;
+  border-bottom-width: 1rpx;
+}
+.order-scroll-head .item-customer-container .item-customer-title._825b411 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding-bottom: 8rpx;
+}
+.order-scroll-head .item-customer-container .item-customer-title-left._825b411 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.order-scroll-head .item-customer-container .item-customer-title-left-tag._825b411 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding: 0 8rpx;
+  color: #FFFFFF;
+  background-color: #BA8570;
+  font-size: 20rpx;
+  height: 24rpx;
+}
+.order-scroll-head .item-customer-container .item-customer-title-left-name._825b411 {
+  padding-left: 8rpx;
+  font-weight: 500;
+}
+.order-scroll-head .item-customer-container .item-customer-title-right._825b411 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  color: #00AAA6;
+  font-size: 20rpx;
+}
+.order-scroll-head .item-customer-container .item-customer-title-right-update._825b411 {
+  padding-right: 8rpx;
+}
+.order-scroll-head .item-customer-container .item-customer-legal._825b411 {
+  padding-bottom: 8rpx;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+.order-scroll-head .item-customer-container .item-customer-address._825b411 {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+.order-scroll-head .item-more._825b411 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding: 16rpx 0;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  font-size: 22rpx;
+  color: #AAAAAA;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.order-scroll-head .item-more .icon._825b411 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding-left: 8rpx;
+}
+.order-scroll-head .hidden._825b411 {
+  color: #00AAA6;
+}
+.order-scroll-head .item-row._825b411:not(:last-child) {
+  position: relative;
+}
+.order-scroll-head .item-row._825b411:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+  pointer-events: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border: 0 solid #EEEEEE;
+  border-bottom-width: 1rpx;
+}
+.order-scroll-head .item-row-no-border._825b411::after {
+  border-bottom-width: 0 !important;
+}
+.order-scroll-head .item-row._825b411 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 96rpx;
+  padding-right: 24rpx;
+}
+.order-scroll-head .item-row-left._825b411 {
+  padding-right: 24rpx;
+}
+.order-scroll-head .item-row .amount._825b411 {
+  color: #D9161C;
+  font-size: 24rpx;
+}
+.order-scroll-head .item-row .input._825b411 {
+  padding-right: 20rpx;
+}
+.order-scroll-head .item-row-right._825b411 {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+          justify-content: flex-end;
+}
+.order-scroll-head .item-row-right .item-product._825b411 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 64rpx;
+  width: 100%;
+  background-color: #F7F7F7;
+  padding: 0 16rpx;
+  color: #AAAAAA;
+}
+.order-scroll-head .item-row-right-inventory._825b411 {
+  padding-right: 20rpx;
+  max-width: 525rpx;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+.order-scroll-head .item-row-right .placeholder._825b411 {
+  color: #AAAAAA;
+}
+.order-bottom-amount._825b411 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+          justify-content: flex-end;
+  padding: 28rpx 24rpx;
+  color: #D9161C;
+  background-color: #FFF;
+  position: relative;
+}
+.order-bottom-amount-tip._825b411 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  color: #777777;
+  font-size: 24rpx;
+}
+.order-bottom-amount-num._825b411 {
+  font-size: 32rpx;
+  font-weight: 500;
+}
+.order-bottom-amount._825b411::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+  pointer-events: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border: 0 solid #EEEEEE;
+  border-bottom-width: 1rpx;
+}
+.order-bottom-button-temp._825b411 {
+  font-size: 32rpx;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  padding: 28rpx 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  color: #666666;
+}
+.order-inv._825b411 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+.order-inv-head._825b411 {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+.order-inv-head-context._825b411 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding-left: 58rpx;
+  height: 88rpx;
+  position: relative;
+}
+.order-inv-head-context._825b411::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+  pointer-events: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border: 0 solid #EEEEEE;
+  border-bottom-width: 1rpx;
+}
+.order-inv-head-context-title._825b411 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  font-size: 32rpx;
+  color: #262626;
+}
+.order-inv-head-context-close._825b411 {
+  padding-right: 40rpx;
+  font-size: 18rpx;
+}
+.order-inv-scroll._825b411 {
+  padding-top: 88rpx;
+  height: 492rpx;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+}
+.order-inv-scroll-row._825b411 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  height: 80rpx;
+  padding: 0 40rpx 0 24rpx;
+  font-size: 26rpx;
+}
+.order-inv-scroll-row .checked._825b411 {
+  color: #00AAA6;
+}
+.order-inv-scroll-row-checked._825b411 {
+  font-size: 20rpx;
+}

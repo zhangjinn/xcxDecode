@@ -1,0 +1,79 @@
+
+  <view class="me-returned">
+    <view class="me-returned-filter">
+      <view class="filter-left" bindtap="onToggleStatus">
+        <view class="status-label">{{ statusLabel === '未选择' ? '处理状态' : statusLabel }}</view>
+        <i class="b-icon icon-arrow-down"/>
+      </view>
+      <view class="filter-right" bindtap="onToggleFilter">筛选</view>
+    </view>
+    <scroll-view  wx:if="{{returnedList.length > 0}}" scroll-y enable-flex="enable-flex" enable-back-to-top="true" scroll-with-animation="true" scroll-top="{{visibelTop}}" bindscrolltolower="onGetReturnedListNext" id="comment-scroll-view" class="me-returned-scroll">
+      <block wx:for="{{returnedList}}" wx:for-index="index" wx:for-item="item" wx:key="index">
+        <view class="me-returned-scroll-item">
+          <view class="item-header">
+            <view class="item-order-no">{{ item.serialCode || '' }}</view>
+            <view class="item-order-status">{{ item.dealStatus || '' }}</view>
+          </view>
+          <view class="item-order-info-line">
+            <view class="info-label">销售组织：</view>
+            <view class="info-content">{{ item.orgName || '' }}</view>
+          </view>
+          <view class="item-order-info-line">
+            <view class="info-label">产品型号：</view>
+            <view class="info-content">{{ item.productModel || '' }}</view>
+          </view>
+          <view class="item-order-info-line">
+            <view class="info-label">机号：</view>
+            <view class="info-content">{{ item.machineNum || '' }}</view>
+          </view>
+          <view wx:if="{{item.dealStatus === '已处理'}}" class="item-order-info-line">
+            <view class="info-label">委托单号：</view>
+            <view class="info-content">{{ item.delegationCode || '' }}</view>
+          </view>
+          <view class="item-order-info-line">
+            <view class="info-label">申请时间：</view>
+            <view class="info-content">{{ item.createDate || '' }}</view>
+            <navigator url="/pages/me/returned/detail/index?serialCode={{item.serialCode}}" class="item-order-options">
+              <van-button type="default" size="small">查看详情</van-button>
+            </navigator>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+    
+  <view class="empty-data" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <van-popup show="{{ statusVisible }}" position="top" custom-class="me-returned-status-popup">
+      <view class="me-returned-filter">
+        <view class="filter-left" bindtap="onToggleStatus">
+          <view class="status-label">{{ statusLabel === '未选择' ? '处理状态' : statusLabel }}</view>
+          <i class="b-icon icon-arrow-down"/>
+        </view>
+        <view class="filter-right" bindtap="onToggleFilter">筛选</view>
+      </view>
+      <van-picker columns="{{ statusList }}"  bind:change="onChangeStatus"/>
+    </van-popup>
+    <van-popup show="{{ filterVisible }}" position="right"  bind:close="onToggleFilter" custom-class="me-returned-filter-popup">
+      <form bindsubmit="onSubmitFilterForm">
+        <view class="input-group">
+          <view class="input-label">产品型号</view>
+          <van-field name="productName" value="{{ filterForm.productName }}" placeholder="请输入产品型号" border="{{ false }}" custom-style="background:#F7F7F7;padding:16rpx;font-size:24rpx;" placeholder-style="color: #AAAAAA;" input-class="me-returned-filter-input"/>
+        </view>
+        <view class="input-group">
+          <view class="input-label">单据号</view>
+          <van-field name="serialCode" value="{{ filterForm.serialCode }}" placeholder="请输入单据号" border="{{ false }}" custom-style="background:#F7F7F7;padding:16rpx;font-size:24rpx;" placeholder-style="color: #AAAAAA;" input-class="me-returned-filter-input"/>
+        </view>
+        <view class="me-returned-filter-options">
+          <!-- <van-button color="#00AAA6" size="large" bind:click="onSubmitFilterForm">确定</van-button> -->
+          <button form-type="submit" class="form-submit-button">确定</button>
+        </view>
+      </form>
+    </van-popup>
+    <van-toast id="van-toast"/>
+  </view>

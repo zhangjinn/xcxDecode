@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),pipeWith=require("./pipeWith.js"),reverse=require("./reverse.js"),composeWith=_curry2(function(e,r){return pipeWith.apply(this,[e,reverse(r)])});module.exports=composeWith;

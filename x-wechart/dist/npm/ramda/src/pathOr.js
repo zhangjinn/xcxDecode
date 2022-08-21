@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),defaultTo=require("./defaultTo.js"),path=require("./path.js"),pathOr=_curry3(function(r,e,t){return defaultTo(r,path(e,t))});module.exports=pathOr;

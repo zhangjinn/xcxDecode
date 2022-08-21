@@ -1,0 +1,667 @@
+@import '../../../../styles/utils.less';
+@import '../../../../components/vant/common/style/hairline.less';
+@import '../../../../components/vant/common/style/ellipsis.less';
+
+@f12:24rpx;
+@f14:28rpx;
+@f16:32rpx;
+@themeCol:#00a6aa;
+.van-tabs--line {box-sizing: border-box;background-color: #fff;}
+.van-tabs__nav .tabs-bored ,.van-tabs__nav .tabs-bored-ed{
+    background-color: #fff !important;
+}
+
+.head {
+    background: #fff;
+    &-banner{
+        image {
+            width: 100%;
+        }
+    }
+    &-content {
+        width: 670rpx;
+        border-radius: 20rpx;
+        box-shadow: 0 0 8rpx #ccc;
+        background: #fff;
+        margin:-240rpx 0 0 40rpx;
+        box-sizing: border-box;
+        position: relative;
+        z-index: 10;
+        &-nav {
+            display: flex;
+            align-items: center;
+            padding: 50rpx 30rpx 20rpx;
+            font-size: @f14;
+            justify-content: space-between;
+            &-flex {
+                display: flex;
+                align-items: center;
+                font-size: @f14;
+                &-type {
+                    color: #333;
+                }
+                &-btn {
+                    color: @themeCol;
+                }
+            }
+        }
+        &-title {
+            padding: 0 30rpx 20rpx;
+            border-bottom: 1rpx solid #F2FBFB;
+            &-phone {
+                font-size: 36rpx;
+                font-weight: bold;
+            }
+            .path-icon {
+                color: @themeCol;
+            }
+            &-desc {
+                font-size: @f14;
+                color: #ccc;
+            }
+        }
+        &-wheel {
+            padding: 20rpx 30rpx;
+            background: #F2FBFB;
+            &-loca {
+                color: #3e3e3e;
+                font-weight: bold;
+                margin-bottom: 10rpx;
+                font-size: @f16;
+                display: flex;
+                justify-content: space-between;
+            }
+            .path-icon {
+                color: @themeCol;
+            }
+            &-man {
+                color: #838383;
+                font-size: @f14;
+            }
+        }
+        &-company {
+            padding: 20rpx 30rpx;
+            color: #888888;
+            font-size: @f14;
+            &-loca-level {
+                background: @themeCol;
+                padding: 4rpx 18rpx;
+                box-sizing: border-box;
+                border-radius: 25rpx;
+                color: #fff;
+                margin-left: 10rpx;
+            }
+        }
+    }
+}
+
+// 门店部分
+.van-tabs-bg {
+    background: #fff;
+}
+.store {
+    background: #fff;
+    padding: 20rpx 0;
+    border-bottom: 10rpx solid #F6F7F8;
+    // 店铺分类标题部分
+    &-nav {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 30rpx 0 40rpx;
+        &-title {
+            font-size: @f16;
+            font-weight: bold;
+            position: relative;
+            &::before{
+                content: "";
+                position: absolute;
+                width: 20rpx;
+                height: 8rpx;
+                background: @themeCol;
+                left: -40rpx;
+                top: 20rpx;
+            }
+        }
+        &-btn {
+            font-size: @f12;
+            color: @themeCol;
+        }
+    }
+    //店铺分类内容部分
+    &-con {
+        .scroll-warp {
+            white-space: nowrap;
+            width: 100%;
+            overflow: hidden;
+            .scroll-img{
+                display: inline-block;
+                width: 380rpx;
+                height: 240rpx;
+                margin:20rpx 20rpx 0 0;
+                position: relative;
+                &:first-child {
+                    margin-left: 40rpx;
+                }
+                image {
+                    width: 100%;
+                    height: 100%;
+                }
+                &-desc {
+                    padding: 4rpx 12rpx 6rpx;
+                    background-color: rgba(0, 0, 0, .4);
+                    color: #fff;
+                    font-size: @f12;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: 10;
+                }
+            }
+        }
+        // 门店简介
+        @storeTablePad:8rpx 0;
+        .storeDescBox {
+            display: flex;
+            margin-top: 20rpx;
+            width: 670rpx;
+            margin-left: 40rpx;
+            &-leftTit {
+                width: 70rpx;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: @f14;
+                color: #333;
+                flex-wrap: wrap;
+                background: #b5e3e9;
+                color: #fff;
+            }
+            &-rBox {
+                width: calc(100% - 70rpx);
+                .scroll-warp {
+                    white-space: nowrap;
+                    width: 100%;
+                    overflow: hidden;
+                }
+                //基本信息头部
+                &-head {
+                    display: flex;
+                    &-item {
+                        width: 200rpx;
+                        background: #ccc;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: @f12;
+                        color: #333;
+                        padding: @storeTablePad;
+                    }
+                }
+                // 基本信息内容
+                &-con {
+                    display: flex;
+                    &-item {
+                        width: 200rpx;
+                        border-right: 2rpx solid rgb(230, 229, 229);
+                        background: #f2f2f2;
+                        &:last-child {
+                            border: none;
+                        }
+                        &-box {
+                            display: flex;
+                            &-text {
+                                padding: @storeTablePad;
+                                width: 50%;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: @f12;
+                                color: #333;
+                            }
+                        }
+                    }
+                }
+            }
+            .storeNewDescBox-rBox-warp {
+                display: flex;
+                flex-wrap: nowrap;
+                .storeNewDescBox-rBox {
+                    min-width: 200rpx;
+                    //基本信息头部
+                    &-head {
+                        display: flex;
+                        &-item {
+                            background: #ccc;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: @f12;
+                            color: #333;
+                            padding: @storeTablePad;
+                        }
+                    }
+                    // 基本信息内容
+                    &-con {
+                        display: flex;
+                        &:last-child {
+                            border: none;
+                        }
+                        &-item {
+                            max-height: 94rpx;
+                            border-right: 2rpx solid rgb(230, 229, 229);
+                            background: #f2f2f2;
+                            display: flex;
+                            flex-direction: column;
+                            flex-wrap: wrap;
+                            &-box {
+                                display: flex;
+                                min-width: 200rpx;
+                                background: #f2f2f2;
+                                &-text {
+                                    padding: @storeTablePad;
+                                    width: 50%;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    font-size: @f12;
+                                    color: #333;
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+            .storeDescBox-rBoxTwoItem {
+                width: calc((100% - 70rpx) / 2);
+            }
+            .storeDescBox-rBoxTwo {
+                display: flex;
+                &-item {
+                    flex: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: @f12;
+                    color: #333;
+                    padding: @storeTablePad;
+                }
+            }
+
+        }
+    }
+
+    //门店表格
+    @colF2:#f2f2f2;
+    .dataFrom{
+        width: 670rpx;
+        margin-left: 40rpx;
+        padding-top: 20rpx;
+        color: #838383;
+        font-size: @f14;
+    }
+    .dataFrom-borderTop {
+        border-top: 1rpx solid #f2f2f2;
+        margin-top: 30rpx;
+    }
+    .paddingb20{
+        padding-bottom: 20rpx;
+    }
+    .store-table-box {
+        box-sizing: border-box;
+        border: 2rpx solid @colF2;
+        margin: 0 40rpx;
+        width: 3050rpx;
+        .store-table-header{
+            background: #F2FBFB;
+            display: flex;
+            width: 100%;
+            box-sizing: border-box;
+            .store-table-th {
+                border-right: 2rpx solid @colF2;
+                border-bottom: 2rpx solid @colF2;
+                word-break: break-all;
+                box-sizing: border-box;
+                font-size: @f16;
+                font-weight: bold;
+            }
+            .store-table-border-bottom {
+                border-bottom: 2rpx solid @colF2;
+            }
+            .store-table-tr {
+                width: 100%;
+                display: flex;
+                box-sizing: border-box;
+                .store-table-td {
+                    flex: 1;
+                    box-sizing: border-box;
+                    border-right: 2rpx solid @colF2;
+                    &:last-child {
+                        border: none;
+                    }
+                }
+            }
+        }
+        .column2 {
+            width: 150rpx;
+            height: 150rpx;
+        }
+        .column1 {
+            height: 75rpx;
+        }
+        .row2 {
+            width: 600rpx;
+        }
+        .row4 {
+            width: 1400rpx;
+        }
+        .text-align {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .store-table-con {
+            width: 100%;
+            .store-table-tr {
+                display: flex;
+                box-sizing: border-box;
+                border-bottom: 2rpx solid @colF2;
+                .store-table-td {
+                    border-right: 2rpx solid @colF2;
+                    box-sizing: border-box;
+                    font-size: @f14;
+                }
+                .wid150 {
+                    width: 150rpx;
+                }
+                .wid300 {
+                    width: 300rpx;
+                }
+                .wid350 {
+                    width: 350rpx;
+                }
+
+            }
+        }
+    }
+    .table-text-align{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .tabs-head {
+        display: flex;
+        width: 670rpx;
+        margin-left: 40rpx;
+        .tabs-head-item {
+            flex:1;
+            font-size: @f16;
+            box-sizing: border-box;
+            padding: 20rpx;
+            background: #F7F7F7;
+        }
+        .tabs-head-item-active {
+            background: #EBF9FB;
+            color: @themeCol;
+        }
+    }
+    // 竞争力排名
+    .storeRank-table {
+        border: 2rpx solid @colF2;
+        width: 670rpx;
+        margin-left: 40rpx;
+        .storeRank-table-header {
+            display: flex;
+            background: #F2FBFB;
+            .storeRank-table-th {
+                flex: 1;
+                border-bottom: 2rpx solid @colF2;
+                border-right: 2rpx solid @colF2;
+                font-size: @f16;
+                font-weight: bold;
+                height: 100%;
+                &:last-child {
+                    border: none;
+                }
+            }
+        }
+        .column2 {
+            width: 150rpx;
+            height: 150rpx;
+        }
+        .column1 {
+            height: 75rpx;
+        }
+        .storeRank-table-con {
+            display: flex;
+            border-bottom: 2rpx solid @colF2;
+            &:last-child{
+                border-bottom: none;
+            }
+            .storeRank-table-tr  {
+                flex: 1;
+                border-right: 2rpx solid @colF2;
+                font-size: @f16;
+                &:last-child {
+                    border: none;
+                }
+                .storeRank-table-td {
+                    border-bottom: 2rpx solid @colF2;
+                    &:last-child {
+                        border: none;
+                    }
+                }
+            }
+        }
+    }
+    //门店销售数据
+    .order-saleData {
+        display: flex;
+        flex-wrap: wrap;
+        width: 670rpx;
+        margin-left: 40rpx;
+        &-items{
+            width: 50%;
+            border-right: 1rpx solid @colF2;
+            border-bottom: 1rpx solid @colF2;
+            &:nth-child(2n) {
+                border-right: none;
+            }
+            &-top {
+                padding: 20rpx 0;
+                &-title {
+                    text-align: center;
+                    font-size: @f16;
+                    color: #333;
+                }
+                &-con {
+                    text-align: center;
+                    font-size: 36rpx;
+                    font-weight: bold;
+                }
+            }
+            &-bottom {
+                padding: 0 0 20rpx 0;
+                display: flex;
+                &-items {
+                    width: 50%;
+                    text-align: center;
+                    &-title {
+                        font-size: @f14;
+                        color: #BCBCBC;
+                    }
+                    &-con {
+                        font-size: @f14;
+                    }
+                }
+            }
+        }
+        .border-bNone{
+            border-bottom: 0;
+        }
+    }
+    .order-data-input {
+        margin-top: 15rpx;
+        width: 670rpx;
+        margin-left: 40rpx;
+        display: flex;
+        .order-data-input-line {
+          width: 10%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .order-data-input-one {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 45%;
+          height: 64rpx;
+          padding: 5px 12px;
+          background-color: #f7f7f7;
+          font-size: 24rpx;
+          position: relative;
+          color:#aaaaaa;
+          .close-icon {
+            position: absolute;
+            // top: 25rpx;
+            right: 25rpx;
+            font-size: 24rpx;
+            color: #AAAAAA;
+          }
+        }
+      }
+      //巡店记录
+      .roundShop {
+          padding: 0 40rpx;
+          &-items {
+              border-bottom:1rpx solid @colF2;
+              padding: 20rpx 0;
+              .roundShop-top {
+                  display: flex;
+                  justify-content: space-between;
+                  padding-bottom: 12rpx;
+                  &-title {
+                      width: 350rpx;
+                      overflow: hidden;
+                      white-space: nowrap;
+                      text-overflow: ellipsis;
+                      font-size: @f14;
+                  }
+                  &-phone {
+                    font-size: @f14;
+                    color: #333;
+                  }
+              }
+              .roundShop-bottom {
+                font-size: @f14;
+                color: #8e8e8e;
+              }
+          }
+      }
+}
+
+
+
+  // 电话列表
+  .phoneDirectorybox {
+    height: 600rpx;
+    box-sizing: border-box;
+    position: relative;
+    .iconyiquxiao {
+        position: absolute;
+        right: 20rpx;
+        top: -16rpx;
+        color: #ccc;
+        z-index: 10;
+    }
+    .phoneDirectory {
+      height: 100%;
+      overflow: hidden;
+    //   切换物料组
+    &-box {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 40rpx;
+        box-sizing: border-box;
+        &-item {
+            box-sizing: border-box;
+            width: 210rpx;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16rpx 0;
+            font-size: 28rpx;
+            margin-right: 20rpx;
+            margin-bottom: 20rpx;
+            border: 1rpx solid #ccc;
+            border-radius: 10rpx;
+            &:nth-child(3n) {
+                margin-right: 0;
+            }
+        }
+        &-item-active {
+            border: 1rpx solid @themeCol;
+            color: #00a6aa;
+        }
+    }
+    .phoneDirectory-box-item-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .phoneDirectory-box-item {
+            border-color: @themeCol;
+            background-color: @themeCol;
+            color: #fff;
+        }
+    }
+    // 电话列表
+      &-list {
+        width: 670rpx;
+        margin-left: 40rpx;
+        padding: 20rpx;
+        box-sizing: border-box;
+        display: flex;
+        border-radius: 10rpx;
+        box-shadow: 0 0 8rpx 4rpx #f2f2f2;
+        justify-content: space-between;
+        margin-top: 20rpx;
+        &:last-child {
+          margin-bottom: 40rpx;
+        }
+        &:first-child {
+          margin-top: 40rpx;
+        }
+        &-left {
+          width: 400rpx;
+          &-title ,&-phone{
+            white-space: nowrap;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          &-title {
+            font-size: 32rpx;
+            margin-top: 8rpx;
+            font-weight: bold;
+          }
+          &-phone {
+            font-size: @f12;
+            color: #333333;
+          }
+        }
+        &-right {
+          color: #00a6aa;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+        }
+
+      }
+    }
+    .phoneDirectoryTel {
+        margin-top: 40rpx;
+    }
+  }

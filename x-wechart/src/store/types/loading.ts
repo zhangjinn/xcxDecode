@@ -1,0 +1,4 @@
+export const LOADING_MSG = 'LOADING_MSG'
+
+
+export const SHOW_POPUP_TOAST = 'SHOW_POPUP_TOAST'

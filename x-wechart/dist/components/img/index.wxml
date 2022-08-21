@@ -1,0 +1,2 @@
+
+<image class="b2b-img custom-class" src="{{ src || errSrc }}" binderror="onerror" mode="{{ mode }}" lazy-load="{{lazyLoad}}" />

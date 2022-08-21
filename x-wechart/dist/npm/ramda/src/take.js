@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),_dispatchable=require("./internal/_dispatchable.js"),_xtake=require("./internal/_xtake.js"),slice=require("./slice.js"),take=_curry2(_dispatchable(["take"],_xtake,function(e,r){return slice(0,e<0?1/0:e,r)}));module.exports=take;

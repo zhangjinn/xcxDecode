@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),isNil=_curry1(function(r){return null==r});module.exports=isNil;

@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),max=_curry2(function(r,u){return u>r?u:r});module.exports=max;

@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),minBy=_curry3(function(r,n,u){return r(u)<r(n)?u:n});module.exports=minBy;

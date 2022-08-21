@@ -1,0 +1,127 @@
+view,
+label,
+text,
+input,
+scroll-view {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+van-icon {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+view[hidden] {
+  display: none !important;
+}
+page {
+  background-color: #F7F7F7;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+.item-order-confirm {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  width: 100%;
+}
+.ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+.permission {
+  height: 100%;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  background-color: #FFF;
+}
+.permission-logo {
+  margin-top: 330rpx;
+  width: 500rpx;
+  height: 298rpx;
+}
+.permission-logo image {
+  width: 100%;
+  height: 100%;
+}
+.permission-head {
+  margin-top: 458rpx;
+}
+.permission-tip {
+  margin-top: 62rpx;
+  color: #262626;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+.permission-login {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-top: 42rpx;
+  width: 296rpx;
+  height: 80rpx;
+  margin-right: 40rpx;
+  background-color: #00AAA6;
+  border-radius: 40rpx;
+  color: #FFF;
+  font-size: 28rpx;
+}
+.permission-back {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-top: 36rpx;
+  width: 296rpx;
+  height: 80rpx;
+  background-color: #ccc;
+  border-radius: 40rpx;
+  color: #FFF;
+  font-size: 28rpx;
+}
+.permission-entrance {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  width: 630rpx;
+  height: 80rpx;
+  background-color: #fff;
+  border-radius: 40rpx;
+  color: #00AAA6;
+  font-size: 28rpx;
+  margin-top: 40rpx;
+  border: 1px solid #00AAA6;
+}

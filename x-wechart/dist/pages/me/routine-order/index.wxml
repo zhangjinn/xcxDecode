@@ -1,0 +1,385 @@
+<wxs src="../../../wxs/utils.wxs" module="utils" class="_2672200"/>
+
+  <view class="order _2672200">
+    <van-popup show="{{ cancelOrderPopup }}" overlay="{{ true }}" class="_2672200">
+      <view class="orderpopup _2672200">
+        <view class="text _2672200">您确定取消订单？</view>
+        <view class="operation _2672200">
+          <view bindtap="cancel" class="operation-one _2672200" data-wpycancel-a="">取消</view>
+          <view bindtap="cancleOrder" class="operation-two _2672200" data-wpycancleorder-a="">确定</view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ continuePayPopup }}" overlay="{{ true }}" class="_2672200">
+      <view class="orderpopup _2672200">
+        <view class="text _2672200">您确定继续支付？</view>
+        <view class="operation _2672200">
+          <view bindtap="cancel" class="operation-one _2672200" data-wpycancel-a="">取消</view>
+          <view bindtap="continuePay" class="operation-two _2672200" data-wpycontinuepay-a="">确定</view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{calendarShow}}" position="bottom"  bind:close="closeCalendar" z-index="200" class="_2672200">
+      <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay" class="_2672200"/>
+    </van-popup>
+    <van-popup show="{{timeFrameVisible}}" position="right" overlay="{{ true }}" z-index="200" custom-style="height: 100%;" close-on-click-overlay="{{false}}" class="_2672200">
+      <view class="order-drawer _2672200">
+        <view class="order-drawer-time _2672200">
+          <view class="order-drawer-time-header _2672200">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back _2672200"  bind:click="onToggleTimeFrame"/>
+            <view class="order-drawer-time-header-title _2672200">订单日期</view>
+          </view>
+          <view class="order-drawer-time-content _2672200">
+            <view class="order-drawer-time-content-line _2672200" bindtap="onSelectTimeFrame" data-wpyonselecttimeframe-a="">
+              <view class="text {{filterForm.timeFrame === '' ? 'active' : ''}} _2672200">全部时间</view>
+              <van-icon  wx:if="{{filterForm.timeFrame === ''}}" name="success" class="time-selected _2672200" size="32rpx"/>
+            </view>
+            <view class="order-drawer-time-content-line _2672200" bindtap="onSelectTimeFrame" data-wpyonselecttimeframe-a="7">
+              <view class="text {{filterForm.timeFrame === '7' ? 'active' : ''}} _2672200">最近一周</view>
+              <van-icon  wx:if="{{filterForm.timeFrame === '7'}}" name="success" class="time-selected _2672200" size="32rpx"/>
+            </view>
+            <view class="order-drawer-time-content-line _2672200" bindtap="onSelectTimeFrame" data-wpyonselecttimeframe-a="1">
+              <view class="text {{filterForm.timeFrame === '1' ? 'active' : ''}} _2672200">最近一个月</view>
+              <van-icon  wx:if="{{filterForm.timeFrame === '1'}}" name="success" class="time-selected _2672200" size="32rpx"/>
+            </view>
+            <view class="order-drawer-time-content-line _2672200" bindtap="onSelectTimeFrame" data-wpyonselecttimeframe-a="3">
+              <view class="text {{filterForm.timeFrame === '3' ? 'active' : ''}} _2672200">最近三个月</view>
+              <van-icon wx:if="{{filterForm.timeFrame === '3'}}" name="success" class="time-selected _2672200" size="32rpx"/>
+            </view>
+            <view class="order-drawer-time-content-line _2672200" bindtap="onSelectTimeFrame" data-wpyonselecttimeframe-a="6">
+              <view class="text {{filterForm.timeFrame === '6' ? 'active' : ''}} _2672200">最近六个月</view>
+              <van-icon wx:if="{{filterForm.timeFrame === '6'}}" name="success" class="time-selected _2672200" size="32rpx"/>
+            </view>
+          </view>
+          <view class="order-drawer-attr-footer _2672200">
+            <view bindtap="onToggleTimeFrame" class="order-drawer-attr-footer-btn confirm _2672200" hover-class="order-drawer-attr-footer-btn-hover">确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ agentPopup }}" position="right" overlay="{{ true }}" z-index="200" custom-style="height: 100%;" close-on-click-overlay="{{false}}" class="_2672200">
+
+      <view wx:if="{{popupTitle == '销售组织'}}" class="order-drawer _2672200">
+        <view class="order-drawer-time _2672200">
+          <view class="order-drawer-time-header _2672200">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back _2672200"  bind:click="selectagentPopup"/>
+            <view class="order-drawer-time-header-title _2672200">{{popupTitle}}</view>
+          </view>
+          <scroll-view class="order-drawer-time-content _2672200" scroll-y>
+            <block class="_2672200" wx:for="{{filter.suppliers}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="order-drawer-time-content-line _2672200" bindtap="onSelectOrg" data-wpyonselectorg-a="{{item}}">
+                <view class="text {{filterForm.orgId === item.key ? 'active' : ''}} _2672200">{{item.value}}</view>
+                <van-icon wx:if="{{filterForm.orgId === item.key }}" name="success" class="time-selected _2672200" size="32rpx"/>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+      </view>
+
+    </van-popup>
+    <van-popup show="{{visible}}" position="right" overlay="{{ true }}" bind:close="orderfiltering" custom-style="height: 100%;" z-index="130" class="_2672200">
+      <view class="order-drawer _2672200">
+        <view class="order-drawer-attr _2672200">
+          <scroll-view class="order-drawer-attr-scroll _2672200" scroll-y>
+            <view class="attr-item _2672200">
+
+              <view class="projectem _2672200">
+                <view class="project _2672200">
+                  <text style="font-size: 13px;color: #777777" class="_2672200">订单编号</text>
+                </view>
+                <van-field placeholder="请输入订单编号" border="{{ false }}" placeholder-style="font-size: 24rpx;" bind:change="onOrderCodeChange" custom-style="background-color: #f7f7f7;height: 80rpx" clearable="clearable" class="_2672200"/>
+              </view>
+
+              <view class="projectem _2672200">
+                <view class="project _2672200">
+                  <text style="font-size: 13px;color: #777777" class="_2672200">要求到货周</text>
+                </view>
+                <van-field placeholder="示例：07/06-07-12" border="{{ false }}" placeholder-style="font-size: 24rpx;" bind:change="onWeekChange" custom-style="background-color: #f7f7f7;height: 75rpx" clearable="clearable" class="_2672200"/>
+              </view>
+
+              <view class="parent-agent _2672200">
+                <view class="agent-name _2672200">供应商</view>
+                <view wx:if="{{filterFormExtra.orgName != ''}}" catchtap="selectagentPopup" class="agent-select _2672200" data-wpyselectagentpopup-a="salesOrganization">{{filterFormExtra.orgName}}
+                  <view class="b-icon icon-more icons _2672200"/>
+                </view>
+                <view wx:else catchtap="selectagentPopup" class="agent-select _2672200" data-wpyselectagentpopup-a="salesOrganization">请选择
+                  <view class="b-icon icon-more icons _2672200"/>
+                </view>
+              </view>
+
+
+
+              <view class="order-data _2672200">
+                <view class="project _2672200">
+                  <text style="font-size: 13px;color: #777777" class="_2672200">创建日期范围</text>
+                  <!--<text wx:if="{{!filterForm.timeFrame}}" class="text" bindtap="onToggleTimeFrame">全部日期 ></text>
+                  <text wx:if="{{filterForm.timeFrame === '7'}}" class="text" bindtap="onToggleTimeFrame">最近一周 ></text>
+                  <text wx:if="{{filterForm.timeFrame === '1'}}" class="text" bindtap="onToggleTimeFrame">最近一个月 ></text>
+                  <text wx:if="{{filterForm.timeFrame === '3'}}" class="text" bindtap="onToggleTimeFrame">最近三个月 ></text>
+                  <text wx:if="{{filterForm.timeFrame === '6'}}" class="text" bindtap="onToggleTimeFrame">最近六个月 ></text>-->
+                </view>
+                <view class="order-data-input _2672200">
+                  <view class="order-data-input-one _2672200" data-name="orderDateStart" data-type="date" bindtap="openCalendar">
+                    <text class="_2672200">{{filterForm.orderDateStart}}</text>
+                    <van-icon wx:if="{{filterForm.orderDateStart}}" class="close-icon _2672200" name="clear" bindtap="clearCalendar" data-wpyclearcalendar-a="orderDateStart"/>
+                  </view>
+                  <view class="order-data-input-line _2672200">-</view>
+                  <view class="order-data-input-one _2672200" data-name="orderDateEnd" data-type="date" bindtap="openCalendar">
+                    <text class="_2672200">{{filterForm.orderDateEnd}}</text>
+                    <van-icon wx:if="{{filterForm.orderDateEnd}}" class="close-icon _2672200" name="clear" bindtap="clearCalendar" data-wpyclearcalendar-a="orderDateEnd"/>
+                  </view>
+                </view>
+              </view>
+
+              <view class="attr-item-header _2672200" hover-class="hover">
+                <view class="title _2672200">物料组</view>
+                <view class="right _2672200">
+                  <text class="right-text _2672200">{{filterFormExtra.matklName}}</text>
+                  <van-icon name="{{Itemgroupextend ? 'arrow-up' : 'arrow-down'}}" bind:click="Itemgroup" class="_2672200"/>
+                </view>
+              </view>
+              <view class="attr-item-content {{Itemgroupextend ? 'open' : ''}} _2672200">
+                <block class="_2672200" wx:for="{{filter.itemgroup}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                  <view class="attr {{filterForm.matkl === item.key ? 'active' : ''}} _2672200" hover-class="hover" bindtap="onSelectmatkl" data-wpyonselectmatkl-a="{{item}}">
+                    {{item.value}}
+                  </view>
+                </block>
+              </view>
+
+              <!--订单状态-->
+              <view class="attr-item-header _2672200" hover-class="hover">
+                <view class="title _2672200">订单状态</view>
+                <view class="right _2672200">
+                  <text class="right-text _2672200">{{filterForm.orderStatus}}</text>
+                  <!--<van-icon name="{{orderStatusextend ? 'arrow-up' : 'arrow-down'}}" bind:click="OrderStatusGroup"/>-->
+                </view>
+              </view>
+              <view class="attr-item-content open _2672200">
+                  <view class="attr {{filterForm.orderStatus === '' ? 'active' : ''}} _2672200" hover-class="hover" bindtap="onSelectOrderStatus" data-wpyonselectorderstatus-a="">全部</view>
+                  <view class="attr {{filterForm.orderStatus === '待分公司评审' ? 'active' : ''}} _2672200" hover-class="hover" bindtap="onSelectOrderStatus" data-wpyonselectorderstatus-a="待分公司评审">待分公司评审</view>
+                  <view class="attr {{filterForm.orderStatus === '待总部评审' ? 'active' : ''}} _2672200" hover-class="hover" bindtap="onSelectOrderStatus" data-wpyonselectorderstatus-a="待总部评审">待总部评审</view>
+                  <view class="attr {{filterForm.orderStatus === '待排发货计划' ? 'active' : ''}} _2672200" hover-class="hover" bindtap="onSelectOrderStatus" data-wpyonselectorderstatus-a="待排发货计划">待排发货计划</view>
+                  <view class="attr {{filterForm.orderStatus === '已安排生产' ? 'active' : ''}} _2672200" hover-class="hover" bindtap="onSelectOrderStatus" data-wpyonselectorderstatus-a="已安排生产">已安排生产</view>
+                  <view class="attr {{filterForm.orderStatus === '待发货' ? 'active' : ''}} _2672200" hover-class="hover" bindtap="onSelectOrderStatus" data-wpyonselectorderstatus-a="待发货">待发货</view>
+                  <view class="attr {{filterForm.orderStatus === '发货中' ? 'active' : ''}} _2672200" hover-class="hover" bindtap="onSelectOrderStatus" data-wpyonselectorderstatus-a="发货中">发货中</view>
+              </view>
+
+
+
+            </view>
+          </scroll-view>
+          <!-- 底部按钮 -->
+          <view class="order-drawer-attr-footer _2672200" style="height: 46px;">
+            <!--<view
+              wx:if= "{{utils.includes('17451', mixinCurrentUser.marketModels)}}"
+              class="order-drawer-attr-footer-check">
+              <view class="order-drawer-attr-footer-check-cont">
+                仅显示直采订单
+              </view>
+              <view bindtap="onCheckDirectOrders"
+                class="radio-content"
+                hover-class="hover"
+              >
+                <view
+                  class="radio-content-el {{filterForm.directBuy == 1 ? 'checked' : ''}}"
+                >
+                  <view class="b-icon icon-check" />
+                </view>
+              </view>
+            </view>-->
+            <view bindtap="onSubmitFilterForm" class="order-drawer-attr-footer-btn confirm _2672200" hover-class="order-drawer-attr-footer-btn-hover">确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <!-- 订单状态，订单审核状态 -->
+    <van-popup show="{{OrderSFilterVisible}}" position="top" overlay="{{ true }}" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;" bind:close="touchOrderSFilter" class="_2672200">
+      <view wx:if="{{CurrentOrderSFilterName === 'orderStatus'}}" class="order-s-filter-container _2672200">
+        <view class="order-operation _2672200">
+          <view class="operation-text van-hairline--bottom _2672200" bindtap="onSelectStatus" data-wpyonselectstatus-a="">
+            <view class="operation-status {{ filterForm.orderStatus === '' ? 'active' : '' }} _2672200">全部</view>
+            <view wx:if="{{ filterForm.orderStatus === '' }}" class="b-icon icon-check operation-icon _2672200"/>
+          </view>
+        </view>
+        <view class="order-operation _2672200">
+          <view class="operation-text van-hairline--bottom _2672200" bindtap="onSelectStatus" data-wpyonselectstatus-a="待排发货计划">
+            <view class="operation-status {{ filterForm.orderStatus === '待排发货计划' ? 'active' : '' }} _2672200">待排发货计划</view>
+            <view wx:if="{{ filterForm.orderStatus === '待排发货计划' }}" class="b-icon icon-check operation-icon _2672200"/>
+          </view>
+        </view>
+        <!-- TODO: -->
+        <view class="order-operation _2672200">
+          <view class="operation-text van-hairline--bottom _2672200" bindtap="onSelectStatus" data-wpyonselectstatus-a="未付款">
+            <view class="operation-status {{ filterForm.orderStatus === '未付款' ? 'active' : '' }} _2672200">未付款</view>
+            <view wx:if="{{ filterForm.orderStatus === '未付款' }}" class="b-icon icon-check operation-icon _2672200"/>
+          </view>
+        </view>
+        <view class="order-operation _2672200">
+          <view class="operation-text van-hairline--bottom _2672200" bindtap="onSelectStatus" data-wpyonselectstatus-a="等待支付结果">
+            <view class="operation-status {{ filterForm.orderStatus === '等待支付结果' ? 'active' : '' }} _2672200">等待支付结果</view>
+            <view wx:if="{{ filterForm.orderStatus === '等待支付结果' }}" class="b-icon icon-check operation-icon _2672200"/>
+          </view>
+        </view>
+        <view wx:if="{{utils.includes('17451', mixinCurrentUser.marketModels)}}" class="order-operation _2672200">
+          <view class="operation-text van-hairline--bottom _2672200" bindtap="onSelectStatus" data-wpyonselectstatus-a="待代理商审核">
+            <view class="operation-status {{ filterForm.orderStatus === '待代理商审核' ? 'active' : '' }} _2672200">待代理商审核</view>
+            <view wx:if="{{ filterForm.orderStatus === '待代理商审核' }}" class="b-icon icon-check operation-icon _2672200"/>
+          </view>
+        </view>
+        <view class="order-operation _2672200">
+          <view class="operation-text van-hairline--bottom _2672200" bindtap="onSelectStatus" data-wpyonselectstatus-a="发货中">
+            <view class="operation-status {{ filterForm.orderStatus === '发货中' ? 'active' : '' }} _2672200">发货中</view>
+            <view wx:if="{{ filterForm.orderStatus === '发货中' }}" class="b-icon icon-check operation-icon _2672200"/>
+          </view>
+        </view>
+        <view class="order-operation _2672200">
+          <view class="operation-text van-hairline--bottom _2672200" bindtap="onSelectStatus" data-wpyonselectstatus-a="评审未通过">
+            <view class="operation-status {{ filterForm.orderStatus === '评审未通过' ? 'active' : '' }} _2672200">评审未通过</view>
+            <view wx:if="{{ filterForm.orderStatus === '评审未通过' }}" class="b-icon icon-check operation-icon _2672200"/>
+          </view>
+        </view>
+        <view class="order-operation _2672200">
+          <view class="operation-text van-hairline--bottom _2672200" bindtap="onSelectStatus" data-wpyonselectstatus-a="收货完成">
+            <view class="operation-status {{ filterForm.orderStatus === '收货完成' ? 'active' : '' }} _2672200">收货完成</view>
+            <view wx:if="{{ filterForm.orderStatus === '收货完成' }}" class="b-icon icon-check operation-icon _2672200"/>
+          </view>
+        </view>
+
+        <view class="order-operation _2672200">
+          <view class="operation-text van-hairline--bottom _2672200" bindtap="onSelectStatus" data-wpyonselectstatus-a="待分公司评审">
+            <view class="operation-status {{ filterForm.orderStatus === '待分公司评审' ? 'active' : '' }} _2672200">待分公司评审</view>
+            <view wx:if="{{ filterForm.orderStatus === '待分公司评审' }}" class="b-icon icon-check operation-icon _2672200"/>
+          </view>
+        </view>
+        <view class="order-operation _2672200">
+          <view class="operation-text van-hairline--bottom _2672200" bindtap="onSelectStatus" data-wpyonselectstatus-a="待总部评审">
+            <view class="operation-status {{ filterForm.orderStatus === '待总部评审' ? 'active' : '' }} _2672200">待总部评审</view>
+            <view wx:if="{{ filterForm.orderStatus === '待总部评审' }}" class="b-icon icon-check operation-icon _2672200"/>
+          </view>
+        </view>
+        <view class="order-operation _2672200">
+          <view class="operation-text van-hairline--bottom _2672200" bindtap="onSelectStatus" data-wpyonselectstatus-a="工厂评审">
+            <view class="operation-status {{ filterForm.orderStatus === '工厂评审' ? 'active' : '' }} _2672200">工厂评审</view>
+            <view wx:if="{{ filterForm.orderStatus === '工厂评审' }}" class="b-icon icon-check operation-icon _2672200"/>
+          </view>
+        </view>
+        <view class="order-operation _2672200">
+          <view class="operation-text van-hairline--bottom _2672200" bindtap="onSelectStatus" data-wpyonselectstatus-a="评审通过">
+            <view class="operation-status {{ filterForm.orderStatus === '评审通过' ? 'active' : '' }} _2672200">评审通过</view>
+            <view wx:if="{{ filterForm.orderStatus === '评审通过' }}" class="b-icon icon-check operation-icon _2672200"/>
+          </view>
+        </view>
+        <view class="order-operation _2672200">
+          <view class="operation-text van-hairline--bottom _2672200" bindtap="onSelectStatus" data-wpyonselectstatus-a="已取消">
+            <view class="operation-status {{ filterForm.orderStatus === '已取消' ? 'active' : '' }} _2672200">已取消</view>
+            <view wx:if="{{ filterForm.orderStatus === '已取消' }}" class="b-icon icon-check operation-icon _2672200"/>
+          </view>
+        </view>
+        <view class="order-operation _2672200">
+          <view class="operation-text van-hairline--bottom _2672200" bindtap="onSelectStatus" data-wpyonselectstatus-a="已过期">
+            <view class="operation-status {{ filterForm.orderStatus === '已过期' ? 'active' : '' }} _2672200">已过期</view>
+            <view wx:if="{{ filterForm.orderStatus === '已过期' }}" class="b-icon icon-check operation-icon _2672200"/>
+          </view>
+        </view>
+
+      </view>
+      <view wx:if="{{CurrentOrderSFilterName === 'auditStatus'}}" class="order-s-filter-container _2672200">
+        <view class="order-operation _2672200">
+          <view class="operation-text van-hairline--bottom _2672200" bindtap="onSelectSOStatus" data-wpyonselectsostatus-a="">
+            <view class="operation-status {{ filterForm.sapOrderStatus === '' ? 'active' : '' }} _2672200">全部</view>
+            <view wx:if="{{ filterForm.sapOrderStatus === '' }}" class="b-icon icon-check operation-icon _2672200"/>
+          </view>
+        </view>
+        <view class="order-operation _2672200">
+          <view class="operation-text van-hairline--bottom _2672200" bindtap="onSelectSOStatus" data-wpyonselectsostatus-a="AUDITED">
+            <view class="operation-status {{ filterForm.sapOrderStatus === 'AUDITED' ? 'active' : '' }} _2672200">已审核</view>
+            <view wx:if="{{ filterForm.sapOrderStatus === 'AUDITED' }}" class="b-icon icon-check operation-icon _2672200"/>
+          </view>
+        </view>
+        <view class="order-operation _2672200">
+          <view class="operation-text van-hairline--bottom _2672200" bindtap="onSelectSOStatus" data-wpyonselectsostatus-a="OUTBOUND">
+            <view class="operation-status {{ filterForm.sapOrderStatus === 'OUTBOUND' ? 'active' : '' }} _2672200">已出库</view>
+            <view wx:if="{{ filterForm.sapOrderStatus === 'OUTBOUND' }}" class="b-icon icon-check operation-icon _2672200"/>
+          </view>
+        </view>
+        <view class="order-operation _2672200">
+          <view class="operation-text van-hairline--bottom _2672200" bindtap="onSelectSOStatus" data-wpyonselectsostatus-a="SIGNED">
+            <view class="operation-status {{ filterForm.sapOrderStatus === 'SIGNED' ? 'active' : '' }} _2672200">已商收</view>
+            <view wx:if="{{ filterForm.sapOrderStatus === 'SIGNED' }}" class="b-icon icon-check operation-icon _2672200"/>
+          </view>
+        </view>
+        <view class="order-operation _2672200">
+          <view class="operation-text van-hairline--bottom _2672200" bindtap="onSelectSOStatus" data-wpyonselectsostatus-a="BILLED">
+            <view class="operation-status {{ filterForm.sapOrderStatus === 'BILLED' ? 'active' : '' }} _2672200">已开票</view>
+            <view wx:if="{{ filterForm.sapOrderStatus === 'BILLED' }}" class="b-icon icon-check operation-icon _2672200"/>
+          </view>
+        </view>
+        <view class="order-operation _2672200">
+          <view class="operation-text van-hairline--bottom _2672200" bindtap="onSelectSOStatus" data-wpyonselectsostatus-a="CANCEL">
+            <view class="operation-status {{ filterForm.sapOrderStatus === 'CANCEL' ? 'active' : '' }} _2672200">已取消</view>
+            <view wx:if="{{ filterForm.sapOrderStatus === 'CANCEL' }}" class="b-icon icon-check operation-icon _2672200"/>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    
+  <view class="header-tab _2672200">
+    <view class="left-btn">
+      <block  wx:for="{{ $headerTab$tabListNew }}">
+        <view class="btn-item {{ item.selectValue ? 'active' : '' }}" bindtap="$headerTab$changeTab" data-wpychangetab-a="{{item}}">
+          <text>{{ item.name }}</text>
+          <i wx:if="{{ $headerTab$showArrowIcon }}" class="b-icon iconxialajiantou"/>
+        </view>
+      </block>
+    </view>
+    <view class="right-btn"  wx:if="{{ $headerTab$showRightBtn }}" bindtap="$headerTab$onSideFilter">
+      <view class="line-shadow" wx:if="{{ $headerTab$showRightBtnLine }}"/>
+      <view class="side-filter-btn">
+        <text>筛选</text>
+        <i class="b-icon shaixuan"/>
+      </view>
+    </view>
+  </view>
+
+    <scroll-view wx:if="{{orderList.totalPages !== 0}}" scroll-y="true" class="order-scroll _2672200" enable-flex="enable-flex" bindscroll="onScroll" scroll-top="{{ scrollTop }}" bindscrolltolower="onGetOrderListNext">
+      <block class="_2672200" wx:for="{{orderList.list}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="order-container _2672200">
+          <view class="order-title _2672200">
+            <view class="_2672200">
+              <text class="order-org _2672200">{{item.orgName}}</text>
+              <text class="order-id _2672200">{{item.orderCode}}</text>
+            </view>
+            <text class="order-status _2672200">{{item.status?item.status:''}}</text>
+          </view>
+          <view class="order-content _2672200">
+            <view class="_2672200"><text class="order-content-attr _2672200">物料组：</text><text class="order-content-val _2672200">{{item.matklName}}</text></view>
+            <view class="_2672200"><text class="order-content-attr _2672200">创建日期：</text><text class="order-content-val _2672200">{{item.createdDate}}</text></view>
+            <view class="_2672200"><text class="order-content-attr _2672200">要求到货周：</text><text class="order-content-val _2672200">{{item.weekname}}</text></view>
+            <view class="_2672200"><text class="order-content-attr _2672200">预计补款：</text><text class="order-content-val _2672200" style="color: #D9161C">¥{{item.orderAmt}}</text></view>
+          </view>
+          <view class="order-operation _2672200">
+            <view class="order-operation-the _2672200">
+              <van-button borderIs="true" color="#262626" plain size="small" type="primary" bind:click="viewDetail" class="_2672200" data-wpyviewdetail-a="{{item.orderId}}">查看详情</van-button>
+            </view>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+    
+  <view class="empty-data _2672200" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <block class="_2672200">
+      <button class="screened shareBar _2672200" lang="zh_CN" bindtap="goMe">
+        <view class="b-icon icon-me me-icon _2672200"/>
+      </button>
+    </block>
+    <van-toast id="van-toast" class="_2672200"/>
+    <van-dialog id="van-dialog" class="_2672200"/>
+  </view>

@@ -1,0 +1,127 @@
+<template>
+  <view class="order">
+    <scroll-view scroll-y="true" class="order-scroll">
+      <view class="order-container">
+        <view class="order-title">
+          <text class="order-id">{{orderdetail.documentNum}}</text>
+<!--          <text class="order-status">{{orderdetail.status}}</text>-->
+        </view>
+<!--        <view class="box-stretch-btn audit-icon  {{ stretchFlag ? 'active':'' }}" @tap="stretchFlag">-->
+<!--          {{stretchFlag ? '收起' : '展开'}}-->
+<!--          <view class="b-icon iconxiala icon" />-->
+<!--        </view>-->
+        <view  class="order-detail" style="padding-bottom: 26rpx;">
+          <view hidden="{{!stretchFlag}}" class="order-detail order-detail-open ">
+            <view class="order-detail-type">
+              组织:
+              <text class="order-detail-type-text">{{orderdetail.orgName}}</text>
+            </view>
+            <view class="order-detail-type">
+              单据日期:
+              <text class="order-detail-type-text">{{orderdetail.documentDate}}</text>
+            </view>
+            <view class="order-detail-type">
+              移出仓库:
+              <text class="order-detail-type-text">{{orderdetail.gicOutWarehouseName}}</text>
+            </view>
+            <view class="order-detail-type">
+              移入仓库:
+              <text class="order-detail-type-text">{{orderdetail.gicInWarehouseName}}</text>
+            </view>
+            <view class="order-detail-type">
+              收货地址:
+              <text class="order-detail-type-text">{{orderdetail.address}}</text>
+            </view>
+            <view class="order-detail-type">
+              配送方式:
+              <text class="order-detail-type-text">{{orderdetail.deliveryModeName}}</text>
+            </view>
+             <view class="order-detail-type">
+              收货联系人:
+              <text class="order-detail-type-text">{{orderdetail.contact}}</text>
+            </view>
+            <view class="order-detail-type">
+              联系电话:
+              <text class="order-detail-type-text">{{orderdetail.phone}}</text>
+            </view>
+            <view class="order-detail-type">
+              提交日期:
+              <text class="order-detail-type-text">{{orderdetail.documentDate}}</text>
+            </view>
+            <view class="order-detail-type" wx:if="{{orderdetail.inDate}}">
+              完成日期:
+              <text class="order-detail-type-text">{{orderdetail.inDate}}</text>
+            </view>
+            <view class="order-detail-type" wx:if="{{orderdetail.message}}">
+              备注:
+              <text class="order-detail-type-text">{{orderdetail.message}}</text>
+            </view>
+
+          </view>
+        </view>
+      </view>
+      <view class="order-container order-container1">
+        <view class="title">明细信息</view>
+        <repeat for="{{orderdetail.staItems}}" item="item">
+          <view class="order-goods">
+            <navigator class="order-goods-img" url="">
+              <img class="goodimg" src="{{ item.img }}" errSrc="{{ item.err }}"/>
+            </navigator>
+            <view class="order-goods-detail">
+              <view class="order-goods-detail-name">
+                <text class="detail-text">{{item.productName}}/{{item.colour || ''}}</text>
+              </view>
+              <view class="order-goods-detail-explain">
+                <text class="explain-text van-ellipsis">颜色：{{item.colour}}</text>
+              </view>
+              <view class="order-goods-detail-number">
+                <text class="good-price">￥{{item.price}}{{item.invStatusTypeName ? '(' + item.invStatusTypeName + ')' : ''}}</text>
+                <text class="good-number">×{{item.bdemandQty}}</text>
+              </view>
+            </view>
+          </view>
+        </repeat>
+      </view>
+      <view wx:if="{{orderdetail.omsOrderStatus}}" class="order-container">
+        <view class="order-audit-delivery">
+          <view class="order-audit-logistics-information">
+            <view class="order-audit-logistics-information-status">物流状态
+              <van-button
+                wx:if= "{{orderdetail.lastOmsOrderStatus=='CREATE_SUCCESS'&&orderdetail.canCancelOms == '1'}}"
+                @tap="ordercanselExamine()"
+                plain size="small" type="default">取消物流</van-button>
+            </view>
+            <view class="order-audit-logistics-information-steps">
+              <van-steps
+                custom-class="order-audit-logistics-information-steps-inner"
+                steps="{{ orderdetail.omsOrderStatus }}"
+                active="{{ active }}"
+                direction="vertical"
+                active-color="#00aaa6"
+              />
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+    <!-- 取消审核弹窗 -->
+    <van-popup show="{{ showCanselExamle }}" overlay="{{ true }}">
+      <view class="orderpopup">
+        <view class="text">确认取消物流?</view>
+        <view class="operation">
+          <view @tap="cancelExamine" class="operation-one">取消</view>
+          <view @tap="canselExamine()" class="operation-two">确定</view>
+        </view>
+      </view>
+    </van-popup>
+  </view>
+</template>
+<style lang="less" src="./index.less" ></style>
+<style lang="less">
+  .order-audit-logistics-information-steps-inner{
+    .van-step--vertical{
+      font-size: 22rpx;
+    }
+  }
+</style>
+<script lang="typescript" src="./index.ts" ></script>

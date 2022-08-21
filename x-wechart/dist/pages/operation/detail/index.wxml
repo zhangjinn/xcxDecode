@@ -1,0 +1,308 @@
+<wxs src="../../../wxs/utils.wxs" module="utils" class="_ed7f32a"/>
+
+  <view class="user-operation _ed7f32a">
+    <view class="user-operation-inner _ed7f32a">
+
+      <view class="nav-bar _ed7f32a">
+        <view class="header-divider _ed7f32a" style="height: {{sys.statusBarHeight}}px;"/>
+        <view class="header-content _ed7f32a">
+          <view class="icon-space _ed7f32a">
+            <van-icon bindtap="goback" name="arrow-left" custom-class="activity-icon-front" size="46rpx" class="_ed7f32a"/>
+          </view>
+          <view class="activity-name _ed7f32a">用户详情</view>
+          <view class="icon-space _ed7f32a"/>
+        </view>
+      </view>
+
+      <view class="user-info-card _ed7f32a">
+        <view class="user-info-card-inner _ed7f32a">
+          <view class="card-header _ed7f32a">
+            <view class="card-message _ed7f32a">
+              <view class="card-message-left _ed7f32a">
+                <view class="card-title _ed7f32a">
+                  <view class="card-coding _ed7f32a">
+                    <view class="user-name _ed7f32a">
+                      <text class="_ed7f32a">{{ details.baseInfo.userName }}</text>
+                    </view>
+                    <view class="user-gender _ed7f32a">
+                      <image  wx:if="{{ details.baseInfo.gender == 1 }}" src="{{imgObj.boy}}" class="bg _ed7f32a"/>
+                      <image  wx:else src="{{imgObj.girl}}" class="bg _ed7f32a"/>
+                    </view>
+                    <view  wx:if="{{details.baseInfo.userTypeName}}" class="user-type {{details.baseInfo.userTypeName === '成交用户'? 'oGreen' : details.baseInfo.userTypeName === '意向用户' ? 'oRed' : ''}} _ed7f32a">{{ details.baseInfo.userTypeName }}</view>
+                  </view>
+                </view>
+                <view class="card-desc card-phone _ed7f32a">
+                  <view class="phone-num _ed7f32a">{{ details.baseInfo.phoneZH }}</view>
+                  <view class="medal _ed7f32a">
+                    <image wx:if="{{details.baseInfo.memberGrade == '1'}}" src="{{imgObj.v1}}" class="bg _ed7f32a"/>
+                    <image wx:if="{{details.baseInfo.memberGrade == '2'}}" src="{{imgObj.v2}}" class="bg _ed7f32a"/>
+                    <image wx:if="{{details.baseInfo.memberGrade == '3'}}" src="{{imgObj.v3}}" class="bg _ed7f32a"/>
+                    <image wx:if="{{details.baseInfo.memberGrade == '4'}}" src="{{imgObj.v4}}" class="bg _ed7f32a"/>
+                    <image wx:if="{{details.baseInfo.memberGrade == '5'}}" src="{{imgObj.v5}}" class="bg _ed7f32a"/>
+                  </view>
+                </view>
+              </view>
+              <view class="card-message-right _ed7f32a">
+                <view class="card-status _ed7f32a">
+<!--                  <view class="message"><image src="{{imgObj.texting}}" class="bg"></image></view>-->
+                  <view class="message _ed7f32a" data-item="{{details.baseInfo}}" bindtap="call"><image src="{{imgObj.callUp}}" class="bg _ed7f32a"/></view>
+                </view>
+              </view>
+            </view>
+            <view class="card-desc _ed7f32a">
+              <text class="gap _ed7f32a">所属门店：{{ details.baseInfo.shopFullName }}</text>
+            </view>
+            <view class="card-desc _ed7f32a">
+              <text class="gap _ed7f32a">跟进人：{{ details.baseInfo.followPeopleName || '' }}</text>
+            </view>
+            <view wx:if="{{details.baseInfo.userLableList.length}}" class="card-desc card-tags _ed7f32a">
+              <view class="tag _ed7f32a" wx:for="{{ details.baseInfo.userLableList }}" wx:for-item="tag" style="color: {{tag.color}}; background-color: {{tag.fontColor}}">{{ tag.labelName }}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="tab-bar _ed7f32a">
+        <view wx:for="{{tabBarList}}" class="bar-item {{tabBarActive === item.id ? 'active': ''}} _ed7f32a" bindtap="changeTab" data-wpychangetab-a="{{item}}">{{ item.name }}</view>
+      </view>
+
+      <block wx:if="{{tabBarActive==='XSJH'}}" class="_ed7f32a">
+        <scroll-view wx:if="{{details.salesOpportunity.length>0}}" scroll-y="true" class="order-scroll _ed7f32a" enable-flex="enable-flex" scroll-top="{{ scrollTop }}" bindscroll="onScroll" bindscrolltolower="onGetOrderListNext">
+          <view class="order-scroll-inner _ed7f32a">
+            <block class="_ed7f32a" wx:for="{{details.salesOpportunity}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="scroll-card _ed7f32a">
+                <view class="card-header _ed7f32a">
+                  <view class="header-left _ed7f32a">
+                    <view class="title _ed7f32a">{{ item.type }}</view>
+                    <view wx:if="{{item.statusStr}}" class="status {{ item.statusStr === '已成交' ? 'done' : ''}} _ed7f32a">{{ item.statusStr }}</view>
+                  </view>
+                  <view class="header-right _ed7f32a">
+                    <view class="more-img _ed7f32a" data-index="{{index}}" data-key="salesOpportunity" bindtap="showHandle">
+                      <image src="{{imgObj.more}}" class="more _ed7f32a"/>
+                    </view>
+                    <view wx:if="{{ item.show }}" class="handle _ed7f32a">
+                      <view class="handle-item _ed7f32a" data-type="edit" data-id="{{item.id}}" bindtap="salesOpportunityEdit"><i class="b-icon xiugai _ed7f32a"/><text class="_ed7f32a">编辑</text></view>
+                      <view class="handle-item _ed7f32a" bindtap="salesOpportunityDelete" data-wpysalesopportunitydelete-a="{{index}}"><i class="b-icon shanchu _ed7f32a"/><text class="_ed7f32a">删除</text></view>
+                    </view>
+                  </view>
+                </view>
+                <view class="card-container _ed7f32a">
+                  <view class="product-item {{item.type==='套购'? 'overdraft' : ''}}  _ed7f32a" wx:for="{{item.detailList}}" wx:for-item="subItem">
+                    <view class="product-info _ed7f32a">
+                      <view wx:if="{{item.type==='套购'}}" class="product-name gap _ed7f32a">{{ utils.removeIllegalStr(subItem.spartName) }}</view>
+                      <view class="desc gap _ed7f32a">意向产品：{{ utils.removeIllegalStr(subItem.product) || '待录入' }}</view>
+                      <view class="desc gap _ed7f32a">购买预算：{{ utils.removeIllegalStr(subItem.budget) || '待录入' }}</view>
+                      <view class="desc date _ed7f32a">计划购买时间：{{ utils.removeIllegalStr(subItem.planBuyTimeStr) || '待录入' }}</view>
+                    </view>
+                    <view class="product-image _ed7f32a"><image src="{{subItem.categoryPicture}}" class="material _ed7f32a"/></view>
+                  </view>
+                </view>
+                <view class="card-footer _ed7f32a">
+                  <view class="desc _ed7f32a">用户地址：{{ utils.removeIllegalStr(item.addressFull) }}</view>
+                  <view class="desc _ed7f32a">创建时间：{{ utils.removeIllegalStr(item.createdDateStr) }}</view>
+                  <view class="desc _ed7f32a">创建人：{{ utils.removeIllegalStr(item.creator) }}</view>
+                </view>
+              </view>
+            </block>
+          </view>
+        </scroll-view>
+        
+  <view class="empty-data empty-box _ed7f32a" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+        <view class="order-footer _ed7f32a" data-type="add" data-id="" bindtap="salesOpportunityEdit">
+          <view class="btn _ed7f32a">新增销售机会</view>
+        </view>
+      </block>
+      <block wx:if="{{tabBarActive==='XXZL'}}" class="_ed7f32a">
+        <scroll-view scroll-y="true" class="order-scroll _ed7f32a" enable-flex="enable-flex" scroll-top="{{ scrollTop }}" bindscroll="onScroll" bindscrolltolower="onGetOrderListNext">
+          <view class="order-scroll-inner _ed7f32a">
+            <view class="scroll-card scroll-card-details _ed7f32a">
+              <view class="card-header _ed7f32a">
+                <view class="header-left _ed7f32a">
+                  <view class="title _ed7f32a">基本信息</view>
+                </view>
+                <view class="header-right _ed7f32a">
+                  <view class="more-img _ed7f32a" data-key="baseInfo" bindtap="baseInfoEdit">
+                    <image src="{{imgObj.more}}" class="more _ed7f32a"/>
+                  </view>
+                </view>
+              </view>
+              <view class="card-container _ed7f32a">
+                <view class="product-item base-info _ed7f32a">
+                  <view class="product-info _ed7f32a">
+                    <view class="desc gap _ed7f32a">
+                      <text class="_ed7f32a">微信：{{details.baseInfo.wechat == 0 ? '未加' : details.baseInfo.wechat == 1 ? '已加' : ''}}</text>
+                      <text class="createTime _ed7f32a">用户来源：{{ details.baseInfo.sourceName || '待录入' }}</text>
+                    </view>
+                    <view class="desc gap _ed7f32a">
+                      <text class="_ed7f32a">备注：{{ utils.removeIllegalStr(details.baseInfo.remark) || '待录入' }}</text>
+                    </view>
+                    <view class="desc gap date _ed7f32a">录入人：{{details.baseInfo.creator}} </view>
+                    <view class="desc gap date _ed7f32a">录入时间：{{details.baseInfo.createDateStr}}</view>
+                    <view class="desc date _ed7f32a">更新时间：{{details.baseInfo.modifyDateStr}}</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+            <block class="_ed7f32a" wx:for="{{details.customerDetails}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="scroll-card scroll-card-details _ed7f32a">
+                <view class="card-header _ed7f32a">
+                  <view class="header-left _ed7f32a">
+                    <view wx:if="{{ item.community }}" class="title _ed7f32a">{{ item.community }}</view>
+                    <view wx:else class="title _ed7f32a">{{ item.address }}</view>
+                  </view>
+                  <view class="header-right _ed7f32a">
+                    <view class="more-img _ed7f32a" data-index="{{index}}" data-key="customerDetails" bindtap="showHandle">
+                      <image src="{{imgObj.more}}" class="more _ed7f32a"/>
+                    </view>
+                    <view wx:if="{{ item.show }}" class="handle _ed7f32a">
+                      <view class="handle-item _ed7f32a" data-item="{{item}}" bindtap="goEditHouseAppliances"><i class="b-icon xiugai _ed7f32a"/><text class="_ed7f32a">编辑</text></view>
+                      <view class="handle-item _ed7f32a" data-item="{{item}}" data-index="{{index}}" bindtap="goDelHouseAppliances"><i class="b-icon shanchu _ed7f32a"/><text class="_ed7f32a">删除</text></view>
+                    </view>
+                  </view>
+                </view>
+                <view class="card-container _ed7f32a">
+                  <view class="house-type-item _ed7f32a">
+                    <view class="house-icon _ed7f32a"><image src="{{imgObj.houseType}}" class="bg _ed7f32a"/></view>
+                    <view class="house-info _ed7f32a">
+                      <view class="house-type _ed7f32a">户型：{{ utils.removeIllegalStr(item.hourseTypeName) || '待录入' }}</view>
+                      <view class="house-area _ed7f32a">{{ item.addressFull }}</view>
+                    </view>
+                  </view>
+                  <view class="product-item _ed7f32a" wx:for="{{item.hourseProductDtoList}}" wx:for-item="subItem">
+                    <view class="product-info _ed7f32a">
+                      <view class="product-name gap _ed7f32a">
+                        <text class="_ed7f32a">{{ utils.removeIllegalStr(subItem.spartName) }}</text>
+                        <text class="product-tip _ed7f32a" wx:if="{{subItem.brand && subItem.product}}">({{utils.removeIllegalStr(subItem.brand)}}-{{ utils.removeIllegalStr(subItem.product) }})</text>
+                        <text class="product-tip _ed7f32a" wx:elif="{{subItem.brand && !subItem.product}}">({{utils.removeIllegalStr(subItem.brand)}})</text>
+                        <text class="product-tip _ed7f32a" wx:elif="{{!subItem.brand && subItem.product}}">({{utils.removeIllegalStr(subItem.product)}})</text>
+                      </view>
+                      <view class="desc gap _ed7f32a">年限：{{ utils.removeIllegalStr(subItem.productAge) || '待录入' }}<text wx:if="{{ utils.removeIllegalStr(subItem.productAge) }}" class="_ed7f32a">年</text></view>
+                      <view class="desc gap _ed7f32a">备注：{{ utils.removeIllegalStr(subItem.remark) || '待录入' }}</view>
+                      <view class="desc date gap _ed7f32a">
+                        <text class="_ed7f32a">创建人：{{ utils.removeIllegalStr(subItem.creator) }}</text>
+                      </view>
+                      <view class="desc date _ed7f32a">
+                        <text class="_ed7f32a">创建时间：{{ utils.removeIllegalStr(subItem.createdDateStr) }}</text>
+                      </view>
+                    </view>
+                    <view class="product-image _ed7f32a"><image src="{{subItem.categoryPicture}}" class="material _ed7f32a"/></view>
+                  </view>
+                </view>
+              </view>
+            </block>
+          </view>
+        </scroll-view>
+        <view class="order-footer _ed7f32a" data-type="add" data-id="" bindtap="goAddHouseAppliances">
+          <view class="btn _ed7f32a">新增房屋及家电</view>
+        </view>
+      </block>
+      <block wx:if="{{tabBarActive==='GMJL'}}" class="_ed7f32a">
+        <scroll-view wx:if="{{details.purchaseHistory.length>0}}" scroll-y="true" class="order-scroll _ed7f32a" enable-flex="enable-flex" scroll-top="{{ scrollTop }}" bindscroll="onScroll">
+          <view class="van-steps van-steps--vertical _ed7f32a">
+            <view class="van-steps__items _ed7f32a">
+              <view wx:for="{{details.purchaseHistory}}" class="van-hairline van-step van-step--vertical van-step--process _ed7f32a">
+                <!--    selfOrder是否本店订单 Y是，N不是    -->
+                <view wx:if="{{item.selfOrder==='Y'}}" class="van-step__card _ed7f32a">
+                  <view class="header _ed7f32a">
+                    <view class="title _ed7f32a">
+                      <view class="name _ed7f32a">{{ item.spartName }}</view>
+                      <view class="type _ed7f32a">本店订单</view>
+                    </view>
+                  </view>
+                  <view class="desc _ed7f32a">产品：{{ item.product }}</view>
+                  <view class="desc _ed7f32a">
+                    <text class="price _ed7f32a">价格：{{ item.price }}元</text>
+                    <text class="_ed7f32a">数量：{{ item.productNum }}</text>
+                  </view>
+                  <view class="desc date _ed7f32a">成交时间：{{ item.buyTimeStr }}</view>
+                  <view class="desc date _ed7f32a">收货人：{{ item.receiver }}</view>
+                  <view class="desc date _ed7f32a">收货地址：{{ item.addressFull }}</view>
+                </view>
+                <view wx:else class="van-step__card _ed7f32a">
+                  <view class="header _ed7f32a">
+                    <view class="title _ed7f32a">
+                      <view class="name _ed7f32a">{{ item.spartName }}</view>
+                      <view class="type _ed7f32a">其他渠道订单</view>
+                    </view>
+                  </view>
+                  <view class="desc _ed7f32a">产品：{{ item.product }}</view>
+                  <view class="desc date _ed7f32a">成交时间：{{ item.buyTimeStr }}</view>
+                </view>
+                <view class="van-step__circle-container _ed7f32a">
+                  <view class="van-step__circle-active _ed7f32a">
+                    <view class="van-step__circle-active-inner _ed7f32a"/>
+                  </view>
+                </view>
+                <view class="van-step__line _ed7f32a"/>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+        
+  <view class="empty-data empty-box _ed7f32a" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+      </block>
+      <block wx:if="{{tabBarActive==='SHJL'}}" class="_ed7f32a">
+        <scroll-view wx:if="{{details.afterSalesRecords.length>0}}" scroll-y="true" class="order-scroll _ed7f32a" enable-flex="enable-flex" scroll-top="{{ scrollTop }}" bindscroll="onScroll">
+          <view class="van-steps van-steps--vertical _ed7f32a">
+            <view class="van-steps__items _ed7f32a">
+              <view wx:for="{{details.afterSalesRecords}}" class="van-hairline van-step van-step--vertical van-step--process _ed7f32a">
+                <view class="van-step__card _ed7f32a">
+                  <view class="header _ed7f32a">
+                    <view class="title _ed7f32a">
+                      <view class="name _ed7f32a">{{ item.spartName }}</view>
+                      <view class="type _ed7f32a" wx:if="{{ item.serviceTypeName }}">{{ item.serviceTypeName }}</view>
+                    </view>
+                    <view class="status _ed7f32a" wx:if="{{ item.statusName }}">{{ item.statusName }}</view>
+                  </view>
+                  <view class="desc _ed7f32a">产品：{{ item.product }}</view>
+                  <view class="desc date _ed7f32a">服务时间：{{ item.serviceTimeStr }}</view>
+                </view>
+                <view class="van-step__circle-container _ed7f32a">
+                  <view class="van-step__circle-active _ed7f32a">
+                    <view class="van-step__circle-active-inner _ed7f32a"/>
+                  </view>
+                </view>
+                <view class="van-step__line _ed7f32a"/>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+        
+  <view class="empty-data empty-box _ed7f32a" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+      </block>
+    </view>
+    
+  <van-popup show="{{ $customPop$popShow }}" custom-style="width:80%; border-radius: 24rpx"  bind:close="$customPop$onCancel" class="_a9bc3a6 _ed7f32a">
+    <view class="dialog-item-row _a9bc3a6">
+      <view class="dialog-item-wrapper _a9bc3a6">
+        
+      <text class="_ed7f32a">{{ customPopTip }}</text>
+    
+      </view>
+      <view class="dialog-item-footer _a9bc3a6">
+        <view class="handle-btn cancel _a9bc3a6" catchtap="$customPop$onCancel">{{ $customPop$cancelText }}</view>
+        <view class="handle-btn sure _a9bc3a6" catchtap="$customPop$onConfirm">{{ $customPop$confirmText }}</view>
+      </view>
+    </view>
+  </van-popup>
+    <van-toast id="van-toast" class="_ed7f32a"/>
+    <van-dialog id="van-dialog" class="_ed7f32a"/>
+  </view>

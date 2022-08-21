@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),maxBy=_curry3(function(r,u,e){return r(e)>r(u)?e:u});module.exports=maxBy;

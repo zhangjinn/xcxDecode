@@ -1,0 +1,173 @@
+<template>
+  <block wx:if="{{commentList.length > 0}}">
+    <view class="me-comment">
+      <view class="me-comment-filter">
+        <view class="filter-down" @tap="onToggleFilter">筛选</view>
+      </view>
+      <scroll-view
+        scroll-y
+        enable-flex
+        enable-back-to-top="true"
+        scroll-with-animation="true"
+        scroll-top="{{visibelTop}}"
+        bindscrolltolower="onGetCommentListNext"
+        id="comment-scroll-view"
+        class="me-comment-scroll"
+      >
+        <repeat for="{{commentList}}" key="index" item="comment">
+          <view class="me-comment-scroll-item">
+            <view class="item-header">
+              <view class="item-header-line">
+                <view class="item-header-line-left">审核单 {{comment.sapOrderCode}}</view>
+                <view class="item-header-line-right">下单日期 {{comment.orderDate}}</view>
+              </view>
+              <view class="item-header-line">
+                <view class="item-header-line-left">订单号 {{comment.orderCode}}</view>
+                <view class="item-header-line-right">评价日期 {{comment.evaluationDate}}</view>
+              </view>
+            </view>
+            <repeat for="{{comment.items}}" key="index" item="item">
+              <view class="item-card">
+                <view class="item-card-detail">
+                  <navigator
+                    class="item-img"
+                    url="/pages/goods/item/index?code={{item.productInfoId}}&orgId={{item.fwOrgId}}&orgCode={{item.fwOrgCode}}"
+                  >
+                    <img class="item-img" src="{{ item.img }}" errSrc="{{ item.errImg }}" />
+                  </navigator>
+                  <view class="item-info">
+                    <view class="item-info-title">{{item.b2bName}}/{{item.z_color}}</view>
+                    <view class="item-info-other">
+                      <view class="item-info-price">¥{{item.billPrice}}</view>
+                      <view class="item-info-num">x{{item.erpQty}}</view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </repeat>
+            <view class="item-options">
+              <van-button
+                type="default"
+                size="small"
+                data-id="{{comment.items[0].salesOrderId}}"
+                bind:click="onNavigateToOrderDetail"
+              >订单明细</van-button>
+              <van-button
+                type="default"
+                size="small"
+                data-comment="{{comment}}"
+                bind:click="onToggleComment"
+              >查看评价</van-button>
+            </view>
+          </view>
+        </repeat>
+      </scroll-view>
+      <van-popup
+        show="{{ filterVisible }}"
+        position="right"
+        bind:close="onToggleFilter"
+        custom-class="me-comment-filter-popup"
+      >
+        <form bindsubmit="onSubmitFilterForm">
+          <view class="input-group">
+            <view class="input-label">SAP单号</view>
+            <van-field
+              name="erpOrderNum"
+              value="{{ filterForm.erpOrderNum }}"
+              placeholder="请输入SAP单号"
+              border="{{ false }}"
+              custom-style="background:#F7F7F7;padding:16rpx;font-size:24rpx;"
+              placeholder-style="color: #AAAAAA;"
+              input-class="me-comment-filter-input"
+            />
+          </view>
+          <view class="input-group">
+            <view class="input-label">B2B单号</view>
+            <van-field
+              name="orderNum"
+              value="{{ filterForm.orderNum }}"
+              placeholder="请输入B2B单号"
+              border="{{ false }}"
+              custom-style="background:#F7F7F7;padding:16rpx;font-size:24rpx;"
+              placeholder-style="color: #AAAAAA;"
+              input-class="me-comment-filter-input"
+            />
+          </view>
+          <view class="input-group">
+            <view class="input-label">评价日期</view>
+            <view class="date-group">
+              <view class="date-input" @tap="openCalendar('beginDate')">{{ filterForm.beginDate }}</view>
+              <view class="date-mid-label">至</view>
+              <view class="date-input" @tap="openCalendar('endDate')">{{ filterForm.endDate }}</view>
+            </view>
+          </view>
+          <view class="me-comment-filter-options">
+            <!-- <van-button color="#00AAA6" size="large" bind:click="onSubmitFilterForm">确定</van-button> -->
+            <button form-type="submit" class="form-submit-button">确定</button>
+          </view>
+        </form>
+      </van-popup>
+      <van-popup show="{{ commentVisible }}" custom-class="me-comment-detail-popup">
+        <view class="comment-detail-header">
+          <view>评价信息</view>
+          <i class="b-icon icon-close header-close" @tap="onToggleComment"></i>
+        </view>
+        <view class="comment-detail-content">
+          <view class="comment-detail-time">{{comment.evaluationDate}}</view>
+          <view class="comment-level">
+            <view class="comment-label">产品评价</view>
+            <van-rate
+              value="{{comment.productLevel}}"
+              size="{{ 20 }}"
+              color="#f44"
+              void-color="#eee"
+              void-icon="star"
+              readonly
+            />
+          </view>
+          <view class="comment-level">
+            <view class="comment-label">服务态度</view>
+            <van-rate
+              value="{{comment.serviceLevel}}"
+              size="{{ 20 }}"
+              color="#f44"
+              void-color="#eee"
+              void-icon="star"
+              readonly
+            />
+          </view>
+          <view class="comment-level">
+            <view class="comment-label">物流服务</view>
+            <van-rate
+              value="{{comment.logisticsLevel}}"
+              size="{{ 20 }}"
+              color="#f44"
+              void-color="#eee"
+              void-icon="star"
+              readonly
+            />
+          </view>
+          <view class="comment-level">
+            <view class="comment-label">发货速度</view>
+            <van-rate
+              value="{{comment.deliveryLevel}}"
+              size="{{ 20 }}"
+              color="#f44"
+              void-color="#eee"
+              void-icon="star"
+              readonly
+            />
+          </view>
+          <view class="comment-content">{{comment.evaluationContent}}</view>
+        </view>
+      </van-popup>
+      <van-popup show="{{calendarShow}}" position="bottom" bind:close="closeCalendar" z-index="200">
+        <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay" />
+      </van-popup>
+      <van-toast id="van-toast" />
+    </view>
+  </block>
+  <emptyDataType wx:else/>
+</template>
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts"></script>

@@ -1,0 +1,309 @@
+
+  <view class="order _db04834">
+    
+  <view class="custom-class filter-header _db04834">
+    <view  wx:if="{{ $filter$showTab && $filter$tabList && $filter$tabList.length > 0 }}" class="tabs">
+      <view class="tab" wx:for="{{ $filter$tabList }}" bindtap="$filter$changeTab" data-wpychangetab-a="{{index}}">
+        <view class="tab-title {{ $filter$tabActive == index ? 'active' : ''}}">
+          <view class="title-text">{{ item.name }}</view>
+          <view class="title-line" style="width: {{$filter$activeLineStyle.width ? $filter$activeLineStyle.width : '32rpx'}}; height: {{$filter$activeLineStyle.height ? $filter$activeLineStyle.height : '8rpx'}}; borderRadius: {{$filter$activeLineStyle.borderRadius ? $filter$activeLineStyle.borderRadius : '4rpx'}}"/>
+          <text wx:if="{{ item.count }}" class="reddot {{ item.count > 99 ? 'moreAmount' : '' }}">{{ item.count > 99 ? '99+' :  item.count }}</text>
+        </view>
+      </view>
+    </view>
+    <view  wx:if="{{ $filter$showSearch }}" class="search">
+      <van-search custom-class="header-search" value="{{ $filter$searchKey }}" shape="round" use-left-icon-slot="{{ $filter$true }}" leftSearchIconSow="{{ $filter$false }}" placeholder="请输入关键字" placeholder-style="color: #AAAAAA; font-size: 28rpx;"  bind:change="$filter$onChange" bind:clear="$filter$onCancel">
+        <view slot="label" class="search-left-icon">
+          <i bindtap="$filter$onSearch" class="b-icon shouyesousuo" data-wpyonsearch-a=""/>
+        </view>
+      </van-search>
+    </view>
+  </view>
+
+    <view class="store _db04834"  wx:if="{{tabActive==0}}">
+      <view class="store-wrapper _db04834">
+        <!--          门店-->
+        <view class="form-wrapper _db04834">
+          <view class="item-row _db04834" data-name="门店" bindtap="onPopOpen">
+            <view class="item-row-left _db04834">
+              <text class="_db04834">门店</text>
+              <text class="redXing _db04834">*</text>
+            </view>
+            <view class="item-row-right _db04834">
+              <view class="item-row-right _db04834">
+                <view class="item-row-right-inventory {{ formData.storeName ? '' : 'placeholder' }}  _db04834">
+                  {{ formData.storeName || '请选择' }}
+                </view>
+                <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_db04834"/>
+              </view>
+            </view>
+          </view>
+
+          <view class="item-row _db04834">
+            <view class="item-row-left _db04834">
+              <text class="_db04834">门店类别</text>
+<!--              <text class="redXing">*</text>-->
+            </view>
+            <view class="item-row-right _db04834">
+              <view class="item-row-right-note _db04834">
+                <van-field disabled value="{{ formData.storeType }}" placeholder="" border="{{ false }}" input-align="right" data-name="activityTheme"  bind:change="onFilterFormChange" class="add-store-note _db04834"/>
+              </view>
+            </view>
+          </view>
+          <!--物料组-->
+          <view class="item-row _db04834" data-name="物料组" bindtap="onPopOpen">
+            <view class="item-row-left _db04834">
+              <text class="_db04834">物料组</text>
+              <text class="redXing _db04834">*</text>
+            </view>
+            <view class="item-row-right _db04834">
+              <view class="item-row-right _db04834">
+                <view class="item-row-right-inventory {{ formData.materialGroup ? '' : 'placeholder' }} _db04834">
+                  {{ formData.materialGroupName || '请选择' }}
+                </view>
+                <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_db04834"/>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="item-title _db04834">产品信息</view>
+        <view class="sales-info-wrapper _db04834">
+          <view class="sales-info-item _db04834" wx:for="{{ProductInfo}}">
+            <view class="item-row _db04834" data-name="型号" data-key="model" data-index="{{index}}" bindtap="onPopOpen">
+              <view class="item-row-left _db04834">
+                <text class="_db04834">型号</text>
+                <text class="redXing _db04834">*</text>
+              </view>
+              <view class="item-row-right _db04834">
+                <view class="item-row-right _db04834">
+                  <view class="item-row-right-inventory  _db04834" wx:if="{{item.model.name}}">
+                    {{item.model.name}}({{'库存' +item.model.qty}})
+                  </view>
+                  <view class="item-row-right-inventory  _db04834" wx:else>
+                    {{ '请选择' }}
+                  </view>
+                  <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_db04834"/>
+                </view>
+              </view>
+            </view>
+            <view class="upload _db04834">
+              <text class="text _db04834">效果图</text>
+              <van-uploader max-count="1" accept="image" sizeType="compressed" file-list="{{ item.fileList }}"  bind:after-read="afterRead" bind:delete="deleteImg" data-index="{{index}}" class="_db04834">
+                <view class="upload-customize _db04834">
+                  <text class="b-icon h-icon photograph _db04834"/>
+                  <text class="upload-text _db04834">拍照上传</text>
+                </view>
+              </van-uploader>
+            </view>
+            <view class="sales-info-item-footer _db04834">
+              <view class="handle-btn _db04834" data-index="{{index}}" bindtap="delSales">
+                <i class="b-icon shanchu _db04834"/>
+                <text class="del _db04834">删除</text>
+              </view>
+            </view>
+          </view>
+          <view class="add-sales _db04834" bindtap="addProInfo"><i class="b-icon icon-add _db04834"/>添加型号
+
+          </view>
+        </view>
+      </view>
+      <view class="add-store-footer _db04834">
+        <view class="submit-btn add-store-btn _db04834" bindtap="toAddStore" data-wpytoaddstore-a="">提交</view>
+      </view>
+      <!-- 选择列表 -->
+      <van-popup show="{{ isPopShow }}" closeable="closeable" position="bottom" custom-style="height: 570rpx" zIndex="400"  bind:click-overlay="onClose" class="_db04834">
+        <view class="item-inv _db04834">
+          <view class="item-inv-head _db04834">
+            <view class="item-inv-head-context _db04834">
+              <view class="item-inv-head-context-title _db04834">{{ popTitle }}</view>
+              <van-icon name="cross" class="item-inv-head-context-close _db04834" bindtap="onPopClose"/>
+            </view>
+          </view>
+          <scroll-view scroll-y class="item-inv-scroll _db04834">
+            <!--             门店 -->
+            <view wx:if="{{ popTitle === '门店' }}" wx:for="{{ storeNameOptions }}" wx:key="{{ item.code }}" wx:for-item="item" class="item-inv-scroll-row _db04834" bindtap="chooseStore" data-wpychoosestore-a="{{item}}">
+              <view data-key="{{ item.code }}" class="item-inv-scroll-row-desc {{ item.code === formData.store ? 'checked' : ''}} _db04834">
+                {{ item.name }}
+              </view>
+              <block wx:if="{{ item.code === formData.store }}" class="_db04834">
+                <view class="b-icon icon-check item-inv-scroll-row-checked checked _db04834"/>
+              </block>
+
+
+            </view>
+
+            <!--物料组-->
+            <view wx:if="{{ popTitle === '物料组' }}" wx:for="{{ materialGroupOptions }}" wx:key="{{ item.code }}" wx:for-item="item" class="item-inv-scroll-row _db04834" bindtap="chooseMaterialGroup" data-wpychoosematerialgroup-a="{{item}}">
+              <view data-key="{{ item.code }}" class="item-inv-scroll-row-desc {{ item.code === formData.materialGroup ? 'checked' : ''}} _db04834">
+                {{ item.name }}
+              </view>
+              <block wx:if="{{ item.code === formData.materialGroup }}" class="_db04834">
+                <view class="b-icon icon-check item-inv-scroll-row-checked checked _db04834"/>
+              </block>
+            </view>
+
+          </scroll-view>
+        </view>
+      </van-popup>
+      <!-- 型号选择列表弹框 -->
+      <wxs src="../../../../wxs/utils.wxs" module="utils" class="_25d639b"/>
+
+  <van-popup show="{{ $popupCustomize$show }}" closeable="closeable" position="bottom" custom-style="height: 720rpx" zIndex="400"  bind:click-overlay="$popupCustomize$onClose" class="_25d639b _db04834">
+    <view class="item-inv _25d639b">
+      <view class="item-inv-head _25d639b">
+        <view class="item-inv-head-context _25d639b">
+          <view class="item-inv-head-context-title _25d639b">{{ $popupCustomize$title }}</view>
+          <i class="b-icon iconyiquxiao item-inv-head-context-close _25d639b" bindtap="$popupCustomize$onClose"/>
+        </view>
+      </view>
+      <view class="item-inv-search _25d639b"  wx:if="{{ $popupCustomize$isSearch }}">
+        <van-search custom-class="header-search" shape="round" use-action-slot="use-action-slot" use-left-icon-slot="{{ $popupCustomize$true }}" leftSearchIconSow="{{ $popupCustomize$false }}" placeholder="请输入搜索关键字" placeholder-style="color: #AAAAAA; font-size: 28rpx;" bind:change="$popupCustomize$onChange" class="_25d639b">
+          <view slot="label" class="search-left-icon _25d639b">
+            <i class="b-icon shouyesousuo _25d639b"/>
+          </view>
+        </van-search>
+      </view>
+      <scroll-view scroll-y class="item-inv-scroll _25d639b">
+        <block  wx:if="{{$popupCustomize$options && $popupCustomize$options.length>0}}" class="_25d639b">
+          <view wx:for="{{ $popupCustomize$options }}" wx:key="{{ item.id }}" wx:for-item="item" class="item-inv-scroll-row _25d639b" data-item="{{item}}" bindtap="$popupCustomize$chooseOption">
+            <block wx:if="{{$popupCustomize$multiple}}" class="_25d639b">
+              <view class="item-inv-scroll-row-desc  {{ utils.includes(item.id, $popupCustomize$selectedOption.id) ? 'checked' : '' }} _25d639b">{{ item.name }}</view>
+              <view wx:if="{{ utils.includes(item.id, $popupCustomize$selectedOption.id) }}" class="b-icon icon-check item-inv-scroll-row-checked checked _25d639b"/>
+            </block>
+            <block wx:else class="_25d639b">
+              <view class="item-inv-scroll-row-desc {{ item.id == $popupCustomize$selectedOption.id ? 'checked' : ''}} _25d639b">{{ item.name }}</view>
+              <view wx:if="{{ item.id == $popupCustomize$selectedOption.id }}" class="b-icon icon-check item-inv-scroll-row-checked checked _25d639b"/>
+            </block>
+          </view>
+        </block>
+        <view  wx:else class="no-data _25d639b">暂无数据</view>
+      </scroll-view>
+    </view>
+  </van-popup>
+      <van-toast id="van-toast" class="_db04834"/>
+      <van-dialog id="van-dialog" class="_db04834"/>
+    </view>
+    <!--    撤样-->
+    <view class="store _db04834"  wx:if="{{tabActive==1}}">
+      <view class="store-wrapper _db04834">
+        <view class="form-wrapper _db04834">
+          <!--          门店-->
+          <view class="item-row _db04834" data-name="门店撤样" bindtap="onPopOpen">
+            <view class="item-row-left _db04834">
+              <text class="_db04834">门店</text>
+              <text class="redXing _db04834">*</text>
+            </view>
+            <view class="item-row-right _db04834">
+              <view class="item-row-right _db04834">
+                <view class="item-row-right-inventory {{ SampleformData.storeName ? '' : 'placeholder' }}  _db04834">
+                  {{ SampleformData.storeName || '请选择' }}
+                </view>
+                <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_db04834"/>
+              </view>
+            </view>
+          </view>
+          <!--门店类别-->
+          <view class="item-row _db04834">
+            <view class="item-row-left _db04834">
+              <text class="_db04834">门店类别</text>
+<!--              <text class="redXing">*</text>-->
+            </view>
+            <view class="item-row-right _db04834">
+              <view class="item-row-right-note _db04834">
+                <van-field disabled value="{{ SampleformData.storeType }}" placeholder="" border="{{ false }}" input-align="right" data-name="activityTheme"  bind:change="onFilterFormChange" class="add-store-note _db04834"/>
+              </view>
+            </view>
+          </view>
+          <!--类型-->
+          <view class="item-row _db04834">
+            <view class="item-row-left _db04834">
+              <text class="_db04834">类型</text>
+              <text class="redXing _db04834">*</text>
+            </view>
+            <view class="item-row-right _db04834">
+              <view class="item-row-right-note _db04834">
+                <van-field style="item-row-right-note-Input" value="{{ SampleformData.type }}" placeholder="请输入" border="{{ false }}" input-align="right" data-name="activityTheme" bind:change="onFilterFormChange" class="add-store-note _db04834" disabled/>
+              </view>
+            </view>
+          </view>
+          <view class="item-row _db04834" data-name="型号" data-key="cModel" data-index="{{index}}" bindtap="onPopOpen">
+            <view class="item-row-left _db04834">
+              <text class="_db04834">型号</text>
+              <text class="redXing _db04834">*</text>
+            </view>
+            <view class="item-row-right _db04834">
+              <view class="item-row-right _db04834">
+                <view class="item-row-right-inventory2 _db04834">
+                  {{ SampleformData.model.name || '请选择' }}
+                </view>
+                <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_db04834"/>
+              </view>
+            </view>
+          </view>
+
+        </view>
+
+      </view>
+      <view class="add-store-footer _db04834">
+        <view class="submit-btn add-store-btn _db04834" bindtap="toAddStoreCY">提交</view>
+      </view>
+      <van-popup show="{{ isPopShowC}}" closeable="closeable" position="bottom" custom-style="height: 570rpx" zIndex="400" bind:click-overlay="onClose" class="_db04834">
+        <view class="item-inv _db04834">
+          <view class="item-inv-head _db04834">
+            <view class="item-inv-head-context _db04834">
+              <view class="item-inv-head-context-title _db04834">{{ popTitle }}</view>
+              <van-icon name="cross" class="item-inv-head-context-close _db04834" bindtap="onPopClose"/>
+            </view>
+          </view>
+          <scroll-view scroll-y class="item-inv-scroll _db04834">
+            <!--             门店 -->
+            <view wx:if="{{ popTitle === '门店' }}" wx:for="{{ storeNameOptions }}" wx:key="{{ item.code }}" wx:for-item="item" class="item-inv-scroll-row _db04834" bindtap="chooseStorec" data-wpychoosestorec-a="{{item}}">
+              <view data-key="{{ item.code }}" class="item-inv-scroll-row-desc {{ item.code === SampleformData.store ? 'checked' : ''}} _db04834">
+                {{ item.name }}
+              </view>
+              <block wx:if="{{ item.code === SampleformData.store }}" class="_db04834">
+                <view class="b-icon icon-check item-inv-scroll-row-checked checked _db04834"/>
+              </block>
+            </view>
+          </scroll-view>
+        </view>
+      </van-popup>
+      <wxs src="../../../../wxs/utils.wxs" module="utils" class="_25d639b"/>
+
+  <van-popup show="{{ $popupCustomize$show }}" closeable="closeable" position="bottom" custom-style="height: 720rpx" zIndex="400"  bind:click-overlay="$popupCustomize$onClose" class="_25d639b _db04834">
+    <view class="item-inv _25d639b">
+      <view class="item-inv-head _25d639b">
+        <view class="item-inv-head-context _25d639b">
+          <view class="item-inv-head-context-title _25d639b">{{ $popupCustomize$title }}</view>
+          <i class="b-icon iconyiquxiao item-inv-head-context-close _25d639b" bindtap="$popupCustomize$onClose"/>
+        </view>
+      </view>
+      <view class="item-inv-search _25d639b"  wx:if="{{ $popupCustomize$isSearch }}">
+        <van-search custom-class="header-search" shape="round" use-action-slot="use-action-slot" use-left-icon-slot="{{ $popupCustomize$true }}" leftSearchIconSow="{{ $popupCustomize$false }}" placeholder="请输入搜索关键字" placeholder-style="color: #AAAAAA; font-size: 28rpx;" bind:change="$popupCustomize$onChange" class="_25d639b">
+          <view slot="label" class="search-left-icon _25d639b">
+            <i class="b-icon shouyesousuo _25d639b"/>
+          </view>
+        </van-search>
+      </view>
+      <scroll-view scroll-y class="item-inv-scroll _25d639b">
+        <block  wx:if="{{$popupCustomize$options && $popupCustomize$options.length>0}}" class="_25d639b">
+          <view wx:for="{{ $popupCustomize$options }}" wx:key="{{ item.id }}" wx:for-item="item" class="item-inv-scroll-row _25d639b" data-item="{{item}}" bindtap="$popupCustomize$chooseOption">
+            <block wx:if="{{$popupCustomize$multiple}}" class="_25d639b">
+              <view class="item-inv-scroll-row-desc  {{ utils.includes(item.id, $popupCustomize$selectedOption.id) ? 'checked' : '' }} _25d639b">{{ item.name }}</view>
+              <view wx:if="{{ utils.includes(item.id, $popupCustomize$selectedOption.id) }}" class="b-icon icon-check item-inv-scroll-row-checked checked _25d639b"/>
+            </block>
+            <block wx:else class="_25d639b">
+              <view class="item-inv-scroll-row-desc {{ item.id == $popupCustomize$selectedOption.id ? 'checked' : ''}} _25d639b">{{ item.name }}</view>
+              <view wx:if="{{ item.id == $popupCustomize$selectedOption.id }}" class="b-icon icon-check item-inv-scroll-row-checked checked _25d639b"/>
+            </block>
+          </view>
+        </block>
+        <view  wx:else class="no-data _25d639b">暂无数据</view>
+      </scroll-view>
+    </view>
+  </van-popup>
+      <van-toast id="van-toast" class="_db04834"/>
+      <van-dialog id="van-dialog" class="_db04834"/>
+    </view>
+
+  </view>

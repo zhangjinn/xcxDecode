@@ -1,0 +1,209 @@
+@import '../../../styles/utils.less';
+@import '../../../styles/index.less';
+@import '../../../components/vant/common/style/hairline.less';
+
+.stock-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .stock {
+    background-color: white;
+    margin-top: 16rpx;
+    padding-left: 10rpx;
+    padding-right: 10rpx;
+    .stock-name {
+      color: #262626;
+      font-size: 32rpx;
+      font-weight: 500;
+      display: flex;
+      padding-left: 24rpx;
+      align-items: center;
+      padding-top: 24rpx;
+      .icon {
+        height: 40rpx;
+        width: 40rpx;
+        color: #AAAAAA;
+        font-size: 32rpx;
+        display: flex;
+        align-items: center;
+        padding-left: 4rpx;
+      }
+    }
+    .legend-box{
+      display: flex;
+      align-items: center;
+      padding-left: 24rpx;
+      margin-top: 12rpx;
+      .legend-item{
+        display: flex;
+        align-items: center;
+        &:not(:first-child){
+          margin-left: 40rpx;
+        }
+        .icon{
+          width: 12rpx;
+          height: 12rpx;
+        }
+        .text{
+          padding-left: 8rpx;
+          font-size: 24rpx;
+          color: #777777;
+        }
+      }
+    }
+  }
+  .text-box {
+    // margin: 16rpx 24rpx 24rpx 24rpx;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.12);
+    border-radius: 2px;
+    padding: 24rpx;
+    .text-heard {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .name {
+        display: flex;
+        align-items: center;
+        color: #262626;
+        font-size: 28rpx;
+        font-weight: 500;
+        .small {
+          width: 2px;
+          height: 10px;
+          background: rgba(0, 170, 166, 1);
+          margin-right: 8rpx;
+        }
+      }
+      .icon {
+        height: 40rpx;
+        width: 40rpx;
+        display: flex;
+        font-size: 32rpx;
+        align-items: center;
+        color: #cccccc;
+      }
+    }
+    .text-area {
+      color: #aaaaaa;
+      font-size: 28rpx;
+      padding-top: 8rpx;
+    }
+  }
+  .paiming-wrap{
+    margin-top: 16rpx;
+    background: #ffff;
+    line-height: 38px;
+    height: 70rpx;
+    padding-left: 30rpx;
+    .title{
+
+    }
+    .paiming{
+      margin-left: 20rpx;
+      color: #3ad1a0;
+      .jiantou{
+        margin-left: 10rpx;
+      }
+    }
+  }
+  .current-month {
+    font-size: 26rpx;
+    background-color: white;
+    margin-top: 16rpx;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    &-header {
+      color: #262626;
+      font-weight: 500;
+      display: flex;
+      justify-content: space-between;
+      height: 72rpx;
+      align-items: center;
+      border-bottom: 1px solid #eee !important;
+      &-time {
+        color: #262626;
+        font-weight: 400;
+        width: 376rpx;
+        display: flex;
+        justify-content: center;
+      }
+      &-stock {
+        color: #262626;
+        font-weight: 400;
+        width: 374rpx;
+        display: flex;
+        justify-content: center;
+        .icon {
+          height: 40rpx;
+          width: 40rpx;
+          color: #AAAAAA;
+          font-size: 32rpx;
+          display: flex;
+          align-items: center;
+          padding-left: 4rpx;
+        }
+      }
+    }
+    &-wrapper{
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    &-content {
+      display: flex;
+      justify-content: space-between;
+      height: 72rpx;
+      align-items: center;
+      border-bottom: 1px solid #eee !important;
+      &-time {
+        color: #262626;
+        font-weight: 400;
+        width: 376rpx;
+        display: flex;
+        justify-content: center;
+      }
+      &-stock {
+        color: #777777;
+        font-weight: 400;
+        width: 374rpx;
+        display: flex;
+        justify-content: center;
+      }
+    }
+
+    &-content-idx {
+      background-color: rgba(249,253,253,1);
+    }
+  }
+  .material-scroll {
+    padding-top: 134rpx;
+    height: 675rpx;
+    background-color: white;
+    .material-filter-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 80rpx;
+      color: #262626;
+      border-bottom: 1px solid #eee;
+      padding: 22rpx 0 22rpx 16rpx;
+      font-size: 28rpx;
+      .operation-icon {
+        font-size: 20rpx;
+      }
+    }
+    .material-filter-container-checked {
+      color: #00AAA6;
+    }
+  }
+}
+
+.content-wrapper{
+  flex: 1;
+  overflow-y: hidden;
+}
+.expiry-date{
+  z-index: 111;
+}

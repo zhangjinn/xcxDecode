@@ -1,0 +1,229 @@
+
+  <wxs src="./util.wxs" module="util" class="_a0402ca"/>
+  <view class="order _a0402ca">
+<!--    右侧大弹框-->
+    <van-popup show="{{visible}}" position="right" overlay="{{ true }}"  bind:close="orderfiltering" custom-style="height: 100%;" z-index="130" class="_a0402ca">
+      <view class="order-drawer _a0402ca">
+        <view class="order-drawer-attr _a0402ca">
+          <scroll-view class="order-drawer-attr-scroll _a0402ca" scroll-y>
+            <view class="attr-item _a0402ca">
+<!--              <view class="item-trans">-->
+<!--                <view class="item-project">-->
+<!--                  <view class="item-name">质量等级</view>-->
+<!--                  <view-->
+<!--                    class="text"-->
+<!-- bindtap="onToggleTimeFrame('qualityGradeVisible')"-->
+<!--                  >{{qualityGradeName}} ></view>-->
+<!--                </view>-->
+<!--              </view>-->
+              <view class="projectem _a0402ca">
+                <view class="project _a0402ca">
+                  <text style="font-size: 28rpx;color: #777777;" class="_a0402ca">主题</text>
+                </view>
+                <van-field placeholder="流程主题" value="{{productName}}" placeholder-style="font-size: 24rpx;color: #AAAAAA;" border="{{ false }}" bind:change="getproductNameList" input-class="dms-input-field-style" custom-style="background:#F7F7F7;padding:16rpx;font-size:24rpx;" class="_a0402ca"/>
+              </view>
+              <view class="projectem _a0402ca">
+                <view class="project _a0402ca">
+                  <text style="font-size: 13px;color: #777777" class="_a0402ca">申请时间</text>
+                  <view class="alltime _a0402ca" bindtap="clearTime">
+                    <text class="_a0402ca">全部时间</text><text class="b-icon jinru _a0402ca"/>
+                  </view>
+                </view>
+                <view style="display: flex" class="_a0402ca">
+                  <van-field bindtap="openDateSel" placeholder="开始时间" disabled border="{{ false }}" value="{{startTimeStr}}" placeholder-style="font-size: 24rpx;color: #AAAAAA;" input-class="dms-input-field-style" custom-style="background:#F7F7F7;padding:16rpx;font-size:24rpx;" class="_a0402ca" data-wpyopendatesel-a="startTime"/>
+                  <text style="padding: 0 10rpx;" class="_a0402ca">-</text>
+                  <van-field bindtap="openDateSel" placeholder="结束时间" disabled border="{{ false }}" value="{{endTimeStr}}" placeholder-style="font-size: 24rpx;color: #AAAAAA;" input-class="dms-input-field-style" custom-style="background:#F7F7F7;padding:16rpx;font-size:24rpx;" class="_a0402ca" data-wpyopendatesel-a="endTime"/>
+                </view>
+              </view>
+              <view class="projectem _a0402ca">
+                <view class="project _a0402ca">
+                  <text style="font-size: 13px;color: #777777" class="_a0402ca">审批结束时间</text>
+                  <view class="alltime _a0402ca" bindtap="clearTime1">
+                    <text class="_a0402ca">全部时间</text><text class="b-icon jinru _a0402ca"/>
+                  </view>
+                </view>
+                <view style="display: flex" class="_a0402ca">
+                  <van-field bindtap="openDateSel" placeholder="开始时间" disabled border="{{ false }}" value="{{startTimeStr1}}" placeholder-style="font-size: 24rpx;color: #AAAAAA;" input-class="dms-input-field-style" custom-style="background:#F7F7F7;padding:16rpx;font-size:24rpx;" class="_a0402ca" data-wpyopendatesel-a="startTime1"/>
+                  <text style="padding: 0 10rpx;" class="_a0402ca">-</text>
+                  <van-field bindtap="openDateSel" placeholder="结束时间" disabled border="{{ false }}" value="{{endTimeStr1}}" placeholder-style="font-size: 24rpx;color: #AAAAAA;" input-class="dms-input-field-style" custom-style="background:#F7F7F7;padding:16rpx;font-size:24rpx;" class="_a0402ca" data-wpyopendatesel-a="endTime1"/>
+                </view>
+              </view>
+            </view>
+          </scroll-view>
+          <!-- 底部按钮 -->
+          <view class="order-drawer-attr-footer _a0402ca">
+            <view bindtap="onSubmitFilterFormReset" class="order-drawer-attr-footer-btn reset _a0402ca" hover-class="order-drawer-attr-footer-btn-hover">重置</view>
+            <view bindtap="onSubmitFilterForm" class="order-drawer-attr-footer-btn confirm _a0402ca" hover-class="order-drawer-attr-footer-btn-hover">确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <!-- 选择时间 -->
+    <van-popup show="{{ dateSelVisable }}" position="bottom" custom-class="purchase-top" z-index="210" close-on-click-overlay="close-on-click-overlay" class="_a0402ca">
+      <view class="_a0402ca">
+        <van-datetime-picker type="date" value="{{ currentDate }}"  bind:confirm="onConfirm" bind:cancel="onCancel" class="_a0402ca"/>
+      </view>
+    </van-popup>
+<!--    右侧质量等级弹框-->
+    <van-popup show="{{qualityGradeVisible}}" position="right" overlay="{{ true }}" z-index="200" custom-style="height: 100%;" close-on-click-overlay="{{false}}" class="_a0402ca">
+      <view class="order-drawer _a0402ca">
+        <view class="order-drawer-time _a0402ca">
+          <view class="order-drawer-time-header _a0402ca">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back _a0402ca"  bind:click="onToggleTimeFrame" data-wpyontoggletimeframe-a="qualityGradeVisible"/>
+            <view class="order-drawer-time-header-title _a0402ca">质量等级</view>
+          </view>
+          <view class="order-drawer-time-content _a0402ca">
+            <view class="order-drawer-time-content-line _a0402ca" catchtap="selectWarehouseStatus" data-wpyselectwarehousestatus-a="全部" data-wpyselectwarehousestatus-b="">
+              <view class="text {{filterForm.qualityGrade === '' ? 'active' : ''}} _a0402ca">全部</view>
+              <van-icon  wx:if="{{filterForm.qualityGrade === ''}}" name="success" class="time-selected _a0402ca" size="32rpx"/>
+            </view>
+            <block class="_a0402ca" wx:for="{{qualityGradeList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="order-drawer-time-content-line _a0402ca" catchtap="selectWarehouseStatus" data-wpyselectwarehousestatus-a="{{item.value}}" data-wpyselectwarehousestatus-b="{{item.key}}">
+                <view class="text {{util.arrIncludes(qualityGradeIds,item.key) ? 'active' : ''}} _a0402ca">{{item.value}}</view>
+                <van-icon  wx:if="{{util.arrIncludes(qualityGradeIds,item.key)}}" name="success" class="time-selected _a0402ca" size="32rpx"/>
+              </view>
+            </block>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+<!--    顶部弹出的几种选择框-->
+    <van-popup show="{{OrderSFilterVisible}}" position="top" overlay="{{ true }}" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;" bind:close="touchOrderSFilter" class="_a0402ca">
+      <view  wx:if="{{CurrentOrderSFilterName === 'orgName'}}" class="order-s-filter-container _a0402ca">
+        <view class="order-operation _a0402ca" bindtap="onSelectOrg" data-wpyonselectorg-a="" data-wpyonselectorg-b="组织">
+          <view class="operation-text van-hairline--bottom _a0402ca">
+            <view class="operation-status {{ filterForm.orgId === '' ? 'active' : '' }} _a0402ca">全部</view>
+            <view wx:if="{{ filterForm.orgId === '-1' }}" class="b-icon icon-check operation-icon _a0402ca"/>
+          </view>
+        </view>
+        <block class="_a0402ca" wx:for="{{orgList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="order-operation _a0402ca">
+            <view class="operation-text van-hairline--bottom _a0402ca" bindtap="onSelectOrg" data-wpyonselectorg-a="{{item.code}}" data-wpyonselectorg-b="{{item.name}}">
+              <view class="operation-status {{ util.arrIncludes(orgIds,item.code)? 'active' : '' }} _a0402ca">{{item.name}}</view>
+              <view wx:if="{{ util.arrIncludes(orgIds,item.code) }}" class="b-icon icon-check operation-icon _a0402ca"/>
+            </view>
+          </view>
+        </block>
+      </view>
+      <!--仓库选择-->
+      <view wx:if="{{CurrentOrderSFilterName === 'warehouseName'}}" class="order-s-filter-container _a0402ca">
+        <view class="order-operation _a0402ca" bindtap="onSelectWarehouseName" data-wpyonselectwarehousename-a="" data-wpyonselectwarehousename-b="仓库">
+          <view class="operation-text van-hairline--bottom _a0402ca">
+            <view class="operation-status {{ filterForm.stockId === '' ? 'active' : '' }} _a0402ca">全部</view>
+            <view wx:if="{{ filterForm.stockId === '' }}" class="b-icon icon-check operation-icon _a0402ca"/>
+          </view>
+        </view>
+        <block class="_a0402ca" wx:for="{{stockList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="order-operation _a0402ca">
+            <view class="operation-text van-hairline--bottom _a0402ca" bindtap="onSelectWarehouseName" data-wpyonselectwarehousename-a="{{item.key}}" data-wpyonselectwarehousename-b="{{item.value}}">
+              <view class="operation-status {{ util.arrIncludes(stockIds,item.key)? 'active' : '' }} _a0402ca">{{item.value}}</view>
+              <view wx:if="{{ util.arrIncludes(stockIds,item.key)}}" class="b-icon icon-check operation-icon _a0402ca"/>
+            </view>
+          </view>
+        </block>
+      </view>
+      <!--物料组选择-->
+      <view wx:if="{{CurrentOrderSFilterName === 'itemgroup'}}" class="order-s-filter-container _a0402ca">
+        <view class="order-operation _a0402ca" bindtap="onSelectStatus" data-wpyonselectstatus-a="" data-wpyonselectstatus-b="物料组">
+          <view class="operation-text van-hairline--bottom _a0402ca">
+            <view class="operation-status {{ filterForm.matkl === '' ? 'active' : '' }} _a0402ca">全部</view>
+            <view wx:if="{{ filterForm.matkl === '' }}" class="b-icon icon-check operation-icon _a0402ca"/>
+          </view>
+        </view>
+        <block class="_a0402ca" wx:for="{{matklList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="order-operation _a0402ca">
+            <view class="operation-text van-hairline--bottom _a0402ca" bindtap="onSelectStatus" data-wpyonselectstatus-a="{{item.key}}" data-wpyonselectstatus-b="{{item.value}}">
+              <view class="operation-status {{ util.arrIncludes(matklIds,item.key)  ? 'active' : '' }} _a0402ca">{{item.value}}</view>
+              <view wx:if="{{  util.arrIncludes(matklIds,item.key) }}" class="b-icon icon-check operation-icon _a0402ca"/>
+            </view>
+          </view>
+        </block>
+      </view>
+      <!--共享标识-->
+      <view wx:if="{{CurrentOrderSFilterName === 'shareFlag'}}" class="order-s-filter-container _a0402ca">
+        <view class="order-operation _a0402ca">
+          <view class="operation-text van-hairline--bottom _a0402ca" bindtap="onshareFlagType" data-wpyonshareflagtype-a="" data-wpyonshareflagtype-b="流程状态">
+            <view class="operation-status {{ filterForm.shareFlag === '' ? 'active' : '' }} _a0402ca">全部</view>
+            <view wx:if="{{ filterForm.shareFlag === '' }}" class="b-icon icon-check operation-icon _a0402ca"/>
+          </view>
+        </view>
+        <block class="_a0402ca" wx:for="{{shareFlagList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="order-operation _a0402ca">
+            <view class="operation-text van-hairline--bottom _a0402ca" bindtap="onshareFlagType" data-wpyonshareflagtype-a="{{item.key}}" data-wpyonshareflagtype-b="{{item.value}}">
+              <view class="operation-status {{ filterForm.shareFlag === item.key ? 'active' : '' }} _a0402ca">{{item.value}}</view>
+              <view wx:if="{{ filterForm.shareFlag === item.key }}" class="b-icon icon-check operation-icon _a0402ca"/>
+            </view>
+          </view>
+        </block>
+      </view>
+    </van-popup>
+<!--    顶部筛选-->
+<!--    <view class="order-header">-->
+<!--      <view class="purchase-collection">-->
+<!--        <view-->
+<!-- bindtap="touchOrderSFilter('shareFlag')"-->
+<!--          class="order-header-{{shareFlag == '流程状态' ? 'label': 'labels'}}"-->
+<!--        >-->
+<!--          <text class="text van-ellipsis">{{shareFlag}}</text>-->
+<!--          <view-->
+<!--            class="b-icon iconliebiaoshaixuanjiantou-down {{shareFlag == '流程状态' ? 'order-iconed': 'order-icons'}}"-->
+<!--          />-->
+<!--        </view>-->
+
+<!--      </view>-->
+<!--      <view bindtap="orderfiltering" class="orderfilter" hover-class="hover">-->
+<!--        <text class="orderfilter-text">筛选</text>-->
+<!--      </view>-->
+<!--    </view>-->
+    
+  <view class="header-tab _a0402ca">
+    <view class="left-btn">
+      <block  wx:for="{{ $headerTab$tabListNew }}">
+        <view class="btn-item {{ item.selectValue ? 'active' : '' }}" bindtap="$headerTab$changeTab" data-wpychangetab-a="{{item}}">
+          <text>{{ item.name }}</text>
+          <i wx:if="{{ $headerTab$showArrowIcon }}" class="b-icon iconxialajiantou"/>
+        </view>
+      </block>
+    </view>
+    <view class="right-btn"  wx:if="{{ $headerTab$showRightBtn }}" bindtap="$headerTab$onSideFilter">
+      <view class="line-shadow" wx:if="{{ $headerTab$showRightBtnLine }}"/>
+      <view class="side-filter-btn">
+        <text>筛选</text>
+        <i class="b-icon shaixuan"/>
+      </view>
+    </view>
+  </view>
+
+    <scroll-view wx:if="{{list.length !== 0}}" scroll-y="true" class="order-scroll _a0402ca" scroll-top="{{scrollTop}}" enable-flex="enable-flex" bindscrolltolower="onGetOrderListNext">
+      <block class="_a0402ca" wx:for="{{list}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="order-container _a0402ca" bindtap="gotoDetail" data-wpygotodetail-a="{{item}}">
+          <view class="order-top _a0402ca">
+            <view class="order-name _a0402ca">
+              <view class="order-rel-name _a0402ca">{{item.applyNo}}</view>
+              <view class="order-number _a0402ca" wx:if="{{item.statusName!='结束'}}">{{item.statusName}}</view>
+              <view class="order-number _a0402ca" style="color: #aaa" wx:if="{{item.statusName=='结束'}}">{{item.statusName}}</view>
+            </view>
+          </view>
+          <view class="order-options _a0402ca">
+            <view class="item _a0402ca">
+              <span class="_a0402ca">{{item.theme}}</span>
+            </view>
+            <view class="item date _a0402ca">
+              <span class="_a0402ca">{{item.createdDateShow}}</span>
+            </view>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+    
+  <view class="empty-data _a0402ca" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <van-toast id="van-toast" class="_a0402ca"/>
+    <van-dialog id="van-dialog" class="_a0402ca"/>
+  </view>

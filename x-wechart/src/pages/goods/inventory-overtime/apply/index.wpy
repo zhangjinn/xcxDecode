@@ -1,0 +1,121 @@
+<template>
+  <view class="order">
+    <scroll-view
+      wx:if="{{inventoryList.length !== 0}}"
+      scroll-y="true"
+      class="order-scroll"
+      enable-flex
+      bindscrolltolower="onGetOrderListNext"
+    >
+      <repeat for="{{inventoryList}}" item="item" index="index">
+        <view class="order-container" wx:if="{{(item.checked&&showCheckedOnly)||!showCheckedOnly}}">
+          <view class="order-top">
+            <view class="order-name">
+              <view class="order-rel-name">
+                <view class="order-name-left">{{item.modelnum}}</view>
+                <view class="order-name-right">{{item.share==0?'未共享':'已共享'}}</view>
+              </view>
+              <view class="order-number">{{item.qualitylv}}/{{item.invstatusName}}</view>
+            </view>
+          </view>
+          <view class="order-options order-option-four">
+            <view class="item">
+              <span>库存</span>({{item.baseqty || '0'}})</view>
+            <view class="item">
+              <span>预留</span>({{item.baseqty-item.avbbaseqty}})
+            </view>
+            <view class="item">
+              <span>可用</span>({{item.avbbaseqty||0}})</view>
+            <view class="item is-lock" style="margin-right: 0">
+              <span>可共享</span>({{item.avbshareqty}})
+            </view>
+          </view>
+          <view class="order-options">
+            <view class="item">
+              <span>入库时间: </span>
+              {{item.ininvdate || '无'}}</view>
+            <view class="item">
+              <span>库龄: </span>
+              {{item.invage}}
+            </view>
+            <view class="item">
+              <span>超期天数: </span>
+              {{item.overduedays || '无'}}</view>
+          </view>
+          <view class="order-options">
+            <view class="item">
+              <span>仓库: </span>
+              {{item.warehouse}}
+            </view>
+          </view>
+
+          <view class="order-options" style="justify-content: flex-start;">
+            <view class="item">
+              <span>物料组: </span>
+              {{item.materialgroup}}
+            </view>
+            <view class="item" style="margin-left: 40rpx">
+              <span>库存类型: </span>
+              {{item.invtypeName}}
+            </view>
+          </view>
+          <view class="order-options" style="justify-content: flex-start;">
+            <view class="item">
+              <span>共享审批中: </span>
+              {{item.checkqty||'0'}}
+            </view>
+          </view>
+          <view class="count-box">
+            <view class="lab">本次申请共享</view>
+            <van-stepper
+              class="step"
+              integer="{{true}}"
+              value="{{item.quantity}}"
+              min="0"
+              max="{{item.maxQuantity}}"
+              bind:change="onCountChange({{item}},{{index}},{{$event}})"
+              custom-class="cart-stepper"
+              input-class="cart-input-class"
+              plus-class="cart-action-class"
+              minus-class="cart-action-class"
+            />
+          </view>
+          <view class="van-hairline--bottom top-line"></view>
+          <view class="order-detail-item-out-info-footer" @tap="removeItem({{index}})">
+            <i class="b-icon icon-remove footer-remove"></i>
+            <text>删除</text>
+          </view>
+        </view>
+      </repeat>
+    </scroll-view>
+    <emptyDataType wx:else/>
+    <view class="bom-wrap">
+      <view class="apply-btn cancle-btn" @tap="cancle">取消</view>
+      <view class="apply-btn" @tap="submit">提交</view>
+    </view>
+    <view class="success-wrap" wx:if="{{showResult}}">
+      <view class="top-box">
+        <view class="icon-box">
+          <text class="b-icon tijiaocehngong"></text>
+        </view>
+        <view class="msg">您的申请已提交成功!</view>
+        <view class="line-box"></view>
+        <view class="info-box">
+          <text style="margin-right: 16rpx">申请编码</text>
+          <text>{{appleCode}}</text>
+        </view>
+      </view>
+      <view class="btn-box">
+        <view class="btn" @tap="goHome">
+          返回首页
+        </view>
+        <view class="btn btn-fill"  @tap="goApply">
+          继续申请
+        </view>
+      </view>
+    </view>
+    <van-toast id="van-toast" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

@@ -1,0 +1,1 @@
+function _cloneRegExp(e){return new RegExp(e.source,(e.global?"g":"")+(e.ignoreCase?"i":"")+(e.multiline?"m":"")+(e.sticky?"y":"")+(e.unicode?"u":""))}module.exports=_cloneRegExp;

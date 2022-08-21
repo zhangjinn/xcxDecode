@@ -1,0 +1,165 @@
+<template>
+  <view class="order">
+    <!-- 顶部固定tab -->
+    <view class="header-tab-wrap">
+      <view class="header-tab-text">库存调整类型</view>
+      <view class="header-tab-flex">
+        <!-- <repeat for="{{array}}" item="item"> -->
+          <!-- <view @tap="changeTabChoose" data-tab="{{item.id}}" class="header-tab-item {{tabIsShow==item.id?'header-tab-active':''}}">{{item.name}}</view> -->
+          <view @tap="changeTabChoose('otherIn')" class="header-tab-item {{tabIsShow=='otherIn'?'header-tab-active':''}}">其他入库</view>
+          <view @tap="changeTabChoose('otherOut')" class="header-tab-item {{tabIsShow=='otherOut'?'header-tab-active':''}}">其他出库</view>
+          <view @tap="changeTabChoose('invStatus')" class="header-tab-item {{tabIsShow=='invStatus'?'header-tab-active':''}}">状态调整</view>
+        <!-- </repeat> -->
+      </view>
+      <view class="free-shipping-tip">{{ freeShippingTip }}</view>
+    </view>
+    <!-- 其他入库 -->
+    <block>
+      <view class="order-scroll">
+        <view class="order-scroll-head">
+          <view class="item-row">
+            <view class="item-row-left">
+              单据日期
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-note">
+                {{sysDate}}
+              </view>
+            </view>
+          </view>
+          <view class="item-row" @tap="openChooseFiBook">
+            <view class="item-row-left">
+              销售组织
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-inventory} {{ fiBook.id ? '' : 'placeholder' }}">
+                {{ fiBook.name}}
+              </view>
+              <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+            </view>
+          </view>
+          <view class="item-row" @tap="openChoose('storeHouse', 'gicOutWrehouse', '仓库')">
+            <view class="item-row-left">
+              仓库
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-inventory} {{ gicOutWrehouse.id ? '' : 'placeholder' }}">
+                {{ gicOutWrehouse.name}}
+              </view>
+              <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+            </view>
+          </view>
+          <view class="item-row">
+            <view class="item-row-left">
+              备注
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-note">
+                <van-field
+                  value="{{ note }}"
+                  placeholder="请填写备注"
+                  border="{{ false }}"
+                  input-align="right"
+                  bind:change="onNoteChange"
+                  class="dms-order-note"
+                  clearable
+                />
+              </view>
+            </view>
+          </view>
+        </view>
+        <order :out.sync="sendInventoryInfo" :outInv.sync= "outInv" :type.sync="tabIsShow"
+        :orgId.sync='postorgId'
+        :store.sync='postStore'
+        :isDisabled.sync="isDisabled"
+        />
+      </view>
+    </block>
+
+    <van-submit-bar
+      button-text="确认提交"
+      custom-class="order-bottom"
+      button-class-container="dms-order-bottom-button-save"
+      button-class="dms-order-bottom-button-save-submit"
+      bind:submit="submit"
+    >
+    <view slot="top" class="order-bottom-amount">
+        <!-- <view class="order-bottom-volume-num">体积:{{volume}}m³</view>
+        <i class="b-icon iconwenti" @tap="noticePopupOpen"></i> -->
+        <view class="order-bottom-amount-tip">
+          合计
+        </view>
+        <view class="order-bottom-amount-num">
+          <!-- ￥{{ amount }} -->
+          <text class="priceSign">￥{{amountFirst}}</text>
+          <text class="priceDot">.{{amountLast}}</text>
+        </view>
+      </view>
+    </van-submit-bar>
+
+    <!--下拉框-->
+    <van-popup
+      show="{{ popVisible }}"
+      closeable
+      position="bottom"
+      custom-style="height: 570rpx"
+      bind:click-overlay="onClose"
+      >
+      <view class="order-inv">
+        <view class="order-inv-head">
+          <view class="order-inv-head-context">
+            <view class="order-inv-head-context-title">{{ popTitle }}</view>
+          <van-icon name="cross" class="order-inv-head-context-close" bindtap="onClose" />
+          </view>
+        </view>
+        <scroll-view scroll-y class="order-inv-scroll">
+          <view wx:for="{{ popList }}" wx:key="{{ item.id }}" item="item" class="order-inv-scroll-row" data-key="{{ item.id }}" data-index="{{ index }}" bindtap="onChoose">
+            <view class="order-inv-scroll-row-desc {{ item.id === compareInfo.id ? 'checked' : ''}}">
+              {{ item.name }}
+            </view>
+            <block wx:if="{{ item.id === compareInfo.id }}">
+              <view class="b-icon icon-check order-inv-scroll-row-checked checked">
+              </view>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+
+    <!-- 销售组织 -->
+    <van-popup
+      show="{{ popFiBookVisible }}"
+      closeable
+      position="bottom"
+      custom-style="height: 570rpx"
+      bind:click-overlay="onCloseFiBook"
+    >
+      <view class="order-inv">
+        <view class="order-inv-head">
+          <view class="order-inv-head-context">
+            <view class="order-inv-head-context-title">销售组织</view>
+            <van-icon name="cross" class="order-inv-head-context-close" bindtap="onCloseFiBook" />
+          </view>
+        </view>
+        <scroll-view scroll-y class="order-inv-scroll">
+          <view wx:for="{{ fibookList }}" wx:key="{{ item.id }}" item="item" class="order-inv-scroll-row" data-key="{{ item.id }}" data-name="{{ item.name }}" bindtap="onChooseFiBook">
+            <view class="order-inv-scroll-row-desc {{ item.id === fiBook.id ? 'checked' : ''}}">
+              {{ item.name }}
+            </view>
+            <block wx:if="{{ item.id === fiBook.id }}">
+              <view class="b-icon icon-check order-inv-scroll-row-checked checked">
+              </view>
+            </block>
+          </view>
+
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-dialog id="van-dialog" />
+    <address/>
+    <van-toast id="van-toast" />
+  </view>
+
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

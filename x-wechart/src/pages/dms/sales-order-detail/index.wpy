@@ -1,0 +1,443 @@
+<template>
+  <view class="order">
+    <scroll-view scroll-y class="order-scroll">
+      <view class="order-scroll-head">
+
+        <!-- 始终展示部分 -->
+        <view class="item-alway-show van-hairline--bottom">
+          <view class="item-row item-row-top">
+            <view class="item-row-left">
+              <text class="item-name">{{orderdetail.data.documentNum}}</text>
+              <view wx:if="{{orderdetail.data.returnStatusName !== '未出库'}}" class="item-return">{{orderdetail.data.returnStatusName}}</view>
+            </view>
+            <view class="item-row-right">
+              <text class="item-status">{{orderdetail.data.statusName}}</text>
+            </view>
+          </view>
+          <view class="item-row">
+            <view class="item-row-left">
+              <text class="item-money">订单金额：￥{{orderdetail.data.netAmount}}</text>
+            </view>
+          </view>
+          <view class="item-row">
+            <view class="item-row-left">
+              <text class="item-money">客户名称：{{orderdetail.data.customerName}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-more" @tap="showMore" hidden="{{ showMore }}">
+          <view class="item-more-tip">
+            查看更多
+          </view>
+          <van-icon name="arrow-down" class="icon" />
+        </view>
+
+        <!-- 收起部分 -->
+        <view hidden="{{ !showMore }}" class="item-more-container">
+          <!--
+          <view class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">开票方：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.billFromName}}</text>
+            </view>
+          </view>
+          -->
+          <view wx:if="{{orderdetail.data.BHOnum}}" class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">BHO单号：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.BHOnum}}</text>
+            </view>
+          </view>
+          <view wx:if="{{orderdetail.data.purchaseNum}}" class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">渠道采购单号：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.purchaseNum}}</text>
+            </view>
+          </view>
+          <view class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">单据类型：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.documentType}}</text>
+            </view>
+          </view>
+          <view class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">结算单位：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.billToName}}</text>
+            </view>
+          </view>
+          <view class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">业务员：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.sellerName}}</text>
+            </view>
+          </view>
+          <view class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">单据日期：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.documentDate}}</text>
+            </view>
+          </view>
+          <view class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">期望到货日期：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.edt}}</text>
+            </view>
+          </view>
+          <view class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">发货仓库：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.warehouseName}}</text>
+            </view>
+          </view>
+          <!--<view class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">送货地址：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.addressDesc}}</text>
+            </view>
+          </view>-->
+
+          <view class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">收货地址：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.address}}</text>
+            </view>
+          </view>
+
+          <view class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">联系人：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.contact}}</text>
+            </view>
+          </view>
+
+          <view class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">联系方式：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.contactInfo}}</text>
+            </view>
+          </view>
+
+          <view class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">下单员：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.lastSubmitPerson}}</text>
+            </view>
+          </view>
+          <view class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">以旧换新：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.isOldNew == 1? '是' :'否'}}</text>
+            </view>
+          </view>
+          <view class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">完成收旧：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.isCompleteOld == 1? '是' :'否'}}</text>
+            </view>
+          </view>
+          <view class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">旧机品类：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.oldMachCategoryName}}</text>
+            </view>
+          </view>
+          <view class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">旧机处理途径：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.oldMachTreatWayName}}</text>
+            </view>
+          </view>
+          <view class="item-row" wx:if="{{orderdetail.data.activityName}}">
+            <view class="item-row-left wth25">
+              <text class="item-title">活动名称：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.activityName}}</text>
+            </view>
+          </view>
+          <view class="item-row" wx:if="{{orderdetail.data.userActivityCode}}">
+            <view class="item-row-left wth25">
+              <text class="item-title">认购单号：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.userActivityCode}}</text>
+            </view>
+          </view>
+          <view class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">是否跨品类：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.isCrossCategory == 1? '是' :'否'}}</text>
+            </view>
+          </view>
+          <!--
+          <view class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">所属门店：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.storeName}}</text>
+            </view>
+          </view>
+          -->
+          <view class="item-row">
+            <view class="item-row-left wth25">
+              <text class="item-title">备注：</text>
+            </view>
+            <view class="item-row-right">
+              <text class="item-content">{{orderdetail.data.message}}</text>
+            </view>
+          </view>
+          <view class="img-box" wx:if="{{orderdetail.data.attachmentList.length>0}}">
+            <view class="img-title">文件列表：</view>
+            <div class="img-wrapper">
+              <view class="img-item" wx:for="{{orderdetail.data.attachmentList}}" data-path="{{item.fileMapperPath}}" @tap="downFile">
+                <image src="{{item.fileMapperPath}}" class="annex"/>
+              </view>
+            </div>
+          </view>
+
+          <view class="item-more hidden" @tap="hiddenMore">
+            <view class="item-more-tip">
+              收起更多
+            </view>
+            <van-icon name="arrow-up" class="icon" />
+          </view>
+        </view>
+      </view>
+      <view class="mx">明细信息</view>
+     <view class="order-container">
+        <repeat for="{{orderdetail.data.salesOrderItem}}" item="item">
+          <view class="order-goods">
+            <navigator class="order-goods-img" url="">
+              <img class="goodimg" src="{{ item.img }}" errSrc="{{ item.err }}"/>
+            </navigator>
+            <view class="order-goods-detail">
+              <view class="order-goods-detail-name">
+                <view wx:if="{{utils.isFreeShipping(item.productLabel)}}" class="item-info-tag">免运费</view>
+                <text class="detail-text">{{item.model}}</text>
+              </view>
+              <view class="order-goods-detail-explain">
+                <text class="explain-text van-ellipsis">颜色：{{item.colour}}，库存状态：{{item.invStatusName}}</text>
+              </view>
+              <view class="order-goods-detail-number">
+                <text class="good-price">￥{{item.backnowledgedPrice}}</text>
+                <text class="good-number">×{{item.backnowledgedQty}}</text>
+              </view>
+            </view>
+          </view>
+
+          <view class="order-agreements van-hairline--bottom">
+            <view class="order-agreements-number">
+              <text>已出库({{item.shippedBqty || 0}})，已取消({{item.cancelQty || 0}})</text>
+            </view>
+          </view>
+        </repeat>
+        <view class="order-finals van-hairline--bottom">
+          <view class="order-final">
+
+            <text class="order-final-price"> ￥{{orderdetail.data.acknowledgedTotalAmount}}</text>
+            <text class="order-final-name">金额：</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 出库明细 -->
+      <view class="delivery-detail" wx:if="{{orderdetail.data.outBoundItem && orderdetail.data.outBoundItem.length > 0 }}">
+        <h2 class="delivery-detail-title pd">出库明细</h2>
+        <view class="bills-box pd {{ isBillsShow  ? 'active' : '' }}">
+          <view class="bills-box-top">
+            <span class="bill">{{orderdetail.data.documentNum}}</span>
+            <span class="isshow" @tap="isBillsShowFun">
+              查看更多出库单
+              <view class="b-icon iconkucunliushui-zhankai1 icon" />
+            </span>
+          </view>
+          <view class="bills-box-bottom">
+            <repeat for="{{orderdetail.data.outBoundItem}}" item="item" index="index">
+              <span class="bill {{ outActiveIdx == index ? 'active' : '' }}" @tap="outActiveShowFun({{index}})">{{item.documentNum}}</span>
+            </repeat>
+          </view>
+        </view>
+        <repeat for="{{orderdetail.data.outBoundItem}}" item="item" index="index">
+          <view class="top-info-box pd info-box" wx:if="{{index == outActiveIdx }}">
+            <ul>
+              <li>出库状态：{{item.status}}</li>
+              <li>物流状态：{{item.omsOrderStatusName}}</li>
+              <li class="fill-li">收货地址：{{item.address}}</li>
+              <li class="fill-li">创建日期：{{item.outDate}}</li>
+            </ul>
+          </view>
+          <view class="btm-info-box pd info-box" wx:if="{{index == outActiveIdx }}">
+            <ul>
+              <li>出库仓库：{{item.warehouseName}}</li>
+              <li>出库数量：{{item.bactualQty}}</li>
+              <li wx-if="{{item.rejectQty}}">拒收数量：{{item.rejectQty}}</li>
+              <li wx-if="{{item.lostQty}}">短少数量：{{item.lostQty}}</li>
+              <li>出库库存状态：{{item.invStatusName}}</li>
+              <li>出库金额：{{item.price}}</li>
+              <li>补差类型：{{item.invStatusTypeName}}</li>
+              <li>业务员：{{item.outUserName}}</li>
+            </ul>
+          </view>
+          <view class="button-wrapper"  @tap="receiptEffect({{item}})" wx:if="{{item.lastOmsStatusName=='到货确认(直送用户)'}}">
+            <view class="button-text">回单影像</view>
+          </view>
+          <view wx:if="{{item.omsOrderStatus&&item.omsOrderStatus.length>0}}" class="order-audit-logistics-information">
+            <view class="order-audit-logistics-information-status">物流状态</view>
+            <view class="order-audit-logistics-information-steps">
+              <van-steps
+                custom-class="order-audit-logistics-information-steps-inner"
+                steps="{{ item.omsOrderStatus}}"
+                active="{{ active }}"
+                direction="vertical"
+                active-color="#00aaa6"
+              />
+            </view>
+          </view>
+        </repeat>
+
+      </view>
+
+      <!-- <view class="delivery-detail">
+        <h2 class="delivery-detail-title pd">出库明细</h2>
+        <view class="bills-box pd {{ isBillsShow  ? 'active' : '' }}">
+          <view class="bills-box-top">
+            <span class="bill">7898461615</span>
+            <span class="isshow" @tap="isBillsShowFun">
+              查看更多出库单
+              <view class="b-icon iconkucunliushui-zhankai1 icon" />
+            </span>
+          </view>
+          <view class="bills-box-bottom">
+            <span class="bill active">7898461615</span>
+            <span class="bill">7898461615</span>
+            <span class="bill">7898461615</span>
+          </view>
+        </view>
+        <view class="top-info-box pd info-box">
+          <ul>
+            <li>出库状态：已出库</li>
+            <li>物流状态：已出库</li>
+            <li class="fill-li">收货地址：山东省 青岛市 市北区海信小区</li>
+            <li class="fill-li">物流状态：已出库</li>
+          </ul>
+        </view>
+        <view class="btm-info-box pd info-box">
+          <ul>
+            <li>出库仓库：良茂</li>
+            <li>出库数量：1</li>
+            <li>出库库存状态：样机</li>
+            <li>出库金额：1000.00</li>
+            <li>补差类型：不补</li>
+            <li>业务员：张三</li>
+          </ul>
+        </view>
+      </view> -->
+
+
+      <!-- 退货信息 -->
+      <view wx:if="{{orderdetail.data.salesReturnOrder && orderdetail.data.salesReturnOrder.length > 0}}" class="order-return-msg">
+      <view class="order-return-title">退货信息</view>
+      <repeat for="{{orderdetail.data.salesReturnOrder}}" item="item">
+        <view class="order-return-items">
+          <view class="order-return-items-title">
+            <view class="order-return-items-no">单号：{{item.returnNum}}</view>
+            <view class="order-return-items-time">{{item.returnDate}}</view>
+          </view>
+          <repeat for="{{item.salesReturnItem}}" item="returnItem">
+            <view class="order-return-item">
+              <view class="order-return-item-type">型号：{{returnItem.returnModel}}，{{returnItem.returnColour}}</view>
+              <view class="order-return-item-price">单价：¥{{returnItem.returnPrice}}</view>
+              <view class="order-return-item-num">数量：{{returnItem.returnQty}}</view>
+            </view>
+          </repeat>
+        </view>
+      </repeat>
+
+    </view>
+      <block class="buttonBottom" wx:if= "{{orderdetail.data.outBoundItem && orderdetail.data.outBoundItem[0].canCancelOms == '1'}}">
+        <van-submit-bar
+          button-text="通过"
+          custom-class="order-bottom"
+          button-class-container="dms-order-bottom-button-save"
+          button-class="dms-order-bottom-button-save-submit"
+          bind:submit="orderConsent"
+        >
+        <view class="order-bottom-button-temp van-hairline--top" style="background-color: #FFFFFF; color: #666666" @tap="ordercanselExamine({{orderdetail}})">
+          取消物流
+        </view>
+      </van-submit-bar>
+    </block>
+    </scroll-view>
+    <van-popup show="{{isImg}}" bind:close="onClose">
+      <view >
+        <image
+          wx:for = "{{ImgArr}}"
+          wx:key="{{index}}"
+          src="{{item}}"
+        alt=""/>
+      </view>
+    </van-popup>
+    <!-- 取消审核弹窗 -->
+    <van-popup show="{{ showCanselExamle }}" overlay="{{ true }}">
+      <view class="orderpopup">
+        <view class="text">确认取消物流?</view>
+        <view class="operation">
+          <view @tap="cancelExamine" class="operation-one">取消</view>
+          <view @tap="canselExamine()" class="operation-two">确定</view>
+        </view>
+      </view>
+    </van-popup>
+    <van-toast id="van-toast" />
+  </view>
+
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<style lang="less">
+  .order-audit-logistics-information-steps-inner{
+    .van-step--vertical{
+      font-size: 22rpx;
+    }
+  }
+</style>
+<script lang="typescript" src="./index.ts"></script>

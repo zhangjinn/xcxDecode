@@ -1,0 +1,17 @@
+
+  <view class="account _2b7cc4b">
+    <view class="account-subtitle _2b7cc4b">请补充或确认联系人信息</view>
+    <van-field placeholder="联系人姓名" clearable="{{true}}" value="{{account.userName}}" cell-class="login-input" placeholder-style="color: #aaa;font-size: 28rpx;"  bind:change="onNameChange" bind:clear="clearName" class="_2b7cc4b"/>
+    <van-field placeholder="手机号" clearable="{{true}}" type="number" value="{{account.mobile}}" cell-class="login-input" placeholder-style="color: #aaa;font-size: 28rpx;"  bind:change="onMobileChange" bind:clear="clearMobile" class="_2b7cc4b"/>
+    <van-field placeholder="短信验证码" type="idcard" value="{{code}}" clearable="{{true}}" cell-class="login-input" placeholder-style="color: #aaa;font-size: 28rpx;"  bind:change="onCodeChange" bind:clear="clearCode" class="_2b7cc4b">
+      <view bindtap="getSmsCode" class="login-input-sms {{ timer === 60 ? 'success':'disabled' }} _2b7cc4b" hover-class="hover" slot="button">
+        <block  wx:if="{{timer === 60}}" class="_2b7cc4b">发送验证码</block><block  wx:else class="_2b7cc4b">({{timer}}s)重新获取</block>
+      </view>
+    </van-field>
+    <van-field placeholder="邮箱地址" clearable="{{true}}" value="{{account.email}}" cell-class="login-input" placeholder-style="color: #aaa;font-size: 28rpx;" bind:change="onEmailChange" bind:clear="clearEmail" class="_2b7cc4b"/>
+    <van-field placeholder="请输入新密码" value="{{password}}" password="{{!passwordVisible}}" clearable="{{true}}" cell-class="login-input" right-icon="{{ passwordVisible ? 'eye-o' : 'closed-eye' }}" placeholder-style="color: #aaa;font-size: 28rpx;" bind:change="onPasswordChange" bind:clear="clearPassword" bind:click-icon="togglePwd" class="_2b7cc4b"/>
+    <van-field placeholder="请确认新密码" value="{{rePassword}}" password="{{!repasswordVisible}}" clearable="{{true}}" cell-class="login-input" right-icon="{{ repasswordVisible ? 'eye-o' : 'closed-eye' }}" placeholder-style="color: #aaa;font-size: 28rpx;" bind:change="onRePasswordChange" bind:clear="clearRePassword" bind:click-icon="toggleRePwd" class="_2b7cc4b"/>
+    <van-button bind:click="submit" custom-class="login-vant-btn" color="#00AAA6" square="{{true}}" block="{{true}}" class="_2b7cc4b">登录</van-button>
+    <van-button bind:click="goBack" color="#00AAA6" square="{{true}}" block="{{true}}" plain="{{true}}" class="_2b7cc4b">取消</van-button>
+    <van-toast id="van-toast" class="_2b7cc4b"/>
+  </view>

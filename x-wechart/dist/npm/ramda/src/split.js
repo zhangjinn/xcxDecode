@@ -1,0 +1,1 @@
+var invoker=require("./invoker.js"),split=invoker(1,"split");module.exports=split;

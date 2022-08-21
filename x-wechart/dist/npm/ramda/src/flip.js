@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),curryN=require("./curryN.js"),flip=_curry1(function(r){return curryN(r.length,function(u,e){var c=Array.prototype.slice.call(arguments,0);return c[0]=e,c[1]=u,r.apply(this,c)})});module.exports=flip;

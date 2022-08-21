@@ -1,0 +1,26 @@
+<template>
+  <view class="me-default-account">
+    <repeat for="{{accountList}}" key="index" item="item">
+      <view class="account-item">
+        <view class="account-item-header">
+          <view class="account-item-header-text">{{item.name}}</view>
+          <view wx:if="{{item.isDefault}}" class="account-item-header-tag">默认</view>
+        </view>
+        <van-row>
+          <van-col span="20">
+            <view class="account-item-footer">
+              <view class="account-item-footer-primary">设为默认账户</view>
+              <view class="account-item-footer-info">(每次默认登录为该账户)</view>
+            </view>
+          </van-col>
+          <van-col span="4">
+            <van-switch size="14px" checked="{{ item.uDefault === '0' }}" data-account="{{item.account}}" bind:change="onChangeToDefault"/>
+          </van-col>
+        </van-row>
+      </view>
+    </repeat>
+    <van-toast id="van-toast"/>
+  </view>
+</template>
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts"></script>

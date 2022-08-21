@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),_has=require("./internal/_has.js"),where=_curry2(function(r,e){for(var n in r)if(_has(n,r)&&!r[n](e[n]))return!1;return!0});module.exports=where;

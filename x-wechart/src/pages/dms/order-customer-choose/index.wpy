@@ -1,0 +1,48 @@
+<template>
+  <view class="search">
+    <view class="search-container">
+      <view class="search-container-label">客户信息</view>
+      <van-search
+        class="search-container-input"
+        value="{{ filterStr }}"
+        leftSearchIconSow="{{ false }}"
+        placeholder="请输入老板名称/客户名称/客户编码"
+        custom-class="dms-item-search-input"
+        placeholder-style="font-size:26rpx;"
+        focus="{{ true }}"
+        bind:search="onSearch"
+        bind:change="onChange"
+        clearable="{{ true }}"
+      />
+    </view>
+    <scroll-view scroll-y class="search-result" enable-flex bindscrolltolower="loadNextPage">
+      <repeat for="{{ customers.customers }}" item="item">
+        <view class="search-result-row" @tap="chooseItem('{{ index }}')">
+          <block wx:if="{{ item.legalPerson }}">
+            <view class="search-result-row-head">
+              <view class="search-result-row-head-legal">{{ item.customerName }}</view>
+              <view class="search-result-row-head-name">{{ item.legalPerson }}</view>
+            </view>
+            <view class="search-result-row-address">{{ item.address }}</view>
+          </block>
+          <block wx:else>
+            <view class="search-result-row-head">
+              <view class="search-result-row-head-legal">{{ item.customerCode }}</view>
+              <view class="search-result-row-head-name">{{ item.customerName }}</view>
+            </view>
+            <view class="search-result-row-address">{{ item.address }}</view>
+          </block>
+          <!-- <block wx:else>
+            <view class="search-result-row-single">
+              <view class="search-result-row-single-address">{{ item.address }}</view>
+              <view class="search-result-row-single-name">{{ item.customerName }}</view>
+            </view>
+          </block> -->
+        </view>
+      </repeat>
+    </scroll-view>
+    <van-toast id="van-toast" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

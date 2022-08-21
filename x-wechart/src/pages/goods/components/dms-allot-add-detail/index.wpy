@@ -1,0 +1,23 @@
+<template>
+  <view class="detail">
+    <view class="detail-title">
+      明细信息
+    </view>
+
+
+    <item id="item" wx:for="{{ details }}" from="{{ from }}" wx:key="*this" index="{{index}}" itemId="{{ item }}"
+          warehouseId="{{out.id}}" outInv="{{outInv}}"  orgId="{{orgId.id}}" itemInfo="{{ additionOrderDetailItem.itemInfo[item] }}"
+          @volumeChange="volumeChange" @amountChange="amountChange"  @chooseItem="chooseItem" @itemDel="delItem" isDisabled="{{ isDisabled }}"/>
+
+    <view class="detail-add" catchtap="addItem">
+      <van-icon name="add" class="detail-add-icon" />
+      <view class="detail-add-tip">
+        <block wx:if="{{ details.length > 0 }}">继续</block>
+        <block>添加</block>
+        </view>
+    </view>
+  </view>
+
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

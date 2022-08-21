@@ -1,0 +1,488 @@
+@font-face {
+  font-family: 'iconfont';  /* project id 2037285 */
+  src: url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.eot');
+  src: url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.woff') format('woff'),
+  url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.svg#iconfont') format('svg');
+}
+.iconfont{
+  font-style: normal;
+  font-size: 16px;
+  font-family: 'iconfont' !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.check-in{
+  height: 100%;
+}
+.check-in-content{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.check-in-statistics{
+  position: relative;
+  font-weight: 400;
+  .check-in-statistics-bg{
+    width: 100%;
+    height: 278rpx;
+    .check-in-img{
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .check-in-statistics-info{
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 40rpx 30rpx 0;
+    .check-in-statistics-info-inner{
+      background: #FFFFFF;
+      box-shadow: 0rpx 8rpx 16rpx 0rpx rgba(187, 187, 187, 0.38);
+      border-radius: 16rpx;
+      padding: 32rpx 30rpx 16rpx;
+      .filter{
+        display: flex;
+        font-size: 28rpx;
+        color: #262626;
+        margin-bottom: 16rpx;
+        .filter-month,.filter-channel{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          min-width: 176rpx;
+          height: 50rpx;
+          background: #F2F3F5;
+          border-radius: 8rpx;
+          padding: 0 12rpx;
+        }
+        .filter-month{
+          margin-right: 20rpx;
+        }
+        .filter-channel{
+          .filter-channel-name{
+            flex: 1;
+          }
+        }
+      }
+      .statistics{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .statistics-text{
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          .clock-in{
+            display: flex;
+            align-items: center;
+            color: #777777;
+            font-size: 26rpx;
+            &:first-child{
+              margin-bottom: 16rpx;
+            }
+            .icon{
+              width: 20rpx;
+              height: 20rpx;
+              margin-right: 12rpx;
+            }
+            .clock-in-icon{
+              background: #1890FF;
+            }
+            .clocked-in-icon{
+              background: #18D1BC;
+            }
+          }
+          .expiry-date{
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            color: #AAAAAA !important;
+            font-size: 22rpx !important;
+          }
+
+        }
+        .statistics-chart{
+          width: 170px;
+          height: 90px;
+          position: relative;
+          .chart-text{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            .completed-num{
+              font-size: 40rpx;
+              font-weight: 500;
+              color: #262626;
+            }
+            .completed{
+              font-size: 24rpx;
+
+              color: #777777;
+            }
+          }
+        }
+      }
+    }
+  }
+
+}
+.benyuesaixuan{
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 28rpx;
+  padding: 30rpx;
+  display: flex;
+  // justify-content: space-between;
+  white-space:nowrap;
+  margin-top: 55rpx;
+  .my-btn {
+    display: inline-block;
+    margin-right: 15rpx;
+  }
+}
+.greenNumber{
+  color: #00aaa6;
+}
+.benyuRight{
+  color: #777777;
+  font-size: 24rpx;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 30rpx 16rpx;
+}
+.right20{
+  margin-right: 10rpx;
+}
+.xinzhenBtn{
+  margin-left: 30rpx;
+  border: 1px solid #999a9a;
+  padding: 0 10rpx;
+  border-radius: 10rpx;
+}
+.picker{
+  .xiala-jiantou{
+    color: white;
+    margin-top: 10rpx;
+    margin-left: 10rpx;
+    font-size: 20rpx;
+  }
+}
+.my-btn{
+  background-color: #00B7B3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  font-size: 28rpx;
+  width: 176rpx;
+  height: 64rpx;
+  line-height: 64rpx;
+  color: white;
+  text-align: center;
+  border-radius: 34rpx;
+}
+.my-btn.no-check{
+  background: #FFFFFF;
+  color: #777777;
+}
+.check-in-wrapper{
+  flex: 1;
+  overflow-y: hidden;
+  .check-in-wrapper-inner{
+    height: 100%;
+    .scroll-view-wrapper{
+      height: 100%;
+      padding-bottom: 16rpx;
+    }
+  }
+  .check-in-wrapper-not-clocked{
+    padding: 0 16rpx;
+    .bottom-line{
+      padding: 30rpx;
+      font-size: 26rpx;
+      color: #AAAAAA;
+      text-align: center;
+    }
+  }
+  .not-clocked-in-card{
+    font-weight: 400;
+    background: #FFFFFF;
+    border-radius: 20rpx;
+    padding: 0 24rpx;
+    margin-bottom: 16rpx;
+    .merchant-info{
+      padding: 24rpx 0 18rpx;
+    }
+    .merchant-name{
+      font-size: 30rpx;
+      color: #000000;
+      margin-bottom: 16rpx;
+      font-weight: 500;
+    }
+    .merchant-address{
+      display: flex;
+      align-items: baseline;
+      font-size: 24rpx;
+      color: #AAAAAA;
+      .punch-card-positioning{
+        color: #00AAA6;
+        margin-right: 12rpx;
+        font-size: 26rpx;
+      }
+    }
+    .merchant-footer{
+      border-top: 2rpx solid #EEEEEE;
+      padding: 28rpx 36rpx;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      font-size: 28rpx;
+      color: #262626;
+      .merchant-icon{
+        font-size: 36rpx;
+        color: #596DE0;
+        margin-right: 12rpx;
+      }
+    }
+  }
+
+}
+.CardBox{
+  font-size: 30rpx;
+  background-color: #fff;
+  margin: 16rpx 16rpx 0;
+  border-radius: 20rpx;
+  padding: 0 24rpx;
+  &:first-child{
+    margin-top: 0;
+  }
+}
+.dakasmallTitle{
+  display: flex;
+  justify-content: space-between;
+  font-size: 30rpx;
+  padding: 24rpx 0;
+  .user-name{
+    flex-grow: 1;
+    padding-left: 20rpx;
+    color: #262626;
+    font-weight: 500;
+    font-size: 36rpx;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-all;
+  }
+}
+.dakaLeft{
+  display: flex;
+  flex-shrink: 0;
+}
+.xundian-icon{
+  width: 52rpx;
+  height: 52rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(#54D6D2, #00AAA6);
+  border-radius: 50%;
+  overflow: hidden;
+  font-size: 28rpx;
+  color: #FFFFFF;
+}
+.xundian{
+  padding-left: 16rpx;
+  font-size: 36rpx;
+  color: #262626;
+  font-weight: 500;
+}
+.timeRight{
+  color: #999a9a;
+  font-size: 26rpx;
+  line-height: 50rpx;
+  flex-shrink: 0;
+}
+.shopItemMsg{
+  position: relative;
+  .qualified {
+    position: absolute;
+    width: 88rpx;
+    height: 88rpx;
+    right: 0rpx;
+    top: 0;
+  }
+.store-name{
+  font-size: 28rpx;
+  color: #262626;
+  font-weight: 500;
+}
+}
+.fubiaotiColor{
+  color: #777;
+  font-size:24rpx;
+  margin: 6rpx 0 16rpx;
+}
+.img-box{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.imgBLock{
+  width: 160rpx;
+  height: 160rpx;
+  margin: 0 16rpx 16rpx 0;
+  border-radius: 6rpx;
+}
+.chakxmBox{
+  display: flex;
+  justify-content: flex-end;
+  font-size: 28rpx;
+  border-top: 2rpx solid #EEEEEE;
+  padding: 26rpx 0;
+  color: #262626;
+  .check-details{
+    border-radius: 32rpx;
+    border: 2rpx solid #CCCCCC;
+    padding: 12rpx 28rpx;
+  }
+}
+.hsss{
+  color: #999a9a;
+}
+
+
+.dakaTItle{
+  padding: 20rpx;
+  font-size:22rpx;
+  color: #00b7b3;
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 1px solid #f8f8f8;
+}
+.TankuanBox,.TankuanBox1{
+  font-size: 27rpx;
+  padding: 30rpx 20rpx;
+  display: flex;
+}
+.TankuanBox>view{
+  width: 24%;
+  padding: 5rpx 0;
+  margin: 0 15rpx;
+  text-align: center;
+  background-color: #edf1f4;
+  position: relative;
+}
+.TankuanBox1{
+  justify-content: space-between;
+}
+.TankuanBox1>view{
+  width: 32%;
+  padding: 15rpx 0;
+  text-align: center;
+  background-color: #edf1f4;
+  position: relative;
+}
+.popupBottomBtn{
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  font-size: 28rpx;
+  line-height: 70rpx;
+}
+.popupBottomBtn>view{
+  width: 50%;
+  color:#c0c0c0 ;
+}
+.btncomfig{
+  background-color: #1ca496;
+  color: #FFFFFF!important;
+}
+.jiaobiao{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  color: #00b7b3;
+}
+.currenClassfy{
+  background-color: #e2f5f3;
+  color: #00b7b3;
+}
+.popupqueding{
+  margin: 20rpx auto;
+  width: 90vw;
+  line-height: 60rpx;
+  background-color: #00b7b3;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 28rpx;
+  border-radius: 5rpx;
+}
+.dateBox{
+  display: flex;
+  width: 90vw;
+  margin: 0 auto 0 auto;
+  font-size: 28rpx;
+  justify-content: space-between;
+}
+.rlixuanz{
+  width: 40vw;
+  line-height: 70rpx;
+  border: 1px solid #f0f0f0;
+  border-radius: 10rpx;
+  box-sizing: border-box;
+  padding:0 20rpx;
+  color: #333333;
+}
+.line{
+  line-height: 70rpx;
+}
+.base-model-popup-picker{
+  display: flex;
+  flex-direction: column;
+  background: #FFF;
+  position: relative;
+
+  .datetime-picker-box{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+
+    .datetime-picker-header{
+      display: flex;
+      justify-content: space-between;
+      height: 100rpx;
+      align-items: center;
+      padding: 0 32rpx;
+      border-bottom: 2rpx solid #EEEEEE;
+      .icon-close{
+        font-size: 28rpx;
+      }
+    }
+
+    .datetime-picker-container{
+      flex: 1;
+      overflow: hidden;
+
+      .purchase-inv-scroll{
+        height: 100%;
+        .datetime-picker-item{
+          height: 80rpx;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 0 24rpx;
+
+          &.active{
+            color: #00AAA6;
+          }
+        }
+      }
+    }
+  }
+}
+

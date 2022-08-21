@@ -1,0 +1,12 @@
+{
+  "component": true,
+  "usingComponents": {
+    "img": "../../../components/img/index",
+    "van-loading": "../../../components/vant/loading/index",
+    "van-tag": "../../../components/vant/tag/index",
+    "van-progress-activity": "../../../components/vant/progress-activity/index",
+    "activity-count-down": "../../../components/activity-count-down/index",
+    "activity-good-info": "../activity-good-info/index",
+    "activity-good-more": "../activity-good-more/index"
+  }
+}

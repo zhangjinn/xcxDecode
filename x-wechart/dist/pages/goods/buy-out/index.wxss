@@ -1,0 +1,242 @@
+@import "./../../../components/pay-confirm/index.wxss";
+@import "./../../../components/order/index.wxss";
+.van-hairline._128e666,
+.van-hairline--top._128e666,
+.van-hairline--left._128e666,
+.van-hairline--right._128e666,
+.van-hairline--bottom._128e666,
+.van-hairline--top-bottom._128e666,
+.van-hairline--surround._128e666 {
+  position: relative;
+}
+.van-hairline._128e666::after,
+.van-hairline--top._128e666::after,
+.van-hairline--left._128e666::after,
+.van-hairline--right._128e666::after,
+.van-hairline--bottom._128e666::after,
+.van-hairline--top-bottom._128e666::after,
+.van-hairline--surround._128e666::after {
+  content: ' ';
+  position: absolute;
+  pointer-events: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transform-origin: center;
+          transform-origin: center;
+  /* cover wechat button:after default transforn-origin */
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+  border: 0 solid #eee;
+}
+.van-hairline--top._128e666::after {
+  border-top-width: 1px;
+}
+.van-hairline--left._128e666::after {
+  border-left-width: 1px;
+}
+.van-hairline--right._128e666::after {
+  border-right-width: 1px;
+}
+.van-hairline--bottom._128e666::after {
+  border-bottom-width: 1px;
+}
+.van-hairline--top-bottom._128e666::after {
+  border-width: 1px 0;
+}
+.van-hairline--surround._128e666::after {
+  border-width: 1px;
+}
+.order._128e666 {
+  position: relative;
+  height: 100%;
+}
+.order-scroll._128e666 {
+  position: relative;
+  height: 100%;
+  padding-bottom: 316rpx;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.order-common-extra._128e666 {
+  font-size: 20rpx;
+  font-weight: 400;
+  color: #AAAAAA;
+}
+.order-items._128e666 {
+  padding: 16rpx 24rpx;
+  background-color: #ffffff;
+  margin-bottom: 16rpx;
+}
+.order-items-item._128e666 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 44rpx;
+  margin-bottom: 8rpx;
+}
+.order-items-item-label._128e666 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  width: 534rpx;
+  height: 100%;
+  background-color: #ECF8F8;
+  padding: 0 24rpx;
+  font-size: 20rpx;
+  color: #00AAA6;
+  font-weight: 400;
+}
+.order-items-item-value._128e666 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+          justify-content: flex-end;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  font-size: 22rpx;
+  font-weight: 400;
+}
+.order-items-item-value .black._128e666 {
+  color: #262626;
+  margin-right: 16rpx;
+}
+.order-items-item-value .gray._128e666 {
+  color: #777777;
+}
+.order-items-item-value-max._128e666 {
+  font-size: 24px;
+  font-weight: 400;
+  color: #262626;
+  text-shadow: 0 0 12rpx rgba(0, 0, 0, 0.08);
+}
+.order-footer-header._128e666 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding: 8rpx 24rpx;
+  height: 152rpx;
+  background-color: #ffffff;
+}
+.order-footer-header-item._128e666 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+.order-footer-header-item .label._128e666 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.order-footer-header-item .label-text._128e666 {
+  font-size: 20rpx;
+  font-weight: 400;
+  color: #777777;
+  margin-right: 8rpx;
+}
+.order-footer-header-item .label-value._128e666 {
+  font-size: 22rpx;
+  font-weight: 400;
+  color: #262626;
+}
+.order-footer-header-item .label-checkbox._128e666 {
+  font-size: 22rpx;
+  font-weight: 400;
+  color: #262626;
+}
+.order-footer-body._128e666 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  -webkit-box-align: end;
+  -webkit-align-items: flex-end;
+          align-items: flex-end;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  padding: 0 16rpx;
+}
+.order-footer-body-item._128e666 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.order-footer-body-item .item-label._128e666 {
+  font-size: 24rpx;
+  font-weight: 400;
+  color: #777777;
+  margin-right: 16rpx;
+}
+.order-footer-body-item .item-value._128e666 {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #D9161C;
+}
+.order-footer-body-item .item-unit._128e666 {
+  font-size: 22rpx;
+  font-weight: 400;
+  color: #777777;
+  margin-right: 8rpx;
+}
+.order-footer-body-item .item-price._128e666 {
+  font-size: 22rpx;
+  font-weight: 400;
+  color: #262626;
+}

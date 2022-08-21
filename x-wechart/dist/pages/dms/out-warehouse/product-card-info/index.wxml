@@ -1,0 +1,20 @@
+
+  <view class="item-content _32a4835">
+    <img class="item-content-img _32a4835" src="{{ orderItem.img }}" errSrc="{{ orderItem.err }}"/>
+    <view class="item-content-right _32a4835">
+      <view class="item-info-title _32a4835">{{ orderItem.model }}</view>
+      <view class="item-info-line _32a4835">
+        <view class="item-info-line-price _32a4835">
+          <text class="order-code _32a4835">￥</text>
+          <text class="order-num _32a4835">{{ orderItem.bprice }}</text>
+          <text  wx:if="{{ orderItem.colour }}" class="order-color _32a4835">({{ orderItem.colour }})</text>
+        </view>
+        <view class="item-info-line-quantity _32a4835">x{{ orderItem.backnowledgedQty }}</view>
+      </view>
+      <view class="order-goods-detail-desc _32a4835">
+        <view class="model _32a4835"  wx:if="{{ orderItem.priceGroupName }}">{{ orderItem.priceGroupName }}</view>
+        <view class="deposit _32a4835"  wx:if="{{ orderItem.retainer && orderItem.retainer > 0 }}">定金￥{{ orderItem.retainer }}</view>
+        <view class="rebate _32a4835" wx:if="{{ orderItem.rebateMoney && orderItem.rebateMoney > 0 }}">返利金￥{{ orderItem.rebateMoney }}</view>
+      </view>
+    </view>
+  </view>

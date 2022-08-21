@@ -1,0 +1,22 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+// 政策电子账单列表
+exports.FINANCE_GET_RSRB_SHEET_LIST = 'FINANCE_GET_RSRB_SHEET_LIST';
+//重置政策电子账单列表
+exports.RESET_RSRB_SHEET_LIST = 'RESET_RSRB_SHEET_LIST';
+//产品品类
+exports.QUERY_APP_PROFIT = 'QUERY_APP_PROFIT';
+//销售组织
+exports.QUERY_APP_FIBOOK = 'QUERY_APP_FIBOOK';
+// 政策对账账单
+exports.FINANCE_POST_RSRB_DETAIL_BY_ROWID = 'FINANCE_POST_RSRB_DETAIL_BY_ROWID';
+// 本期新确认账单
+exports.FINANCE_POST_CUR_CONFIRMED_BY_ROWID = 'FINANCE_POST_CUR_CONFIRMED_BY_ROWID';
+// 本期已开票兑现明细
+exports.FINANCE_POST_RSRB_CASHED_BY_ROWID = 'FINANCE_POST_RSRB_CASHED_BY_ROWID';
+// 政策签章客户接口
+exports.RS_OC_RB_SHEET_BY_ROWID = 'RS_OC_RB_SHEET_BY_ROWID';
+// 签章查看接口
+exports.GET_APP_SIGNATURE_VIEW_SSQ = 'GET_APP_SIGNATURE_VIEW_SSQ';
+// 政策对账单app签章
+exports.DO_APP_RE_RB_CREATE_AND_SIGN = 'DO_APP_RE_RB_CREATE_AND_SIGN';

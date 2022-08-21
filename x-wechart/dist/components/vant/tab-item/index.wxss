@@ -1,0 +1,12 @@
+.van-tab__pane {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  overflow-y: auto;
+}
+.van-tab__pane--active {
+  height: auto;
+}
+.van-tab__pane--inactive {
+  height: 0px;
+  overflow: visible;
+}

@@ -1,0 +1,8 @@
+{
+    "component": true,
+    "usingComponents": {
+      "img": "../img/index",
+      "van-loading": "../vant/loading/index",
+      "van-tag": "../vant/tag/index"
+    }
+}

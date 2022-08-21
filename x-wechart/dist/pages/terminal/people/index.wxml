@@ -1,0 +1,32 @@
+
+  <view class="page-wrap _a43e05a">
+    <view class="top-wrap _a43e05a">
+      <view class="_a43e05a">
+        <van-field value="{{ name }}" center="center" clearable="clearable"  bind:change="onDescriptionChange" placeholder="请输入责任人编码/名称" border="{{ true }}" use-button-slot="use-button-slot" class="_a43e05a">
+          <van-button slot="button" size="small" type="primary" bindtap="searchPeople" class="_a43e05a">
+            搜索
+          </van-button>
+        </van-field>
+        <van-cell use-label-slot="{{true}}" class="_a43e05a">
+          <view slot="title" class="_a43e05a">
+            <van-checkbox  bind:change="onChange" checked-color="#00AAA6" class="check-box _a43e05a" value="{{notFoundCheck}}">
+              <text class="van-cell-text _a43e05a">未搜索到责任人，请在这里确认输入责任人</text>
+            </van-checkbox>
+          </view>
+          <view slot="right-icon" class="_a43e05a">
+            <van-button size="small" type="primary" bindtap="submit" class="_a43e05a">
+              确认
+            </van-button>
+          </view>
+        </van-cell>
+      </view>
+    </view>
+    <view class="bottom-wrap _a43e05a">
+      <block class="_a43e05a" wx:for="{{storyPersons}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="item _a43e05a" bindtap="selPeople" data-wpyselpeople-a="{{item}}">
+          <text class="{{item.account==selCode?'check':''}} _a43e05a">{{ item.userName }}</text>
+          <view  wx:if="{{item.account==selCode}}" class="b-icon check-btn _a43e05a"/>
+        </view>
+      </block>
+    </view>
+  </view>

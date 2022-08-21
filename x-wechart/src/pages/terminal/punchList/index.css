@@ -1,0 +1,202 @@
+@font-face {
+  font-family: 'iconfont';  /* project id 2037285 */
+  src: url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.eot');
+  src: url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.woff') format('woff'),
+  url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.svg#iconfont') format('svg');
+}
+.iconfont{
+  font-style: normal;
+  font-size: 16px;
+  font-family: 'iconfont' !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.benyuesaixuan{
+  font-size: 28rpx;
+  padding: 20rpx;
+  display: flex;
+  justify-content: space-between;
+}
+.greenNumber{
+  color: #00aaa6;
+}
+.benyuRight{
+  color: #999a9a;
+  display: flex;
+  font-size: 26rpx;
+}
+.right20{
+  margin-right: 10rpx;
+}
+.xinzhenBtn{
+  color: #333;
+  margin-left: 30rpx;
+}
+.picker{
+  background-color: #fff;
+  padding: 5rpx 20rpx;
+  border: 1px solid #caccd6;
+  border-radius: 18rpx;
+}
+.CardBox{
+  font-size: 28rpx;
+  background-color: #fff;
+  padding: 20rpx;
+  margin: 0 16rpx;
+  margin-top: 16rpx;
+  border-radius: 20rpx;
+}
+.dakasmallTitle{
+  display: flex;
+  justify-content: space-between;
+  font-size: 28rpx;
+  border-bottom: 1px solid #f7f7f7;
+  padding: 20rpx 0;
+}
+.dakaLeft{
+  display: flex;
+}
+.xundian{
+  margin-left: 5rpx;
+}
+.timeRight{
+  color: #999a9a;
+  font-size: 26rpx;
+}
+.shopItemMsg{
+  margin-top: 10rpx;
+}
+.fubiaotiColor{
+  color: #999a9a;
+  font-size: 24rpx;
+  margin-bottom:30rpx;
+  position: relative;
+}
+.fubiaotiColor>view:first-child {
+  font-size: 28rpx;
+  color: #777777;
+  width: 550rpx;
+  margin-bottom:6rpx;
+}
+.fubiaotiColor image{
+  position: absolute;
+  width: 88rpx;
+  height: 88rpx;
+  right: 20rpx;
+  top: 0;
+}
+.imgBLock{
+  width: 160rpx;
+  height: 120rpx;
+  margin-left: 15rpx;
+  margin-bottom: 10rpx;
+}
+.chakxmBox{
+  display: flex;
+  justify-content: space-between;
+  font-size: 23rpx;
+  border-top: 1px solid #f7f7f7;
+  padding-top: 20rpx;
+}
+
+
+
+.titleITemBlock{
+  background-color: #00b7b3;
+  color: #fff;
+  padding: 20rpx 20rpx 80rpx 20rpx;
+}
+.datitle,.datitle1{
+  display: flex;
+  justify-content: space-between;
+}
+.datitle1{
+  font-size: 28rpx;
+  margin-top: 20rpx;
+}
+.baiseBlock{
+  background-color: #fff;
+  width: 90vw;
+  margin: -50rpx auto 15rpx auto;
+  display: flex;
+  justify-content: space-around;
+  padding: 50rpx 0;
+  color: black;
+  border-radius: 10rpx;
+  color: #00b7b3;
+  font-size: 35rpx;
+}
+.wenzi{
+  font-size: 26rpx;
+  margin-right: 20rpx;
+  color: #333;
+}
+.itemDaka{
+  font-size: 26rpx;
+  color:#999a9a;
+  display: flex;
+  justify-content: space-between;
+  padding:20rpx;
+}
+.itemDaka>view {
+  display: flex;
+  justify-content: space-between;
+}
+.itemDaka>view>view:first-child {
+  margin-right: 20rpx;
+}
+.closeIcon{
+  display: flex;
+  justify-content: space-between;
+}
+.tankuangBox{
+  padding: 20rpx;
+}
+.blockItemxx{
+  display: flex;
+  justify-content: space-between;
+  font-size:28rpx;
+}
+.gongshi{
+  font-size: 23rpx;
+  margin-left: 20rpx;
+}
+.mendian{
+  font-size: 27rpx;
+}
+.gonshiName{
+  margin-top: 10rpx;
+  color: #333333;
+}
+.left10{
+  margin-left: 10rpx;
+}
+.blockItemxx{
+  background-color: #f7f7f7;
+  padding: 20rpx;
+  margin-top: 20rpx;
+  border-radius: 10rpx;
+}
+.dianhauBox{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.xinzhenBtn{
+  color: #FFFFFF;
+  background-color: #1ca496;
+  width: 100rpx;
+  height: 100rpx;
+  position: fixed;
+  bottom: 100rpx;
+  left: 50%;
+  transform: translateX(-70%);
+  border-radius: 50%;
+  line-height: 100rpx;
+  text-align: center;
+  font-size: 30rpx;
+  z-index: 99;
+}

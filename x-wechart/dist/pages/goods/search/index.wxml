@@ -1,0 +1,38 @@
+
+  <view class="search _0a78373">
+    <block  wx:if="{{ searchPermissions }}" class="_0a78373">
+      <van-search custom-class="header-search" shape="round" use-action-slot="use-action-slot" use-left-icon-slot="{{ true }}" leftSearchIconSow="{{ false }}" placeholder="请输入关键字" placeholder-style="color: #AAAAAA; font-size: 28rpx;"  bind:change="onChange" class="_0a78373">
+        <view slot="label" class="search-left-icon _0a78373">
+          <i class="b-icon shouyesousuo _0a78373"/>
+        </view>
+        <view slot="action" bind:tap="onSearch" class="_0a78373">搜索</view>
+      </van-search>
+
+      <view class="topic _0a78373">
+        <view class="card _0a78373">
+          <view class="card-header _0a78373">
+            <view class="card-header-title _0a78373">历史搜索</view>
+            <view class="card-header-extral _0a78373" bindtap="clearHistory">
+              <i class="b-icon h-icon shanchu _0a78373"/>
+            </view>
+          </view>
+          <view class="card-body card-list _0a78373">
+            <block class="_0a78373" wx:for="{{ searchHistory }}" wx:for-index="index" wx:for-item="history" wx:key="index">
+              <view data-url="{{ history.url }}" data-value="{{ history.value }}" bindtap="clickHistory" class="card-list-item _0a78373">
+                <text class="card-list-item-text _0a78373">{{ history.value }}</text>
+              </view>
+            </block>
+          </view>
+        </view>
+      </view>
+    </block>
+    
+  <view class="empty-data _0a78373" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+  </view>

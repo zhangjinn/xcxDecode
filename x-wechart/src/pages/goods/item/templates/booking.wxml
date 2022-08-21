@@ -1,0 +1,121 @@
+<template name="booking">
+
+  <view class="booking {{promotion.currentStatus === 'prev' ? 'disabled' : 'active'}}">
+    <view class="booking-img-bg">
+      <!--   active-detail-bg.png   -->
+      <image class="img-bg" src="http://3s-static.hisense.com/wechat/1/14722429883/1635993529373_d8e3c2564c5d4aff84e13a5c8255537e.png"/>
+    </view>
+    <view class="booking-active-info">
+      <view class="booking-left">
+        <view class="booking-left-price">
+          <view class="booking-left-price-origin"><text class="code">¥</text>{{promotion.standardPrice}}</view>
+          <view class="booking-left-price-current">预售折后¥{{promotion.billPrice}}</view>
+        </view>
+        <view class="booking-left-num">
+          <view class="booking-left-desc">活动数量 {{promotion.qty}}</view>
+          <block wx:if="{{promotion.currentStatus === 'next' || promotion.currentStatus === 'current' || promotion.currentStatus === 'pause'}}">
+            <block wx:if="{{promotion.currentStatus === 'pause' || promotion.currentStatus === 'current'}}">
+              <view class="booking-right-progress">
+                <view class="booking-right-progress-content">
+                  <van-progress color="#FFE28F" trackColor="#b81117" stroke-width="12rpx" show-pivot="{{false}}" percentage="{{promotion.percent}}" />
+                </view>
+                <view class="booking-right-progress-desc">仅剩{{promotion.nowCount}}件</view>
+              </view>
+            </block>
+          </block>
+        </view>
+
+      </view>
+      <view class="booking-right">
+        <block wx:if="{{promotion.currentStatus === 'next' || promotion.currentStatus === 'current' || promotion.currentStatus === 'pause'}}">
+<!--          <block wx:if="{{promotion.currentStatus === 'pause' || promotion.currentStatus === 'current'}}">-->
+<!--            <view class="booking-right-progress">-->
+<!--              <view class="booking-right-progress-content">-->
+<!--                <van-progress color="#FFE28F" trackColor="#b81117" stroke-width="12rpx" show-pivot="{{false}}" percentage="{{promotion.percent}}" />-->
+<!--              </view>-->
+<!--              <view class="booking-right-progress-desc">仅剩{{promotion.nowCount}}件</view>-->
+<!--            </view>-->
+<!--          </block>-->
+          <block wx:if="{{promotion.currentStatus === 'next'}}">
+            <view class="booking-right-next">{{promotion.timerStr}}开始抢</view>
+          </block>
+          <view class="booking-right-timer">
+            <view class="booking-right-timer-desc">
+              {{promotion.currentStatus === 'next' ? '距开始' : '距结束'}}还剩<view class="timer-item-day" wx:if="{{timer.days > 0}}">{{ timer.days }}天</view>
+            </view>
+            <van-count-down
+              use-slot
+              time="{{ promotion.timer }}"
+              bind:change="onTimerChange"
+            >
+              <view class="timer-item">
+<!--                <view class="timer-item-day" wx:if="{{timer.days > 0}}">{{ timer.days }}天</view>-->
+                <view class="timer-item-hours">{{ timer.hours }}</view>
+                <view class="timer-item-divider">:</view>
+                <view class="timer-item-minutes">{{ timer.minutes }}</view>
+                <view class="timer-item-divider">:</view>
+                <view class="timer-item-seconds">{{ timer.seconds }}</view>
+              </view>
+            </van-count-down>
+          </view>
+        </block>
+        <block wx:else>
+          <view class="booking-right-tip margin-bottom-8">活动时间</view>
+          <view class="booking-right-tip">{{promotion.startAt}}-{{promotion.endAt}}</view>
+        </block>
+      </view>
+    </view>
+  </view>
+
+
+  <view class="booking-tag">
+    <view class="tag-org van-hairline--surround">{{product.orgName || '股份青岛'}}</view>
+    <view class="tag-code">{{promotion.activityName}} {{promotion.activityCode}}</view>
+  </view>
+</template>
+
+<template name="booking-footer">
+  <block wx:if="{{status !== 'prev'}}">
+    <view class="booking-footer">
+      <view wx:if="{{type== 'order'}}" bind:tap="bookingAttr" hover-class="{{ status === 'current' ? 'hover' : 'none' }}" class="booking-footer-action {{ status === 'current' ? 'active' : 'disabled' }}">
+        <view class="market-submit">
+          <view class="left"></view>
+          <view class="right">
+            <block wx:if="{{status === 'next'}}">敬请期待</block>
+            <block wx:if="{{status === 'current' || status === 'pause'}}">
+              去下单
+            </block>
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{type!== 'order'}}" bind:tap="bookingAttr" hover-class="{{ status === 'current' ? 'hover' : 'none' }}" class="booking-footer-action {{ status === 'current' ? 'active' : 'disabled' }}">
+<!--        <block wx:if="{{status === 'next'}}">敬请期待</block>-->
+        <view class="market-submit" wx:if="{{status === 'next'}}">
+          <view class="left"></view>
+          <view class="right">
+            敬请期待
+          </view>
+        </view>
+        <view class="market-submit" wx:if="{{status === 'current' || status === 'pause'}}">
+          <view class="left">
+            <text class="text-yu">定金预支付</text>
+            <text class="text-price">¥{{deposit}}</text>
+          </view>
+          <view class="right">马上抢</view>
+        </view>
+      </view>
+      <view class="bottom-blank"></view>
+    </view>
+  </block>
+</template>
+
+<template name="booking-btn">
+  <block wx:if="{{status !== 'prev'}}">
+    <view class="booking-btn">
+      <view bind:tap="bookingConfirm" hover-class="{{ status === 'current' ? 'hover' : 'none' }}" class="booking-btn-wrapper {{ status === 'current' ? 'active' : 'disabled' }}">
+        <block wx:if="{{status === 'next'}}">敬请期待</block>
+        <block wx:if="{{status === 'current' || status === 'pause'}}">确定</block>
+      </view>
+    </view>
+  </block>
+</template>

@@ -1,0 +1,310 @@
+<template>
+  <view class="order">
+    <!-- 日历弹框 -->
+    <van-popup show="{{calendarShow}}" position="bottom" bind:close="closeCalendar" z-index="200">
+      <calendar
+        calendarConfig="{{calendarConfig}}"
+        bind:afterTapDay="chooseDay"
+      />
+    </van-popup>
+
+    <!-- 活动来源、促销方式 -->
+    <van-popup
+      show="{{ agentPopup }}"
+      position="right"
+      overlay="{{ true }}"
+      z-index="200"
+      custom-style="height: 100%;"
+      close-on-click-overlay="{{false}}"
+    >
+
+      <view wx:if="{{popupTitle == '促销方式'}}" class="order-drawer">
+        <view class="order-drawer-time">
+          <view class="order-drawer-time-header">
+            <van-icon  name="arrow-left" class="order-drawer-time-header-back" bind:click="selectagentPopup"></van-icon>
+            <view class="order-drawer-time-header-title">{{popupTitle}}</view>
+          </view>
+          <scroll-view class="order-drawer-time-content" scroll-y>
+            <repeat for="{{marketingActivityFilter.methods}}" item="item">
+              <view class="order-drawer-time-content-line" @tap="onSelectMethodChange({{item}})">
+                <view class="text {{filterForm.terms.method === item.key ? 'active' : ''}}">{{item.value}}</view>
+                <van-icon wx:if="{{filterForm.terms.method === item.key }}" name="success" class="time-selected" size="32rpx"/>
+              </view>
+            </repeat>
+          </scroll-view>
+        </view>
+      </view>
+    </van-popup>
+
+    <!-- 筛选侧边弹框 -->
+    <van-popup
+      show="{{visible}}"
+      position="right"
+      overlay="{{ true }}"
+      bind:close="orderfiltering"
+      custom-style="height: 100%;"
+      z-index="130"
+    >
+      <view class="order-drawer">
+        <view class="order-drawer-attr">
+          <scroll-view
+            class="order-drawer-attr-scroll"
+            scroll-y>
+            <view class="attr-item">
+
+              <view class="projectem">
+                <view class="project">
+                  <text class="project-label" style="">活动编码</text>
+                </view>
+                <van-field
+                  placeholder="请输入"
+                  border="{{ false }}"
+                  placeholder-style="font-size: 24rpx;"
+                  bind:change="onCodeChange"
+                  custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;"
+                  clearable
+                  value="{{filterForm.terms.code}}"
+                />
+              </view>
+
+              <view class="projectem">
+                <view class="project">
+                  <text class="project-label" style="">活动名称</text>
+                </view>
+                <van-field
+                  placeholder="请输入"
+                  border="{{ false }}"
+                  placeholder-style="font-size: 24rpx;"
+                  bind:change="onNameChange"
+                  custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;"
+                  clearable
+                  value="{{filterForm.terms.name}}"
+                />
+              </view>
+
+<!--              <view class="parent-agent">-->
+<!--                <view class="agent-name">活动来源</view>-->
+<!--                <view wx:if="{{filterFormExtra.sourceName != ''}}" catchtap="selectagentPopup('source')" class="agent-select">{{filterFormExtra.sourceName}}-->
+<!--                  <view class="b-icon icon-more icons"></view>-->
+<!--                </view>-->
+<!--                <view wx:else catchtap="selectagentPopup('source')" class="agent-select">请选择-->
+<!--                  <view class="b-icon icon-more icons"></view>-->
+<!--                </view>-->
+<!--              </view>-->
+
+              <view class="parent-agent">
+                <view class="agent-name">促销方式</view>
+                <view wx:if="{{filterFormExtra.methodName != ''}}" catchtap="selectagentPopup('method')" class="agent-select">{{filterFormExtra.methodName}}
+                  <view class="b-icon icon-more icons"></view>
+                </view>
+                <view wx:else catchtap="selectagentPopup('method')" class="agent-select">请选择
+                  <view class="b-icon icon-more icons"></view>
+                </view>
+              </view>
+
+              <view class="order-data">
+                <view class="project">
+                  <text style="font-size: 28rpx;color: #777777">活动时间</text>
+                </view>
+                <view class="order-data-input">
+                  <view class="order-data-input-one" data-name="startDate" data-type="sapDate" @tap="openCalendar">
+                    {{filterForm.terms.startDate || '开始日期'}}
+                    <van-icon wx:if="{{filterForm.terms.startDate}}" class="close-icon" name="clear" @tap="clearCalendar('startDate')"/>
+                  </view>
+                  <view class="order-data-input-line">-</view>
+                  <view class="order-data-input-one" data-name="endDate" data-type="sapDate" @tap="openCalendar">
+                    {{filterForm.terms.endDate|| '结束日期'}}
+                    <van-icon wx:if="{{filterForm.terms.endDate}}" class="close-icon" name="clear" @tap="clearCalendar('endDate')"/>
+                  </view>
+                </view>
+              </view>
+
+            </view>
+          </scroll-view>
+          <!-- 底部按钮 -->
+          <view class="order-drawer-attr-footer">
+            <view
+              @tap="onResetFilterForm"
+              class="order-drawer-attr-footer-btn reset"
+              hover-class="order-drawer-attr-footer-btn-hover"
+            >重置</view>
+            <view
+              @tap="onSubmitFilterForm"
+              class="order-drawer-attr-footer-btn confirm"
+              hover-class="order-drawer-attr-footer-btn-hover"
+            >确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <!-- 快捷筛选顶部弹框 活动状态 -->
+    <van-popup
+      show="{{OrderSFilterVisible}}"
+      position="top"
+      overlay="{{ true }}"
+      custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"
+      bind:close="touchOrderSFilter"
+    >
+      <view wx:if="{{CurrentOrderSFilterName === 'orderStatus'}}" class="order-s-filter-container">
+        <view class="order-operation">
+          <view class="operation-text van-hairline--bottom" @tap="onSelectStatus('')">
+            <view class="operation-status {{ filterForm.terms.status === '' ? 'active' : '' }}">全部</view>
+            <view wx:if="{{ filterForm.terms.status === '' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <view class="order-operation" wx:for={{saleFilterList}}>
+          <view class="operation-text van-hairline--bottom" @tap="onSelectStatus({{ item.id}})">
+            <view class="operation-status {{ filterForm.terms.status === item.id ? 'active' : '' }}">{{item.value}}</view>
+            <view wx:if="{{ filterForm.terms.status ===  item.id }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    <headerTab
+      :tabList.sync="headerTabList"
+      @onTabChange.user="touchOrderSFilter"
+      @onSideFilter.user="orderfiltering"
+    />
+    <scroll-view
+      wx:if="{{ marketingActivityTotalPages !== 0 }}"
+      scroll-y="true" class="order-scroll"
+      enable-flex
+      bindscroll="onScroll"
+      scroll-top="{{ scrollTop }}"
+      bindscrolltolower="onGetOrderListNext"
+
+    >
+      <repeat for="{{ marketingActivityList }}" item="item">
+        <view class="order-container">
+          <view class="order-top">
+            <view class="order-title">
+              <view class="order-share">
+                {{ item.activityCode }}
+              </view>
+              <text class="order-status">{{ item.statusDesc }}</text>
+            </view>
+            <view class="order-detail">
+              <view class="active-type {{item.discountTypeId == '90605'?'combinationPurchaseLabel':'normalLabel'}}">{{ item.discountTypeName }}</view>
+              <view class="active-name">{{ item.activityName }}</view>
+            </view>
+            <view class="order-time">
+              <view>活动时间：{{ item.startDate }} ~ {{ item.endDate }}</view>
+            </view>
+          </view>
+
+          <!-- 组合购 -->
+          <block wx:if="{{item.discountTypeId=='90605'}}">
+            <view class="set-purchase-wrapper">
+              <view wx:for="{{item.setPurchaseNumber}}" wx:for-item="itemTwo" wx:key="index" class="set-purchase-item">
+                <view class="combination-code">组合编码：{{ itemTwo }}</view>
+                <view wx:for="{{ item.setPurchaseList[itemTwo] }}" wx:for-item="modelList" wx:for-index="idx" wx:key="idx" class="set-purchase-item-inner">
+                  <view class="modelSeriesHeader">
+                    <view>{{ modelList.productGroupRemark }}</view>
+                    <view class="condition">x{{ modelList.packageNum }}</view>
+                  </view>
+                  <repeat for="{{modelList.child}}" item="goods">
+                    <view class="order-goods">
+                      <navigator class="order-goods-img" url="">
+                        <img class="goodimg" src="{{ goods.img }}" errSrc="{{ goods.errImg }}"/>
+                      </navigator>
+                      <view class="order-goods-detail">
+                        <view class="order-goods-detail-name">
+                          <text class="detail-text">{{goods.productName}}</text>
+                        </view>
+                        <view wx:if="{{goods.productSubtitle}}" class="order-goods-detail-desc">
+                          <text class="detail-text">{{ goods.productSubtitle }}</text>
+                        </view>
+                        <view class="order-goods-detail-number">
+                          <view class="detail-billPrice">
+                            <text class="symbol">￥</text>
+                            <text class="curr-billPrice">{{goods.billPrice}}</text>
+                            <text class="old-billPrice">{{goods.standardPrice}}</text>
+                          </view>
+                          <text class="detail-qty">×{{goods.qty}}</text>
+                        </view>
+                      </view>
+                    </view>
+                  </repeat>
+                </view>
+              </view>
+            </view>
+          </block>
+
+          <!-- 套购 -->
+          <block wx:elif="{{item.discountTypeId=='90603'}}">
+            <view class="set-purchase-wrapper">
+              <view wx:for="{{item.setPurchaseNumber}}" wx:for-item="itemTwo" wx:key="index" class="set-purchase-item">
+                <view class="combination-code">组合编码：{{ itemTwo }}</view>
+                <view wx:for="{{ item.setPurchaseList[itemTwo] }}" wx:for-item="goods" wx:for-index="idx" wx:key="idx" class="set-purchase-item-inner">
+                  <view class="order-goods">
+                    <navigator class="order-goods-img" url="">
+                      <img class="goodimg" src="{{ goods.img }}" errSrc="{{ goods.errImg }}"/>
+                    </navigator>
+                    <view class="order-goods-detail">
+                      <view class="order-goods-detail-name">
+                        <text class="detail-text">{{goods.productName}}</text>
+                        <text wx:if="{{item.discountTypeId=='90603'}}" class="detail-nums">x{{goods.packageNum}}</text>
+                      </view>
+                      <view wx:if="{{goods.productSubtitle}}" class="order-goods-detail-desc">
+                        <text class="detail-text">{{ goods.productSubtitle }}</text>
+                      </view>
+                      <view class="order-goods-detail-number">
+                        <view class="detail-billPrice">
+                          <text class="symbol">￥</text>
+                          <text class="curr-billPrice">{{goods.billPrice}}</text>
+                          <text class="old-billPrice">{{goods.standardPrice}}</text>
+                        </view>
+                        <text class="detail-qty">×{{goods.qty}}</text>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </block>
+
+          <!-- 直降、后返 -->
+          <block wx:else>
+            <view class="order-info">
+              <repeat for="{{item.productDtoList}}" item="goods">
+                <view class="order-goods">
+                  <navigator class="order-goods-img" url="">
+                    <img class="goodimg" src="{{ goods.img }}" errSrc="{{ goods.errImg }}"/>
+                  </navigator>
+                  <view class="order-goods-detail">
+                    <view class="order-goods-detail-name">
+                      <text class="detail-text">{{goods.productName}}</text>
+                      <text wx:if="{{item.discountTypeId=='90603'}}" class="detail-nums">x{{goods.packageNum}}</text>
+                    </view>
+                    <view wx:if="{{goods.productSubtitle}}" class="order-goods-detail-desc">
+                      <text class="detail-text">{{ goods.productSubtitle }}</text>
+                    </view>
+                    <view class="order-goods-detail-number">
+                      <view class="detail-billPrice">
+                        <text class="symbol">￥</text>
+                        <text class="curr-billPrice">{{goods.billPrice}}</text>
+                        <text class="old-billPrice">{{goods.standardPrice}}</text>
+                      </view>
+                      <text class="detail-qty">×{{goods.qty}}</text>
+                    </view>
+                  </view>
+                </view>
+              </repeat>
+            </view>
+          </block>
+
+          <view class="order-handle">
+            <view class="btn-detail" @tap="viewDetail({{item.id}})">查看详情</view>
+          </view>
+        </view>
+      </repeat>
+    </scroll-view>
+    <emptyDataType wx:else/>
+
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

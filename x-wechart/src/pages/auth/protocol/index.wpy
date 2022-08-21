@@ -1,0 +1,35 @@
+<template>
+  <view class="protocol">
+    <scroll-view
+      scroll-y
+      enable-flex
+      enable-back-to-top="true"
+      scroll-with-animation="true"
+      scroll-top="{{visibelTop}}"
+      class="protocol-scroll"
+    >
+      <view class="text">您好！</view>
+      <view class="text-index">首先非常感谢您多年来对海信集团的大力支持！</view>
+      <view
+        class="text-index"
+      >海信为提升客户体验，实现客户与海信、客户与下属商家以及消费者之间的高效沟通，精准营销；并由关注客户提货变为帮助客户提升终端零售， 实现“勤进快销”，特全力推行海信智慧门店（smart store system）系统。 该系统包含了自助下单，物流监控，进销存管理，在线对账，会员精准营销等功能，基于网页浏览器设计，无需另行安装软件，简单宜用，是为客户赚钱的好帮手。海信智慧门店系统旨在帮助客户：</view>
+      <view class="text">1、打通与海信的订单流程，实现客户在线下单，并且实现订单的全流程（订单下达、订单分拣、审核出库、商收、发票开具）可视；</view>
+      <view class="text">2、 实现客户与海信在线对账，效率更高；</view>
+      <view class="text">3、实现按照零售结算返利和结算相关费用，促进客户的零售业务；</view>
+      <view
+        class="text"
+      >4、实现会员精准营销，实现客户对自己会员的收集、管理和营销，提升销量，且海信后期会协助客户进行顾客大数据分析并实现精准引流。推行海信智慧门店系统的最终目的是为了实现海信与客户之间高效沟通，互利共赢！特别提示：</view>
+      <view class="text-index">1、 所有海信全品类专卖店原则上必须使用海信智慧门店系统，只有使用智慧门店系统的全品类专卖店方可享受海信为专卖店提供的专供产品和专有政策；</view>
+      <view class="text-index">2、所有和海信直接合作的客户原则上必须使用自助下单模块，对于使用下单系统的客户，海信有权优先给予满足货源；</view>
+      <view class="text-index">3、所有和海信直接合作的客户原则上必须使用海信对账模块，海信有权参考客户和海信的合作数据判断是否提供贷款服务；</view>
+      <view class="text-index">4、所有海信的代理商原则上必须使用进销存管理模块，海信有权参考模块的分销数据给予代理商进行返利和费用的兑现；</view>
+      <view class="text-index">5、已使用海信智慧门店系统的客户，必须将此系统作为对海信相关产品唯一日常营运管理的系统，并持续使用；同时严禁使用该系统录入虚假数据，若出现违规操作，海信有权视情节轻重给予限期整改、停止供货、直至取消合作资格等相应处理措施；</view>
+      <view class="text-index">6、海信智慧门店系统功能后期会不断完善，最终以满足客户的业务需求为目的；同时海信智慧门店系统允许商家管理非海信的产品，海信会提供运维服务，保证系统的可用和稳定。</view>
+      <view class="text">希望贵司能够与海信携手共赢！ </view>
+      <view class="text">海信集团有限公司</view>
+    </scroll-view>
+    <view @tap="getNext" hover-class="hover" class="protocol-footer {{ timer === 0 ? 'success' : 'disabled' }}">同意并接受<block wx:if="{{timer > 0}}">（{{timer}}s）</block></view>
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

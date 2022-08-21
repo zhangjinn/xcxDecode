@@ -1,0 +1,22 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+// 我的余额 初始化数据
+exports.GET_BALANCE_INIT_DATA = 'GET_BALANCE_INIT_DATA';
+// 重新选择组织和物料组时，重置余额数据
+exports.RESET_BALANCE_DATA = 'RESET_BALANCE_DATA';
+// 查询余额
+exports.GET_BALANCE_INFO = 'GET_BALANCE_INFO';
+// 查询预占用额度明细
+exports.GET_WAIT_BALANCE_INFO_LIST = 'GET_WAIT_BALANCE_INFO_LIST';
+// 查询考核通知单列表
+exports.GET_ASSESSMENT_NOTICE_LIST = 'GET_ASSESSMENT_NOTICE_LIST';
+// 重置考核通知单列表
+exports.RESET_ASSESSMENT_NOTICE_LIST = 'RESET_ASSESSMENT_NOTICE_LIST';
+// 查询考核通知单筛选条件列表
+exports.GET_ASSESSMENT_NOTICE_FILTER_LIST = 'GET_ASSESSMENT_NOTICE_FILTER_LIST';
+// 查询考核通知单商家申诉申请
+exports.ASSESSMENT_NOTICE_APPEAL_APPLICATION = 'ASSESSMENT_NOTICE_APPEAL_APPLICATION';
+// 商家确认考核通知单
+exports.ASSESSMENT_NOTICE_CONFIRM = 'ASSESSMENT_NOTICE_CONFIRM';
+// 考核通知单申诉上传照片
+exports.UPLOAD_IMG = 'UPLOAD_IMG';

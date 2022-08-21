@@ -1,0 +1,15 @@
+<view class="x-tabs">
+  <scroll-view class="x-tabs-content" style="{{contentStyle}}" scroll-x>
+    <block wx:for="{{items}}" wx:key="{{item.menuId}}_menu_{{index}}">
+      <view
+        data-id="{{item.id}}"
+        data-index="{{index}}"
+        bindtap="onTap"
+        class="x-tabs-content-item"
+        style="{{ tabIndex === index ? tabItemActiveStyle : tabItemStyle }}"
+      >
+        <view class="name">{{item.name}}</view>
+      </view>
+    </block>
+  </scroll-view>
+</view>

@@ -1,0 +1,77 @@
+<template>
+    <view class="container">
+        <!-- 时间选择弹窗开始 -->
+        <van-popup
+        show="{{TimeFilterVisible}}"
+        position="top"
+        overlay="{{ true }}"
+        custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"
+        bind:close="onToggleFilterItem"
+        >
+        <view class="filter-container">
+            <repeat for="{{timeList}}" item="item">
+                <view class="order-operation" @tap="onSelectTime('{{item.value}}','{{item.label}}')">
+                <view class="operation-text van-hairline--bottom">
+                    <view class="operation-status {{ beginDate === item.value ? 'active' : '' }}">{{item.label}}</view>
+                    <view wx:if="{{ beginDate === item.value }}"  class="b-icon icon-check operation-icon"></view>
+                </view>
+                </view>
+            </repeat>
+        </view>
+        </van-popup>
+        <!-- 时间选择弹窗结束 -->
+        <!-- 状态选择弹窗开始 -->
+        <van-popup
+        show="{{StatusFilterVisible}}"
+        position="top"
+        overlay="{{ true }}"
+        custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"
+        bind:close="onToggleFilterItem"
+        >
+        <view class="filter-container">
+            <repeat for="{{statusList}}" item="item">
+                <view class="order-operation" @tap="onSelectStatus('{{item.value}}','{{item.label}}')">
+                <view class="operation-text van-hairline--bottom">
+                    <view class="operation-status {{ answerFlag === item.value ? 'active' : '' }}">{{item.label}}</view>
+                    <view wx:if="{{ answerFlag === item.value }}"  class="b-icon icon-check operation-icon"></view>
+                </view>
+                </view>
+            </repeat>
+        </view>
+        </van-popup>
+        <!-- 状态选择弹窗结束 -->
+        <view class="head">
+            <view class="input-group">
+                <input class="input" placeholder="输入问题关键字" value="{{title}}" bind:change="onTitleChange" />
+                <view class="btn" @tap="onSearch">查询</view>
+            </view>
+        </view>
+
+        <headerTab
+          :showRightBtn="showRightBtn"
+          :tabList.sync="headerTabList"
+          @onTabChange.user="onToggleFilterItem"
+        />
+        <scroll-view bindscrolltolower="loadNextPage" scroll-y="true" class="problem-scroll">
+            <repeat for="{{consultlist.consults}}" item="item">
+            <view class="item " @tap="gotodetail({{item.id}})">
+                <view class="item-content van-hairline--bottom">
+                    <view class="row">
+                        <view class="title {{ item.status === '已关闭' ? 'done' : ''}} van-ellipsis">[{{item.questionTypeName}}] {{item.title}}</view>
+                        <view class="status">{{item.status}}</view>
+                    </view>
+                    <view class="row">
+                        <view class="date">{{item.pubAt}}</view>
+                        <view wx:if="" class="btn">查看详情</view>
+                        <view wx:else class="btn">关闭</view>
+                    </view>
+                </view>
+            </view>
+            </repeat>
+        </scroll-view>
+      <van-toast id="van-toast" />
+    </view>
+</template>
+
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts"></script>

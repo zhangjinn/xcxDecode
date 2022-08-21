@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),scan=_curry3(function(r,n,e){for(var u=0,c=e.length,a=[n];u<c;)n=r(n,e[u]),a[u+1]=n,u+=1;return a});module.exports=scan;

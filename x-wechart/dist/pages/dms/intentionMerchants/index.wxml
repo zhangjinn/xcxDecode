@@ -1,0 +1,305 @@
+
+<view class="Outermost">
+  <view class="progressBar">
+
+    <!-- <van-steps steps="{{ steps }}" active="{{ active }}" />-->
+    <view class="buzhoutiao">
+      <view class="progress">
+        <view class="circleSelet">1</view>
+        <view class="titleselect">公司基本信息</view>
+      </view>
+      <view class="stepLine">
+      </view>
+      <view class="progress">
+        <view class="btn {{selectBuzhou == 2 ? 'circleSelet' : 'circle'}}" data-id="2">2</view>
+        <!-- <view class="title">合作信息</view> -->
+        <view class="btn {{selectTitle == 2 ? 'titleselect' : 'title'}}" data-id="2">合作信息</view>
+      </view>
+      <view class="stepLine">
+      </view>
+      <view class="progress">
+        <!--<view class="circle">3</view>
+                <view class="title">等待审核结果</view>-->
+        <view class="btn {{selectBuzhou1 == 3 ? 'circleSelet' : 'circle'}}" data-id="3">3</view>
+        <!-- <view class="title">合作信息</view> -->
+        <view class="btn {{selectTitle1 == 3 ? 'titleselect' : 'title'}}" data-id="3">等待审核结果</view>
+
+      </view>
+    </view>
+
+  </view>
+  <view class="infoBox"  wx:if="{{active=== 0}}">
+    <view class="infoList">
+      <view class="infoTitle">联系人姓名</view>
+      <view class="inputBox">
+        <!-- <van-field value="{{ container }}" bind:change="onChangeContainer" bind:clear="clearContainer" placeholder="请输入联系人姓名" placeholder-style="font-size: 32rpx;color: #CCCCCC;" custom-style='font-size: 32rpx;' border="{{ false }}" /> -->
+        <input type="text" class="inputStyle" placeholder="请输入联系人姓名" value="{{ container }}" bindinput="onChangeContainer" placeholder-class="placeholderStyle"/>
+      </view>
+    </view>
+    <view class="line"/>
+    <view class="infoList">
+      <view class="infoTitle">联系人手机号</view>
+      <view class="inputBox">
+        <!-- <van-field value="{{ phoneNumber }}" bind:change="onChangePhoneNumber" bind:clear="clearPhoneNumber" placeholder="请输入联系人手机号" placeholder-style="font-size: 32rpx;color: #CCCCCC;" custom-style='font-size: 32rpx;' border="{{ false }}" /> -->
+        <input type="text" class="inputStyle" placeholder="请输入联系人手机号" value="{{ phoneNumber }}" bindinput="onChangePhoneNumber" placeholder-class="placeholderStyle"/>
+      </view>
+    </view>
+    <view class="line"/>
+    <view class="infoList phoneCode">
+      <view class="inputBox">
+        <!-- <van-field value="{{ phoneNumber }}" bind:change="onChangePhoneNumber" bind:clear="clearPhoneNumber" placeholder="请输入联系人手机号" placeholder-style="font-size: 32rpx;color: #CCCCCC;" custom-style='font-size: 32rpx;' border="{{ false }}" /> -->
+        <input type="text" class="inputStyle" placeholder="请输入手机号验证码" value="{{ phoneCode }}" bindinput="changeCode" placeholder-class="placeholderStyle"/>
+        <view class="{{isSend?'inactiveClass':'vertificate'}}" disabled="{{smsFlag}}" bindtap="{{isSend?'':'sendCode'}}"> {{isSend?((secend))+'s'+'后重新发送':'发送验证码'}}</view>
+        
+        
+        <!-- <button  class="{{phoneCodeButton}}" bindtap="bindButtonTap" disabled='{{disabled}}' >{{text}}</button> -->
+
+      </view>
+    </view>
+    <view class="line lineCode"/>
+    <view class="infoList">
+      <view class="infoTitle">公司全称</view>
+      <view class="inputBox">
+        <!-- 输入时调天眼查企业接口 -->
+        <view class="uinn">
+          <view class="weui-search-bar">
+            <view class="weui-search-bar__form ">
+              <input wx:if="{{ companyInputFlag }}" type="text" class="inputStyle" placeholder="请输入公司名称" value="{{inputVal}}" bindinput="inputTyping" placeholder-class="placeholderStyle"/>
+              <view wx:elif="wx:elif" class="inputBox" bindtap="inputCompanyName">
+                <input type="button" disabled="true" class="inputStyle" value="{{showCompanyName}}" placeholder-class="placeholderStyle"/>
+              </view>
+              <scroll-view class="scroll-view" scroll-y wx:if="{{viewShowed}}">
+                <view wx:for="{{companyList}}" wx:key="{{index}}" class="msg-item ">
+                  <view class="user-name" bindtap="name" data-index="{{item.name}}">{{item.name}}</view>
+                </view>
+              </scroll-view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="line"/>
+    <view class="infoList">
+      <view class="infoTitle">纳税人识别号</view>
+      <view class="inputBox">
+         <input type="text" class="inputStyle" placeholder="请输入纳税人识别号" value="{{taxNumber}}" bindinput="onChangeTFN" placeholder-class="placeholderStyle"/>
+        <!-- <van-field value="{{ taxNumber }}" bind:change="onChangeTFN" bind:clear="clearTFN" placeholder="请输入纳税人识别号" placeholder-style="font-size: 32rpx;color: #CCCCCC;" custom-style='font-size: 32rpx;' border="{{ false }}" /> -->
+      </view>
+    </view>
+    <view class="line" style="height:2rpx"/>
+    <view class="infoList">
+        <view class="infoTitle">公司类型</view>
+        <view class="inputBox" bindtap="openType">
+            <!-- <van-field bindtap="openType" readonly value="{{ companyType }}" placeholder="一般纳税人/小规模纳税人" placeholder-style="font-size: 32rpx;color: #AAAAAA;" custom-style='font-size: 32rpx;' border="{{ false }}" /> -->
+            <input type="button" disabled="true" class="inputStyle" placeholder="一般纳税人/小规模纳税人" value="{{companyType}}" placeholder-class="placeholderStyle"/>
+        </view>
+    </view>
+    <view class="line" style="height:2rpx"/>
+    <view class="infoList" bindtap="showChooseAdress">
+      <view class="infoTitle">请选择省市区</view>
+      <view class="inputBox">
+        <input wx:if="{{showAdressInput}}" disabled type="text" class="inputStyle" value="{{ areaText }}" placeholder-class="placeholderStyle"/>
+        <input wx:elif="wx:elif" type="text" disabled placeholder="请选择" class="inputStyle" placeholder-class="placeholderStyle"/>
+      </view>
+    </view>
+   <view class="line" style="height:2rpx"/>
+    <view class="infoList">
+      <view class="infoTitle">详细地址</view>
+      <view class="inputBox">
+          <input type="text" class="inputStyle" placeholder="请输入详细地址" value="{{ detailAdress }}" bindinput="onChangeDetailAdress" placeholder-class="placeholderStyle"/>
+      </view>
+    </view>
+    <view class="line" style="height:2rpx"/>
+    <view class="infoList">
+      <view class="infoTitle">员工个数</view>
+      <view class="inputBox">
+        <!-- <van-field value="{{workerNumber }}" bind:change="onChangeWorkerNumber" bind:clear="clearWorkerNumber" placeholder="请输入员工个数"  placeholder-style="font-size: 32rpx;color: #CCCCCC;" custom-style='font-size: 32rpx;' border="{{ false }}" /> -->
+         <input type="text" class="inputStyle" placeholder="请输入员工个数" value="{{ workerNumber }}" bindinput="onChangeWorkerNumber" placeholder-class="placeholderStyle"/>
+      </view>
+    </view>
+    <view class="line" style="height:2rpx"/>
+  
+  </view>
+  <view class="infoBox two"  wx:if="{{active === 1}}">
+    <view class="chooseBox">
+      <view class="chooseBoxTitle">
+        <P>申请合作产品</P>
+      </view>
+      <view class="chooseBoxButton">
+        <view bindtap="openjigouType" wx:for="{{merchandiseList}}" wx:key="{{item.id}}" data-id="{{item.id}}" data-name="{{item.matklName}}" data-index="{{index}}">
+          <view class="button-gray" wx:if="{{ item.buttonStatus === 0 }}">
+            <p>{{item.matklName}}</p>
+          </view>
+          <view class="button-yellow" wx:elif="{{ item.buttonStatus === 1 }}">
+            <p>{{item.matklName}}</p>
+          </view>
+          <view class="buttton-green" wx:elif="{{ item.buttonStatus === 2 }}">
+            <p>{{item.matklName}}</p>
+          </view>
+          <view class="buttton-green" wx:else>
+            <p>{{item.matklName}}</p>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="tableFrom" wx:if="{{tableShow}}">
+      <view class="tableFromHead">
+        <view>合作产品-类型</view>
+        <view>预计年度销售规模(万)</view>
+      </view>
+      <view class="listItem" wx:for="{{list}}">
+        <view class="typeItem">{{item.productionName}}-{{item.currentSelectTripTypeName}}</view>
+        <view class="saleNum">{{item.saleNum}}</view>
+        <view bindtap="del" class="closeTable" data-index="{{index}}"/>
+      </view>
+    </view>
+    <!-- <view class="listInfo">
+      <view class="txt">可用资金</view>
+      <view class="inputBox">
+        <input style='padding-left:32rpx' type="text"  class="inputStyle" placeholder="请输入可用资金" value="{{ usableMoney }}" bindinput="onChangeUsableMoney"  placeholder-class="placeholderStyle" />
+      </view>
+    </view> -->
+     <view class="infoList">
+      <view class="infoTitle">可用资金</view>
+      <view class="inputBox">
+         <input style="padding-left:32rpx" type="text" class="inputStyle" placeholder="请输入可用资金" value="{{ usableMoney }}" bindinput="onChangeUsableMoney" placeholder-class="placeholderStyle"/>
+      </view>
+    </view>
+    <view class="line"/>
+    <!-- <view class="listInfo">
+      <view class="txt">是否有销售网络</view>
+      <view class="inputBoxLast">
+        <view class="havNetWork" value="{{ radio1 }}"  >
+              <view data-name='1' data-id='1' class="b-icon  {{radio1 == 1 ? 'icon-yxsj-xuanzhong' : 'icon-yxsj-weixuan'}}" bindtap='onChange1'>是</view>
+              <view data-name='0' data-id='0' class="b-icon  {{radio1 == 0 ? 'icon-yxsj-xuanzhong' : 'icon-yxsj-weixuan'}}" bindtap='onChange1'>否</view>
+          </view>
+      </view>
+    </view> -->
+     <view class="infoList lastInfoList">
+      <view class="infoTitle">是否有销售网络</view>
+      <view class="inputBoxLast">
+        <view class="havNetWork" value="{{ radio1 }}">
+              <view data-name="1" data-id="1" class="b-icon  {{radio1 == 1 ? 'icon-yxsj-xuanzhong' : 'icon-yxsj-weixuan'}}" bindtap="onChange1">
+                <span>是</span>
+              </view>
+              <view data-name="0" data-id="0" class="b-icon  {{radio1 == 0 ? 'icon-yxsj-xuanzhong' : 'icon-yxsj-weixuan'}}" bindtap="onChange1">
+                <span>否</span>
+              </view>
+          </view>
+      </view>
+    </view>
+    <view class="line"/>
+  </view>
+  <view wx:if="{{active == 2}}">
+    <van-popup show="{{ showshow }}">
+      <view class="lastBox">
+        <view class="topBox">
+          <view class="tishi">扫描二维码可跟进申请进度</view>
+          <view class="erweima">
+<!--              <canvas  canvas-id="{{myQrcode}}" />-->
+            <canvas class="code" canvas-id="{{myQrcode}}" style="width: 200rpx;height:200rpx;"/>
+          </view>
+
+          <view class="baocun" bindtap="save">保存到相册</view>
+        </view>
+
+        <view class="threeBottom">
+          <view class="baocunTop" bindtap="save">保存到相册</view>
+          <view class="tishi2">
+            <view class="apply"> 申请已提交</view>
+            <view class="apply">请耐心等待审核结果</view>
+          </view>
+          <view class="tishi3">
+            <view wx:if="{{conctatBefor}}"> 请联系{{conctatBefor}}
+              <!-- 电话{{newconctat[1]}} -->
+            </view>
+            <view>将会持续跟进您的信息</view>
+          </view>
+          <view class="tishi4" bindtap="gotoH5" data-wpygotoh5-a="id">
+            查看申请进度的信息
+          </view>
+
+        </view>
+        <view class="Bottomclose" bindtap="closeNow">
+          <i style="font-size:68rpx" class="b-icon icon-yxsjCloseLast"/>
+        </view>
+      </view>
+    </van-popup>
+  </view>
+  <view class="lastbutton" bindtap="next" wx:if="{{active !== 2}}">
+    <view class="nextButton">
+      下一步
+    </view>
+  </view>
+  <!--弹出框 -->
+  <van-popup class="vantPopup" round="round" show="{{show}}" position="bottom" custom-style="border-top-left-radius: 14px;border-top-right-radius: 14px;">
+    <view class="popup">
+      <view class="close" bindtap="closeType">
+        <i class="b-icon icon-yxsjclose" style="color:#666666;font-size:20rpx"/>
+      </view>
+      <view class="radioBox">
+        <van-radio-group class="radioSbox" value="{{ radio }}"  bind:change="onChange1">
+          <van-cell-group>
+            <van-cell title="一般纳税人" clickable="clickable" data-id="1" data-name="一般纳税人" bind:click="onClick">
+              <van-radio custom-class="radioClass" slot="right-icon" name="1"/>
+            </van-cell>
+            <van-cell title="小规模纳税人" clickable="clickable" data-id="2" data-name="小规模纳税人" bind:click="onClick">
+              <van-radio custom-class="radioClass" slot="right-icon" name="2"/>
+            </van-cell>
+          </van-cell-group>
+        </van-radio-group>
+      </view>
+      <view class="button">
+        <view bindtap="closeType">取消</view>
+        <view bindtap="confirm">确定</view>
+      </view>
+    </view>
+  </van-popup>
+
+  <!--点击合作机构出现的弹出框 -->
+  <van-popup class="vantPopup" round="round" show="{{jigouShow}}" position="bottom" custom-style="border-top-left-radius: 14px;border-top-right-radius: 14px;">
+    <view class="popup">
+      <view class="close" bindtap="closejigouType">
+        <i class="b-icon icon-yxsjclose" style="color:#666666"/>
+      </view>
+      <view class="writeBox">
+        <view class="topBox">
+          <view class="titleT">合作类型</view>
+          <view class="topBUtton">
+            <view data-name="直营商" data-id="17452" class="btn {{currentSelectTripType == '17452' ? 'dealerTypeAactive' : 'dealerType'}}" bindtap="selectedPinche">直营商</view>
+            <view data-name="代理商" data-id="17453" class="btn {{currentSelectTripType == '17453' ? 'dealerTypeAactive' : 'dealerType'}}" bindtap="selectedBaoche">代理商</view>
+            <view data-name="分销商" data-id="17451" class="btn {{currentSelectTripType == '17451' ? 'dealerTypeAactive' : 'dealerType'}}" bindtap="selectedBaoche">分销商</view>
+          </view>
+        </view>
+        <view class="bottomBox">
+          <view class="item-row-left">
+            预计年度销售规模(万)
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-note">
+              <!-- <van-field value="{{ saleNum }}" bind:change="onChangeSaleNum" bind:clear="clearSaleNum" placeholder="请填写销售规模" border="{{ false }}" input-align="right" /> -->
+              <input type="text" class="inputStyle" style="padding-left:32rpx" placeholder="请填写销售规模" value="{{ saleNum }}" bindinput="onChangeSaleNum" placeholder-class="placeholderStyle" input-align="right"/>
+            </view>
+          </view>
+
+        </view>
+
+      </view>
+
+      <view class="button">
+        <view bindtap="closejigouType">取消</view>
+        <view bindtap="addHezuo">确定</view>
+      </view>
+    </view>
+  </van-popup>
+
+  <!-- 点击详细地址选择 -->
+  <address/>
+  <van-toast id="van-toast"/>
+  <van-dialog id="van-dialog"/>
+
+  <van-popup show="{{ showChooseAdressWindow }}" roud="roud" position="bottom" custom-style="height: 45%"  bind:close="areaPopuopClose">
+    <van-picker active-class="picker-box" columns="{{ areaItems }}" value-key="name" show-toolbar="true" confirm-button-text="确定" cancel-button-text="取消" bind:cancel="areaPickerCancel" bind:confirm="areaPickerConfirm" bind:change="areaPickerChange"/>
+  </van-popup>
+
+</view>

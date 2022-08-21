@@ -1,0 +1,282 @@
+.ellipsis._a7af800 {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+view._a7af800,
+label._a7af800,
+text._a7af800,
+input._a7af800,
+scroll-view._a7af800 {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+van-icon._a7af800 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+view[hidden]._a7af800 {
+  display: none !important;
+}
+page._a7af800 {
+  background-color: #F7F7F7;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+.item-order-confirm._a7af800 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  width: 100%;
+}
+.van-hairline._a7af800,
+.van-hairline--top._a7af800,
+.van-hairline--left._a7af800,
+.van-hairline--right._a7af800,
+.van-hairline--bottom._a7af800,
+.van-hairline--top-bottom._a7af800,
+.van-hairline--surround._a7af800 {
+  position: relative;
+}
+.van-hairline._a7af800::after,
+.van-hairline--top._a7af800::after,
+.van-hairline--left._a7af800::after,
+.van-hairline--right._a7af800::after,
+.van-hairline--bottom._a7af800::after,
+.van-hairline--top-bottom._a7af800::after,
+.van-hairline--surround._a7af800::after {
+  content: ' ';
+  position: absolute;
+  pointer-events: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transform-origin: center;
+          transform-origin: center;
+  /* cover wechat button:after default transforn-origin */
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+  border: 0 solid #eee;
+}
+.van-hairline--top._a7af800::after {
+  border-top-width: 1px;
+}
+.van-hairline--left._a7af800::after {
+  border-left-width: 1px;
+}
+.van-hairline--right._a7af800::after {
+  border-right-width: 1px;
+}
+.van-hairline--bottom._a7af800::after {
+  border-bottom-width: 1px;
+}
+.van-hairline--top-bottom._a7af800::after {
+  border-width: 1px 0;
+}
+.van-hairline--surround._a7af800::after {
+  border-width: 1px;
+}
+.van-ellipsis._a7af800 {
+  overflow-wrap: break-word;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.van-multi-ellipsis--l2._a7af800 {
+  white-space: initial;
+  word-break: break-all;
+  /* autoprefixer: ignore next */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+}
+.van-multi-ellipsis--l3._a7af800 {
+  white-space: initial;
+  word-break: break-all;
+  /* autoprefixer: ignore next */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+}
+.goods-toper._a7af800 {
+  position: relative;
+  width: 100%;
+}
+.goods-toper._a7af800::after {
+  content: '';
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+  content: ' ';
+  position: absolute;
+  pointer-events: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transform-origin: center;
+          transform-origin: center;
+  /* cover wechat button:after default transforn-origin */
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+  border: 0 solid #EEEEEE;
+  border-bottom-width: 1rpx;
+}
+.goods-toper .item-row._a7af800 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 96rpx;
+  padding-right: 24rpx;
+}
+.goods-toper .item-row-left._a7af800 {
+  padding-right: 24rpx;
+}
+.goods-toper .item-row .amount._a7af800 {
+  color: #D9161C;
+  font-size: 24rpx;
+}
+.goods-toper .item-row .input._a7af800 {
+  padding-right: 20rpx;
+}
+.goods-toper .item-row-right._a7af800 {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+          justify-content: flex-end;
+}
+.goods-toper .item-row-right .item-product._a7af800 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 64rpx;
+  width: 100%;
+  background-color: #F7F7F7;
+  padding: 0 16rpx;
+  color: #AAAAAA;
+}
+.goods-toper .item-row-right-inventory._a7af800 {
+  padding-right: 20rpx;
+  max-width: 525rpx;
+  overflow-wrap: break-word;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.goods-toper .item-row-right .item-row-right-delivery._a7af800 {
+  color: #00AAA6;
+  border-radius: 4rpx;
+  border: 2rpx solid #00AAA6;
+  padding: 0rpx 8rpx;
+  margin-right: 20rpx;
+}
+.goods-toper .item-row-right .placeholder._a7af800 {
+  color: #AAAAAA;
+}
+.goods-toper .prod-scroll-view._a7af800 {
+  width: 100%;
+  position: absolute;
+  top: 96rpx;
+  background-color: white;
+  -webkit-box-shadow: 0rpx 0rpx 10rpx #e2e2e2;
+          box-shadow: 0rpx 0rpx 10rpx #e2e2e2;
+  z-index: 3;
+  padding: 24rpx;
+  min-height: 200rpx;
+  border-radius: 16rpx;
+}
+.goods-toper .prod-scroll-view .cancel-btn._a7af800 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+          justify-content: flex-end;
+}
+.goods-toper .prod-scroll-view .cancel-btn i._a7af800 {
+  color: #777;
+  font-size: 28rpx;
+  padding-left: 40rpx;
+}
+.goods-toper .prod-scroll-view .prod-scroll-view-inner._a7af800 {
+  max-height: 450rpx;
+}
+.goods-toper .prod-scroll-view .prod-scroll-view-inner .order-operation._a7af800 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  width: 100%;
+}
+.goods-toper .prod-scroll-view .prod-scroll-view-inner .order-operation .operation-text._a7af800 {
+  width: 100%;
+  height: 80rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.goods-toper .prod-scroll-view .prod-scroll-view-inner .order-operation .operation-text .operation-status._a7af800 {
+  font-size: 24rpx;
+  font-weight: 400;
+  color: #262626;
+}
+.goods-toper .prod-scroll-view .prod-scroll-view-inner .order-operation .operation-text .operation-status.active._a7af800 {
+  color: #00aaaa;
+}
+.goods-toper .prod-scroll-view .prod-scroll-view-inner .order-operation .operation-text .operation-icon._a7af800 {
+  font-size: 16rpx;
+  color: #00aaa6;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding-right: 40rpx;
+}
+.goods-toper .redXing._a7af800 {
+  color: #D9161C;
+}

@@ -1,0 +1,95 @@
+<wxs src="../../../../wxs/utils.wxs" module="utils" class="_985d92f"/>
+
+  <view class="purchase _985d92f">
+    <!-- 时效日期说明，数据更新至当天的前一天日期 -->
+    <view class="expiry-date _985d92f">数据更新至{{ previousDayDate }}</view>
+
+    <!-- 顶部筛选 -->
+    <view class="report-header-tab _985d92f">
+      <view class="tab-item date-box _985d92f">
+        <view class="date _985d92f" bindtap="touchFilter" data-wpytouchfilter-a="startDate">
+          <text class="text _985d92f">{{ filterForm.startDate }}</text>
+          <text class="b-icon iconxialajiantou _985d92f"/>
+        </view>
+<!--        <view class="dividing-line">~</view>-->
+<!--        <view class="date" bindtap="touchFilter('endDate')">-->
+<!--          <text class="text">{{ filterForm.endDate }}</text>-->
+<!--          <text class="b-icon iconxialajiantou"></text>-->
+<!--        </view>-->
+      </view>
+      <view  wx:if="{{isMaterialSelect}}" class="tab-item category-box _985d92f" bindtap="touchFilter" data-wpytouchfilter-a="material">
+        <text class="text _985d92f">品类</text>
+        <text class="b-icon iconxialajiantou _985d92f"/>
+      </view>
+    </view>
+
+    <scroll-view class="container-list-scroll _985d92f" scroll-y>
+      <view class="dongxioalv-inner _985d92f">
+        <view class="t-header _985d92f">
+          <block class="_985d92f" wx:for="{{tableData.column}}" wx:for-index="index" wx:for-item="column" wx:key="key">
+            <view class="t-td _985d92f">{{ column.label }}</view>
+          </block>
+        </view>
+        <view class="t-body _985d92f">
+          <block  wx:if="{{tableData.content.length}}" class="_985d92f">
+            <block class="_985d92f" wx:for="{{tableData.content}}" wx:for-index="cellIndex" wx:for-item="cell" wx:key="key">
+              <view class="tr _985d92f">
+                <block class="_985d92f" wx:for="{{tableData.column}}" wx:for-index="index" wx:for-item="column" wx:key="key">
+                  <view class="t-td {{column.prop === 'completion'? (cellIndex%2)===0 ? 'oRed' : 'oGreen' : ''}} _985d92f">{{ utils.removeIllegalStr(cell[column.prop]) }}</view>
+                </block>
+              </view>
+            </block>
+          </block>
+          <view class="no-data _985d92f"  wx:else>暂无数据！</view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 筛选弹出框 -->
+    <van-popup show="{{ purchaseVisable }}" position="top" custom-class="purchase-top"  bind:close="touchFilter" wx:if="{{CurrentFilterName==='material' || CurrentFilterName==='runType'}}" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;" class="_985d92f">
+      <!-- 选择物料组 -->
+      <view wx:if="{{CurrentFilterName==='material'}}" class="order-s-filter-container _985d92f">
+        <scroll-view scroll-y class="purchase-inv-scroll _985d92f">
+          <view wx:for="{{ matklList }}" wx:key="{{ item.id}}" item="item" class="purchase-inv-scroll-row _985d92f" data-key="{{item.id}}" data-index="{{ index }}" bindtap="onMaterial" data-wpyonmaterial-a="{{item.code}}">
+            <view class="pose-inv-scroll-row-desc {{item.code === filterForm.matklCode ? 'checked' : ''}} _985d92f">{{ item.name}}</view>
+            <view wx:if="{{item.code === filterForm.matklCode }}" class="b-icon icon-check pose-inv-scroll-row-checked checked _985d92f"/>
+          </view>
+        </scroll-view>
+      </view>
+
+      <!-- 选择跑动类型 -->
+      <view wx:if="{{CurrentFilterName==='runType'}}" class="order-s-filter-container _985d92f">
+        <scroll-view scroll-y class="purchase-inv-scroll _985d92f">
+          <view wx:for="{{ runTypeList }}" wx:key="{{ item.id}}" item="item" class="purchase-inv-scroll-row _985d92f" data-key="{{item.id}}" data-index="{{ index }}" bindtap="onRunType" data-wpyonruntype-a="{{item.code}}">
+            <view class="pose-inv-scroll-row-desc {{item.code === filterForm.runTypeCode ? 'checked' : ''}} _985d92f">{{ item.name}}</view>
+            <view wx:if="{{item.code === filterForm.runTypeCode }}" class="b-icon icon-check pose-inv-scroll-row-checked checked _985d92f"/>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ purchaseVisable }}" position="bottom" custom-class="purchase-top"  bind:close="touchFilter" wx:if="{{CurrentFilterName==='startDate'}}" class="_985d92f">
+      <!-- 选择时间 -->
+      <view class="_985d92f">
+        <van-datetime-picker type="year-month" value="{{ currentStartDate }}" min-date="{{ minStartDate }}" max-date="{{ maxStartDate }}" bind:input="onInput" bind:confirm="onConfirm" bind:cancel="onCancel" class="_985d92f"/>
+      </view>
+    </van-popup>
+<!--    <van-popup-->
+<!--      show="{{ purchaseVisable }}"-->
+<!--      position="bottom"-->
+<!--      custom-class="purchase-top"-->
+<!--      bind:close="touchFilter"-->
+<!--      wx:if="{{CurrentFilterName==='endDate'}}" >-->
+<!--      <!&ndash; 选择时间 &ndash;&gt;-->
+<!--      <view>-->
+<!--        <van-datetime-picker-end-->
+<!--          type="year-month"-->
+<!--          value="{{ currentEndDate }}"-->
+<!--          min-date="{{ minEndDate }}"-->
+<!--          max-date="{{ maxEndDate }}"-->
+<!--          bind:input="onInputEnd"-->
+<!--          bind:confirm="onConfirm"-->
+<!--          bind:cancel="onCancel"/>-->
+<!--      </view>-->
+<!--    </van-popup>-->
+
+  </view>

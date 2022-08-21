@@ -1,0 +1,103 @@
+// dms 添加订单选择商品
+export const DMS_ORDER_CHOOSE_ITEM = 'DMS_ORDER_CHOOSE_ITEM';
+
+// dms 添加订单选中的商品信息
+export const DMS_ORDER_CHOOSE_ITEM_INFO = 'DMS_ORDER_CHOOSE_ITEM_INFO';
+
+// dms 选择客户
+export const DMS_ORDER_CHOOSE_CUSTOMER_INFO = 'DMS_ORDER_CHOOSE_CUSTOMER_INFO';
+ // 退货客户查询接口
+export const RETURN_ORDER_CHOOSE_CUSTOMER_INFO = 'RETURN_ORDER_CHOOSE_CUSTOMER_INFO';
+
+// 模糊查询商品信息
+export const DMS_GET_PRODUCT_LIST_LIKE_CODE = 'DMS_GET_PRODUCT_LIST_LIKE_CODE';
+
+// 获取销售组织
+export const QUERY_APP_FIBOOKDMS = 'QUERY_APP_FIBOOKDMS';
+
+// 获取客户列表
+export const DMS_ORDER_GET_CUSTOMER = 'DMS_ORDER_GET_CUSTOMER';
+
+// 获取商品库存状态
+export const DMS_ORDER_ITEM_INV_STATUS = 'DMS_ORDER_ITEM_INV_STATUS';
+
+// 渠道订单客户信息接口
+export const DMS_ORDER_NORMAL_SALES_ORDER_CUSTOMER_INFO = 'DMS_ORDER_NORMAL_SALES_ORDER_CUSTOMER_INFO';
+
+// 渠道订单提交
+export const DMS_ORDER_SUBMIT_CHANNEL_ORDER = 'DMS_ORDER_SUBMIT_CHANNEL_ORDER';
+
+// 零售订单提交
+export const DMS_ORDER_SUBMIT_RETAIL_ORDER = 'DMS_ORDER_SUBMIT_RETAIL_ORDER';
+
+// 清除遗留数据
+export const DMS_ORDER_CHANNAL_OR_RETAIL_CLEAR = 'DMS_ORDER_CHANNAL_OR_RETAIL_CLEAR';
+
+// 清除查询商品列表
+export const DMS_ORDER_PRODUCT_LIKE_INFO_CLEAR = 'DMS_ORDER_PRODUCT_LIKE_INFO_CLEAR';
+
+// 零售订单基础信息
+export const DMS_ORDER_RETAIL_ORDER_BASE_DATA = 'DMS_ORDER_RETAIL_ORDER_BASE_DATA';
+
+// 根据组织获取仓库列表
+export const GET_WAREHOUSE_LIST = 'GET_WAREHOUSE_LIST';
+
+// 获取服务列表
+export const GET_ZONE_B_2_C_SERVICE_LIST = 'GET_ZONE_B_2_C_SERVICE_LIST';
+
+// 渠道订单提交成功后重置选中信息
+export const DMS_CHANNEL_ORDER_RESER_CHOOSE = 'DMS_CHANNEL_ORDER_RESER_CHOOSE';
+
+// 零售订单提交成功后重置选中信息
+export const DMS_RETAIL_ORDER_RESER_CHOOSE = 'DMS_RETAIL_ORDER_RESER_CHOOSE';
+
+// 渠道订单items 添加
+export const DMS_CHANNEL_ORDER_ADD_ITEMS = 'DMS_CHANNEL_ORDER_ADD_ITEMS';
+
+// dms产品获取cis维护价格
+export const DMS_CIS_FX_PRICE = 'DMS_CIS_FX_PRICE'
+
+
+// dms产品获取cis维护价格
+export const DMS_CIS_LS_PRICE = 'DMS_CIS_LS_PRICE'
+
+// 设置cisCode或者shopCisCode
+export const DMS_CIS_CODE_INFO = 'DMS_CIS_CODE_INFO'
+
+// 获取DMS配送方式
+export const DMS_DELIVERY_METHOD = 'DMS_DELIVERY_METHOD'
+
+// 获取CIS配送方式
+export const CIS_DELIVERY_METHOD = 'CIS_DELIVERY_METHOD'
+
+//获取补差类型 getInvStatusType
+export const DMS_INV_STATUS_TYPE = 'DMS_INV_STATUS_TYPE'
+//获取调拨订单列表
+export const DMS_ALLOT_ORDER_LIST = 'DMS_ALLOT_ORDER_LIST'
+//获取移入移出仓库列表
+export const DMS_STOCK_WARAHOUSE_LIST = 'DMS_STOCK_WARAHOUSE_LIST'
+//调拨列表保存
+export const DMS_ALLOT_SUBMIT = 'DMS_ALLOT_SUBMIT'
+// 库存调整列表保存
+export const SUBMIT_STORE_LIST = 'SUBMIT_STORE_LIST'
+
+// 获取调拨比例
+export const DMS_ALLOCATION_RATIO= 'DMS_ALLOCATION_RATIO'
+
+// 旧机品类列表
+export const DMS_OLD_MACH_CATEGORY_LIST = 'DMS_OLD_MACH_CATEGORY_LIST'
+
+// 旧机处理途径
+export const DMS_OLD_MACH_TREA_WAY_LIST = 'DMS_OLD_MACH_TREA_WAY_LIST'
+
+// 系统参数 分销录入、订单审核开通共享仓的商家只能从统仓发货
+export const GET_SYSTEM_PARAMETERS = 'GET_SYSTEM_PARAMETERS'
+
+// 查询是否开启共享仓
+export const GET_IS_OPEN_SHARED_WAREHOUSE = 'GET_IS_OPEN_SHARED_WAREHOUSE'
+// 样机管理查询门店接口
+export const DMS_ORDER_PROTOTYPE_SHOP_DATA = 'DMS_ORDER_PROTOTYPE_SHOP_DATA'
+// 查询物料数据
+export const DMS_ORDER_PROTOTYPE_METARIL_DATA = 'DMS_ORDER_PROTOTYPE_METARIL_DATA'
+// 保存意向用户
+export const SAVE_SHOP_POTENTIAL_USER = 'SAVE_SHOP_POTENTIAL_USER'

@@ -1,0 +1,1 @@
+var invoker=require("./invoker.js"),join=invoker(1,"join");module.exports=join;

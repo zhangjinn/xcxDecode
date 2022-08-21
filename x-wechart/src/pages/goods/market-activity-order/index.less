@@ -1,0 +1,313 @@
+@import '../../../styles/order.less';
+.sign {
+  height: 72rpx;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background-color: #FFEFEF;
+  .text {
+    color: #D9161C;
+    font-size: 28rpx;
+    padding-left: 24rpx;
+  }
+}
+.order-agent {
+  position: relative;
+  height: 164rpx;
+  width: 100%;
+  background-color: #FFFFFF;
+  padding-left: 24rpx;
+  padding-top: 24rpx;
+  .agent-name {
+    position: relative;
+    height: 28rpx;
+    width: 96rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #BA8570;
+    .text {
+      color: #FFFFFF;
+      font-size: 20rpx;
+    }
+  }
+  .merchant-code {
+    padding-top: 16rpx;
+    font-size: 20rpx;
+    color: #777777;
+  }
+  .merchant-address {
+    padding-top: 8rpx;
+    color: #262626;
+    font-size: 28rpx;
+    font-weight: 500;
+  }
+}
+.order-common{
+  margin: 0;
+}
+.goods-attr-popup-org{
+  border-radius: 0 0 16rpx 16rpx;
+}
+.order-items {
+  padding: 0 24rpx;
+  background-color: #ffffff;
+  margin: 16rpx 0 24rpx;
+  border-radius: 16rpx;
+
+  .step-wrap{
+    height: 100rpx;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .modelSeriesHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 84rpx;
+    font-size: 28rpx;
+    font-weight: 500;
+    color: #262626;
+
+    .condition{
+      border-radius: 8rpx;
+      border: 2rpx solid #777777;
+      padding: 0 8rpx;
+    }
+  }
+
+  .order-items-item {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    height: auto;
+    position: relative;
+    padding: 32rpx 0 24rpx;
+
+    .status-img{
+      position: absolute;
+      height: 100rpx;
+      width: 100rpx;
+      right: 90rpx;
+      top: 12rpx;
+    }
+    .img {
+      display: inline-block;
+      overflow: hidden;
+      width: 120rpx;
+      height: 120rpx;
+    }
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-left: 16rpx;
+
+      .content-title {
+        font-size: 28rpx;
+        font-weight: 500;
+        color: #262626;
+        margin-bottom: 6rpx;
+      }
+      .content-desc {
+        font-size: 23rpx;
+        font-weight: 400;
+        color: #777777;
+        margin-bottom: 16rpx;
+      }
+
+      .content-price {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8rpx;
+
+        .price-item{
+          display: flex;
+          align-items: baseline;
+          color: #D9161C;
+
+          .price-symbol{
+            font-size: 20rpx;
+            font-weight: 500;
+          }
+
+          .price-num{
+            font-size: 40rpx;
+            font-weight: 500;
+          }
+        }
+
+        .extra {
+          font-size: 24rpx;
+          font-weight: 400;
+          color: #262626;
+        }
+      }
+
+      .content-price-ding{
+        display: flex;
+        margin-bottom: 16rpx;
+
+        .ding-price {
+          padding: 8rpx 10rpx;
+          background: #FFF5F5;
+          border-radius: 4rpx;
+          margin-right: 12rpx;
+
+          .price-number {
+            color: #FE2335;
+            font-size: 22rpx;
+            font-weight: 400;
+          }
+        }
+
+        .fan-price {
+          padding: 8rpx 10rpx;
+          background: #FFF5F5;
+          border-radius: 4rpx;
+
+          .price-number {
+            color: #FE2335;
+            font-size: 22rpx;
+            font-weight: 400;
+          }
+        }
+      }
+
+      .content-tip{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 22rpx;
+        font-weight: 500;
+        color: #262626;
+        margin-bottom: 12rpx;
+
+        .fold{
+          display: flex;
+          align-items: center;
+        }
+      }
+
+      &-wrapper{
+        .wrapper-item{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 16rpx;
+
+          .modelOptionItem{
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #F7F7F7;
+            border-radius: 4rpx;
+            line-height: 56rpx;
+            padding: 0 34rpx 0 18rpx;
+            color: #777777;
+            font-size: 26rpx;
+            font-weight: 400;
+            margin-right: 40rpx;
+
+            .prdmodel{
+              flex: 1;
+            }
+
+            &.active{
+              background: #FFF5F5;
+              border: 2rpx solid #FD6A6E;
+              color: #FE2335;
+            }
+          }
+        }
+        .hide{
+          display: none;
+        }
+
+      }
+      &-selected{
+        font-size: 24rpx;
+        font-weight: 400;
+        color: #00AAA6;
+        margin-bottom: 26rpx;
+      }
+
+    }
+
+    &::last-child {
+      &::after {
+        border: none;
+      }
+    }
+  }
+}
+.a-btn{
+  color:#4285FF;
+  font-size: 22rpx;
+}
+.info-wrap{
+  background: white;
+  text-align: center;
+  height: 64rpx;
+  line-height: 64rpx;
+  position: fixed;
+  bottom: 170rpx;
+  width: 100%;
+  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.08) inset;
+  color: #262626;
+  font-size: 26rpx;
+  .num{
+    color: #D9161C;
+  }
+}
+.t-popup {
+  position: relative;
+  padding: 0 40rpx;
+  &-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 88rpx;
+    font-size: 32rpx;
+    color: #262626;
+    font-weight: 400;
+  }
+  &-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 88rpx;
+    width: 88rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+  }
+  &-body {
+    max-height: 650rpx;
+    min-height: 450rpx;
+    overflow-y: auto;
+    &-item {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      height: 80rpx;
+      &-text {
+        color: #262626;
+        font-size: 26rpx;
+        &.active {
+          color: #00AAA6;
+        }
+      }
+    }
+  }
+}
+

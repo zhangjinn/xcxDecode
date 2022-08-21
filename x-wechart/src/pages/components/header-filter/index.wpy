@@ -1,0 +1,32 @@
+<template>
+  <view class="custom-class filter-header">
+    <view wx:if="{{ showTab && tabList && tabList.length > 0 }}" class="tabs">
+      <view class="tab" wx:for="{{ tabList }}" @tap="changeTab({{index}})">
+        <view class="tab-title {{ tabActive == index ? 'active' : ''}}">
+          <view class="title-text">{{ item.name }}</view>
+          <view class="title-line" style="width: {{activeLineStyle.width ? activeLineStyle.width : '32rpx'}}; height: {{activeLineStyle.height ? activeLineStyle.height : '8rpx'}}; borderRadius: {{activeLineStyle.borderRadius ? activeLineStyle.borderRadius : '4rpx'}}"/>
+          <text wx:if="{{ item.count }}" class="reddot {{ item.count > 99 ? 'moreAmount' : '' }}">{{ item.count > 99 ? '99+' :  item.count }}</text>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{ showSearch }}" class="search">
+      <van-search
+        custom-class="header-search"
+        value="{{ searchKey }}"
+        shape="round"
+        use-left-icon-slot="{{ true }}"
+        leftSearchIconSow="{{ false }}"
+        placeholder="请输入关键字"
+        placeholder-style="color: #AAAAAA; font-size: 28rpx;"
+        bind:change="onChange"
+        bind:clear="onCancel"
+      >
+        <view slot="label" class="search-left-icon">
+          <i @tap="onSearch()" class="b-icon shouyesousuo"></i>
+        </view>
+      </van-search>
+    </view>
+  </view>
+</template>
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts" ></script>

@@ -1,0 +1,105 @@
+<template>
+  <view class="order">
+    <scroll-view scroll-y="true" class="order-scroll">
+      <view class="order-container">
+        <view class="order-title">
+          <view class="order-name-title">
+            <view class="order-name-left">{{orderdetail.orderHeader.orgName}}</view>
+            <text class="order-name-code">{{orderdetail.orderHeader.orderCode}}</text>
+          </view>
+          <text class="order-status">{{orderdetail.orderHeader.payStatus}}</text>
+        </view>
+        <view class="order-detail">
+          <view class="order-detail-agreeStatus">{{orderdetail.orderHeader.consultType}}</view>
+        </view>
+        <view class="order-detail" style="padding-bottom: 26rpx">
+          <view wx:if="{{type=='view'}}" class="order-detail-type">
+            处理状态:
+            <text class="order-detail-type-text">{{orderdetail.orderHeader.agreeStatus}}</text>
+          </view>
+          <view wx:if="{{orderdetail.orderHeader.consultTypeCode=='advance' || orderdetail.orderHeader.consultTypeCode=='delay'}}" class="order-detail-type" style="color:#00AAA6">
+            <view wx:if="{{orderdetail.orderHeader.consultTypeCode=='advance'}}" >申请提前到货周:</view>
+            <view wx:if="{{orderdetail.orderHeader.consultTypeCode=='delay'}}" >调整到货周:</view>
+            <text class="order-detail-type-text">{{orderdetail.orderHeader.weekAdvanceName}}</text>
+          </view>
+          <view class="order-detail-type">
+            <view wx:if="{{orderdetail.orderHeader.consultTypeCode=='advance' || orderdetail.orderHeader.consultTypeCode=='delay'}}" >原</view>要求到货周:
+            <text class="order-detail-type-text">{{orderdetail.orderHeader.weekName}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="order-container">
+        <view class="order-detail">
+          <view class="order-detail-type">
+            订单类型:
+            <text class="order-detail-type-text">{{orderdetail.orderHeader.orderType}}</text>
+          </view>
+          <view class="order-detail-type">
+            订单来源:
+            <text class="order-detail-type-text">{{orderdetail.orderHeader.orderSource}}</text>
+          </view>
+          <view class="order-detail-type">
+            配送方式:
+            <text class="order-detail-type-text">{{orderdetail.orderHeader.deliveryType==null ? '' : orderdetail.orderHeader.deliveryType}}</text>
+          </view>
+          <view class="order-detail-type">
+            <view style="width: 120rpx;">收货地址:</view>
+            <text class="order-detail-type-text">{{orderdetail.orderHeader.orderAddress}}</text>
+          </view>
+          <view class="order-detail-type">
+            是否使用返利:
+            <text class="order-detail-type-text">{{orderdetail.orderHeader.isRebate}}</text>
+          </view>
+          <view class="order-detail-type">
+            是否免除违约责任:
+            <text class="order-detail-type-text">{{orderdetail.orderHeader.exemptionName}}</text>
+          </view>
+          <view class="order-detail-type">
+            有效期至:
+            <text class="order-detail-type-text">{{orderdetail.orderHeader.expireDate}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 产品列表 -->
+      <view class="order-container" style="margin-top: 14rpx">
+        <repeat for="{{orderdetail.orderLines}}" item="item">
+          <view class="order-goods">
+            <navigator class="order-goods-img" url="#">
+              <img class="goodimg" src="{{ item.img }}" errSrc="{{ item.errImg }}"/>
+            </navigator>
+            <view class="order-goods-detail">
+              <view class="order-goods-detail-name">
+                <text class="detail-text">{{item.zzprdmodel}}</text>
+              </view>
+              <view class="order-goods-detail-explain">
+                <text class="text">{{item.color ? item.color+', ' : ''}}</text>
+                <text class="explain-text van-ellipsis">补差类型：{{item.makeUpType}}</text>
+              </view>
+              <view class="order-goods-detail-number">
+                <text class="good-price">￥{{item.billPrice}}{{item.priceGroupName ? '(' + item.priceGroupName + ')' : ''}}</text>
+                <text class="good-number">×{{item.qty}}</text>
+              </view>
+            </view>
+          </view>
+        </repeat>
+      </view>
+      <view class="order-finals">
+        <view class="order-final">
+          <text class="order-final-price">合计 ￥{{orderdetail.orderHeader.orderAmt}}</text>
+        </view>
+      </view>
+
+      <view wx:if="{{type=='handle'}}" class="scan-confirm-button">
+        <van-button type="default" class="button" block bind:click="auditSubmit('disagree')">不同意</van-button>
+        <van-button type="default" class="button" color="#00AAA6" block bind:click="auditSubmit('agree')">同意</van-button>
+      </view>
+
+    </scroll-view>
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" ></style>
+<script lang="typescript" src="./index.ts" ></script>

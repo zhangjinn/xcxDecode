@@ -1,0 +1,420 @@
+
+  <view class="store _3772c88">
+    <view class="store-wrapper _3772c88">
+      <view class="form-wrapper _3772c88">
+
+        <view class="item-row _3772c88" data-name="立项组织" data-key="projectOrg" bindtap="onPopOpen">
+          <view class="item-row-left _3772c88">
+            <text class="_3772c88">立项组织</text>
+            <text class="redXing _3772c88">*</text>
+          </view>
+          <view class="item-row-right _3772c88">
+            <view class="item-row-right-inventory {{ formData.projectOrg.name ? '' : 'placeholder' }} {{isDisabled ? 'disabled-color' : ''}} _3772c88">
+              {{ formData.projectOrg.name || '请选择' }}
+            </view>
+            <van-icon  wx:if="{{ !isDisabled }}" name="arrow" custom-class="dms-item-row-right-arrow" class="_3772c88"/>
+          </view>
+        </view>
+
+        <view class="item-row _3772c88">
+          <view class="item-row-left _3772c88">
+            <text class="_3772c88">需求项目名称</text>
+            <text class="redXing _3772c88">*</text>
+          </view>
+          <view class="item-row-right _3772c88">
+            <view class="item-row-right-note _3772c88">
+              <van-field disabled="{{ isDisabled }}" value="{{ formData.requirementItem }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="requirementItem"  bind:change="onFilterFormChange" class="add-store-note _3772c88"/>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row _3772c88" data-name="计划项目名称" data-key="planProject">
+          <view class="item-row-left _3772c88">
+            <text class="_3772c88">计划项目名称</text>
+            <text class="redXing _3772c88">*</text>
+          </view>
+          <view class="item-row-right _3772c88">
+            <view class="item-row-right _3772c88">
+              <view class="item-row-right-inventory placeholder _3772c88">
+                {{ formData.planProject.name || '请选择' }}
+              </view>
+              <van-icon  wx:if="{{ !isDisabled }}" name="arrow" custom-class="dms-item-row-right-arrow" class="_3772c88"/>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row _3772c88">
+          <view class="item-row-left _3772c88">
+            <text class="_3772c88">说明</text>
+          </view>
+          <view class="item-row-right _3772c88">
+            <view class="item-row-right-note _3772c88">
+              <van-field disabled="{{ isDisabled }}" value="{{ formData.instruction }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="instruction"  bind:change="onFilterFormChange" class="add-store-note _3772c88"/>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row-upload {{formData.document && formData.document.length>0 ? '' : 'no-bottom-line'}} _3772c88">
+          <view class="item-row-top _3772c88">
+            <text class="_3772c88">附件上传</text>
+          </view>
+          <view class="item-row-bottom _3772c88">
+            <van-uploader disabled="{{ isDisabled }}" deletable="{{ isDisabled ? false : true }}" max-count="1" data-key="attachment" accept="image" file-list="{{ formData.attachment }}"  bind:delete="deleteImg" bind:after-read="afterRead" sizeType="compressed" class="_3772c88">
+            </van-uploader>
+          </view>
+        </view>
+
+        <view  wx:if="{{formData.document && formData.document.length>0}}" class="item-row-upload no-bottom-line _3772c88">
+          <view class="item-row-top _3772c88">
+            <text class="_3772c88">其他附件</text>
+          </view>
+          <view class="item-row-bottom _3772c88">
+            <view wx:for="{{formData.document}}" class="document-item _3772c88">
+              <text class="_3772c88">{{item.name}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="item-title _3772c88" wx:if="{{salesInfo.length>0}}">需求子单</view>
+      <view class="sales-info-wrapper _3772c88">
+        <view class="sales-info-item _3772c88" wx:for="{{salesInfo}}">
+
+          <view class="item-row _3772c88">
+            <view class="item-row-left _3772c88">
+              <text class="_3772c88">需求子单号</text>
+            </view>
+            <view class="item-row-right _3772c88">
+              <view class="item-row-right-note _3772c88">
+                <van-field disabled value="{{ item.subOrderNumber || '--' }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="subOrderNumber" data-index="{{ index }}" bind:change="onFilterFormChange" class="add-store-note _3772c88"/>
+              </view>
+            </view>
+          </view>
+
+          <view class="item-row _3772c88" data-name="门店" data-key="store" data-index="{{index}}" bindtap="onPopOpen">
+            <view class="item-row-left _3772c88">
+              <text class="_3772c88">门店</text>
+              <text class="redXing _3772c88">*</text>
+            </view>
+            <view class="item-row-right _3772c88">
+              <view class="item-row-right _3772c88">
+                <view class="item-row-right-inventory {{ item.store.id ? '' : 'placeholder' }} {{isDisabled ? 'disabled-color' : ''}} _3772c88">
+                  {{ item.store.name || '请选择' }}
+                </view>
+                <van-icon wx:if="{{ !isDisabled }}" name="arrow" custom-class="dms-item-row-right-arrow" class="_3772c88"/>
+              </view>
+            </view>
+          </view>
+
+          <view class="item-row _3772c88" data-name="是否专卖店" data-key="isSpecialtyStore" data-index="{{index}}">
+            <view class="item-row-left _3772c88">
+              <text class="_3772c88">是否专卖店</text>
+              <text class="redXing _3772c88">*</text>
+            </view>
+            <view class="item-row-right _3772c88">
+              <view class="item-row-right _3772c88">
+                <view class="item-row-right-inventory placeholder _3772c88">
+                  {{ item.isSpecialtyStore.name || '' }}
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <view class="item-row _3772c88" data-name="物料组" data-key="materialGroup" data-index="{{index}}" bindtap="onPopOpen">
+            <view class="item-row-left _3772c88">
+              <text class="_3772c88">物料组</text>
+              <text class="redXing _3772c88">*</text>
+            </view>
+            <view class="item-row-right _3772c88">
+              <view class="item-row-right _3772c88">
+                <view class="item-row-right-inventory {{ item.materialGroup.id ? '' : 'placeholder' }} {{isDisabled ? 'disabled-color' : ''}} _3772c88">
+                  {{ item.materialGroup.name || '请选择' }}
+                </view>
+                <van-icon wx:if="{{ !isDisabled }}" name="arrow" custom-class="dms-item-row-right-arrow" class="_3772c88"/>
+              </view>
+            </view>
+          </view>
+
+          <view class="item-row _3772c88" data-name="分销网络规模" data-key="disNetworkSize" data-index="{{index}}">
+            <view class="item-row-left _3772c88">
+              <text class="_3772c88">分销网络规模</text>
+            </view>
+            <view class="item-row-right _3772c88">
+              <view class="item-row-right _3772c88">
+                <view class="item-row-right-inventory {{ item.disNetworkSize ? '' : 'placeholder' }} {{isDisabled ? 'disabled-color' : ''}} _3772c88">
+                  {{ item.disNetworkSize }}
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <view class="item-row _3772c88" data-name="所属办事处" data-key="office" data-index="{{index}}">
+            <view class="item-row-left _3772c88">
+              <text class="_3772c88">所属办事处</text>
+              <text class="redXing _3772c88">*</text>
+            </view>
+            <view class="item-row-right _3772c88">
+              <view class="item-row-right _3772c88">
+                <view class="item-row-right-inventory placeholder disabled-color _3772c88">
+                  {{ item.office.name || '' }}
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <view class="item-row _3772c88" data-name="需求类型" data-key="requirementType" data-index="{{index}}">
+            <view class="item-row-left _3772c88">
+              <text class="_3772c88">需求类型</text>
+              <text class="redXing _3772c88">*</text>
+            </view>
+            <view class="item-row-right _3772c88">
+              <view class="item-row-right _3772c88">
+                <view class="item-row-right-inventory {{ item.requirementType.id ? '' : 'placeholder' }} disabled-color _3772c88">
+                  {{ item.requirementType.name || '请选择' }}
+                </view>
+                <van-icon wx:if="{{ !isDisabled }}" name="arrow" custom-class="dms-item-row-right-arrow" class="_3772c88"/>
+              </view>
+            </view>
+          </view>
+
+          <view class="item-row _3772c88" data-name="是否品牌园" data-key="isBrandPark" data-index="{{index}}" bindtap="onPopOpen">
+            <view class="item-row-left _3772c88">
+              <text class="_3772c88">是否品牌园</text>
+              <text class="redXing _3772c88">*</text>
+            </view>
+            <view class="item-row-right _3772c88">
+              <view class="item-row-right _3772c88">
+                <view class="item-row-right-inventory {{ item.isBrandPark.id ? '' : 'placeholder' }} {{isDisabled ? 'disabled-color' : ''}} _3772c88">
+                  {{ item.isBrandPark.name || '请选择' }}
+                </view>
+                <van-icon wx:if="{{ !isDisabled }}" name="arrow" custom-class="dms-item-row-right-arrow" class="_3772c88"/>
+              </view>
+            </view>
+          </view>
+
+          <view class="item-row _3772c88" data-name="派单类型" data-key="dispatchType" data-index="{{index}}" bindtap="onPopOpen">
+            <view class="item-row-left _3772c88">
+              <text class="_3772c88">派单类型</text>
+              <text class="redXing _3772c88">*</text>
+            </view>
+            <view class="item-row-right _3772c88">
+              <view class="item-row-right _3772c88">
+                <view class="item-row-right-inventory {{ item.dispatchType.id ? '' : 'placeholder' }} {{isDisabled ? 'disabled-color' : ''}} _3772c88">
+                  {{ item.dispatchType.name || '请选择' }}
+                </view>
+                <van-icon wx:if="{{ !isDisabled }}" name="arrow" custom-class="dms-item-row-right-arrow" class="_3772c88"/>
+              </view>
+            </view>
+          </view>
+
+          <view class="item-row _3772c88" data-name="供应商" data-key="supplier" data-index="{{index}}" bindtap="onPopOpen">
+            <view class="item-row-left _3772c88">
+              <text class="_3772c88">供应商</text>
+            </view>
+            <view class="item-row-right _3772c88">
+              <view class="item-row-right _3772c88">
+                <view class="item-row-right-inventory {{ item.supplier.id ? '' : 'placeholder' }} {{isDisabled ? 'disabled-color' : ''}} _3772c88">
+                  {{ item.supplier.name || '请选择' }}
+                </view>
+                <van-icon wx:if="{{ !isDisabled }}" name="arrow" custom-class="dms-item-row-right-arrow" class="_3772c88"/>
+              </view>
+            </view>
+          </view>
+
+          <view class="item-row _3772c88">
+            <view class="item-row-left _3772c88">
+              <text class="_3772c88">费用预估(元)</text>
+              <text class="redXing _3772c88">*</text>
+            </view>
+            <view class="item-row-right _3772c88">
+              <view class="item-row-right-note _3772c88">
+                <van-field type="digit" disabled="{{ isDisabled }}" value="{{ item.costEstimate }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="costEstimate" data-index="{{index}}" bind:change="onFilterFormChange" class="add-store-note _3772c88"/>
+              </view>
+            </view>
+          </view>
+
+          <view class="item-row _3772c88" data-key="completeTime" data-index="{{index}}" bindtap="openCalendar">
+            <view class="item-row-left _3772c88">
+              <text class="_3772c88">要求完成时间</text>
+              <text class="redXing _3772c88">*</text>
+            </view>
+            <view class="item-row-right _3772c88">
+              <view class="item-row-right _3772c88">
+                <view class="item-row-right-inventory {{ item.completeTime ? '' : 'placeholder' }} {{isDisabled ? 'disabled-color' : ''}} _3772c88">
+                  {{ item.completeTime || '请选择' }}
+                </view>
+                <van-icon wx:if="{{ !isDisabled }}" name="arrow" custom-class="dms-item-row-right-arrow" class="_3772c88"/>
+              </view>
+            </view>
+          </view>
+
+          <view class="item-row _3772c88">
+            <view class="item-row-left _3772c88">
+              <text class="_3772c88">进场起一年内目标销量(台)</text>
+            </view>
+            <view class="item-row-right _3772c88">
+              <view class="item-row-right-note _3772c88">
+                <van-field type="number" disabled="{{ isDisabled }}" value="{{ item.oneYearTargetSales }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="oneYearTargetSales" data-index="{{index}}" bind:change="onFilterFormChange" class="add-store-note _3772c88"/>
+              </view>
+            </view>
+          </view>
+
+          <view class="item-row _3772c88">
+            <view class="item-row-left _3772c88">
+              <text class="_3772c88">进进场起一年内目标销售额(万元)</text>
+            </view>
+            <view class="item-row-right _3772c88">
+              <view class="item-row-right-note _3772c88">
+                <van-field type="digit" disabled="{{ isDisabled }}" value="{{ item.oneYearTargetAmount }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="oneYearTargetAmount" data-index="{{index}}" bind:change="onFilterFormChange" class="add-store-note _3772c88"/>
+              </view>
+            </view>
+          </view>
+
+          <view class="item-row _3772c88">
+            <view class="item-row-left _3772c88">
+              <text class="_3772c88">展台使用期限(年)</text>
+              <text class="redXing _3772c88">*</text>
+            </view>
+            <view class="item-row-right _3772c88">
+              <view class="item-row-right-date _3772c88" data-key="minDate" data-index="{{index}}" bindtap="onYearDateOpen">
+                <view class="item-row-right-inventory {{ item.usePeriod.minDate ? '' : 'placeholder' }} {{isDisabled ? 'disabled-color' : ''}} _3772c88">
+                  {{ item.usePeriod.minDate || '请选择' }}
+                </view>
+              </view>
+              -
+              <view class="item-row-right-date _3772c88" data-key="maxDate" data-index="{{index}}" bindtap="onYearDateOpen">
+                <view class="item-row-right-inventory {{ item.usePeriod.maxDate ? '' : 'placeholder' }} {{isDisabled ? 'disabled-color' : ''}} _3772c88">
+                  {{ item.usePeriod.maxDate || '请选择' }}
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <view class="item-row _3772c88">
+            <view class="item-row-left _3772c88">
+              <text class="_3772c88">说明</text>
+              <text class="redXing _3772c88">*</text>
+            </view>
+            <view class="item-row-right _3772c88">
+              <view class="item-row-right-note _3772c88">
+                <van-field disabled="{{ isDisabled }}" value="{{ item.instruction }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="instruction" data-index="{{index}}" bind:change="onFilterFormChange" class="add-store-note _3772c88"/>
+              </view>
+            </view>
+          </view>
+
+          <view class="sales-info-item-footer _3772c88">
+            <view class="handle-btn _3772c88" data-index="{{index}}" bindtap="delSales">
+              <i class="b-icon shanchu _3772c88"/>
+              <text class="_3772c88">删除</text>
+            </view>
+          </view>
+        </view>
+        <view wx:if="{{ !isDisabled }}" class="add-sales _3772c88" bindtap="addSales"><i class="b-icon icon-add _3772c88"/>添加需求子单</view>
+      </view>
+    </view>
+
+    <view wx:if="{{ !isDisabled }}" class="add-store-footer _3772c88">
+      <view class="revoke-btn add-store-btn _3772c88" bindtap="toRevoke">取消</view>
+      <view class="storage-btn add-store-btn _3772c88" bindtap="onStorage">暂存</view>
+      <view class="submit-btn add-store-btn _3772c88" bindtap="toAddStore">提交</view>
+    </view>
+
+    <!-- 选择列表弹框 -->
+    <wxs src="../../../../wxs/utils.wxs" module="utils" class="_25d639b"/>
+
+  <van-popup show="{{ $popupCustomize$show }}" closeable="closeable" position="bottom" custom-style="height: 720rpx" zIndex="400"  bind:click-overlay="$popupCustomize$onClose" class="_25d639b _3772c88">
+    <view class="item-inv _25d639b">
+      <view class="item-inv-head _25d639b">
+        <view class="item-inv-head-context _25d639b">
+          <view class="item-inv-head-context-title _25d639b">{{ $popupCustomize$title }}</view>
+          <i class="b-icon iconyiquxiao item-inv-head-context-close _25d639b" bindtap="$popupCustomize$onClose"/>
+        </view>
+      </view>
+      <view class="item-inv-search _25d639b"  wx:if="{{ $popupCustomize$isSearch }}">
+        <van-search custom-class="header-search" shape="round" use-action-slot="use-action-slot" use-left-icon-slot="{{ $popupCustomize$true }}" leftSearchIconSow="{{ $popupCustomize$false }}" placeholder="请输入搜索关键字" placeholder-style="color: #AAAAAA; font-size: 28rpx;" bind:change="$popupCustomize$onChange" class="_25d639b">
+          <view slot="label" class="search-left-icon _25d639b">
+            <i class="b-icon shouyesousuo _25d639b"/>
+          </view>
+        </van-search>
+      </view>
+      <scroll-view scroll-y class="item-inv-scroll _25d639b">
+        <block  wx:if="{{$popupCustomize$options && $popupCustomize$options.length>0}}" class="_25d639b">
+          <view wx:for="{{ $popupCustomize$options }}" wx:key="{{ item.id }}" wx:for-item="item" class="item-inv-scroll-row _25d639b" data-item="{{item}}" bindtap="$popupCustomize$chooseOption">
+            <block wx:if="{{$popupCustomize$multiple}}" class="_25d639b">
+              <view class="item-inv-scroll-row-desc  {{ utils.includes(item.id, $popupCustomize$selectedOption.id) ? 'checked' : '' }} _25d639b">{{ item.name }}</view>
+              <view wx:if="{{ utils.includes(item.id, $popupCustomize$selectedOption.id) }}" class="b-icon icon-check item-inv-scroll-row-checked checked _25d639b"/>
+            </block>
+            <block wx:else class="_25d639b">
+              <view class="item-inv-scroll-row-desc {{ item.id == $popupCustomize$selectedOption.id ? 'checked' : ''}} _25d639b">{{ item.name }}</view>
+              <view wx:if="{{ item.id == $popupCustomize$selectedOption.id }}" class="b-icon icon-check item-inv-scroll-row-checked checked _25d639b"/>
+            </block>
+          </view>
+        </block>
+        <view  wx:else class="no-data _25d639b">暂无数据</view>
+      </scroll-view>
+    </view>
+  </van-popup>
+
+    <!-- 日历弹框 -->
+    <van-popup show="{{calendarShow}}" position="bottom"  bind:close="closeCalendar" z-index="200" class="_3772c88">
+      <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay" class="_3772c88"/>
+    </van-popup>
+
+    <!-- 办事处经理弹框 -->
+    <van-popup show="{{ approveShow }}" custom-style="width:80%; height: 50%; border-radius: 24rpx" bind:close="onApproveClose" class="_3772c88">
+      <view class="dialog-item-row _3772c88">
+        <view class="dialog-item-wrapper _3772c88">
+          <view class="mask _3772c88" catchtap="officeMaskHide" wx:if="{{ officeMaskShow }}"/>
+          <view class="dialog-select-box _3772c88">
+            <view class="item-row _3772c88">
+              <view class="item-row-left _3772c88">
+                <text class="_3772c88">办事处经理</text>
+                <text class="redXing _3772c88">*</text>
+              </view>
+              <view class="item-row-right office-manager _3772c88">
+                <view class="item-row-right-note _3772c88">
+                  <van-field value="{{ formData.officeManager.name }}" placeholder="请输入办事处经理" border="{{ false }}" input-align="right" data-key="officeManager" bind:change="onOfficeManagerChange" class="add-store-note _3772c88"/>
+                </view>
+              </view>
+            </view>
+            <view class="prod-scroll-view _3772c88" wx:if="{{ officeMaskShow && formOptions.officeManager && formOptions.officeManager.length>0}}">
+              <scroll-view class="prod-scroll-view-inner _3772c88" scroll-y bindscroll="onScroll">
+                <block class="_3772c88" wx:for="{{formOptions.officeManager}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                  <view class="order-operation _3772c88">
+                    <view class="operation-text {{index < formOptions.officeManager.length-1 ? 'van-hairline--bottom' : ''}} _3772c88" data-item="{{ item }}" catchtap="onOfficeManagerSelect">
+                      <view class="operation-status _3772c88">{{item.name}}</view>
+                    </view>
+                  </view>
+                </block>
+              </scroll-view>
+            </view>
+          </view>
+          <view class="item-row _3772c88">
+            <view class="item-row-left _3772c88">
+              <text class="_3772c88">申请原因</text>
+              <text class="redXing _3772c88">*</text>
+            </view>
+            <view class="item-row-right _3772c88">
+              <view class="item-row-right-note _3772c88">
+                <van-field disabled="{{ officeMaskShow && formOptions.officeManager && formOptions.officeManager.length>0 }}" value="{{ formData.reason }}" placeholder="请输入申请原因" border="{{ false }}" input-align="right" data-key="reason" bind:change="onFilterFormChange" class="add-store-note _3772c88"/>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="dialog-item-footer _3772c88">
+          <view class="handle-btn cancel _3772c88" bindtap="onApproveClose">取消</view>
+          <view class="handle-btn sure _3772c88" bindtap="onApproveConfirm">确定</view>
+        </view>
+      </view>
+    </van-popup>
+
+    <!-- 选择年月 -->
+    <van-popup show="{{ yearsVisable }}" position="bottom" custom-class="purchase-top" bind:close="touchFilter" wx:if="{{ yearsVisable }}" class="_3772c88">
+      <view class="_3772c88">
+        <van-datetime-picker type="year" value="{{ currentDate }}" min-date="{{ minDate }}" max-date="{{ maxDate }}" bind:input="onInput" bind:confirm="onConfirm" bind:cancel="onCancel" class="_3772c88"/>
+      </view>
+    </van-popup>
+
+    <van-toast id="van-toast" class="_3772c88"/>
+    <van-dialog id="van-dialog" class="_3772c88"/>
+  </view>

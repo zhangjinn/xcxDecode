@@ -1,0 +1,190 @@
+@import '../../../../styles/utils.less';
+
+@padding-normal: 16rpx;
+@border-color: #EEEEEE;
+
+@font-size-10: 10rpx;
+@font-size-12: 12rpx;
+@font-size-14: 14rpx;
+@font-size-16: 16rpx;
+@font-size-18: 18rpx;
+@font-size-20: 20rpx;
+@font-size-22: 22rpx;
+@font-size-24: 24rpx;
+@font-size-26: 26rpx;
+@font-size-28: 28rpx;
+@font-size-30: 30rpx;
+@font-size-32: 32rpx;
+@font-size-34: 34rpx;
+@font-size-36: 36rpx;
+
+.cell-value{
+  color: #262626;
+}
+.me-account-add {
+  width: 100%;
+  height: 100%;
+  padding: 16rpx 0 100rpx 0;
+  position: relative;
+  min-height: 100%;
+
+  .me-account-add-scroll {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  &.admin-form {
+    padding-bottom: 92rpx + 16rpx;
+  }
+  .form-button-area {
+    position: absolute;
+    z-index: 11;
+    width: 100%;
+    button:after {
+      border: none;
+    }
+    .form-submit {
+      background: #00AAAA;
+      color: #FFF;
+      border: none;
+      height: 100rpx;
+      border-radius: 0px;
+    }
+    //.add-other {
+    //  background: #FFF;
+    //  color: #00AAAA;
+    //  border: none;
+    //  height: 100rpx;
+    //  margin-top: 16rpx;
+    //  border-radius: 0px;
+    //}
+  }
+  .account-form {
+    width: 100%;
+    .account-other-info {
+      .account-other-info-item {
+        margin-top: 16rpx;
+        background: #FFF;
+        .account-other-info-header {
+          .account-other-info-line {
+            padding: 26rpx 0;
+            border-bottom: 2rpx solid @border-color;
+            display: flex;
+            justify-content: space-between;
+            &:last-child {
+              border: none;
+            }
+            .label {
+              font-size: @font-size-26;
+              color: #777777;
+            }
+            .content-group {
+              display: flex;
+              justify-content: flex-end;
+            }
+          }
+        }
+        .account-other-info-footer {
+          display: flex;
+          justify-content: flex-end;
+          border-top: 2rpx solid @border-color;
+          font-size: @font-size-24;
+          padding: 24rpx;
+          i {
+            font-size: 24rpx;
+            color: #777777;
+          }
+        }
+      }
+    }
+
+  }
+
+}
+
+.popup-picker {
+  background: #FFF;
+  .picker-header {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    padding: 22rpx;
+    border: 2rpx solid @border-color;
+    .picker-header-text {
+      font-size: @font-size-32;
+    }
+    i {
+      position: absolute;
+      top: 22rpx;
+      right: 22rpx;
+      font-size: @font-size-32;
+    }
+  }
+  .picker-content {
+    .item-line {
+      display: flex;
+      justify-content: space-between;
+      padding: 22rpx;
+      .label, i {
+        font-size: @font-size-26;
+        &.active {
+          color: #00AAAA;
+        }
+      }
+    }
+  }
+}
+.base-maktl-popup-picker {
+  display: flex;
+  flex-direction: column;
+  background: #FFF;
+  height: 65%;
+  .picker-header {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    padding: 22rpx;
+    border: 2rpx solid @border-color;
+    .picker-header-text {
+      font-size: @font-size-32;
+    }
+    i {
+      position: absolute;
+      top: 22rpx;
+      right: 22rpx;
+      font-size: @font-size-32;
+    }
+  }
+  .picker-content {
+    height: 100%;
+    padding-bottom: 100rpx;
+    overflow-y: hidden;
+    .item-line {
+      display: flex;
+      padding: 22rpx;
+      align-items: center;
+      .label, i {
+        margin-right: 16rpx;
+        font-size: @font-size-26;
+
+      }
+      i {
+        color: #00AAAA;
+      }
+      .in-active {
+        margin-right: 16rpx;
+        height: @font-size-32;
+        width: @font-size-32;
+        border-radius: 50%;
+        border: 2rpx solid @border-color;
+      }
+    }
+  }
+  .picker-footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+  }
+}
+

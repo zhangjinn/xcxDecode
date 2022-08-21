@@ -1,0 +1,1 @@
+function dropLastWhile(e,r){for(var i=r.length-1;i>=0&&e(r[i]);)i-=1;return slice(0,i+1,r)}var slice=require("./../slice.js");module.exports=dropLastWhile;

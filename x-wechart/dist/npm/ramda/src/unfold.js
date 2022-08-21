@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),unfold=_curry2(function(r,n){for(var u=r(n),e=[];u&&u.length;)e[e.length]=u[0],u=r(u[1]);return e});module.exports=unfold;

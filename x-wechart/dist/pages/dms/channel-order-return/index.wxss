@@ -1,0 +1,589 @@
+.ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+.van-hairline,
+.van-hairline--top,
+.van-hairline--left,
+.van-hairline--right,
+.van-hairline--bottom,
+.van-hairline--top-bottom,
+.van-hairline--surround {
+  position: relative;
+}
+.van-hairline::after,
+.van-hairline--top::after,
+.van-hairline--left::after,
+.van-hairline--right::after,
+.van-hairline--bottom::after,
+.van-hairline--top-bottom::after,
+.van-hairline--surround::after {
+  content: ' ';
+  position: absolute;
+  pointer-events: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transform-origin: center;
+          transform-origin: center;
+  /* cover wechat button:after default transforn-origin */
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+  border: 0 solid #eee;
+}
+.van-hairline--top::after {
+  border-top-width: 1px;
+}
+.van-hairline--left::after {
+  border-left-width: 1px;
+}
+.van-hairline--right::after {
+  border-right-width: 1px;
+}
+.van-hairline--bottom::after {
+  border-bottom-width: 1px;
+}
+.van-hairline--top-bottom::after {
+  border-width: 1px 0;
+}
+.van-hairline--surround::after {
+  border-width: 1px;
+}
+.van-ellipsis {
+  overflow-wrap: break-word;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.van-multi-ellipsis--l2 {
+  white-space: initial;
+  word-break: break-all;
+  /* autoprefixer: ignore next */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+}
+.van-multi-ellipsis--l3 {
+  white-space: initial;
+  word-break: break-all;
+  /* autoprefixer: ignore next */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+}
+.order {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  position: relative;
+  height: 100%;
+  background-color: #f2f2f2;
+}
+.order .policy {
+  position: relative;
+  background-color: #ffffff;
+  padding: 0 40rpx;
+}
+.order .policy-close {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 88rpx;
+  height: 88rpx;
+  z-index: 100;
+}
+.order .policy-header {
+  height: 88rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  color: #262626;
+  font-size: 32rpx;
+  font-weight: 400;
+}
+.order .policy-scroll {
+  height: 520rpx;
+}
+.order .policy-scroll .warehouse-list-container {
+  width: 100%;
+  height: 80rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+.order .policy-scroll .warehouse-list-container .warehouse-list-name {
+  color: #00aaa6;
+  font-size: 26rpx;
+  font-weight: 400;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+.order .policy-scroll .warehouse-list-container .warehouse-list-named {
+  color: #262626;
+  font-size: 26rpx;
+  font-weight: 400;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+.order .policy-scroll .warehouse-list-container .warehouse-list-icon {
+  color: #00aaa6;
+  font-size: 22rpx;
+}
+.order .order-scroll {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  height: 100%;
+  background-color: #f2f2f2;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+}
+.order .order-scroll .order-container {
+  background-color: #ffffff;
+  width: 100%;
+  padding: 0 24rpx;
+}
+.order .order-scroll .order-container .order-header {
+  padding-top: 24rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+.order .order-scroll .order-container .order-header .order-id {
+  color: #262626;
+  font-size: 32rpx;
+  font-weight: 500;
+}
+.order .order-scroll .order-container .order-header .order-status {
+  color: #D9161C;
+  font-size: 28rpx;
+  font-weight: 400;
+}
+.order .order-scroll .order-container .order-address {
+  border-radius: 1px;
+  font-size: 22rpx;
+  padding: 0 16rpx;
+  margin-top: 16rpx;
+  color: #00AAA6;
+  border: 1px solid #00aaa6;
+}
+.order .order-scroll .order-container .order-come {
+  display: inline-block;
+  border: 1px solid #00aaa6;
+  color: #00AAA6;
+  padding: 0 16rpx;
+  margin-top: 12rpx;
+  font-size: 22rpx;
+}
+.order .order-scroll .order-list {
+  padding-top: 24rpx;
+  background-color: #ffffff;
+}
+.order .order-scroll .order-list .order-item {
+  margin-left: 24rpx;
+}
+.order .order-scroll .order-list .order-item .item {
+  width: 100%;
+  height: 88rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.order .order-scroll .order-list .order-item .item .left {
+  color: #262626;
+  font-size: 26rpx;
+}
+.order .order-scroll .order-list .order-item .item .right {
+  padding-right: 24rpx;
+  color: #262626;
+  font-size: 26rpx;
+}
+.order .order-scroll .order-list .order-item .item .ex-line {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.order .order-scroll .order-list .order-item .item .ex-line .text-value {
+  color: #262626;
+  font-size: 26rpx;
+}
+.order .order-scroll .order-list .order-item .item .ex-line .icon {
+  width: 32rpx;
+  height: 32rpx;
+  font-size: 20rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-right: 24rpx;
+  margin-left: 8rpx;
+  color: #AAAAAA;
+}
+.order .order-scroll .order-card {
+  width: 100%;
+}
+.order .order-scroll .order-card .order-details {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+.order .order-scroll .order-card .order-details .order-details-name {
+  padding-top: 40rpx;
+  padding-left: 24rpx;
+  padding-bottom: 24rpx;
+  color: #262626;
+  font-size: 26rpx;
+}
+.order .order-scroll .order-card .order-card-container {
+  width: 100%;
+  padding-left: 16rpx ;
+  padding-right: 16rpx;
+}
+.order .order-scroll .order-card .order-card-container .order-card-container-name {
+  width: 100%;
+  background-color: #ffffff;
+  border-left: 2px solid #00aaa6;
+}
+.order .order-scroll .order-card .order-card-container .order-card-container-name .shop-name {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+.order .order-scroll .order-card .order-card-container .order-card-container-name .shop-name .shop-id {
+  color: #262626;
+  font-size: 26rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  font-weight: 500;
+  padding-left: 28rpx;
+  padding-top: 16rpx;
+}
+.order .order-scroll .order-card .order-card-container .order-card-container-name .shop-type {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  padding-bottom: 16rpx;
+}
+.order .order-scroll .order-card .order-card-container .order-card-container-name .shop-type .shop-type-one {
+  color: #777777;
+  font-size: 24rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding-left: 28rpx;
+  padding-top: 8rpx;
+}
+.order .order-scroll .order-card .order-card-container .order-card-container-name .shop-type .shop-type-one .text {
+  color: #262626;
+  font-size: 24rpx;
+  font-weight: 400;
+  padding-left: 12rpx;
+}
+.order .order-scroll .order-card .order-card-container .order-card-container-name .shop-relnumber {
+  text-align: right;
+  color: #00AAA6;
+  font-size: 20rpx;
+  padding-top: 8rpx;
+  padding-right: 24rpx;
+}
+.order .order-scroll .order-card .order-card-container .order-card-list {
+  margin-top: 20rpx;
+  background-color: #ffffff;
+}
+.order .order-scroll .order-card .order-card-container .order-card-list .card-number {
+  height: 88rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.order .order-scroll .order-card .order-card-container .order-card-list .card-number .card-number-text {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  color: #262626;
+  font-size: 26rpx;
+  padding-left: 24rpx;
+}
+.order .order-scroll .order-card .order-card-container .order-card-list .card-number .card-number-text-index {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  color: #262626;
+  font-size: 26rpx;
+  padding-right: 24rpx;
+}
+.order .order-scroll .order-card .order-card-container .order-card-list .card-number .card-number-text-index .index-class {
+  width: 60rpx;
+}
+.order .order-scroll .order-card .order-card-container .order-card-list .card-warehouse {
+  height: 88rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.order .order-scroll .order-card .order-card-container .order-card-list .card-warehouse .warehouse-text {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  color: #262626;
+  font-size: 26rpx;
+  padding-left: 24rpx;
+}
+.order .order-scroll .order-card .order-card-container .order-card-list .card-warehouse .warehouse-select {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+.order .order-scroll .order-card .order-card-container .order-card-list .card-warehouse .warehouse-select .morencangku {
+  color: #262626;
+  font-size: 26rpx;
+}
+.order .order-scroll .order-card .order-card-container .order-card-list .card-warehouse .warehouse-select .warehouse-select-icon {
+  color: #AAAAAA;
+  font-size: 24rpx;
+  padding-right: 24rpx;
+  padding-left: 16rpx;
+}
+.order .order-scroll .order-card .order-card-container .order-card-list .card-warehouse-style {
+  height: 88rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.order .order-scroll .order-card .order-card-container .order-card-list .card-warehouse-style .warehouse-text {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  color: #262626;
+  font-size: 26rpx;
+  padding-left: 24rpx;
+}
+.order .order-scroll .order-card .order-card-container .order-card-list .card-warehouse-style .warehouse-select {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+.order .order-scroll .order-card .order-card-container .order-card-list .card-warehouse-style .warehouse-select .morencangku {
+  color: #999999;
+  font-size: 26rpx;
+  padding-right: 64rpx;
+}
+.order .order-scroll .order-card .order-card-container .order-card-list .card-warehouse-style .warehouse-select .warehouse-select-icon {
+  color: #AAAAAA;
+  font-size: 24rpx;
+  padding-right: 24rpx;
+}
+.order .order-scroll .order-card .order-card-container .order-card-list .card-list-del {
+  height: 88rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+.order .order-scroll .order-card .order-card-container .order-card-list .card-list-del .del-container {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+.order .order-scroll .order-card .order-card-container .order-card-list .card-list-del .del-container .del-icon {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  color: #AAAAAA;
+  font-size: 32rpx;
+  margin-right: 10rpx;
+}
+.order .order-scroll .order-card .order-card-container .order-card-list .card-list-del .del-container .del-text {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  color: #777777;
+  font-size: 24rpx;
+  padding-right: 24rpx;
+}
+.order .order-scroll .order-card .order-card-container .order-card-footer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  padding-top: 24rpx;
+  padding-bottom: 40rpx;
+}
+.order .order-scroll .order-card .order-card-container .order-card-footer .footer-icon {
+  color: #00AAA6;
+  font-size: 24rpx;
+}
+.order .order-scroll .order-card .order-card-container .order-card-footer .footer-icon text {
+  color: #00AAA6;
+  font-size: 24rpx;
+  margin-left: 15rpx;
+}
+.order .order-scroll .order-card .order-card-container:last-child {
+  padding-bottom: 80rpx;
+}
+.order-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.order-footer-bar {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 100rpx;
+  background-color: #ffffff;
+}
+.order-footer-bar-btn {
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  background-color: #00AAA6;
+  font-size: 32rpx;
+  font-weight: 400;
+  color: #ffffff;
+}
+.order-footer-bar-btn.disabled {
+  background-color: #cccccc;
+}

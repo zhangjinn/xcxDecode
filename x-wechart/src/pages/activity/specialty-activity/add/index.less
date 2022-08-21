@@ -1,0 +1,205 @@
+@import '../../../../styles/utils.less';
+@import '../../../../components/vant/common/style/hairline.less';
+@import '../../../../components/vant/common/style/ellipsis.less';
+
+.store {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  .store-wrapper{
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    .form-wrapper{
+      font-weight: 400;
+      padding: 24rpx;
+      background: #FFF;
+      .item-row-upload{
+        border-bottom: 2rpx solid #EEEEEE;
+        .item-row-top{
+          height: 88rpx;
+          font-size: 28rpx;
+          color: #262626;
+          display: flex;
+          align-items: center;
+          .redXing{
+            color: #D9161C;
+          }
+        }
+        .item-row-bottom{
+          padding-bottom: 8rpx;
+        }
+      }
+      .no-bottom-line{
+        border-bottom: none;
+      }
+    }
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 88rpx;
+      border-bottom: 2rpx solid #EEEEEE;
+      font-size: 28rpx;
+      color: #262626;
+      .item-row-left {
+        padding-right: 24rpx;
+        .redXing{
+          color: #D9161C;
+        }
+      }
+      .item-row-right {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+        .item-row-right-note{
+          width: 100%;
+        }
+
+        .placeholder {
+          color: #AAAAAA;
+        }
+        &-inventory {
+          max-width: 490rpx;
+          .ellipsis();
+        }
+      }
+      .disabled-color{
+        color: #999999;
+      }
+    }
+    .item-title{
+      position: relative;
+      padding-left: 24rpx;
+      margin-top: 40rpx;
+      font-size: 26rpx;
+      font-weight: 500;
+      color: #262626;
+    }
+    .sales-info-wrapper{
+      padding: 16rpx;
+      .sales-info-item{
+        background: #FFFFFF;
+        padding: 0 24rpx;
+        border-radius: 16rpx;
+        margin-bottom: 16rpx;
+        .sales-info-item-footer{
+          height: 96rpx;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          color: #777777;
+          font-size: 24rpx;
+          .handle-btn{
+            display: flex;
+            align-items: center;
+            .b-icon{
+              margin-right: 16rpx;
+            }
+          }
+        }
+      }
+
+      .add-sales{
+        height: 78rpx;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #FFFFFF;
+        border-radius: 16rpx;
+        font-size: 28rpx;
+        font-weight: 500;
+        color: #00AAA6;
+        .b-icon{
+          font-size: 20rpx;
+          margin-right: 16rpx;
+        }
+      }
+    }
+  }
+  .add-store-footer{
+    background-color: #ffffff;
+    height: 100rpx;
+    //line-height: 100rpx;
+    //text-align: center;
+    color: #FFFFFF;
+    font-size: 32rpx;
+    display: flex;
+    .add-store-btn{
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+    .revoke-btn{
+      border-top: 2rpx solid #EEEEEE;
+      color: #666666;
+    }
+    .submit-btn{
+      background: #00AAA6;
+    }
+  }
+  .custom-cell{
+    padding: 0;
+  }
+}
+
+.item-inv {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  &-head {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    &-context {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-left: 58rpx;
+      height: 88rpx;
+      position: relative;
+      &::after {
+        .hairline(#EEEEEE);
+        border-bottom-width: 1rpx;
+      }
+      &-title {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        font-size: 32rpx;
+        color: #262626;
+      }
+      &-close {
+        padding-right: 40rpx;
+        font-size: 18rpx;
+      }
+    }
+  }
+  &-scroll {
+    padding-top: 88rpx;
+    height: 492rpx;
+    flex: 1;
+    &-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 80rpx;
+      padding: 0 40rpx 0 24rpx;
+      font-size: 26rpx;
+      .checked {
+        color: #00AAA6 ;
+      }
+      &-checked {
+        font-size: 20rpx;
+      }
+    }
+  }
+}
+
+

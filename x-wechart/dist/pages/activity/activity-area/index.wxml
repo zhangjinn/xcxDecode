@@ -1,0 +1,241 @@
+
+  <block  wx:if="{{isPermission}}" class="_40bedbd">
+    <view class="filter _40bedbd">
+      <!-- 组合购显示更多弹框 -->
+      <van-popup show="{{moreModelPopup}}" round="round" position="bottom" custom-style="height: 70%; border-radius: 24rpx 24rpx 0rpx 0rpx;"  bind:close="closeMoreModelPopup" z-index="201" custom-class="base-model-popup-picker" bindtouchmove="moveHandle" class="_40bedbd">
+        <view class="picker-wrapper _40bedbd">
+          <view class="picker-header _40bedbd">
+            <view class="_40bedbd"/>
+            <i class="b-icon icon-close _40bedbd" bindtap="closeMoreModelPopup"/>
+          </view>
+          <view class="picker-content _40bedbd">
+            <activity-good-more wx:if="{{ moreModelPopup }}" containerItem="{{popupShowMoreModelInfo.containerItem}}" item="{{popupShowMoreModelInfo.item}}" mark="{{ popupShowMoreModelInfo.mark }}" bindchangePopModel="changePopModel" class="_40bedbd"/>
+          </view>
+          <view class="picker-footer _40bedbd">
+            <view class="footer-inner _40bedbd" bindtap="closeMoreModelPopup">
+              <van-button type="default" size="large" class="_40bedbd"> 关闭 </van-button>
+            </view>
+          </view>
+        </view>
+      </van-popup>
+
+      <!-- 日历弹框 -->
+      <van-popup show="{{calendarShow}}" position="bottom"  bind:close="closeCalendar" z-index="200" class="_40bedbd">
+        <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay" class="_40bedbd"/>
+      </van-popup>
+
+      <!-- 筛选弹框 -->
+      <van-popup show="{{visible}}" position="right" overlay="{{ true }}"  bind:close="openDrawer" custom-style="height: 100%;" z-index="130" class="_40bedbd">
+        <view class="filter-drawer _40bedbd">
+          <view class="filter-drawer-attr _40bedbd">
+            <view class="header-divider _40bedbd" style="height: {{sys.statusBarHeight}}px"/>
+            <view class="header-divider _40bedbd" style="height: 35px">筛选</view>
+            <scroll-view class="filter-drawer-attr-scroll _40bedbd" scroll-y>
+              <view class="attr-item _40bedbd">
+                <view bindtap="onOpen" class="attr-item-header _40bedbd" hover-class="hover" data-wpyonopen-a="gys">
+                  <view class="title _40bedbd">供应商</view>
+                  <view class="right _40bedbd">
+                    <view class="address _40bedbd">{{orgIdname}}</view>
+                    <view class="b-icon h-icon icon-more _40bedbd"/>
+                  </view>
+                </view>
+                <view bindtap="onOpen" class="attr-item-mid _40bedbd" hover-class="hover" data-wpyonopen-a="wlz">
+                  <view class="title _40bedbd">物料组</view>
+                  <view class="right _40bedbd">
+                    <view class="address _40bedbd">{{matklname}}</view>
+                    <view class="b-icon h-icon icon-more _40bedbd"/>
+                  </view>
+                </view>
+                <view class="attr-item-mid-one _40bedbd" hover-class="hover">
+                  <view class="item-name _40bedbd">活动名称</view>
+                  <van-field placeholder="请输入活动名称/活动编码" value="{{filterForm.activityName}}" placeholder-style="font-size: 24rpx;color: #AAAAAA;" border="{{ false }}" bind:change="onZzprdmodelChange" custom-style="background-color: #f7f7f7;height: 80rpx" clearable="clearable" class="_40bedbd"/>
+                </view>
+                <view class="order-data _40bedbd">
+                  <view class="project _40bedbd">
+                    <text style="font-size: 13px;color: #777777" class="_40bedbd">生效日期</text>
+                  </view>
+                  <view class="order-data-input _40bedbd">
+                    <view class="order-data-input-one _40bedbd" data-name="sapBeginDate" data-type="sapDate" bindtap="openCalendar">
+                      <view data-name="sapBeginDate" data-type="sapDate" class="text _40bedbd">{{filterForm.startDate|| '开始日期'}}</view>
+                      <view class="_40bedbd">
+                        <van-icon wx:if="{{filterForm.startDate}}" custom-style="font-size: 24rpx;color: #aaaaaa;padding-right: 15rpx" name="clear" catchtap="clearCalendar" class="_40bedbd" data-wpyclearcalendar-a="sapBeginDate"/>
+                      </view>
+                    </view>
+                    <view class="order-data-input-line _40bedbd">-</view>
+                    <view class="order-data-input-one _40bedbd" data-name="sapEndDate" data-type="sapDate" bindtap="openCalendar">
+                      <view data-name="sapEndDate" data-type="sapDate" class="text _40bedbd">{{filterForm.endDate || '结束日期'}}</view>
+                      <view class="_40bedbd">
+                        <van-icon wx:if="{{filterForm.endDate}}" custom-style="font-size: 24rpx;color: #aaaaaa;padding-right: 15rpx" name="clear" catchtap="clearCalendar" class="_40bedbd" data-wpyclearcalendar-a="sapEndDate"/>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </scroll-view>
+            <view class="filter-drawer-attr-footer _40bedbd">
+              <view bindtap="resetSearch" class="filter-drawer-attr-footer-btn reset _40bedbd" hover-class="filter-drawer-attr-footer-btn-hover">重置</view>
+              <view bindtap="confirmSearch" class="filter-drawer-attr-footer-btn confirm _40bedbd" hover-class="filter-drawer-attr-footer-btn-hover">确认</view>
+            </view>
+          </view>
+        </view>
+      </van-popup>
+
+      <!-- 物料组筛选列表弹框 -->
+      <van-popup show="{{wlz_visible}}" position="right" overlay="{{ true }}" z-index="200" bind:close="openDrawer" custom-style="height: 100%" close-on-click-overlay="{{ false }}" class="_40bedbd">
+        <view class="filter-drawer _40bedbd">
+          <view class="filter-drawer-attr _40bedbd">
+            <view class="header-divider _40bedbd" style="height: {{sys.statusBarHeight}}px"/>
+            <view class="info _40bedbd" bindtap="onOpen" data-wpyonopen-a="wlz">
+              <van-icon name="arrow-left" class="icons _40bedbd" size="46rpx"/>
+              <view class="title _40bedbd">物料组</view>
+            </view>
+            <scroll-view class="filter-drawer-attr-scroll _40bedbd" scroll-y>
+              <view class="attr-item _40bedbd">
+                <view class="attr-item-content _40bedbd">
+                  <view class="attr-item-content-line _40bedbd" bindtap="onSelectWlzFrame" data-wpyonselectwlzframe-a="全部" data-wpyonselectwlzframe-b="">
+                    <view class="text {{filterForm.matkl === '' ? 'active' : ''}} _40bedbd">全部</view>
+                    <van-icon wx:if="{{filterForm.matkl === ''}}" name="success" class="time-selected _40bedbd" size="32rpx"/>
+                  </view>
+                  <block class="_40bedbd" wx:for="{{specialfilters.productGroupMap}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                    <view class="attr-item-content-line _40bedbd" bindtap="onSelectWlzFrame" data-wpyonselectwlzframe-a="{{item.value}}" data-wpyonselectwlzframe-b="{{item.key}}">
+                      <view class="text {{filterForm.matkl === item.key ? 'active' : ''}} _40bedbd">{{item.value}}</view>
+                      <van-icon wx:if="{{filterForm.matkl === item.key}}" name="success" class="time-selected _40bedbd" size="32rpx"/>
+                    </view>
+                  </block>
+                </view>
+              </view>
+            </scroll-view>
+          </view>
+        </view>
+      </van-popup>
+
+      <!-- 供应商筛选列表弹框 -->
+      <van-popup show="{{gys_visible}}" position="right" overlay="{{ true }}" z-index="200" bind:close="openDrawer" custom-style="height: 100%;" close-on-click-overlay="{{ false }}" class="_40bedbd">
+        <view class="filter-drawer _40bedbd">
+          <view class="filter-drawer-attr _40bedbd">
+            <view class="header-divider _40bedbd" style="height: {{sys.statusBarHeight}}px"/>
+            <view class="info _40bedbd" bindtap="onOpen" data-wpyonopen-a="gys">
+              <van-icon name="arrow-left" class="icons _40bedbd" size="46rpx"/>
+              <view class="title _40bedbd">供应商</view>
+            </view>
+            <scroll-view class="filter-drawer-attr-scroll _40bedbd" scroll-y>
+              <view class="attr-item _40bedbd">
+                <view class="attr-item-content _40bedbd">
+                  <view class="attr-item-content-line _40bedbd" bindtap="onSelectGysFrame" data-wpyonselectgysframe-a="全部" data-wpyonselectgysframe-b="">
+                    <view class="text {{filterForm.orgId === '' ? 'active' : ''}} _40bedbd">全部</view>
+                    <van-icon wx:if="{{filterForm.orgId === ''}}" name="success" class="time-selected _40bedbd" size="32rpx"/>
+                  </view>
+                  <block class="_40bedbd" wx:for="{{specialfilters.fwOrgsGroupMap}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                    <view class="attr-item-content-line _40bedbd" bindtap="onSelectGysFrame" data-wpyonselectgysframe-a="{{item.value}}" data-wpyonselectgysframe-b="{{item.key}}">
+                      <view class="text {{filterForm.orgId === item.key ? 'active' : ''}} _40bedbd">{{item.value}}</view>
+                      <van-icon wx:if="{{filterForm.orgId === item.key}}" name="success" class="time-selected _40bedbd" size="32rpx"/>
+                    </view>
+                  </block>
+                </view>
+              </view>
+            </scroll-view>
+          </view>
+        </view>
+      </van-popup>
+      <view class="top topH _40bedbd">
+        <view class="top-bg _40bedbd">
+          <image class="img-bg _40bedbd" src="{{imgObj.activeHeaderBg}}"/>
+        </view>
+        <view class="top-info _40bedbd">
+          <view class="header-divider _40bedbd" style="height: {{sys.statusBarHeight}}px;"/>
+          <view class="header-content _40bedbd">
+            <view class="icon-space _40bedbd">
+              <van-icon bindtap="goback" name="arrow-left" custom-class="activity-icon-front" size="46rpx" class="_40bedbd"/>
+            </view>
+            <view class="activity-name _40bedbd">
+              <image class="img-logo _40bedbd" src="{{imgObj.activeHeaderLogo}}"/>
+            </view>
+            <view class="icon-space _40bedbd"/>
+          </view>
+
+          <view class="touch-bar _40bedbd">
+            <view class="container _40bedbd">
+              <view bindtap="chosebar" class="chose-name _40bedbd" data-wpychosebar-a="2">
+                <view class="capsuled _40bedbd">进行中</view>
+                <view class="choose-tab _40bedbd">
+                  <image wx:if="{{filterForm.status == '2'}}" class="img-tab _40bedbd" src="{{imgObj.activeHeaderTab}}"/>
+                </view>
+              </view>
+              <view bindtap="chosebar" class="chose-name _40bedbd" data-wpychosebar-a="1">
+                <view class="capsuled _40bedbd">即将抢购</view>
+                <view class="choose-tab _40bedbd">
+                  <image wx:if="{{filterForm.status == '1'}}" class="img-tab _40bedbd" src="{{imgObj.activeHeaderTab}}"/>
+                </view>
+              </view>
+              <view bindtap="chosebar" class="chose-name _40bedbd" data-wpychosebar-a="3">
+                <view class="capsuled _40bedbd">已结束</view>
+                <view class="choose-tab _40bedbd">
+                  <image wx:if="{{filterForm.status == '3'}}" class="img-tab _40bedbd" src="{{imgObj.activeHeaderTab}}"/>
+                </view>
+              </view>
+            </view>
+            <view class="iview _40bedbd"/>
+          </view>
+        </view>
+
+      </view>
+      <!-- 活动循环循环 -->
+      <scroll-view class="collection _40bedbd" enable-flex="enable-flex" bindscrolltolower="onPullBottom" bindscroll="onScroll" scroll-top="{{ scrollTop }}" scroll-y enable-back-to-top="enable-back-to-top">
+        <view class="scroll-grid _40bedbd">
+          <view wx:if="{{ActivityList.length > 0}}" class="scroll-grid-inner _40bedbd">
+            <view wx:for="{{ ActivityList }}" wx:for-item="item" wx:for-index="index" wx:key="id" class="item _40bedbd">
+              <activity-good-container bindshowMoreModel="showMoreModel" bindchangeModel="changeModel" containerItem="{{item}}" timestatus="{{item.timestatus}}" class="_40bedbd"/>
+            </view>
+          </view>
+          <view wx:else class="collection-empty _40bedbd">
+            
+  <view class="empty-data _40bedbd">
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+          </view>
+
+        </view>
+      </scroll-view>
+      <!-- 收藏 -->
+      <button class="screening shareBar _40bedbd" lang="zh_CN" bindtap="openDrawer">
+        <text class="shareBarname _40bedbd">筛选</text>
+      </button>
+      <!-- 分享 -->
+      <button style="bottom: 178rpx;" bindtap="onShareAppMessage" open-type="share" class="screen shareBar _40bedbd" lang="zh_CN">
+        <view class="b-icon icon-huodong_fenxiang _40bedbd"/>
+      </button>
+      <!-- 回到上方 -->
+      <button hidden="{{!visibelTop}}" bindtap="scrollToTop" class="screen shareBar _40bedbd" lang="zh_CN">
+        <view class="b-icon icon-top _40bedbd"/>
+      </button>
+      <van-toast id="van-toast" class="_40bedbd"/>
+    </view>
+  </block>
+  <block  wx:else class="_40bedbd">
+    <view class="filter _40bedbd">
+      <view class="top _40bedbd">
+        <view class="header-divider _40bedbd" style="height: {{sys.statusBarHeight}}px;"/>
+        <view class="header-content _40bedbd">
+          <view class="icon-space _40bedbd">
+            <van-icon bindtap="goback" name="arrow-left" custom-class="activity-icon-front" size="46rpx" class="_40bedbd"/>
+          </view>
+          <view class="activity-name _40bedbd">
+            <image class="img-logo _40bedbd" src="{{imgObj.activeHeaderLogo}}"/>
+          </view>
+          <view class="icon-space _40bedbd"/>
+        </view>
+      </view>
+      
+  <view class="empty-data _40bedbd">
+    <view class="empty-data-context">
+      <image src="{{$emptyDataAuth$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataAuth$descriptionText }}</view>
+    </view>
+  </view>
+
+    </view>
+  </block>

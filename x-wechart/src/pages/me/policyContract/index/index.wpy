@@ -1,0 +1,148 @@
+<template>
+  <view class="order">
+    <van-popup show="{{calendarShow}}" position="bottom" bind:close="closeCalendar" z-index="200">
+      <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay" />
+    </van-popup>
+
+    <van-popup show="{{visible}}" position="right" overlay="{{ true }}" bind:close="orderfiltering" custom-style="height: 100%;" z-index="130">
+      <view class="order-drawer">
+        <view class="order-drawer-attr">
+          <scroll-view class="order-drawer-attr-scroll" scroll-y>
+            <view class="attr-item">
+              <view class="projectem">
+                <view class="project">
+                  <text style="font-size: 13px;color: #777777">合同类型</text>
+                </view>
+                <van-field placeholder="请输入合同类型" placeholder-style="font-size: 24rpx;" border="{{ false }}" bind:change="contractTypeChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;margin-top:16rpx;" clearable value="{{filterForm.contractType}}" />
+              </view>
+              <view class="projectem">
+                <view class="project">
+                  <text style="font-size: 13px;color: #777777">合同编码</text>
+                </view>
+                <van-field placeholder="请输入合同编码" placeholder-style="font-size: 24rpx;" border="{{ false }}" bind:change="contractNoChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;margin-top:16rpx;" clearable value="{{filterForm.contractNo}}" />
+              </view>
+              <view class="projectem">
+                <view class="project">
+                  <text style="font-size: 13px;color: #777777">合同名称</text>
+                </view>
+                <van-field placeholder="请输入合同名称" placeholder-style="font-size: 24rpx;" border="{{ false }}" bind:change="ontractNameChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;margin-top:16rpx;" clearable value="{{filterForm.contractName}}" />
+              </view>
+              <view class="projectem">
+                <view class="project">
+                  <text style="font-size: 13px;color: #777777">代理商</text>
+                </view>
+                <van-field placeholder="请输入代理商" placeholder-style="font-size: 24rpx;" border="{{ false }}" bind:change="merchantNameChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;margin-top:16rpx;" clearable value="{{filterForm.merchantName}}" />
+              </view>
+              <view class="order-data">
+                <view class="project">
+                  <text style="font-size: 28rpx;color: #777777">创建时间</text>
+                </view>
+                <view class="order-data-input">
+                  <view class="order-data-input-one" data-name="createdDateS" data-type="sapDate" @tap="openCalendar">
+                    {{filterForm.createdDateS || '开始日期'}}
+                    <van-icon wx:if="{{filterForm.createdDateS}}" class="close-icon" name="clear" @tap.stop="clearCalendar('createdDateS')" />
+                  </view>
+                  <view class="order-data-input-line">-</view>
+                  <view class="order-data-input-one" data-name="createdDateE" data-type="sapDate" @tap="openCalendar">
+                    {{filterForm.createdDateE|| '结束日期'}}
+                    <van-icon wx:if="{{filterForm.createdDateE}}" class="close-icon" name="clear" @tap.stop="clearCalendar('createdDateE')" />
+                  </view>
+                </view>
+              </view>
+            </view>
+          </scroll-view>
+          <!-- 底部按钮 -->
+          <view class="order-drawer-attr-footer">
+            <view @tap="onResetFilterForm" class="order-drawer-attr-footer-btn reset" hover-class="order-drawer-attr-footer-btn-hover">重置</view>
+            <view @tap="onSubmitFilterForm" class="order-drawer-attr-footer-btn confirm" hover-class="order-drawer-attr-footer-btn-hover">确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+   
+    <headerTab
+      @onSideFilter.user="orderfiltering"
+    />
+    <scroll-view wx:if="{{orderList.list != 0}}" scroll-y="true" class="order-scroll" enable-flex scroll-top="{{ scrollTop }}" bindscroll="onScroll" bindscrolltolower="onGetOrderListNext">
+      <repeat for="{{orderList.list}}" item="item">
+        <!-- <view class="order-container">
+          <view class="order-goods van-hairline--bottom">
+            <view class="order-options">
+              <view class="item">
+                <span>合同名称: {{item.contractName || ''}}</span>
+              </view>
+            </view>
+            <view class="order-options">
+              <view class="item">
+                <span>合同编码: {{item.contractNo || ''}}</span>
+              </view>
+            </view>
+            <view class="order-options">
+              <view class="item">
+                <span>合同类型: {{item.contractType || ''}}</span>
+              </view>
+            </view>
+            <view class="order-options">
+              <view class="item">
+                <span>合同状态: {{item.status || ''}}</span>
+              </view>
+            </view>
+            <view class="order-options">
+              <view class="item">
+                <span>销售组织: {{item.orgNames || ''}}</span>
+              </view>
+            </view>
+            <view class="order-options">
+              <view class="item">
+                <span>代理商: {{item.merchantName || ''}}</span>
+              </view>
+            </view>
+            <view class="order-options">
+              <view class="item">
+                <span>分销商: {{item.distributorsName || ''}}</span>
+              </view>
+            </view>
+            <view class="order-options">
+              <view class="item">
+                <span>创建时间: {{item.createdDateStr || ''}}</span>
+              </view>
+            </view>
+          </view>
+          <view class="order-operation">
+            <view class="order-operation-the">
+              <van-button plain size="small" type="default" bind:click="viewDetail({{item.url}})">查看</van-button>
+            </view>
+          </view>
+        </view> -->
+        <view class="order-container" data-url='{{item.url}}' @tap="viewDetail">
+          <view class="card-header">
+            <view class="card-title">
+              <view class="card-coding">
+                <text>{{ item.contractName || '' }}</text>
+              </view>
+              <!-- <view class="card-status">
+                <text class="reported">{{ item.contractType || '' }}</text>
+              </view> -->
+            </view>
+            <view class="card-desc">
+              <text class="gap">合同编码：{{ item.contractNo || '' }}</text>
+            </view>
+            <view style="margin-top: 10rpx;">
+              <text class="gap">{{ item.createdDateStr || ''}}</text>
+            </view>
+          </view>
+
+          <!-- <view class="card-footer">
+            <view class="card-footer-handle" data-url='{{item.url}}' @tap="viewDetail">查看详情</view>
+          </view> -->
+        </view>
+      </repeat>
+    </scroll-view>
+    <emptyDataType wx:else description="合同"/>
+
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

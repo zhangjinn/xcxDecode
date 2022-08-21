@@ -1,0 +1,182 @@
+<template>
+  <view class="order">
+    <van-popup
+      show="{{visible}}"
+      position="right"
+      overlay="{{ true }}"
+      bind:close="orderfiltering"
+      custom-style="height: 100%; border-radius: 16px 0px 0px 16px"
+      z-index="130"
+    >
+      <sideFilter
+        :drawerTopHeight="drawerTopHeight"
+        :sideFilterForm.sync="sideFilterForm"
+        @handleConfirm.user="handleConfirm"
+      />
+    </van-popup>
+
+    <!-- 快捷筛选顶部弹框 状态 -->
+    <van-popup
+      show="{{OrderSFilterVisible}}"
+      position="top"
+      overlay="{{ true }}"
+      custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"
+      bind:close="touchOrderSFilter"
+    >
+      <view wx:if="{{CurrentOrderSFilterName === 'status'}}" class="order-s-filter-container">
+        <view class="order-operation" wx:for={{sortOptions}}>
+          <view class="operation-text van-hairline--bottom" data-name="sort" data-id="{{ item.id }}" data-value="{{ item.value }}" @tap="onSelectStatus">
+            <view class="operation-status {{ filterForm.terms.sort === item.id ? 'active' : '' }}">{{item.value}}</view>
+            <view wx:if="{{ filterForm.terms.sort === item.id }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{CurrentOrderSFilterName === 'type'}}" class="order-s-filter-container">
+        <view class="order-operation">
+          <view class="operation-text van-hairline--bottom" data-name="userType" data-id="" data-value="" @tap="onSelectStatus">
+            <view class="operation-status {{ filterForm.terms.userType === '' ? 'active' : '' }}">全部</view>
+            <view wx:if="{{ filterForm.terms.userType === '' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <view class="order-operation" wx:for={{typeOptions}}>
+          <view class="operation-text van-hairline--bottom" data-name="userType" data-id="{{ item.id }}" data-value="{{ item.name }}" @tap="onSelectStatus">
+            <view class="operation-status {{ filterForm.terms.userType === item.id ? 'active' : '' }}">{{item.value}}</view>
+            <view wx:if="{{ filterForm.terms.userType ===  item.id }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+      </view>
+
+      <view wx:if="{{CurrentOrderSFilterName === 'date'}}" class="order-s-filter-container">
+        <view class="order-operation" wx:for={{dateOptions}}>
+          <view class="operation-text van-hairline--bottom" data-name="dateInterval" data-id="{{ item.id }}" data-value="{{ item.name }}" @tap="onSelectStatus">
+            <view class="operation-status {{ filterForm.terms.dateInterval === item.id ? 'active' : '' }}">{{item.value}}</view>
+            <view wx:if="{{ filterForm.terms.dateInterval ===  item.id }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    <view class="statistics-wrapper">
+      <view class="statistics-card">
+        <view class="statistics-card-bg">
+          <image src="{{imgObj.opeBg}}" class="bg"></image>
+        </view>
+        <view class="statistics-card-info">
+          <view class="statistics-card-info-inner">
+            <view class="card-screening" @tap="openDatePop">
+              <text wx:if="{{filterForm.terms.dateInterval === 'lastWeek'}}">最近一周</text>
+              <text wx:elif="{{filterForm.terms.dateInterval === 'lastMonth'}}">最近一个月</text>
+              <text wx:elif="{{filterForm.terms.dateInterval === 'lastThreeMonths'}}">最近三个月</text>
+              <text wx:elif="{{filterForm.terms.dateInterval === 'lastHalfYear'}}">最近半年</text>
+              <text wx:else>全部时间</text>
+              <i class="b-icon iconxialajiantou"></i>
+            </view>
+            <view class="card-list">
+              <view class="card-item">
+                <view class="num">{{ userStatistics.userNum }}</view>
+                <view class="text">用户总数</view>
+              </view>
+              <view class="card-item">
+                <view class="num">{{ userStatistics.transactionUserNum }}</view>
+                <view class="text">成交数</view>
+              </view>
+              <view class="card-item">
+                <view class="num">{{ userStatistics.potentialUserNum }}</view>
+                <view class="text">意向用户数</view>
+              </view>
+              <view class="card-item">
+                <view class="num">{{ userStatistics.conversionNum }}</view>
+                <view class="text">意向转化数</view>
+              </view>
+            </view>
+
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="user-wrapper">
+      <headerTab
+        class="header-tab-box"
+        :tabList.sync="headerTabList"
+        :showRightBtnLine.sync="showRightBtnLine"
+        @onTabChange.user="touchOrderSFilter"
+        @onSideFilter.user="orderfiltering"
+      />
+      <scroll-view
+        wx:if="{{ activityList && activityList.length }}"
+        scroll-y="true"
+        class="order-scroll"
+        enable-flex
+        scroll-top="{{ scrollTop }}"
+        bindscroll="onScroll"
+        bindscrolltolower="onGetOrderListNext">
+        <view class="order-scroll-inner">
+          <repeat for="{{activityList}}" item="item">
+            <view class="order-container">
+              <view class="card-header">
+                <view class="card-message">
+                  <view class="card-message-left">
+                    <view class="card-title">
+                      <view class="card-coding">
+                        <view class="user-name">
+                          <text class="">{{ item.userName }}</text>
+                        </view>
+                        <view class="user-gender">
+                          <image wx:if="{{ item.gender == 1 }}" src="{{imgObj.boy}}" class="bg"></image>
+                          <image wx:else src="{{imgObj.girl}}" class="bg"></image>
+                        </view>
+                        <view wx:if="{{item.userTypeName}}" class="user-type {{item.userTypeName === '成交用户'? 'oGreen' : item.userTypeName === '意向用户' ? 'oRed' : ''}}">{{ item.userTypeName }}</view>
+                      </view>
+                    </view>
+                    <view class="card-desc card-phone">
+                      <view class="phone-num">{{ item.phoneZH }}</view>
+                      <view class="medal">
+                        <image wx:if="{{item.memberGrade == '1'}}" src="{{imgObj.v1}}" class="bg"></image>
+                        <image wx:if="{{item.memberGrade == '2'}}" src="{{imgObj.v2}}" class="bg"></image>
+                        <image wx:if="{{item.memberGrade == '3'}}" src="{{imgObj.v3}}" class="bg"></image>
+                        <image wx:if="{{item.memberGrade == '4'}}" src="{{imgObj.v4}}" class="bg"></image>
+                        <image wx:if="{{item.memberGrade == '5'}}" src="{{imgObj.v5}}" class="bg"></image>
+                      </view>
+                    </view>
+                  </view>
+                  <view class="card-message-right">
+                    <view class="card-status">
+                      <!--                    <view class="message"><image src="{{imgObj.texting}}" class="bg"></image></view>-->
+                      <view class="message" data-item="{{item}}" @tap="call"><image src="{{imgObj.callUp}}" class="bg"></image></view>
+                    </view>
+                  </view>
+                </view>
+
+                <view class="card-desc">
+                  <text class="gap">所属门店：{{ item.shopFullName }}</text>
+                </view>
+                <view class="card-desc">
+                  <text class="gap">跟进人：{{ item.followPeople || '' }}</text>
+                </view>
+                <view wx:if="{{item.userLableList.length}}" class="card-desc card-tags">
+                  <view class="tag" wx:for="{{ item.userLableList }}" wx:for-item="tag" style="color: {{tag.color}}; background-color: {{tag.fontColor}}">{{ tag.labelName }}</view>
+                </view>
+              </view>
+
+              <view class="card-footer">
+                <view class="card-footer-handle" data-type="detail" data-item="{{item}}" @tap="viewDetail">
+                  <view>查看详情</view>
+                  <view class="opportunityTip" wx:if="{{ item.intentionProductNum }}">销售机会{{ item.intentionProductNum }}</view>
+                </view>
+              </view>
+            </view>
+          </repeat>
+        </view>
+      </scroll-view>
+      <emptyDataType wx:else/>
+      <view class="order-footer" data-type="add" data-id="" @tap="goAddIntendedUsers">
+        <view class="btn">新增意向用户</view>
+      </view>
+    </view>
+
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

@@ -1,0 +1,277 @@
+<template>
+  <view class="purchase">
+
+    <scroll-view
+      scroll-y
+      class="purchase-inv-scroll">
+      <view>
+        <!--  图表  -->
+        <view class="experience-chart">
+          <view class="experience-chart-inner">
+            <!-- 时效日期说明，数据更新至当天的前一天日期 -->
+            <view class="expiry-date">数据更新至{{ previousDayDate }}</view>
+            <view class="chart-box" >
+              <view class="pickup-summary">
+                <view  class="chart-item chart-item-overview">
+                  <view class="chart-comparison" hidden="{{ showCharts }}">
+                    <chartOverview :option.sync="optionOverview" canvasId="overview111" width="150px" height="150px"/>
+                  </view>
+                  <view class="data-comparison">
+                    <view class="ranking-box">
+                      <view class="ranking-current">
+                        <text>第</text>
+                        <text class="ranking-num">{{ reportData.overview.ranking }}</text>
+                        <text>名</text>
+                      </view>
+                      <view class="ranking-all">(共{{ reportData.overview.customerNum }}家)</view>
+                    </view>
+                    <view class="inventory-legend">
+                      <view class="inventory-legend-item" wx:for="{{ reportData.overview.summaryScoreList }}">
+                        <view class="materials-title">
+                          <view class="materials-icon {{ item.icon }}"></view>
+                          <text class="materials-name">{{ item.name }}({{ item.fullScore }})</text>
+                        </view>
+                        <text class="materials-num">{{ item.score }}</text>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+            <view class="date-button" @tap="touchFilter('date')">
+              <text class="date-text">{{ selectDate }}</text>
+              <view class="b-icon h-icon iconxialajiantou"></view>
+            </view>
+          </view>
+        </view>
+        <view class="topBox" @tap="goToUrl('omniChannelCaliber')">
+          <view class="firstBlcok" >
+            <view class="box">
+              <view class="leftBox">
+                <p>全渠道口径出货</p>
+                <p>{{salesStructure.score}}</p>
+                <p>{{salesStructure.pm}}<span wx:if="{{salesStructure.zf}}">/{{salesStructure.zf}}</span>
+                </p>
+              </view>
+              <view class="IconBox">
+                <image src="http://3s-static.hisense.com/wechat/1/14722429883/1658396087443_1ba0c84934b842d283d769bffddd2c7c.png" alt=""/>
+              </view>
+            </view>
+          </view>
+          <view class="textBlock">
+            <p>当月完成/当月目标 </p>
+          </view>
+          <view class="threeBlock">
+            <view class="everyBox" wx:for="{{salesStructure.materialGroupPerformanceList }}"
+            >
+              <p wx:if="{{item.materialGroupName}}">{{ item.materialGroupName }}</p>
+              <p><span wx:if="{{item.monthlyCompletion}}">{{ item. monthlyCompletion}}</span>
+                <span wx:if="{{item.monthlyPlan || item.monthlyCompletion}}">/</span>
+                <span wx:if="{{item.monthlyPlan}}">{{item.monthlyPlan}}</span>
+              </p>
+            </view>
+          </view>
+        </view>
+        <!--  统计  -->
+        <view class="experience-statistics">
+          <view class="statistics-box">
+            <view class="feeds_col_one">
+              <view class="everyBox" @tap="goToUrl('netIncrease')">
+                <view class="whiteBox">
+                  <view class="left">
+                    <p>分销网络净增</p>
+                    <view class="textBox">
+                      <p>{{ netIncrease.score }}</p>
+                      <p>{{netIncrease.rankingShow}}</p>
+                    </view>
+                  </view>
+                  <view class="img">
+                    <image class="image" src="http://3s-static.hisense.com/wechat/1/14722429883/1658396087437_035b59f546d147ff81a3c7f2e7b2e4fa.png" alt=""/>
+                  </view>
+                </view>
+                <view class="textBox">
+                  <view class="textBlcok">
+                    <p>年累目标</p>
+                    <p>{{netIncrease.target}}</p>
+                  </view>
+                  <view class="textBlcok">
+                    <p>年累完成</p>
+                    <p>{{netIncrease.accomplish}}</p>
+                  </view>
+                </view>
+              </view>
+              <view class="everyBox" @tap="goToUrl('onlineSalesRate')">
+                <view class="whiteBox">
+                  <view class="left">
+                    <p>分销网络动销率</p>
+                    <view class="textBox">
+                      <p>{{onlineSalesRate.score}}</p>
+                      <p>{{onlineSalesRate.rankingShow}}
+<!--                        <span>/327</span>-->
+                      </p>
+                    </view>
+                  </view>
+                  <view class="img">
+                    <image class="image" src="http://3s-static.hisense.com/wechat/1/14722429883/1658396087437_035b59f546d147ff81a3c7f2e7b2e4fa.png" alt=""/>
+                  </view>
+                </view>
+                <view class="textBox">
+                  <view class="textBlcok">
+                    <p>当月目标</p>
+                    <p>{{onlineSalesRate.target}}</p>
+                  </view>
+                  <view class="textBlcok">
+                    <p>当月完成</p>
+                    <p>{{onlineSalesRate.accomplish}}</p>
+                  </view>
+                </view>
+              </view>
+            </view>
+            <view class="feeds_col_two">
+              <view class="everyBox" @tap="goToUrl('onlineStoreOutput')">
+                <view class="whiteBox">
+                  <view class="left">
+                    <p>分销网络单店产出</p>
+                    <view class="textBox">
+                      <p>{{onlineStoreOutput.score}}</p>
+                      <p>{{onlineStoreOutput.rankingShow}}
+<!--                        <span>/327</span>-->
+                      </p>
+                    </view>
+                  </view>
+                  <view class="img">
+                    <image class="image" src="http://3s-static.hisense.com/wechat/1/14722429883/1658396087437_035b59f546d147ff81a3c7f2e7b2e4fa.png" alt=""/>
+                  </view>
+                </view>
+                <view class="textBox">
+                  <view class="textBlcok">
+                    <p>当月目标</p>
+                    <p>{{onlineStoreOutput.target}}</p>
+                  </view>
+                  <view class="textBlcok">
+                    <p>当月完成</p>
+                    <p>{{onlineStoreOutput.accomplish}}</p>
+                  </view>
+                </view>
+              </view>
+              <view class="everyBox" @tap="goToUrl('incrementalBusiness')">
+                <view class="whiteBox">
+                  <view class="left">
+                    <p>增量业务(前置渠道)</p>
+                    <view class="textBox">
+                      <p>{{incrementalBusiness.score}}</p>
+                      <p>{{incrementalBusiness.rankingShow}}
+<!--                        <span>/327</span>-->
+                      </p>
+                    </view>
+                  </view>
+                  <view class="img">
+                    <image class="image" src="http://3s-static.hisense.com/wechat/1/14722429883/1658396087444_a896c624d56d458fac96933d458a5452.png" alt=""/>
+                  </view>
+                </view>
+                <view class="textBox">
+                  <view class="textBlcok">
+                    <p>当月目标</p>
+                    <p>{{incrementalBusiness.target}}</p>
+                  </view>
+                  <view class="textBlcok">
+                    <p>当月完成</p>
+                    <p>{{incrementalBusiness.accomplish}}</p>
+                  </view>
+                </view>
+              </view>
+            </view>
+            <view class="feeds_col_three">
+              <view class="everyBox" @tap="goToUrl('middleHighProportion')">
+                <view class="whiteBox">
+                  <view class="left">
+                    <p>高中端占比</p>
+                    <view class="textBox">
+                      <p>{{gaozhongduanZB.score}}</p>
+                      <p>{{gaozhongduanZB.rankingShow}}
+<!--                        <span>/327</span>-->
+                      </p>
+                    </view>
+                  </view>
+                  <view class="img">
+                    <image class="image" src="http://3s-static.hisense.com/wechat/1/14722429883/1658396087678_fc30f925717b470b8f24bd09df80a522.png" alt=""/>
+                  </view>
+                </view>
+                <view class="tips">
+                  <p>当月完成/当月目标</p>
+                </view>
+                <view class="textBox">
+                  <view
+                    class="textBlcok"
+                    wx:for="{{gaozhongduanZB.materialGroupPerformanceList }}"
+                  >
+                    <p wx:if="{{item.materialGroupName}}">{{ item.materialGroupName }}</p>
+                    <p><span wx:if="{{item.monthlyCompletion}}">{{ item. monthlyCompletion}}</span>
+                      <span wx:if="{{item.monthlyPlan || item.monthlyCompletion}}">/</span>
+                      <span wx:if="{{item.monthlyPlan}}">{{item.monthlyPlan}}</span>
+                    </p>
+                  </view>
+                </view>
+              </view>
+              <view class="everyBox"  @tap="goToUrl('machinesProportion')">
+                <view class="whiteBox">
+                  <view class="left">
+                    <p>专供机占比</p>
+                    <view class="textBox">
+                      <p>{{machinesProportion.score}}</p>
+                      <p>{{machinesProportion.rankingShow}}
+<!--                        <span>/327</span>-->
+                      </p>
+                    </view>
+                  </view>
+                  <view class="img">
+                    <image class="image" src="http://3s-static.hisense.com/wechat/1/14722429883/1658396087678_fc30f925717b470b8f24bd09df80a522.png" alt=""/>
+                  </view>
+                </view>
+                <view class="tips">
+                  <p>当月完成/当月目标</p>
+                </view>
+                <view class="textBox">
+                  <view
+                    class="textBlcok"
+                    wx:for="{{machinesProportion.materialGroupPerformanceList }}"
+                  >
+                    <p wx:if="{{item.materialGroupName}}">{{ item.materialGroupName }}</p>
+                    <p><span wx:if="{{item.monthlyCompletion}}">{{ item. monthlyCompletion}}</span>
+                      <span wx:if="{{item.monthlyPlan || item.monthlyCompletion}}">/</span>
+                      <span wx:if="{{item.monthlyPlan}}">{{item.monthlyPlan}}</span>
+                    </p>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 选择时间 -->
+    <van-popup
+      show="{{ purchaseVisable }}"
+      position="bottom"
+      custom-class="purchase-top"
+      bind:close="touchFilter"
+      wx:if="{{CurrentFilterName==='date'}}">
+      <view>
+        <van-datetime-picker
+          type="year-month"
+          value="{{ currentDate }}"
+          min-date="{{ minDate }}"
+          max-date="{{maxDate}}"
+          bind:input="onInput"
+          bind:confirm="onConfirm"
+          bind:change="getValues"
+          bind:cancel="onCancel"/>
+      </view>
+    </van-popup>
+
+  </view>
+</template>
+
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

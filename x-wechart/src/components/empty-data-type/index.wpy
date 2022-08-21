@@ -1,0 +1,13 @@
+<template>
+  <view class="empty-data">
+    <view class="empty-data-context">
+      <image
+        src="{{imgObj.emptyActivity}}"
+        class="empty-data-context-img"
+      />
+      <view class="empty-data-context-tip">{{ descriptionText }}</view>
+    </view>
+  </view>
+</template>
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts" ></script>

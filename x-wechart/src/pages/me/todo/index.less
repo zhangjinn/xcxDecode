@@ -1,0 +1,85 @@
+@import '../../../styles/utils.less';
+@import '../../../components/vant/common/style/hairline.less';
+
+.todo {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+  background-color: #F7F7F7;
+  &-header {
+    background-color: #ffffff;
+  }
+  &-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: 100%;
+    &-item {
+      margin-top: 16rpx;
+      background-color: #ffffff;
+      &-header {
+        padding: 32rpx 40rpx 0 40rpx;
+        &-top {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          .title {
+            width: 320rpx;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            font-size: 32rpx;
+            color: #262626;
+          }
+          .status {
+            font-size: 24rpx;
+            color: #F26522;
+          }
+        }
+
+        &-bottom {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 4rpx;
+          .tag {
+            .flex-center();
+            height: 32rpx;
+            padding: 0 16rpx;
+            font-size: 22rpx;
+            color: #00AAA6;
+            border-radius: 2rpx;
+            border: 2rpx solid rgba(0,170,166,1);
+          }
+          .date {
+            font-size: 22rpx;
+            color: #aaaaaa;
+          }
+        }
+
+      }
+      &-body {
+        padding: 32rpx 40rpx;
+        font-size: 28rpx;
+        line-height: 40rpx;
+        color: #777777;
+      }
+      &-footer {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        height: 104rpx;
+        padding: 0 40rpx;
+      }
+    }
+  }
+
+  .todo-tab-class {
+    .tabs-bored,
+    .tabs-bored-ed,
+    .van-tabs__nav {
+      background-color: #ffffff!important;
+    }
+  }
+}

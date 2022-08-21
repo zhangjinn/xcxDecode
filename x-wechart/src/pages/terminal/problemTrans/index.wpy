@@ -1,0 +1,78 @@
+<template>
+  <view class="page-wrap">
+    <view class="top-wrap">
+      <view class="left-wrap">
+        <view class="text name">{{ detail.storeName }}</view>
+        <view class="text">
+          <text class="lab">巡查日期</text>
+          <text class="val">{{ detail.checkTime }}</text>
+        </view>
+        <view class="text">
+          <text class="lab">巡查人员</text>
+          <text class="val">{{ detail.checkUserName }}</text>
+        </view>
+      </view>
+      <view class="right-wrap">
+        <image class="img" src="{{detail.checkResult=='T' ? imgObj.pointPass : imgObj.pointUnpass}}"/>
+      </view>
+
+    </view>
+    <view class="form-wrap">
+      <van-cell is-link value="{{proType||'请选择问题分类'}}" @tap="openTypeList">
+        <view slot="title">
+          <view class="van-cell-text cell--required">问题分类</view>
+        </view>
+      </van-cell>
+      <van-field label="问题描述" placeholder="请输入问题描述" input-align="right" value="{{proContent}}"
+                 bind:change="onDescriptionChange"/>
+      <van-cell is-link value="{{duty.dutyUserName}}" @tap="gotoPeople">
+        <view slot="title">
+          <view class="van-cell-text cell--required">责任人</view>
+        </view>
+      </van-cell>
+    </view>
+    <view class="prob-wrap">
+      <view class="name van-hairline--bottom">不合格项</view>
+      <repeat for="{{detail.listStandard}}" item="item" index="index">
+        <view class="item">
+          <view class="num">
+            {{ index+1 }}.
+          </view>
+          <view class="cont">
+            {{ item.contentRead }}
+          </view>
+        </view>
+      </repeat>
+    </view>
+    <view class="bottom-wrap">
+      <view class="btn" @tap="back">
+        返回
+      </view>
+      <view class="btn btn-ok" @tap="submit">
+        提交
+      </view>
+    </view>
+    <!--底部类型弹框-->
+    <van-popup
+      show="{{problemTypeListVisible}}"
+      position="bottom"
+      closeable
+      bind:close="onCloseTypeList"
+      close-on-click-overlay
+      custom-style="min-height: 400rpx;max-height: 600rpx;"
+    >
+      <view class="order-s-filter-container">
+        <repeat for="{{problemTypeList}}" item="item">
+          <view class="order-operation">
+            <view class="operation-text van-hairline--bottom" @tap="onSelProblemType({{item}})">
+              <view class="operation-status {{ proType==item.value? 'active' : '' }}">{{ item.text }}</view>
+              <view wx:if="{{ proType==item.value }}" class="b-icon icon-check operation-icon"></view>
+            </view>
+          </view>
+        </repeat>
+      </view>
+    </van-popup>
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

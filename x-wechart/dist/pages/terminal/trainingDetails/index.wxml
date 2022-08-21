@@ -1,0 +1,59 @@
+
+  <view class="training _5522a32">
+    <view  wx:if="{{ trainingDetails }}" class="training-wrapper _5522a32">
+      <view class="header _5522a32">培训信息</view>
+      <view class="info _5522a32">
+        <text class="label _5522a32">培训讲师：</text>
+        <text class="value _5522a32">{{ trainingDetails.trainerName }}</text>
+      </view>
+      <view class="info _5522a32">
+        <text class="label _5522a32">培训主题：</text>
+        <text class="value _5522a32">{{ trainingDetails.title }}</text>
+      </view>
+      <view class="info _5522a32">
+        <text class="label _5522a32">培训类型：</text>
+        <text class="value _5522a32">{{ trainingDetails.type || '' }}</text>
+      </view>
+      <view class="info _5522a32">
+        <text class="label _5522a32">培训时间：</text>
+        <text class="value _5522a32">{{ trainingDetails.trainingDate || '' }}</text>
+      </view>
+      <view class="info _5522a32">
+        <text class="label _5522a32">签到时间：</text>
+        <text class="value _5522a32">{{ trainingDetails.beginTime || '' }}</text>
+      </view>
+      <view class="info _5522a32">
+        <text class="label _5522a32">签退时间：</text>
+        <text class="value _5522a32">{{ trainingDetails.endTime || '' }}</text>
+      </view>
+      <view class="info _5522a32">
+        <text class="label _5522a32">培训对象：</text>
+        <text class="value _5522a32">{{ trainingDetails.trainingObject || '' }}</text>
+      </view>
+      <view class="info _5522a32">
+        <text class="label _5522a32">培训人数：</text>
+        <text wx:if="{{ trainingDetails.peopleNum != null }}" class="value _5522a32">{{ trainingDetails.peopleNum }}</text>
+      </view>
+      <view class="info _5522a32">
+        <text class="label _5522a32">培训地址：</text>
+        <text class="value _5522a32">{{ trainingDetails.submitAddress || '' }}</text>
+      </view>
+      <view class="info _5522a32">
+        <view class="label _5522a32">照片：</view>
+      </view>
+      <view class="img-box _5522a32">
+        <image wx:for="{{imgList}}" class="img-item _5522a32" src="{{item}}" bindtap="preview" data-src="{{item}}"/>
+      </view>
+    </view>
+    
+  <view class="empty-data _5522a32" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <van-toast id="van-toast" class="_5522a32"/>
+    <van-dialog id="van-dialog" class="_5522a32"/>
+  </view>

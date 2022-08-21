@@ -1,0 +1,232 @@
+@import '../../../../styles/utils.less';
+@import '../../../../styles/index.less';
+
+.balance {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: 16rpx;
+  &-filter {
+    background: #FFFFFF;
+    .title{
+        color: #777777;
+        padding-right: 32rpx;
+    }
+    .value{
+        color: #262626;
+        padding-right: 32rpx;
+        font-size: 26rpx;
+    }
+    .valuen{
+        color: #262626;
+        font-size: 26rpx;
+    }
+  }
+  &-submit {
+    //position: relative;
+    //display: flex;
+    margin-top: 40rpx;
+    margin-left: 40rpx;
+    margin-right: 40rpx;
+    .submit {
+      height: 84rpx;
+      .flex-center();
+    }
+  }
+  &-result {
+    position: relative;
+    flex-direction: column;
+    display: flex;
+    background-color: #FFFFFF;
+    margin-top: 100rpx;
+    margin-left: 40rpx;
+    margin-right: 40rpx;
+    padding-top: 38rpx;
+    padding-left: 24rpx;
+    color: #262626;
+    &-account {
+      font-size: 26rpx;
+      display: flex;
+      margin-bottom: 16rpx;
+        &-desc{
+          font-size: 26rpx;
+          color: rgba(0,0,0,0.35);
+          width: 50%;
+          &-ret{
+            font-size: 32rpx;
+            width: 50%;
+            color: rgba(38,38,38,1);
+          }
+        }
+        &-fee{
+          width: 50%;
+          text-align: right;
+          padding-right: 20rpx;
+          &-ret{
+            text-align: right;
+            font-size: 32rpx;
+            color: rgba(217,22,28,1);
+          }
+        }
+    }
+  }
+  &-more {
+    position: relative;
+    flex-direction: column;
+    display: flex;
+    background-color: #FFFFFF;
+    margin-left: 40rpx;
+    margin-right: 40rpx;
+    padding: 10rpx 0;
+    color: #262626;
+    font-size: 26rpx;
+    border-top: 1rpx solid rgba(246,246,246,1);
+  }
+  .org {
+    display: flex;
+    flex-direction: column;
+    padding: 0 24rpx 40rpx 24rpx;
+    height: 640rpx;
+    &-head {
+      position: relative;
+      display: flex;
+      height: 88rpx;
+      align-items: center;
+      &::after {
+        .hairline(#EEEEEE);
+        border-bottom-width: 1rpx;
+      }
+      icon {
+        margin-right: 8rpx;
+        display: flex;
+        align-items: center;
+        font-size: 16rpx;
+        color: #262626;
+      }
+      .detailIcon {
+        display: flex;
+        align-items: center;
+        padding-left: 8rpx;
+      }
+      &-name {
+        padding-left: 24rpx;
+        flex: 1;
+        .flex-center();
+        color: #262626;
+        font-size: 32rpx;
+      }
+    }
+    &-body {
+      padding-right: 16rpx;
+      height: 512rpx;
+      &-item {
+        height: 80rpx;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #262626;
+
+        &-name {
+          font-size: 26rpx;
+        }
+        icon {
+          display: flex;
+          align-items: center;
+          font-size: 16rpx;
+        }
+      }
+      .active {
+        color: @primary-color;
+      }
+    }
+  }
+  .item-more {
+    display: flex;
+    height: 64rpx;
+    padding: 16rpx 0;
+    justify-content: center;
+    font-size: 26rpx;
+    color: @primary-color;
+    align-items: center;
+    .icon {
+      display: flex;
+      align-items: center;
+      padding-left: 8rpx;
+    }
+  }
+  &-tip {
+    font-size: 28rpx;
+  }
+
+  .order-scroll {
+    display: flex;
+    flex: 1;
+    height: 100%;
+    background-color: #f7f7f7;
+    padding: 20rpx 40rpx 20rpx 40rpx;
+    flex-direction: column;
+    // 订单最外层
+    .order-container {
+      background-color: #ffffff;
+      margin-top: 10rpx;
+      padding: 24rpx 24rpx 20rpx 24rpx;
+      .order-top {
+        position: relative;
+        align-items: center;
+        .order-name {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 16rpx;
+          .order-rel-name {
+            width: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+            .order-name-title{
+              display: flex;
+              align-items: center;
+            }
+            .order-name-left {
+              padding: 0 16rpx;
+              border: 1rpx solid #00AAA6;
+              color: #00AAA6;
+              font-size: 22rpx;
+            }
+            .order-name-code {
+              margin-left: 16rpx;
+              font-size: 32rpx;
+            }
+            .order-name-fkStatus{
+              float: right;
+              color: #00aaa6;
+              font-size: 26rpx;
+              background: #ecf8f8;
+              padding: 0 16rpx;
+            }
+          }
+        }
+      }
+      .order-content {
+        position: relative;
+        .order-content-items {
+          color: #777777;
+          font-size: 26rpx;
+          padding-top: 16rpx;
+          display: flex;
+          flex-flow: row nowrap;
+          justify-content: space-between;
+          .order-content-item{
+            display: flex;
+            .waitBalance{
+              color: #D9161C;
+            }
+          }
+        }
+      }
+    }
+  }
+
+}

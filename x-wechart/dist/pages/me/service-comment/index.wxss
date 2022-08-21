@@ -1,0 +1,127 @@
+@import "./../../../components/empty-data-type/index.wxss";
+.ellipsis._6e8dd42 {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+.van-hairline._6e8dd42,
+.van-hairline--top._6e8dd42,
+.van-hairline--left._6e8dd42,
+.van-hairline--right._6e8dd42,
+.van-hairline--bottom._6e8dd42,
+.van-hairline--top-bottom._6e8dd42,
+.van-hairline--surround._6e8dd42 {
+  position: relative;
+}
+.van-hairline._6e8dd42::after,
+.van-hairline--top._6e8dd42::after,
+.van-hairline--left._6e8dd42::after,
+.van-hairline--right._6e8dd42::after,
+.van-hairline--bottom._6e8dd42::after,
+.van-hairline--top-bottom._6e8dd42::after,
+.van-hairline--surround._6e8dd42::after {
+  content: ' ';
+  position: absolute;
+  pointer-events: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transform-origin: center;
+          transform-origin: center;
+  /* cover wechat button:after default transforn-origin */
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+  border: 0 solid #eee;
+}
+.van-hairline--top._6e8dd42::after {
+  border-top-width: 1px;
+}
+.van-hairline--left._6e8dd42::after {
+  border-left-width: 1px;
+}
+.van-hairline--right._6e8dd42::after {
+  border-right-width: 1px;
+}
+.van-hairline--bottom._6e8dd42::after {
+  border-bottom-width: 1px;
+}
+.van-hairline--top-bottom._6e8dd42::after {
+  border-width: 1px 0;
+}
+.van-hairline--surround._6e8dd42::after {
+  border-width: 1px;
+}
+.van-ellipsis._6e8dd42 {
+  overflow-wrap: break-word;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.van-multi-ellipsis--l2._6e8dd42 {
+  white-space: initial;
+  word-break: break-all;
+  /* autoprefixer: ignore next */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+}
+.van-multi-ellipsis--l3._6e8dd42 {
+  white-space: initial;
+  word-break: break-all;
+  /* autoprefixer: ignore next */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+}
+.van-cell__value._6e8dd42 {
+  text-align: left;
+}
+.van-cell__value .order-common-value._6e8dd42 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 100%;
+}
+.van-cell__value .order-common-value-con._6e8dd42 {
+  color: #333333;
+  margin-right: 10rpx;
+  max-width: 550rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.van-cell__value .order-common-value-label._6e8dd42 {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  font-size: 24rpx;
+  color: #fff;
+  background: #F26522;
+  padding: 2rpx 10rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  border-radius: 6rpx;
+}
+.van-cell__title._6e8dd42,
+.van-cell__value._6e8dd42 {
+  -webkit-box-flex: 1;
+  -webkit-flex: auto;
+          flex: auto;
+  -webkit-flex-wrap: nowrap;
+          flex-wrap: nowrap;
+}
+.comment-border._6e8dd42 {
+  border-top: 16rpx solid #f7f7f7;
+}

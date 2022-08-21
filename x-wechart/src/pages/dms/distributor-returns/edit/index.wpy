@@ -1,0 +1,179 @@
+<template>
+  <view class="order">
+    <view class="scroll-wrapper">
+      <scroll-view
+        class="card-scroll"
+        scroll-y
+      >
+      <view class="scroll-wrapper-inner">
+        <view class="return-goods-header-card">
+          <view class="return-goods-header-info">
+            <view class="return-goods-header-info-inner">
+              <view class="return-info">
+                <view class="name-box">
+                  <view class="tip">退货信息</view>
+                </view>
+                <view class="return-back" @tap="returnBack">更改 <van-icon name="arrow" class="location" /></view>
+              </view>
+              <view class="desc">{{ orderdetail.supplierName }}</view>
+              <view class="desc">地址：{{ orderdetail.address }}</view>
+            </view>
+          </view>
+          <view class="document-info">
+            <view class="document-info-inner">
+              <!--     退货发起     -->
+              <block wx:if="{{ pageType === 'initiate' }}">
+                <view class="document-desc">
+                  <view><text class="label">采购单号：</text>{{ orderdetail.documentNum }}</view>
+                  <view class="status">分销发起</view>
+                </view>
+                <view class="document-desc">
+                  <view><text class="label">入库仓库：</text>{{ orderdetail.warehouseName }}</view>
+                </view>
+              </block>
+              <!--     退货出库     -->
+              <block wx:if="{{ pageType === 'outStock' }}">
+                <view class="document-desc">
+                  <view><text class="label">销售单号：</text>{{ orderdetail.documentNum }}</view>
+                  <view wx:if="{{ orderdetail.isDistributorReturns == 1 }}" class="status">分销发起</view>
+                  <view wx:if="{{ orderdetail.isDistributorReturns == 0 }}" class="status">代理发起</view>
+                </view>
+                <view class="document-desc">
+                  <view><text class="label">出库仓库：</text>{{ orderdetail.warehouseName }}</view>
+                </view>
+              </block>
+
+              <view class="document-desc">
+                <view><text class="label">单据日期：</text>{{ orderdetail.documentDate }}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="form-info">
+<!--          <view class="msgItem" data-title="业务员" data-key="salesman" @tap="onPopShow">-->
+<!--            <view>-->
+<!--              <text class="label">业务员</text>-->
+<!--            </view>-->
+<!--            <view class="grayFont">-->
+<!--              <view wx:if="{{formData.salesman.name}}" class="currVal">-->
+<!--                <text>{{formData.salesman.name}}</text>-->
+<!--                <van-icon name="arrow" class="location" />-->
+<!--              </view>-->
+<!--              <view wx:else class="holder">-->
+<!--                <text>请选择</text>-->
+<!--                <van-icon name="arrow" class="location" />-->
+<!--              </view>-->
+<!--            </view>-->
+<!--          </view>-->
+          <view wx:if="{{ pageType === 'initiate' }}" class="msgItem-filed">
+            <text class="label">备注</text>
+            <view class="training-filed-item">
+              <van-field
+                value="{{ formData.remark }}"
+                data-key="remark"
+                placeholder="请输入"
+                input-align="right"
+                cell-class="field-cell"
+                bind:change="onRemarkChange({{$event}})"
+              />
+            </view>
+          </view>
+        </view>
+        <view class="details-title">明细信息</view>
+        <repeat for="{{orderdetail.returnOrderItemList}}" item="item" index="itemIndex">
+          <view class="details-wrapper">
+            <view class="details-info">
+              <view class="product-name">{{ item.model }}</view>
+              <view wx:if="{{ pageType === 'initiate' }}" class="product-num">
+                <text>采购入库数量：{{ item.inboundQty }}</text>
+                <text>未退货数量：{{ item.maxReturnNum}}</text>
+              </view>
+              <view wx:if="{{ pageType === 'outStock' }}" class="product-num">
+                <text>退货数量：{{ item.borderedQty }}</text>
+                <text>未出库数量：{{ item.maxReturnNum }}</text>
+              </view>
+            </view>
+
+            <repeat for="{{item.outItems}}" key="order_detail_item_{{itemIndex}}_out_{{outIndex}}" item="outItem" index="outIndex">
+              <view class="details-list">
+                <view class="order-detail-item-inner-info">
+                  <view class="detail-item-title">
+                    <view>{{ outItem.model }}<text wx:if="{{ outItem.colour }}">/{{ outItem.colour }}</text></view>
+                    <view class="detail-item-status">{{ outItem.invStatus }}{{ outItem.invStatusTypeName }}</view>
+                  </view>
+                  <view class="detail-item-desc">
+                    <text class="desc">物料编码：{{ outItem.materialCode }}</text>
+                    <text class="desc">可用：{{ outItem.bavailQty }}</text>
+                  </view>
+                  <view class="detail-item-desc">
+                    <text class="desc">仓库：{{ outItem.warehouseName }}</text>
+                  </view>
+                  <view class="detail-item-desc">
+                    <text class="desc">入库时间：{{ outItem.inInvDate }}</text>
+                  </view>
+                  <view  class="detail-item-num">
+                    <view class="item-info-line-out-quantity">出库数量</view>
+                    <view class="item-info-line-out-quantity-input">
+                      <van-stepper
+                        integer
+                        value="{{outItem.bactualQty}}"
+                        min="0"
+                        max="{{item.maxReturnNum}}"
+                        custom-class="order-wrapper-stepper"
+                        input-class="cart-input-class"
+                        plus-class="cart-action-class"
+                        minus-class="cart-action-class"
+                        data-item-index="{{itemIndex}}"
+                        data-out-index="{{outIndex}}"
+                        bind:change="onShippedBqtyChg"
+                        bind:plus="onShippedBqtyChg"
+                        bind:minus="onShippedBqtyChg"
+                        disabled="{{outItem.barCodes && outItem.barCodes.length > 0}}"
+                      />
+                    </view>
+                  </view>
+                  <view class="order-detail-item-out-info-footer">
+                    <view class="footer-handle-item" data-item-index="{{itemIndex}}"  data-out-index="{{outIndex}}" data-type="edit" @tap="jumpClick">
+                      <i class="b-icon xiugai footer-remove"></i>
+                      <text>修改</text>
+                    </view>
+                    <view class="footer-handle-item" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}" @tap="onRemoveOutItem">
+                      <i class="b-icon shanchu footer-remove"></i>
+                      <text>删除</text>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </repeat>
+          </view>
+          <view class="order-detail-item-out-add" data-item-index="{{itemIndex}}" data-type="add" @tap="jumpClick">
+            <i class="b-icon icon-add out-add"></i>
+            <text class="out-add-text">添加出库信息</text>
+          </view>
+        </repeat>
+      </view>
+      </scroll-view>
+    </view>
+    <view class="handle-footer" wx:if="{{ pageType === 'initiate' }}" @tap="onInitSubmit">提交并出库</view>
+    <view class="handle-footer" wx:if="{{ pageType === 'outStock' }}" @tap="onOutSubmit">提交并出库</view>
+    <!-- 选择列表弹框 -->
+    <popupCustomize
+      :options.sync="salesmanOptions"
+      :selectedOption.sync="popSelectedOption"
+      :title.sync="popTitle"
+      @onSelect.user="onSelect"
+    />
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<style lang="less">
+.msgItem-filed{
+  .van-cell::after{
+    left: -8px;
+    border-bottom-width: 0;
+  }
+}
+</style>
+<script lang="typescript" src="./index.ts" ></script>

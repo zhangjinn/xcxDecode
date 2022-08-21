@@ -1,0 +1,89 @@
+
+    <view class="container _6685cd4">
+      <!-- 阻止弹框 -->
+      <van-popup show="{{ IKnow }}" overlay="{{ true }}" class="_6685cd4">
+      <!-- <van-popup show="{{ true }}" overlay="{{ true }}"> -->
+        <view class="todo-popup _6685cd4">
+          <view class="text _6685cd4">
+            <view class="text-first _6685cd4">小程序端支持查看详情及操作上上签电子签章</view>
+            <view class="text-last _6685cd4">U盾签章请在PC端操作</view>
+          </view>
+          <view bindtap="allIKnow" class="operation _6685cd4">
+            <view class="operation-text _6685cd4">我知道了</view>
+          </view>
+        </view>
+      </van-popup>
+        <view class="detail-top _6685cd4">
+            <table class="_6685cd4">
+                <tbody class="_6685cd4">
+                    <tr class="detail-pic _6685cd4">
+                        <view class="b-icon h-icon icon-hisense _6685cd4"/>
+                        <view class="barcode _6685cd4">
+                            <canvas canvas-id="barcode" class="_6685cd4"/>
+                            <view class="code _6685cd4">{{checkDetail.rows.docNo}}</view>
+                        </view>
+                    </tr>
+                    <tr class="_6685cd4">
+                         <td class="left _6685cd4">发布时间 </td>
+                        <td class="right _6685cd4">{{checkDetail.rows.createdDate}}</td>
+                    </tr>
+                      <tr class="_6685cd4">
+                         <td class="left _6685cd4">所属期间 </td>
+                        <td class="right _6685cd4">{{checkDetail.rows.rsYear}}-{{checkDetail.rows.periodIdx}}</td>
+                    </tr>
+                      <tr class="_6685cd4">
+                         <td class="left _6685cd4">产品品类 </td>
+                        <td class="right _6685cd4">{{checkDetail.rows.prfcName}}</td>
+                    </tr>
+                      <tr class="_6685cd4">
+                         <td class="left _6685cd4">币种/单位 </td>
+                        <td class="right _6685cd4">{{checkDetail.rows.currencyName}}/元</td>
+                    </tr>
+                      <tr class="_6685cd4">
+                         <td class="left _6685cd4">销售组织 </td>
+                        <td class="right _6685cd4">{{checkDetail.rows.rsUnitName}}</td>
+                    </tr>
+                      <tr class="_6685cd4">
+                         <td class="left _6685cd4">公司代码</td>
+                        <td class="right _6685cd4">{{checkDetail.rows.fiBookCode}}</td>
+                    </tr>
+                      <tr class="_6685cd4">
+                         <td class="left _6685cd4">客户名称 </td>
+                        <td class="right _6685cd4">{{checkDetail.rows.customerName}}</td>
+                    </tr>
+                     <tr class="_6685cd4">
+                         <td class="left _6685cd4">客户代码 </td>
+                        <td class="right _6685cd4">{{checkDetail.rows.customerCode}}</td>
+                    </tr>
+                     <tr class="_6685cd4">
+                         <td class="left _6685cd4">政策名称 </td>
+                        <td class="right _6685cd4">{{checkDetail.rows.policyName}}</td>
+                    </tr>
+                     <tr class="_6685cd4">
+                         <td class="left _6685cd4">政策金额 </td>
+                        <td class="right _6685cd4">{{checkDetail.rows.rbAmt}}</td>
+                    </tr>
+                     <tr class="_6685cd4">
+                         <td class="left _6685cd4">差异金额 </td>
+                        <td class="right _6685cd4">{{checkDetail.rows.diffAmt}}</td>
+                    </tr>
+                     <tr class="_6685cd4">
+                         <td class="left _6685cd4">调整后金额 </td>
+                        <td class="right _6685cd4">{{checkDetail.rows.adjustAmt}}</td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </view>
+        <view class="detail-center _6685cd4">
+            <button type="button" class="detail-btn _6685cd4" bindtap="onClick" data-wpyonclick-a="{{checkDetail.rows.rowId}}" data-wpyonclick-b="{{checkDetail.rows.ssqBind}}">查看</button>
+        </view>
+        <view class="detail-bottom _6685cd4">
+            <view class="detail-bottom-title _6685cd4"> 注：</view>
+            <view class="detail-bottom-content _6685cd4">1.未达账项包括但不限于：a 客户方已发生，而海信方尚未确认的政策；b. 双方确认的政策，海信方已兑现，而客户方尚未收到或未入账；c. 客户方办理政策折让证明，而海信方未收到或未入账；d. 对客户奖励或促销支持等，客户未入账或海信方未入账情况。</view>
+            <view class="detail-bottom-content _6685cd4">2.此对账单是对期末余额进行确认。</view>
+            <view class="detail-bottom-content _6685cd4">3.若双方期末余额不一致，存在未达账项，后期需要凭海信确认的见证性资料原件进行解决。</view>
+            <view class="detail-bottom-content _6685cd4">4.下次双方对账自本次截止日期起核对。</view>
+        </view>
+    </view>

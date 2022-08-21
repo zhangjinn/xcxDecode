@@ -1,0 +1,142 @@
+<template>
+  <view class="me-return-base">
+    <form bindsubmit="onSubmitForm" class="return-base-form">
+      <van-cell-group>
+        <van-field
+          value="{{ formExtra.customerName }}"
+          readonly
+          label="客户名称"
+          placeholder="请填写客户名称"
+          input-align="right"
+        />
+        <van-field
+          value="{{ formExtra.orgName }}"
+          label="供应商"
+          placeholder="请选择供应商"
+          readonly
+          error-message="{{errorMessage.orgName}}"
+          icon="arrow"
+          input-align="right"
+          bind:click-icon="onToggleOrg"
+        />
+        <van-field
+          value="{{ formExtra.maktlName }}"
+          label="物料组"
+          placeholder="请选择物料组"
+          readonly
+          error-message="{{errorMessage.maktlName}}"
+          icon="arrow"
+          input-align="right"
+          bind:click-icon="onToggleMaktl"
+        />
+        <van-field
+          value="{{ form.returnAdr }}"
+          label="商家地址"
+          placeholder="请选择商家地址"
+          readonly
+          error-message="{{errorMessage.returnAdr}}"
+          icon="arrow"
+          input-align="right"
+          bind:click-icon="onToggleReAddress"
+        />
+        <van-field
+          name="proposerName"
+          value="{{ form.proposerName }}"
+          clearable
+          label="联系人"
+          placeholder="请填写联系人"
+          error-message="{{errorMessage.proposerName}}"
+          error-message-align="right"
+          input-align="right"
+          bind:focus="onClearError('proposerName')"
+        />
+        <van-field
+          name="proposerTel"
+          value="{{ form.proposerTel }}"
+          clearable
+          label="联系电话"
+          placeholder="请填写联系电话"
+          error-message="{{errorMessage.proposerTel}}"
+          error-message-align="right"
+          input-align="right"
+          bind:focus="onClearError('proposerTel')"
+        />
+        <van-field
+          value="{{ form.reback }}"
+          label="拉货方式"
+          placeholder="请选择拉货方式"
+          readonly
+          error-message="{{errorMessage.reback}}"
+          icon="arrow"
+          input-align="right"
+          bind:click-icon="onToggleEdt"
+        />
+      </van-cell-group>
+      <view wx:if="{{needPicture}}" class="picture-button-group">
+        <view class="{{ form.file1 ? 'picture-button-added' : 'picture-button-none' }}" @tap="onAddPicture">{{ form.file1 ? '照片已上传' : '+添加照片' }}</view>
+      </view>
+      <view class="form-button-area">
+        <button form-type="submit" class="form-submit">保存</button>
+      </view>
+    </form>
+    <van-popup show="{{ orgVisible }}" position="bottom" custom-class="org-picker-popup" bind:close="onToggleOrg">
+      <van-picker
+        show-toolbar
+        title="供应商"
+        columns="{{ orgList }}"
+        bind:cancel="onToggleOrg"
+        bind:confirm="onSelectOrg"
+      />
+    </van-popup>
+    <van-popup show="{{ maktlVisible }}" position="bottom" custom-class="matl-picker-popup" bind:close="onToggleMaktl">
+      <van-picker
+        show-toolbar
+        title="物料组"
+        columns="{{ maktlList }}"
+        bind:cancel="onToggleMaktl"
+        bind:confirm="onSelectMaktl"
+      />
+    </van-popup>
+    <van-popup show="{{ edtVisible }}" position="bottom" custom-class="edt-picker-popup" bind:close="onToggleEdt">
+      <van-picker
+        show-toolbar
+        title="拉货方式"
+        columns="{{ edtList }}"
+        bind:cancel="onToggleEdt"
+        bind:confirm="onSelectEdt"
+      />
+    </van-popup>
+    <!-- <van-popup show="{{ reAddressVisible }}" position="bottom" custom-class="edt-readdress-popup" bind:close="onToggleReAddress">
+      <van-picker
+        show-toolbar
+        title="商家地址"
+        columns="{{ reAddressList }}"
+        bind:cancel="onToggleReAddress"
+        bind:confirm="onSelectReAddress"
+      />
+    </van-popup> -->
+    <van-popup show="{{ reAddressVisible }}" position="bottom" custom-class="re-address-picker-popup" bind:close="onToggleReAddress">
+      <view class="re-address-filter">
+        <van-search
+          placeholder="请输入搜索关键词"
+          bind:search="onReAddressSearch"
+        />
+      </view>
+      <scroll-view
+        scroll-y
+        enable-flex
+        enable-back-to-top="true"
+        scroll-with-animation="true"
+        id="re-address-scroll-view"
+        class="re-address-scroll"
+      >
+        <repeat for="{{reAddressList}}" key="index" item="item">
+          <view wx:if="{{item.filtered}}" class="re-address-line {{form.returnAddressId === item.value ? 'active' : ''}}" @tap="onSelectReAddress({{item}})">{{item.text}}</view>
+        </repeat>
+      </scroll-view>
+    </van-popup>
+    <van-toast id="van-toast"/>
+  </view>
+</template>
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts"></script>

@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),_of=require("./internal/_of.js"),of=_curry1(_of);module.exports=of;

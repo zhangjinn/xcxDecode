@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),propSatisfies=_curry3(function(r,e,i){return r(i[e])});module.exports=propSatisfies;

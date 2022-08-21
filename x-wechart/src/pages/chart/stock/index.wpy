@@ -1,0 +1,130 @@
+<template>
+    <view class="stock-container">
+      <!-- 时效日期说明，数据更新至当天的前一天日期 -->
+      <view class="expiry-date">数据更新至{{ previousDayDate }}</view>
+      <!-- 物料组 时间 筛选 -->
+      <headerTab
+        :showRightBtn="showRightBtn"
+        :tabList.sync="headerTabList"
+        @onTabChange.user="touchStockFilter"
+      />
+
+      <!-- 顶部弹出筛选条件 -->
+      <van-popup
+        show="{{warehouseVisible || materialVisible}}"
+        overlay=true
+        position="top"
+        custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"
+        bind:close="onClose"
+      >
+        <!-- 内容 -->
+        <scroll-view
+        wx:if="{{warehouseVisible || materialVisible}}"
+        class="material-scroll"
+        scroll-y
+        >
+          <view wx:if="{{warehouseVisible}}" wx:for="{{warehouseList}}"
+          wx:for-item="item"
+          wx:key="idx"
+          wx:for-index="idx"
+          bindtap="selectWarehouse({{item.id}})"
+          class="material-filter-container {{item.id == gicWarehouseType ? 'material-filter-container-checked': ''}}"
+          >
+            <view>{{item.value}}</view>
+            <view wx:if="{{item.id == gicWarehouseType}}" class="b-icon icon-check operation-icon"></view>
+          </view>
+
+          <view wx:if="{{materialVisible}}" wx:for="{{materialList}}"
+          wx:for-item="item"
+          wx:key="idx"
+          wx:for-index="idx"
+          bindtap="selectMaterial({{idx}}, 1)"
+          class="material-filter-container {{item.selected ? 'material-filter-container-checked': ''}}"
+          >
+            <view>{{item.value}}</view>
+            <view wx:if="{{item.selected}}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </scroll-view>
+      </van-popup>
+
+
+      <!-- 库存报表 -->
+      <view hidden="{{reportFlag}}" class="stock">
+        <view @tap="onePopup" class="stock-name">
+          库存(台)
+          <view class="b-icon icon-zhushi icon"></view>
+        </view>
+        <view wx:if="{{onePopup}}" style="background-color: #ffffff; padding:16rpx 24rpx 24rpx 24rpx;">
+          <view class="text-box">
+            <view class="text-heard">
+              <view class="name">
+                <view class="small"></view>
+                库存
+              </view>
+              <view @tap="onePopup" class="b-icon icon-fail icon"></view>
+            </view>
+            <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.inventory }}</view>
+          </view>
+        </view>
+        <view class="legend-box">
+          <repeat for="{{legendData}}">
+            <view class="legend-item">
+              <view class="icon" style="background-color: {{item.iconColor}}"></view>
+              <view class="text">{{ item.text }}</view>
+            </view>
+          </repeat>
+        </view>
+        <chart :option.sync="option" canvasId="stock1" height="360px"></chart>
+      </view>
+      <!--排名-->
+<!--      <view class="paiming-wrap">-->
+<!--        <text class="title">您当前的库存周转排名</text>-->
+<!--        <text class="paiming">111/17456<text class="jiantou">↑</text></text>-->
+<!--      </view>-->
+      <view class="content-wrapper">
+      <!-- 当前月份数据 -->
+      <view class="current-month">
+        <view class="current-month-header">
+          <view class="current-month-header-time">日期</view>
+          <view class="current-month-header-stock">库存量<view catchtap="twoPopup" class="b-icon icon-zhushi icon"></view></view>
+          <view class="current-month-header-time">库存周转天数</view>
+        </view>
+        <view class="current-month-wrapper">
+        <view wx:if="{{twoPopup}}" style="background-color: #ffffff; padding:16rpx 24rpx 24rpx 24rpx;">
+          <view class="text-box">
+            <view class="text-heard">
+              <view class="name">
+                <view class="small"></view>
+                库存量
+              </view>
+              <view @tap="twoPopup" class="b-icon icon-fail icon"></view>
+            </view>
+            <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.inventoryQuantity }}</view>
+          </view>
+        </view>
+        <view
+        class="{{idx%2 == 0 ? 'current-month-content-idx': ''}} current-month-content"
+        wx:for="{{currentMonthList}}"
+        wx:key="idx"
+        wx:for-item="item"
+        wx:for-index="idx"
+        >
+          <text class="current-month-content-time">{{item.date}}</text>
+          <text class="current-month-content-stock">{{item.count}}</text>
+          <text class="current-month-content-stock">{{utils.removeIllegalStr(item.day)}}</text>
+        </view>
+        </view>
+      </view>
+      </view>
+      <van-popup show="{{calendarShow}}" position="bottom" bind:close="onClose" z-index="200">
+        <calendar
+          calendarConfig="{{calendarConfig}}"
+          bind:afterTapDay="chooseDay"
+        />
+      </van-popup>
+
+      <van-toast id="van-toast" />
+    </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

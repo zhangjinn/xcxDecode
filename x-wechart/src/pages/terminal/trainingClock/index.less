@@ -1,0 +1,235 @@
+@import '../../../styles/utils.less';
+@import '../../../components/vant/common/style/hairline.less';
+@import '../../../components/vant/common/style/ellipsis.less';
+
+.training-clock {
+  width: 100%;
+  height: 100%;
+  background: #FFFFFF;
+  color: #262626;
+  font-weight: 400;
+
+  .order-scroll {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background: #FFFFFF;
+  }
+
+  .training-clock-header-bg{
+     width: 100%;
+     height: 278rpx;
+     .img-bg{
+       width: 100%;
+       height: 100%;
+     }
+ }
+  .training-clock-header-info{
+    padding: 40rpx 30rpx 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    .canvas{
+      width: 176rpx;
+      height: 176rpx;
+    }
+    .clock-header-inner{
+      padding: 28rpx 0 28rpx 40rpx;
+      background: #FFFFFF;
+      box-shadow: 0rpx 8rpx 16rpx 0rpx rgba(187, 187, 187, 0.38);
+      border-radius: 16rpx;
+
+      .clock-header-inner-top{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 28rpx;
+
+        .trademark{
+          display: flex;
+          align-items: center;
+
+          .trademark-logo{
+            width: 88rpx;
+            height: 88rpx;
+          }
+          .trademark-desc{
+            display: flex;
+            flex-direction: column;
+            margin-left: 16rpx;
+            .name{
+              font-size: 28rpx;
+              font-weight: 600;
+            }
+            .code{
+              font-size: 24rpx;
+              color: #777777;
+            }
+          }
+        }
+
+        .training-record{
+          background: linear-gradient(90deg, #54D6D2 0%, #00AAA6 100%);
+          border-radius: 22rpx 0rpx 0rpx 22rpx;
+          font-size: 24rpx;
+          font-weight: 500;
+          color: #FFFFFF;
+          padding: 0 14rpx;
+          height: 44rpx;
+          line-height: 44rpx;
+        }
+      }
+
+      .clock-header-inner-bottom{
+        display: flex;
+        align-items: center;
+        .graphic{
+          width: 176rpx;
+          height: 176rpx;
+
+          .circle-text{
+            display: flex;
+            flex-direction: column;
+
+            .num{
+              font-size: 32rpx;
+              font-weight: 600;
+            }
+            .text{
+              font-size: 24rpx;
+              color: #777777;
+            }
+          }
+          .img-box{
+            position: relative;
+            width: 88px;
+            height: 88px;
+            .img{
+              width: 100%;
+              height: 100%;
+            }
+            .circle-text{
+              position: absolute;
+              top: 50%;
+              left: 0;
+              width: 100%;
+              transform: translateY(-50%);
+              text-align: center;
+            }
+          }
+
+        }
+        .session{
+          margin-left: 28rpx;
+          display: flex;
+          flex-direction: column;
+
+          .text{
+            display: flex;
+            font-size: 24rpx;
+          }
+          .num{
+            font-size: 40rpx;
+            font-weight: 600;
+            color: #00AAA6;
+          }
+        }
+
+      }
+    }
+  }
+  .training-clock-header-container{
+     padding: 135rpx 30rpx 30rpx;
+     background: #FFFFFF;
+    .training-topics-item{
+      padding: 28rpx 0 24rpx;
+      border-bottom: 2rpx solid #EEEEEE;
+
+      .topics-header{
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        padding-left: 24rpx;
+        &:before {
+          content: '';
+          position: absolute;
+          left: 0rpx;
+          top: 8rpx;
+          height: 24rpx;
+          border-left: 6rpx solid #00AAA6;
+        }
+        .topics-name{
+          font-size: 30rpx;
+          font-weight: 500;
+          flex: 1;
+        }
+        .topics-type{
+          font-size: 26rpx;
+          color: #00AAA6;
+          width: 160rpx;
+          text-align: right;
+        }
+      }
+      .topics-desc{
+        padding-left: 24rpx;
+        margin-top: 10rpx;
+        font-size: 26rpx;
+        color: #777777;
+      }
+    }
+    .no-loading-data{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26rpx;
+      color: #AAAAAA;
+      margin-top: 30rpx;
+    }
+  }
+
+}
+
+.base-model-popup-picker{
+  display: flex;
+  flex-direction: column;
+  background: #FFF;
+  position: relative;
+
+  .datetime-picker-box{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+
+    .datetime-picker-header{
+      display: flex;
+      justify-content: space-between;
+      height: 100rpx;
+      align-items: center;
+      padding: 0 24rpx;
+      border-bottom: 2rpx solid #EEEEEE;
+    }
+
+    .datetime-picker-container{
+       flex: 1;
+       overflow: hidden;
+
+      .purchase-inv-scroll{
+        height: 100%;
+        .datetime-picker-item{
+          height: 80rpx;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 0 24rpx;
+
+          &.active{
+            color: #00AAA6;
+          }
+        }
+      }
+    }
+  }
+}
+

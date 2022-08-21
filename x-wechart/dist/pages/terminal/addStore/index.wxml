@@ -1,0 +1,254 @@
+
+  <view class="store _329086a" hover-class="none" hover-stop-propagation="false" style="width: 100vw; height: 100vh;">
+    <view class="store-wrapper _329086a">
+      <view class="store-map _329086a">
+        <map id="map2" longitude="{{longitude}}" latitude=" {{latitude}}" scale="{{scale}}" markers="{{markers}}" circles="{{circle}}" show-location="{{true}}" bindtap="mapTap" regionchange="regionchange" style="width: 100%;height: 100%" class="_329086a">
+        </map>
+      </view>
+      <view class="form-wrapper _329086a">
+        <view class="item-title _329086a">基本信息</view>
+        <view class="item-row _329086a">
+          <view class="item-row-left _329086a">
+            <text class="_329086a">门店名称</text>
+            <text class="redXing _329086a">*</text>
+          </view>
+          <view class="item-row-right _329086a">
+            <view class="item-row-right-note _329086a">
+              <van-field disabled="{{ isDisabled }}" value="{{ formData.storeName }}" placeholder="请输入" border="{{ false }}" input-align="right" data-name="storeName"  bind:change="onFilterFormChange" class="add-store-note _329086a"/>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row _329086a">
+          <view class="item-row-left _329086a">
+            <text class="_329086a">门店简称</text>
+            <text class="redXing _329086a">*</text>
+          </view>
+          <view class="item-row-right _329086a">
+            <view class="item-row-right-note _329086a">
+              <van-field disabled="{{ isDisabled }}" value="{{ formData.storeAbbreviation }}" placeholder="请输入" border="{{ false }}" input-align="right" data-name="storeAbbreviation"  bind:change="onFilterFormChange" class="add-store-note _329086a"/>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row _329086a" bindtap="openSink">
+          <view class="item-row-left _329086a">
+            <text class="_329086a">是否下沉</text>
+            <text class="redXing _329086a">*</text>
+          </view>
+          <view class="item-row-right _329086a">
+            <view class="item-row-right _329086a">
+              <view class="item-row-right-inventory {{ formData.isSinkName ? '' : 'placeholder' }} {{isDisabled ? 'disabled-color' : ''}} _329086a">
+                {{ formData.isSinkName || '请选择' }}
+              </view>
+              <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_329086a"/>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row _329086a" bindtap="openAddress">
+          <view class="item-row-left _329086a">
+            <text class="_329086a">所在地区</text>
+            <text class="redXing _329086a">*</text>
+          </view>
+          <view class="item-row-right _329086a">
+            <view class="item-row-right _329086a">
+              <view class="item-row-right-inventory {{ formData.addressTip ? '' : 'placeholder' }} {{isDisabled ? 'disabled-color' : ''}} _329086a">
+                {{ formData.addressTip || '请选择' }}
+              </view>
+              <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_329086a"/>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row _329086a">
+          <view class="item-row-left _329086a">
+            <text class="_329086a">详细地址</text>
+            <text class="redXing _329086a">*</text>
+          </view>
+          <view class="item-row-right _329086a">
+            <view class="item-row-right-note _329086a">
+              <van-field disabled="{{ isDisabled }}" value="{{ formData.address }}" placeholder="请填写详细地址" border="{{ false }}" input-align="right" data-name="address"  bind:change="onFilterFormChange" class="add-store-note _329086a"/>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row _329086a">
+          <view class="item-row-left _329086a">
+            <text class="_329086a">门店经理姓名</text>
+            <text class="redXing _329086a">*</text>
+          </view>
+          <view class="item-row-right _329086a">
+            <view class="item-row-right-note _329086a">
+              <van-field disabled="{{ isDisabled }}" value="{{ formData.managerName }}" placeholder="请输入" border="{{ false }}" input-align="right" data-name="managerName" bind:change="onFilterFormChange" class="add-store-note _329086a"/>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row _329086a">
+          <view class="item-row-left _329086a">
+            <text class="_329086a">门店经理电话</text>
+            <text class="redXing _329086a">*</text>
+          </view>
+          <view class="item-row-right _329086a">
+            <view class="item-row-right-note _329086a">
+              <van-field disabled="{{ isDisabled }}" value="{{ formData.managerPhone }}" placeholder="请输入" border="{{ false }}" input-align="right" data-name="managerPhone" bind:change="onFilterFormChange" class="add-store-note _329086a"/>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row _329086a">
+          <view class="item-row-left _329086a">
+            <text class="_329086a">备注</text>
+            <text class="redXing _329086a">*</text>
+          </view>
+          <view class="item-row-right _329086a">
+            <view class="item-row-right-note _329086a">
+              <van-field disabled="{{ isDisabled }}" value="{{ formData.remark }}" placeholder="请填写备注" border="{{ false }}" input-align="right" data-name="remark" bind:change="onFilterFormChange" class="add-store-note _329086a"/>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row-upload _329086a">
+          <view class="item-row-top _329086a">
+            <text class="_329086a">门店门头照片</text>
+            <text class="redXing _329086a">*</text>
+          </view>
+          <view class="item-row-bottom _329086a">
+            <van-uploader disabled="{{ isDisabled }}" deletable="{{ isDisabled ? false : true }}" max-count="1" data-state="1" accept="image" file-list="{{ formData.doorHeadPhoto }}" bind:delete="deleteImg" bind:after-read="afterRead" sizeType="compressed" class="_329086a">
+            </van-uploader>
+          </view>
+        </view>
+
+        <view class="item-row-upload no-bottom-line _329086a">
+          <view class="item-row-top _329086a">
+            <text class="_329086a">门店营业执照</text>
+            <text class="redXing _329086a">*</text>
+          </view>
+          <view class="item-row-bottom _329086a">
+            <van-uploader disabled="{{ isDisabled }}" deletable="{{ isDisabled ? false : true }}" max-count="1" data-state="2" accept="image" file-list="{{ formData.businessLicensePhoto }}" bind:delete="deleteImg" bind:after-read="afterRead" sizeType="compressed" class="_329086a">
+            </van-uploader>
+          </view>
+        </view>
+        <block  wx:if="{{currId}}" class="_329086a">
+          <view class="item-title process-title _329086a">流程图</view>
+          <view class="flow-chart _329086a">
+            <view class="van-steps van-steps--horizontal _329086a">
+              <view class="van-step__wrapper _329086a">
+                <view wx:for="{{ steps }}" wx:key="index" class="van-hairline van-step van-step--horizontal _329086a">
+                  <view class="van-step__circle-container _329086a">
+                    <text wx:if="{{ index != active }}" class="b-icon {{item.icon}} van-step__circle {{item.isBorder ? 'icon-border' : ''}} {{ index < active ? 'activeColor' : '' }} _329086a"/>
+                    <text wx:else class="b-icon {{item.icon}} van-step__circle {{item.isBorder ? 'icon-border' : ''}} activeColor _329086a"/>
+                  </view>
+                  <view wx:if="{{ index != steps.length - 1 }}" class="van-step__line {{ index < active ? 'activeLineColor': '' }} _329086a"/>
+                  <view wx:if="{{ index != steps.length - 1 }}" class="b-icon icon-process-arrow van-step__line-icon {{ index < active ? 'activeLineIconColor': '' }} _329086a"/>
+                  <view class="van-step__title {{ index <= active ? 'activeTextColor': '' }} _329086a">
+                    <view class="_329086a">{{ item.text }}</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+          <view class="item-title _329086a">审批意见</view>
+          <view class="approval-comments _329086a">{{ approvalComments }}</view>
+        </block>
+      </view>
+      <block  wx:if="{{currId}}" class="_329086a">
+        <view wx:if="{{pageType=='1'}}" class="add-store-footer _329086a">
+          <view class="revoke-btn add-store-btn _329086a" bindtap="toRevoke">撤销</view>
+          <view class="submit-btn add-store-btn _329086a" bindtap="toAddStore" data-wpytoaddstore-a="edit">提交</view>
+        </view>
+        <view wx:if="{{ pageType=='2'}}" class="add-store-footer _329086a">
+          <view class="submit-btn add-store-btn _329086a" bindtap="toRevoke">撤销</view>
+        </view>
+      </block>
+      <view  wx:else class="add-store-footer _329086a">
+        <view class="submit-btn add-store-btn _329086a" bindtap="toAddStore" data-wpytoaddstore-a="add">提交</view>
+      </view>
+    </view>
+
+    <!-- 是否下沉选择 -->
+    <van-popup show="{{ isSinkShow }}" closeable="closeable" position="bottom" custom-style="height: 570rpx" zIndex="400" bind:click-overlay="onClose" class="_329086a">
+      <view class="item-inv _329086a">
+        <view class="item-inv-head _329086a">
+          <view class="item-inv-head-context _329086a">
+            <view class="item-inv-head-context-title _329086a">是否下沉</view>
+            <van-icon name="cross" class="item-inv-head-context-close _329086a" bindtap="onSinkPopClose"/>
+          </view>
+        </view>
+        <scroll-view scroll-y class="item-inv-scroll _329086a">
+          <view wx:for="{{ isSinkOptions }}" wx:key="{{ item.id }}" wx:for-item="item" class="item-inv-scroll-row _329086a" bindtap="chooseSink" data-wpychoosesink-a="{{item}}">
+            <view data-key="{{ item.id }}" class="item-inv-scroll-row-desc {{ item.id === formData.isSinkId ? 'checked' : ''}} _329086a">
+              {{ item.name }}
+            </view>
+            <block wx:if="{{ item.id === formData.isSinkId }}" class="_329086a">
+              <view class="b-icon icon-check item-inv-scroll-row-checked checked _329086a"/>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+
+    
+  <van-popup show="{{ $address$addressVisible }}" position="bottom"  bind:close="$address$closeAddressPopup" class="_a5a3fc2 _329086a">
+    <view class="area _a5a3fc2">
+      <view class="area-header _a5a3fc2">
+        <view class="area-header-content _a5a3fc2">
+          <view class="area-header-content-title _a5a3fc2">{{ $address$title }}</view>
+        </view>
+        <view bindtap="$address$closeAddressPopup" class="area-header-close _a5a3fc2">
+          <icon class="h-icon icon-ic-close _a5a3fc2"/>
+        </view>
+      </view>
+
+      <view class="area-tab _a5a3fc2">
+        <view bindtap="$address$chooseAddressTap" class="area-tab-item _a5a3fc2" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="province">
+          <view class="area-tab-item-title _a5a3fc2">
+            <text class="{{ $address$areaCurrentTab === 'province' ? 'active' : '' }} _a5a3fc2">{{ $address$province.name }}</text>
+            <view hidden="{{ !($address$areaCurrentTab === 'province') }}" class="area-tab-item-title-bar _a5a3fc2"/>
+          </view>
+        </view>
+
+        <view bindtap="$address$chooseAddressTap" class="area-tab-item _a5a3fc2" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="city">
+          <view class="area-tab-item-title _a5a3fc2" hidden="{{ $address$city.items.length === 0 }}">
+            <text class="{{ $address$areaCurrentTab === 'city' ? 'active' : '' }} _a5a3fc2">{{ $address$city.name }}</text>
+            <view hidden="{{ !($address$areaCurrentTab === 'city') }}" class="area-tab-item-title-bar _a5a3fc2"/>
+          </view>
+        </view>
+
+        <view bindtap="$address$chooseAddressTap" class="area-tab-item _a5a3fc2" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="area">
+          <view class="area-tab-item-title _a5a3fc2" hidden="{{ $address$area.items.length === 0 }}">
+            <text class="{{ $address$areaCurrentTab === 'area' ? 'active' : '' }} _a5a3fc2">{{ $address$area.name }}</text>
+            <view hidden="{{ !($address$areaCurrentTab === 'area') }}" class="area-tab-item-title-bar _a5a3fc2"/>
+          </view>
+        </view>
+
+        <view bindtap="$address$chooseAddressTap" class="area-tab-item _a5a3fc2" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="town">
+          <view class="area-tab-item-title _a5a3fc2" hidden="{{ $address$town.items.length === 0 }}">
+            <text class="{{ $address$areaCurrentTab === 'town' ? 'active' : '' }} _a5a3fc2">{{ $address$town.name }}</text>
+            <view hidden="{{ !($address$areaCurrentTab === 'town') }}" class="area-tab-item-title-bar _a5a3fc2"/>
+          </view>
+        </view>
+
+      </view>
+      <view class="area-body _a5a3fc2">
+        <view hidden="{{!$address$loading}}" class="area-body-loading _a5a3fc2">
+          <i-spin fix="fix" class="_a5a3fc2"/>
+        </view>
+        <scroll-view class="area-body-content _a5a3fc2" scroll-y>
+          <block class="_a5a3fc2" wx:for="{{$address$addressItems}}" wx:for-index="$address$index" wx:for-item="$address$item" wx:key="$address$id">
+            <view bindtap="$address$chooseAddress" class="area-body-content-item _a5a3fc2" hover-class="area-body-content-item-hover" data-wpychooseaddress-a="{{ $address$item }}">
+              <text class="area-body-content-item-label {{ $address$item.code === $address$addressTempId ? 'active' : '' }} _a5a3fc2">{{ $address$item.name }}</text>
+              <view hidden="{{$address$item.code !== $address$addressTempId}}" class="_a5a3fc2">
+                <van-icon name="success" color="#00AAA6" class="_a5a3fc2"/>
+              </view>
+            </view>
+          </block>
+        </scroll-view>
+      </view>
+    </view>
+  </van-popup>
+    <van-toast id="van-toast" class="_329086a"/>
+    <van-dialog id="van-dialog" class="_329086a"/>
+
+  </view>

@@ -1,0 +1,282 @@
+<template>
+  <view class="order">
+    <van-popup show="{{policyVisible}}" position="bottom" bind:close="closePolicy">
+      <view class="policy">
+        <view @tap="closePolicy" class="policy-close" hover-class="hover">
+          <van-icon color="#262626" name="cross" />
+        </view>
+        <view class="policy-header van-hairline--bottom">政策选择</view>
+        <scroll-view
+          scroll-y
+          enable-flex
+          enable-back-to-top="true"
+          scroll-with-animation="true"
+          class="policy-scroll"
+        >
+          <repeat for="{{policyArr}}" key="id">
+            <block wx:if="{{ item.disabled }}">
+                  <view hover-class="hover" class="policy-scroll-item van-hairline--bottom">
+                    <view class="policy-scroll-item-radio {{item.checked ? 'checked' : ''}}">
+                      <view class="b-icon icon-check policy-scroll-item-radio-disabled" />
+                    </view>
+                    <view class="policy-scroll-item-content policy-scroll-item-content-disabled">
+                      <view class="policy-scroll-item-content-title">
+                        <text class="black">{{item.policyName}}</text>
+                        <text class="red" wx:if="{{item.versionCode}}">[{{item.versionCode}}]</text>
+                      </view>
+                      <view class="policy-scroll-item-content-value">
+                        <view
+                          class="policy-info"
+                        >折扣 {{utils.formatPrice(item.discount)}}%，直扣 ￥{{utils.formatPrice(item.reduce)}}，开票价 ￥{{utils.formatPrice(item.price)}}</view>
+                        <view>总数量 {{item.total}}，可购数量 {{item.canQuantity}}，已购数量 {{item.remain}}</view>
+                      </view>
+                    </view>
+                  </view>
+                </block>
+                <block wx:else>
+                  <view
+                    @tap="choosePolicy({{item}})"
+                    hover-class="hover"
+                    class="policy-scroll-item van-hairline--bottom"
+                  >
+                    <view class="policy-scroll-item-radio {{item.checked ? 'checked' : ''}}">
+                      <view class="b-icon icon-check" />
+                    </view>
+                    <view class="policy-scroll-item-content">
+                      <view class="policy-scroll-item-content-title">
+                        <text class="black">{{item.policyName}}</text>
+                        <text class="red" wx:if="{{item.versionCode}}">[{{item.versionCode}}]</text>
+                      </view>
+                      <view class="policy-scroll-item-content-value">
+                        <view
+                          class="policy-info"
+                        >折扣 {{utils.formatPrice(item.discount)}}%，直扣 ￥{{utils.formatPrice(item.reduce)}}，开票价 ￥{{utils.formatPrice(item.price)}}</view>
+                        <view>总数量 {{item.total}}，可购数量 {{item.canQuantity}}，已购数量 {{item.remain}}</view>
+                      </view>
+                    </view>
+                  </view>
+                </block>
+          </repeat>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <view class="order-scroll">
+    <view class="order-common">
+      <van-cell-group>
+        <van-cell bind:click="openBill" title-class="order-title-class" title="开票户头" is-link="true">
+          <view class="order-common-value">{{common.bill.drawerName}}</view>
+        </van-cell>
+        <van-cell bind:click="openAddress" title-class="order-title-class" title="收货地址">
+          <view class="order-common-value">
+            <text class="order-common-value-text">{{common.receiver.name}}</text>
+          </view>
+        </van-cell>
+        <van-cell bind:click="openDelivery" title-class="order-title-class" title="配送方式">
+          <view class="order-common-tag van-hairline--surround"><text>{{common.delivery.propertyName}}</text></view>
+        </van-cell>
+        <view>
+          <van-cell title-class="order-title-class" title="分销商">
+            <view class="order-common-value line-height-34">{{customerName}}</view>
+          </van-cell>
+          <van-cell title-class="order-title-class" title="分销商地址">
+            <view class="order-common-value line-height-34">{{address}}</view>
+          </van-cell>
+          <van-cell title-class="order-title-class" title="联系人">
+            <view class="order-common-value line-height-34">{{contact}}</view>
+          </van-cell>
+          <van-cell  title-class="order-title-class" title="联系方式">
+            <view class="order-common-value line-height-34">{{contactInfo}}</view>
+          </van-cell>
+          <van-cell  title-class="order-title-class" title="客户采购单号">
+            <view class="order-common-value line-height-34">{{customerPurchase}}</view>
+          </van-cell>
+        </view>
+        <van-cell bind:click="openCalendar" title-class="order-title-class" title="有效期截至" is-link="true">
+          <view class="order-common-value gray">{{day || common.deadMaxDate || '请选择截至有效期'}}</view>
+        </van-cell>
+      </van-cell-group>
+      <van-popup show="{{billShow}}" position="bottom" bind:close="closeBill">
+        <view class="t-popup">
+          <view @tap="closeBill" hover-class="hover" class="t-popup-close">
+            <van-icon name="cross" color="#262626" />
+          </view>
+          <view class="t-popup-header van-hairline--bottom">开票户头</view>
+          <view class="t-popup-body">
+            <repeat for="{{common.bills}}" key="id">
+              <view @tap="chooseBill({{item}})" hover-class="hover" class="t-popup-body-item">
+                <text class="t-popup-body-item-text {{ item.id === common.bill.id ? 'active' : ''}}">{{item.drawerName}}</text>
+                <view hidden="{{item.id !== common.bill.id}}">
+                  <van-icon name="success" color="#00AAA6" />
+                </view>
+              </view>
+            </repeat>
+          </view>
+        </view>
+      </van-popup>
+      <van-popup show="{{calendarShow}}" position="bottom" bind:close="closeCalendar">
+        <calendar
+          calendarConfig="{{calendarConfig}}"
+          bind:afterTapDay="chooseDay"
+        />
+      </van-popup>
+      <search title="收货地址" />
+      <customMarket title="分销商" />
+      <customMarketAddress title="分销商地址" />
+      <address />
+      <van-toast id="van-toast" />
+    </view>
+      <view class="order-items">
+        <repeat for="{{order.items}}" key="id">
+          <view class="order-items-item van-hairline--bottom">
+            <navigator url="/pages/goods/item/index?code={{item.productId}}&orgId={{item.orgId}}&orgCode={{item.orgCode}}">
+              <img class="img" src="{{item.src}}" errSrc="{{item.errImg}}" />
+            </navigator>
+            <view class="content">
+              <view class="content-title">{{item.productName}}/{{item.color || ''}}</view>
+              <block wx:if="{{ common.policies[item.productId].length > 0 }}">
+                <view class="content-policy {{ item.policy ? 'selected' : '' }}" @tap="openChoosePolicy({{ item.productId }})">
+                  <view class="content-policy-notice">
+                    <view class="text">政策选择</view>
+                    <block wx:if="{{item.policy}}">
+                      <view class="value-text van-ellipsis">
+                        {{item.policy.policyName}}
+                        <block wx:if="{{item.policy.versionCode}}">[{{item.policy.versionCode}}]</block>
+                      </view>
+                    </block>
+                  </view>
+                  <van-icon name="arrow" size="12rpx" color="#D9161C" />
+                </view>
+              </block>
+              <block wx:else>
+                <view class="content-policy-empty"></view>
+              </block>
+              <view class="content-price">单价：¥{{utils.formatPrice(item.policy.price || item.price)}}({{ item.priceGroupName|| ''}})</view>
+            </view>
+            <view class="extra">x{{item.quantity}}</view>
+          </view>
+        </repeat>
+      </view>
+      <block wx:if="{{ order.totalMoney > (order.canUseMoney + order.rebate) }}">
+        <van-submit-bar
+          button-text="支付"
+          bind:submit="confirmWxPay"
+          button-class-container="order-btn"
+          button-class="order-confirm"
+        >
+          <view class="order-footer-header van-hairline--top-bottom" slot="top">
+            <view class="order-footer-header-item">
+              <view class="label">
+                <van-checkbox
+                  disabled
+                  value="{{ false }}"
+                  checked-color="#00AAA6"
+                  custom-class="order-checkbox"
+                >
+                  <view class="label-checkbox">
+                    账号余额 ¥{{utils.formatPrice(order.balanceAccount)}}
+                  </view>
+                </van-checkbox>
+                <!-- <view class="label-text">账号余额</view>
+                <view class="label-value">¥{{utils.formatPrice(order.balanceAccount)}}</view> -->
+              </view>
+              <view class="label">
+                <view class="label-text">待审核订单金额</view>
+                <view class="label-value">¥{{utils.formatPrice(order.waitMoney)}}</view>
+              </view>
+            </view>
+            <view class="order-footer-header-item" @tap="onBateChange">
+              <view class="label">
+                <van-checkbox
+                  value="{{rebateCheckBox}}"
+                  checked-color="#00AAA6"
+                  custom-class="order-checkbox"
+                >
+                  <view class="label-checkbox">
+                    预计使用返利金额¥ {{utils.formatPrice(rebateCheckBox ? order.rebate : 0)}}
+                  </view>
+                </van-checkbox>
+              </view>
+              <view class="label">
+                <view class="label-text">实际使用返利金额以最终发票金额为准</view>
+              </view>
+            </view>
+          </view>
+          <view class="order-footer-body">
+            <view class="order-footer-body-item">
+              <view class="item-label">共{{order.totalNum}}件</view>
+              <view class="item-label">合计</view>
+              <view class="item-value">¥{{utils.formatPrice(order.totalMoney)}}</view>
+            </view>
+            <view class="order-footer-body-item">
+              <view class="item-unit">账户可用余额</view>
+              <view class="item-price">¥{{utils.formatPrice(order.canUseMoney)}}</view>
+            </view>
+          </view>
+        </van-submit-bar>
+      </block>
+      <block wx:else>
+        <van-submit-bar
+          button-text="{{payName}}"
+          bind:submit="{{payMethods}}"
+          button-class-container="order-btn"
+          button-class="order-confirm"
+        >
+          <view class="order-footer-header van-hairline--top-bottom" slot="top">
+            <view class="order-footer-header-item">
+              <view class="label" @tap="onPayChange">
+                <van-checkbox
+                  value="{{payStatus}}"
+                  checked-color="#00AAA6"
+                  custom-class="order-checkbox"
+                >
+                  <view class="label-checkbox">
+                    账号余额 ¥{{utils.formatPrice(order.balanceAccount)}}
+                  </view>
+                </van-checkbox>
+                <!-- <view class="label-text">账号余额</view>
+                <view class="label-value">¥{{utils.formatPrice(order.balanceAccount)}}</view> -->
+              </view>
+              <view class="label">
+                <view class="label-text">待审核订单金额</view>
+                <view class="label-value">¥{{utils.formatPrice(order.waitMoney)}}</view>
+              </view>
+            </view>
+            <view class="order-footer-header-item" @tap="onBateChange">
+              <view class="label">
+                <van-checkbox
+                  value="{{rebateCheckBox}}"
+                  checked-color="#00AAA6"
+                  custom-class="order-checkbox"
+                >
+                  <view class="label-checkbox">
+                    预计使用返利金额¥ {{utils.formatPrice(rebateCheckBox ? order.rebate : 0)}}
+                  </view>
+                </van-checkbox>
+              </view>
+              <view class="label">
+                <view class="label-text">实际使用返利金额以最终发票金额为准</view>
+              </view>
+            </view>
+          </view>
+          <view class="order-footer-body">
+            <view class="order-footer-body-item">
+              <view class="item-label">共{{order.totalNum}}件</view>
+              <view class="item-label">体积{{utils.formatPrice(order.totalLoadVolume)}}m³</view>
+              <view class="item-label">合计</view>
+              <view class="item-value">¥{{utils.formatPrice(order.totalMoney)}}</view>
+            </view>
+            <view class="order-footer-body-item">
+              <view class="item-unit">账户可用余额</view>
+              <view class="item-price">¥{{utils.formatPrice(order.canUseMoney)}}</view>
+            </view>
+          </view>
+        </van-submit-bar>
+      </block>
+    </view>
+
+    <van-toast id="van-toast" />
+    <payconfrim />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

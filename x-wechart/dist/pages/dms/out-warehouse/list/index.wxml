@@ -1,0 +1,281 @@
+
+  <view class="dms-out-warehouse-order-list">
+    
+  <view class="header-tab">
+    <view class="left-btn">
+      <block  wx:for="{{ $headerTab$tabListNew }}">
+        <view class="btn-item {{ item.selectValue ? 'active' : '' }}" bindtap="$headerTab$changeTab" data-wpychangetab-a="{{item}}">
+          <text>{{ item.name }}</text>
+          <i wx:if="{{ $headerTab$showArrowIcon }}" class="b-icon iconxialajiantou"/>
+        </view>
+      </block>
+    </view>
+    <view class="right-btn"  wx:if="{{ $headerTab$showRightBtn }}" bindtap="$headerTab$onSideFilter">
+      <view class="line-shadow" wx:if="{{ $headerTab$showRightBtnLine }}"/>
+      <view class="side-filter-btn">
+        <text>筛选</text>
+        <i class="b-icon shaixuan"/>
+      </view>
+    </view>
+  </view>
+
+    <view  wx:if="{{freeShippingTip}}" class="free-shipping-tip">{{ freeShippingTip }}</view>
+    <scroll-view  wx:if="{{page.totalCount > 0}}" scroll-y enable-back-to-top="true" scroll-with-animation="true" scroll-top="{{visibelTop}}" bindscrolltolower="onGetListNext" id="out-warehouse-scroll-view" class="out-warehouse-scroll">
+      <block wx:for="{{orderList}}" wx:for-index="orderIndex" wx:for-item="order" wx:key="out_warehouse_order_{{order.id}}">
+        <view class="order-item-card">
+          <view class="card-scan" wx:if="{{order.isScan}}">
+             <view class="b-icon xuyaosaoma xuyaosaoma-icon"/>
+          </view>
+          <view class="card-header ">
+            <block wx:if="{{!order.isScan}}">
+              <view wx:if="{{!order.disableCheck}}" class="header-checker" bindtap="onCheckOrder" data-wpyoncheckorder-a="{{orderIndex}}">
+                <van-checkbox value="{{order.outChecked}}"/>
+              </view>
+              <view wx:else class="header-checker">
+                <van-checkbox disabled="{{true}}"/>
+              </view>
+            </block>
+
+            <view class="header-content">
+              <view class="content-line">
+                <view class="content-line-order-main">
+                  <view class="content-line-order-main-title">{{order.documentType}}{{order.documentNum}}</view>
+                </view>
+                <view class="content-line-order-status">{{order.status}}</view>
+              </view>
+              <view class="content-line">
+                <view class="content-line-order-customer">
+                  <view class="content-line-order-customer-code">{{order.customerCode}}</view>
+                  <view class="content-line-order-customer-name">{{order.customerName}}</view>
+                </view>
+                <view wx:if="{{order.warehouseName}}" class="content-line-order-main-warehouse">{{order.warehouseName}}</view>
+
+                <!-- <view wx:else class="content-line-order-customer">
+                  <view class="content-line-order-customer-code">分销商编码</view>
+                  <view class="content-line-order-customer-name">分销商名字我得U盘啊啊啊啊啊 啊啊啊啊啊啊啊 a</view>
+                </view> -->
+              </view>
+              <view class="content-line">
+                <view class="content-line-order-date">{{order.documentDate}}</view>
+              </view>
+            </view>
+          </view>
+          <view class="card-content">
+
+            <!--   组合购   -->
+            <block wx:if="{{order.discountTypeName == '组合购'}}">
+              <view wx:for="{{ order.salesOrderItem }}" wx:for-index="idx" wx:key="idx" wx:for-item="modelList" class="card-wrapper">
+                <view class="modelSeriesHeader">
+                  <view>{{ modelList.productGroupRemark ||'' }}</view>
+                  <view class="condition">x{{ modelList.packageRateNum}}</view>
+                </view>
+                <block wx:for="{{modelList.child}}" wx:for-index="itemIndex" wx:for-item="orderItem" wx:key="out_warehouse_order_{{order.id}}_{{orderItem.itemId}}">
+                  <view class="card-content-item">
+
+                    
+  <view class="item-content _32a4835">
+    <img class="item-content-img _32a4835" src="{{ orderItem.img }}" errSrc="{{ orderItem.err }}"/>
+    <view class="item-content-right _32a4835">
+      <view class="item-info-title _32a4835">{{ orderItem.model }}</view>
+      <view class="item-info-line _32a4835">
+        <view class="item-info-line-price _32a4835">
+          <text class="order-code _32a4835">￥</text>
+          <text class="order-num _32a4835">{{ orderItem.bprice }}</text>
+          <text  wx:if="{{ orderItem.colour }}" class="order-color _32a4835">({{ orderItem.colour }})</text>
+        </view>
+        <view class="item-info-line-quantity _32a4835">x{{ orderItem.backnowledgedQty }}</view>
+      </view>
+      <view class="order-goods-detail-desc _32a4835">
+        <view class="model _32a4835"  wx:if="{{ orderItem.priceGroupName }}">{{ orderItem.priceGroupName }}</view>
+        <view class="deposit _32a4835"  wx:if="{{ orderItem.retainer && orderItem.retainer > 0 }}">定金￥{{ orderItem.retainer }}</view>
+        <view class="rebate _32a4835" wx:if="{{ orderItem.rebateMoney && orderItem.rebateMoney > 0 }}">返利金￥{{ orderItem.rebateMoney }}</view>
+      </view>
+    </view>
+  </view>
+                    <view class="warehouse-info" wx:for="{{ orderItem.notReleaseds }}" wx:for-item="stockItem">
+                      <view class="warehouse-info-inner">
+                        <view class="title">
+                          <text>仓库：{{ stockItem.gicWarehouseName }}</text>
+                          <text>出库：{{ stockItem.qty }}</text>
+                        </view>
+                        <view class="desc">
+                          <text>{{ stockItem.material }}</text>
+                          <text>{{ stockItem.invStatusName }}{{ stockItem.invStatusTypeName }}</text>
+                        </view>
+                      </view>
+                    </view>
+
+                  </view>
+                </block>
+              </view>
+            </block>
+
+            <!--   非组合购   -->
+            <block wx:else>
+              <block wx:for="{{order.salesOrderItem}}" wx:for-index="itemIndex" wx:for-item="orderItem" wx:key="out_warehouse_order_{{order.id}}_{{orderItem.itemId}}">
+                <view class="card-content-item">
+
+                  
+  <view class="item-content _32a4835">
+    <img class="item-content-img _32a4835" src="{{ orderItem.img }}" errSrc="{{ orderItem.err }}"/>
+    <view class="item-content-right _32a4835">
+      <view class="item-info-title _32a4835">{{ orderItem.model }}</view>
+      <view class="item-info-line _32a4835">
+        <view class="item-info-line-price _32a4835">
+          <text class="order-code _32a4835">￥</text>
+          <text class="order-num _32a4835">{{ orderItem.bprice }}</text>
+          <text  wx:if="{{ orderItem.colour }}" class="order-color _32a4835">({{ orderItem.colour }})</text>
+        </view>
+        <view class="item-info-line-quantity _32a4835">x{{ orderItem.backnowledgedQty }}</view>
+      </view>
+      <view class="order-goods-detail-desc _32a4835">
+        <view class="model _32a4835"  wx:if="{{ orderItem.priceGroupName }}">{{ orderItem.priceGroupName }}</view>
+        <view class="deposit _32a4835"  wx:if="{{ orderItem.retainer && orderItem.retainer > 0 }}">定金￥{{ orderItem.retainer }}</view>
+        <view class="rebate _32a4835" wx:if="{{ orderItem.rebateMoney && orderItem.rebateMoney > 0 }}">返利金￥{{ orderItem.rebateMoney }}</view>
+      </view>
+    </view>
+  </view>
+                  <view class="warehouse-info" wx:for="{{ orderItem.notReleaseds }}" wx:for-item="stockItem">
+                    <view class="warehouse-info-inner">
+                      <view class="title">
+                        <text>仓库：{{ stockItem.gicWarehouseName }}</text>
+                        <text>出库：{{ stockItem.qty }}</text>
+                      </view>
+                      <view class="desc">
+                        <text>{{ stockItem.material }}</text>
+                        <text>{{ stockItem.invStatusName }}{{ stockItem.invStatusTypeName }}</text>
+                      </view>
+                    </view>
+                  </view>
+
+                </view>
+              </block>
+            </block>
+          </view>
+          <view class="card-footer">
+<!--            <navigator url="/pages/dms/out-warehouse/detail/index?id={{order.id}}&orgId={{order.orgId}}">-->
+<!--              <view class="button-wrapper">-->
+<!--                <view class="button-text">订单明细</view>-->
+<!--              </view>-->
+<!--            </navigator>-->
+            <block wx:if="{{order.status === '待发货' || order.status === '部分出库'}}">
+              <view bindtap="onCancelOrder" class="card-footer-handle" data-wpyoncancelorder-a="{{order.id}}">取消审核</view>
+            </block>
+            <block>
+              <view bindtap="onBatchSubmitItemOut" class="card-footer-handle card-footer-handle-active" data-wpyonbatchsubmititemout-a="{{order.id}}">出库</view>
+            </block>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+    
+  <view class="empty-data" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <view wx:if="{{page.totalCount > 0}}" class="out-warehouse-footer">
+<!--      <view class="footer-left">-->
+<!--        <view bindtap="onCheckAll">-->
+<!--          <van-checkbox value="{{allChecked}}">全选</van-checkbox>-->
+<!--        </view>-->
+<!--      </view>-->
+      <view class="button-wrapper" bindtap="onBatchSubmitOut">
+        <view class="button-text">批量出库</view>
+      </view>
+    </view>
+    <van-popup show="{{statusVisible || documentTypeVisible}}" position="top"  bind:close="onToggleFilterItem" custom-class="out-warehouse-filter-item-popup" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;">
+      <view class="order-s-filter-container">
+        <view wx:if="{{statusVisible}}" class="filter-select">
+          <block wx:for="{{statusList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <view class="filter-select-line {{filterForm.status === item.value ? 'active' : ''}}" bindtap="onSelectFilterItem" data-wpyonselectfilteritem-a="status" data-wpyonselectfilteritem-b="{{item.value}}">
+              <view class="filter-select-line-text">{{item.label}}</view>
+              <i wx:if="{{filterForm.status === item.value}}" class="b-icon icon-check filter-select-line-checked"/>
+            </view>
+          </block>
+        </view>
+        <view wx:if="{{documentTypeVisible}}" class="filter-select">
+          <block wx:for="{{documentTypeList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <view class="filter-select-line {{filterForm.documentType === item.value ? 'active' : ''}}" bindtap="onSelectFilterItem" data-wpyonselectfilteritem-a="documentType" data-wpyonselectfilteritem-b="{{item.value}}">
+              <view class="filter-select-line-text">{{item.label}}</view>
+              <i wx:if="{{filterForm.documentType === item.value}}" class="b-icon icon-check filter-select-line-checked"/>
+            </view>
+          </block>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{filterFormVisible}}" position="right" z-index="200"  bind:close="onToggleFilterForm" custom-class="out-warehouse-filter-form-popup">
+      <view class="out-warehouse-filter-form-scroll-wrapper">
+      <scroll-view scroll-y class="out-warehouse-filter-form-scroll">
+        <view class="input-group">
+          <view class="input-label">订单号</view>
+          <van-field value="{{filterForm.documentNum}}" placeholder="请输入订单号" border="{{ false }}" placeholder-style="font-size: 24rpx;color: #AAAAAA;" custom-style="background-color: #f7f7f7;height: 75rpx" clearable="clearable" data-name="documentNum" bind:change="onFilterFormChange">
+          </van-field>
+        </view>
+        <view class="input-group">
+          <view class="input-label">客户编码</view>
+          <van-field value="{{filterForm.customerCode}}" placeholder="请输入客户编码" border="{{ false }}" placeholder-style="font-size: 24rpx;color: #AAAAAA;" custom-style="background-color: #f7f7f7;height: 75rpx" clearable="clearable" data-name="customerCode" bind:change="onFilterFormChange">
+          </van-field>
+        </view>
+        <view class="input-group">
+          <view class="input-label">客户名称</view>
+          <van-field value="{{filterForm.customerName}}" placeholder="请输入客户名称" border="{{ false }}" placeholder-style="font-size: 24rpx;color: #AAAAAA;" custom-style="background-color: #f7f7f7;height: 75rpx" clearable="clearable" data-name="customerName" bind:change="onFilterFormChange">
+          </van-field>
+        </view>
+        <view class="input-group">
+          <view class="input-label">仓库编码</view>
+          <van-field value="{{filterForm.warehouseCode}}" placeholder="请输入仓库编码" border="{{ false }}" placeholder-style="font-size: 24rpx;color: #AAAAAA;" custom-style="background-color: #f7f7f7;height: 75rpx" clearable="clearable" data-name="warehouseCode" bind:change="onFilterFormChange">
+          </van-field>
+        </view>
+        <view class="input-group">
+          <view class="input-label">仓库名称</view>
+          <van-field value="{{filterForm.warehouseName}}" placeholder="请输入仓库名称" border="{{ false }}" placeholder-style="font-size: 24rpx;color: #AAAAAA;" custom-style="background-color: #f7f7f7;height: 75rpx" clearable="clearable" data-name="warehouseName" bind:change="onFilterFormChange">
+          </van-field>
+        </view>
+        <view class="input-group">
+          <view class="input-label">单据日期</view>
+          <view class="date-input-group">
+            <view class="date-begin">
+              <view class="{{filterForm.startDate ? '' : 'placeholder'}}" data-name="startDate" bindtap="openCalendar">{{filterForm.startDate || '开始日期'}}</view>
+              <view class="close-icon" bindtap="clearCalendar" data-wpyclearcalendar-a="startDate">
+                <van-icon wx:if="{{filterForm.startDate}}" name="clear"/>
+              </view>
+            </view>
+            <view class="date-between">-</view>
+            <view class="date-end">
+              <view class="{{filterForm.endDate ? '' : 'placeholder'}}" data-name="endDate" bindtap="openCalendar">{{filterForm.endDate || '结束日期'}}</view>
+              <view class="close-icon" bindtap="clearCalendar" data-wpyclearcalendar-a="endDate">
+                <van-icon wx:if="{{filterForm.endDate}}" name="clear"/>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="input-group">
+          <view class="input-label">业务员</view>
+          <van-field value="{{filterForm.sellerName}}" placeholder="请输入业务员" border="{{ false }}" placeholder-style="font-size: 24rpx;color: #AAAAAA;" custom-style="background-color: #f7f7f7;height: 75rpx" clearable="clearable" data-name="sellerName" bind:change="onFilterFormChange">
+          </van-field>
+        </view>
+      </scroll-view>
+      <view class="out-warehouse-filter-form-footer">
+        <view class="button-wrapper" bindtap="onResetFilterForm">
+          <view class="button-text">重置</view>
+        </view>
+        <view class="button-wrapper primary" bindtap="onSubmitFilterForm">
+          <view class="button-text">确定</view>
+        </view>
+      </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{calendarShow}}" position="bottom" bind:close="closeCalendar" z-index="300">
+      <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay"/>
+    </van-popup>
+    <van-popup show="{{outFormVisible}}" position="bottom" bind:close="closeOutForm" z-index="300">
+      <van-picker show-toolbar="show-toolbar" title="出库仓库" value-key="value" columns="{{warehouseList}}" bind:cancel="onOutFormCancel" bind:confirm="onOutFormConfirm"/>
+    </van-popup>
+
+    <van-toast id="van-toast"/>
+    <van-dialog id="van-dialog"/>
+  </view>

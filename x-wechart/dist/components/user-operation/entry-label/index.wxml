@@ -1,0 +1,79 @@
+<view class="custom-group">
+  <view class="item-row-top">
+    <text>用户标签</text>
+    <text class="tip">(不可超过8个)</text>
+  </view>
+  <view class="item-row-bottom">
+    <view class="custom-group-tag">
+      <block wx:for="{{options}}">
+        <view class="custom-tag-item {{item.active ? 'active' : ''}}" data-option="{{item}}" data-index="{{index}}" catchtap="onTagChange">{{ item.name }}</view>
+      </block>
+      <view class="custom-tag-add">
+        <view class="add-btn" catchtap="showTagPop"><i class="b-icon icon-add"/></view>
+      </view>
+    </view>
+  </view>
+
+  <!--  添加标签  -->
+  <van-popup
+    show="{{ tagPopShow }}"
+    round
+    position="bottom"
+    custom-style="height: 60%; border-radius: 24rpx 24rpx 0rpx 0rpx;"
+    bind:click-overlay="hideTagPop"
+  >
+    <view class="popup-wrapper">
+      <view class="popup-title">
+        新建用户标签
+      </view>
+      <view class="popup-container">
+        <view class="custom-group-tag pop-custom-group-tag">
+          <block wx:for="{{tagPopOptions}}" >
+            <view class="custom-tag-item {{item.active ? 'active' : ''}}" data-option="{{item}}" data-index="{{index}}" catchtap="onPopTagChange">{{ item.name }}</view>
+          </block>
+        </view>
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>自定义</text>
+          </view>
+          <view class="item-row-right">
+            <van-field
+              value="{{ tagPopFormData.tagName }}"
+              placeholder="请输入"
+              border="{{ false }}"
+              data-key="tagName"
+              bind:change="onFieldNameChange"
+              class="dms-order-note"
+            />
+          </view>
+        </view>
+        <view class="item-row item-row-desc">
+          <view class="item-row-left">
+            <text>标签说明</text>
+          </view>
+          <view class="item-row-right">
+            <van-field
+              input-class="tag-textarea"
+              style="height: 216rpx"
+              type="textarea"
+              value="{{ tagPopFormData.tagDesc }}"
+              placeholder="请输入"
+              border="{{ false }}"
+              autosize
+              maxlength="800"
+              show-word-limit
+              data-key="tagDesc"
+              bind:change="onFieldNameChange"
+              class="dms-order-note"
+            />
+          </view>
+        </view>
+      </view>
+      <view class="popup-footer">
+        <view class="btn cancel" catchtap="hideTagPop">取消</view>
+        <view class="btn save" catchtap="saveTagPop">确定</view>
+      </view>
+    </view>
+  </van-popup>
+  <van-toast id="van-toast" />
+</view>

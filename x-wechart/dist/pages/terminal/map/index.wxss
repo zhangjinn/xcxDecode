@@ -1,0 +1,123 @@
+@import "./../../../components/address/index.wxss";
+@font-face {
+  font-family: 'iconfont';
+  /* project id 2037285 */
+  src: url('https://at.alicdn.com/t/font_2037285_ojaou11xd4o.eot');
+  src: url('https://at.alicdn.com/t/font_2037285_ojaou11xd4o.eot?#iefix') format('embedded-opentype'), url('https://at.alicdn.com/t/font_2037285_ojaou11xd4o.woff2') format('woff2'), url('https://at.alicdn.com/t/font_2037285_ojaou11xd4o.woff') format('woff'), url('https://at.alicdn.com/t/font_2037285_ojaou11xd4o.ttf') format('truetype'), url('https://at.alicdn.com/t/font_2037285_ojaou11xd4o.svg#iconfont') format('svg');
+}
+.iconfont {
+  font-style: normal;
+  font-size: 16px;
+  font-family: 'iconfont' !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.qingdaofont {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background-color: #FFFFFF;
+  font-size: 30rpx;
+  width: 100vw;
+  padding: 0;
+  white-space: normal;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.qingdaofont .top-wrap {
+  padding: 0 20rpx;
+}
+.qingdaofont .top-wrap .cont-bod {
+  border-bottom: 2px solid #f6f6f6;
+}
+.qingdaofont .top-wrap .cont {
+  padding: 30rpx 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+.qingdaofont .top-wrap .cont .wrap {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+          justify-content: flex-start;
+}
+.qingdaofont .top-wrap .cont .lab {
+  color: #333;
+  font-weight: 500;
+  margin-right: 20rpx;
+  -webkit-flex-shrink: 0;
+          flex-shrink: 0;
+}
+.qingdaofont .top-wrap .cont .val {
+  color: #333;
+}
+.qingdaofont .top-wrap .wrap-flex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+          justify-content: flex-start;
+}
+.qingdaofont .btns-wrap {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  border-top: 1rpx solid #f6f6f6;
+}
+.qingdaofont .btns-wrap .btn {
+  color: #666666;
+  background: #fff;
+  width: 50%;
+  height: 100rpx;
+  line-height: 100rpx;
+  text-align: center;
+}
+.qingdaofont .btns-wrap .btn-ok {
+  background: #00AAA6;
+  color: white;
+}
+.pulsBox,
+.pulsBox1 {
+  font-size: 70rpx;
+  position: fixed;
+  right: 20rpx;
+  bottom: 150rpx;
+  color: #333333;
+}
+.pulsBox1 {
+  width: 80rpx ;
+}
+.pulsBox1 {
+  left: 20rpx;
+}
+.fuhao {
+  background-color: #fff;
+  width: 80rpx;
+  height: 80rpx;
+  text-align: center;
+  line-height: 80rpx;
+  margin-bottom: 15rpx;
+  border-radius: 10rpx;
+  z-index: 100;
+  position: relative;
+}
+.mapImage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translateY(-50%) translateX(-50%);
+          transform: translateY(-50%) translateX(-50%);
+}
+.address-input {
+  width: 500rpx;
+}
+.address-input .van-cell {
+  padding: 0;
+}

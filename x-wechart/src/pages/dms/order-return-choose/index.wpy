@@ -1,0 +1,48 @@
+<template>
+    <view class="container">
+        <scroll-view>
+            <view class="warn">
+                您的销售订单对应分销商的多个采购订单，请选择对应的单号发起退货
+            </view>
+            <repeat for="{{outOrder}}" item="order">
+                <view class="card">
+                    <view class="header" @tap="checkOrder({{order.purchaseId}})">
+                        <view class="first">
+                            <view class="first-left">  
+                                <van-checkbox value="{{order.checked}}" checked-color="#00AAA6"></van-checkbox>
+                                <view class="order-no">采购单号 {{order.purchaseNum}}</view>
+                            </view>
+                            <view wx:if="{{order.returnStatus === 'unreturn'}}">
+                                <view class="first-right">未退货</view>
+                            </view>
+                            <view wx:elif="{{order.returnStatus === 'part-returned'}}">
+                                <view class="first-right">部分退货</view>
+                            </view>
+                            <view wx:elif="{{order.returnStatus === 'returned'}}}}">
+                                <view class="first-right">已退货</view>
+                            </view>
+                            
+                        </view>
+                        <view class="second">{{order.documentDate}}</view>
+                    </view>
+                    <repeat for="{{order.items}}" item="item">    
+                        <view class="item">
+                            <view class="item-name">型号 {{item.model}}</view>
+                            <view class="item-color">颜色 {{item.colour}}</view>
+                            <repeat for="{{item.itemTabs}}" item="stock">
+                                <view class="item-stock">
+                                    <view class="item-stock-detail">库存状态：{{stock.invStatusName}}</view>
+                                    <view class="item-stock-detail">采购数量：{{stock.purchaseQty}}</view>
+                                    <view class="item-stock-detail">可退货数量：{{stock.canReturnQty}}</view>
+                                </view>
+                            </repeat>
+                        </view>
+                    </repeat>
+                </view>
+            </repeat>
+        </scroll-view>
+        <view @tap="goNext" class="footer">下一步</view>
+    </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

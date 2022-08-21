@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),path=require("./path.js"),pathSatisfies=_curry3(function(r,t,e){return t.length>0&&r(path(t,e))});module.exports=pathSatisfies;

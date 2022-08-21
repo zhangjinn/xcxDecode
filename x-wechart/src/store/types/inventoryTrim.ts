@@ -1,0 +1,3 @@
+export const GET_INVENTORY_LIST = 'GET_INVENTORY_LIST'
+export const GET_BASE_INFO = 'GET_BASE_INFO'
+export const GET_STORE_HOUSE = 'GET_STORE_HOUSE'

@@ -1,0 +1,40 @@
+// dms 销售出库列表
+export const DMS_OUT_WAREHOUSE_ORDER_LIST = 'DMS_OUT_WAREHOUSE_ORDER_LIST';
+
+// dms 出库仓库列表
+export const DMS_OUT_WAREHOUSE_LIST = 'DMS_OUT_WAREHOUSE_LIST';
+
+// dms  库存状态
+export const DMS_OUT_WAREHOUSE_INV_STATUS_LIST = 'DMS_OUT_WAREHOUSE_INV_STATUS_LIST';
+//dms 供应商
+export const DMS_GET_SUPPERLIER_LIST = 'DMS_GET_SUPPERLIER_LIST';
+
+
+
+export const DMS_OUT_WAREHOUSE_CHG = 'DMS_OUT_WAREHOUSE_CHG';
+
+// 销售出库 退出时， 删除分页信息
+export const DMS_CLEAR_OUT_WAREHOUSE = 'DMS_CLEAR_OUT_WAREHOUSE';
+
+// 销售出库详情
+// export const DMS_OUT_WAREHOUSE_ORDER_DETAIL = 'DMS_OUT_WAREHOUSE_ORDER_DETAIL';
+// 确认出库
+export const DMS_BE_SURE_OUT = 'DMS_BE_SURE_OUT'
+
+//销售出库列表取消订单
+export const CANCLE_OUT_WAREHOUSE_SALES_ORDER = 'CANCLE_OUT_WAREHOUSE_SALES_ORDER';
+
+//销售出库流水列表
+export const DMS_FIND_ALL_INVENTORY_LOG = 'DMS_FIND_ALL_INVENTORY_LOG';
+
+// 获取事务类型
+export const DMS_GET_TRANSACTION_TYPE = "DMS_GET_TRANSACTION_TYPE";
+
+// 获取订单筛选数据
+export const DMS_SALE_FILTER_LIST = 'DMS_SALE_FILTER_LIST'
+
+// 批量出库
+export const DMS_SALE_ORDER_BATCH_OUT = 'DMS_SALE_ORDER_BATCH_OUT'
+
+// 取消审核
+export const CANCEL_REVIEW = 'CANCEL_REVIEW'

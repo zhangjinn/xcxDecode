@@ -1,0 +1,128 @@
+.custom-source-group{
+  width: 100%;
+  padding-bottom: 28rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  .item-row-top{
+    height: 96rpx;
+    display: flex;
+    align-items: center;
+    font-size: 28rpx;
+    font-weight: 500;
+    .tip{
+      font-size: 24rpx;
+      color: #AAAAAA;
+      padding-left: 16rpx;
+    }
+  }
+  .item-row-bottom{
+    width: 100%;
+    display: flex;
+  }
+  .custom-tag-add{
+    width: 80rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .add-btn{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 64rpx;
+      height: 64rpx;
+      background: #ECF8F8;
+      border-radius: 32rpx;
+      color: #00AAA6;
+      .b-icon{
+        font-size: 24rpx;
+      }
+    }
+  }
+}
+.custom-group-tag{
+  flex: 1;
+  display: flex;
+  flex-flow: row wrap;
+  margin: -10rpx;
+  .custom-tag-item{
+    background: #F7F7F7;
+    border-radius: 32rpx;
+    padding: 14rpx 32rpx;
+    font-size: 26rpx;
+    margin: 10rpx;
+  }
+  .active{
+    background: #00B7B3;
+    color: #FFFFFF;
+    font-weight: 500;
+  }
+}
+.pop-custom-group-tag{
+  margin-bottom: 48rpx;
+}
+.popup-wrapper{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .popup-title{
+    padding: 40rpx;
+    font-size: 36rpx;
+    font-weight: 600;
+    color: #262626;
+    text-align: center;
+  }
+  .popup-container{
+    padding: 0 30rpx 30rpx;
+    flex: 1;
+    overflow-y: auto;
+    .item-row{
+      display: flex;
+
+      .item-row-left{
+        width: 150rpx;
+        text-align: right;
+        margin-right: 16rpx;
+        padding-top: 20rpx;
+      }
+      .item-row-right{
+        flex: 1;
+        .dms-order-note{
+          width: 100%;
+          background: #F7F7F7;
+          border-radius: 20rpx;
+        }
+      }
+    }
+    .item-row-desc{
+      margin-top: 26rpx;
+    }
+
+  }
+  .popup-footer{
+    display: flex;
+    box-shadow: 0px -4rpx 0px 0px #EEEEEE;
+    height: 100rpx;
+    .btn{
+      flex: 1;
+      font-size: 32rpx;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cancel{
+      background: #FFFFFF;
+      color: #666666;
+    }
+    .save{
+      background: #00AAA6;
+      font-weight: 500;
+      color: #FFFFFF;
+    }
+  }
+}
+.redXing{
+  color: #D9161C;
+}
+

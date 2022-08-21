@@ -1,0 +1,40 @@
+@import '../../../styles/utils.less';
+.protocol {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #ffffff;
+  &-scroll {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 40rpx 40rpx 0 40rpx;
+    .text {
+      font-size: 26rpx;
+      font-weight: 400;
+      color: #262626;
+      line-height: 42rpx;
+      &-index {
+        text-indent: 2em;
+        font-size: 26rpx;
+        font-weight: 400;
+        color: #262626;
+        line-height: 42rpx;
+      }
+    }
+  }
+  &-footer {
+    height: 84rpx;
+    .flex-center();
+    font-size: 32rpx;
+    font-weight: 400;
+    &.success {
+      background: #00AAA6;
+      color: #ffffff;
+    }
+    &.disabled {
+      background-color: #EEEEEE;
+      color: #777777;
+    }
+  }
+}

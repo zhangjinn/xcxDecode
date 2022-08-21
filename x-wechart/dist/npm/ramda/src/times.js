@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),times=_curry2(function(r,e){var n,u=Number(e),t=0;if(u<0||isNaN(u))throw new RangeError("n must be a non-negative number");for(n=new Array(u);t<u;)n[t]=r(t),t+=1;return n});module.exports=times;

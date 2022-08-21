@@ -1,0 +1,97 @@
+<wxs src="./../../wxs/utils.wxs" module="utils"/>
+<!-- 样式改造 -->
+<view class="detail-box">
+  <view class="fill-view line">
+    <view wx:if="{{utils.isFreeShipping(item.productLabel)}}" class="item-info-tag">免运费</view>
+    <view style="margin-right:40rpx">
+      {{item.zzprdmodel}}
+    </view>
+    <view>*{{item.backnowledgedQty}}</view>
+  </view>
+  <view class="fill-view">
+    <view>
+      价格:
+      <view class="amount price">￥{{item.backnowledgedPrice}}</view>
+    </view>
+    <view>
+      金额:
+      <view class="amount">￥{{utils.toFix(item.acknowledgedAmount*1)}}</view>
+    </view>
+  </view>
+  <!--标识为活动的采购订单类型，并且定金金额大于显示 -->
+  <view class="fill-view" wx:if = "{{productItem.data.activityName && item.retainer >0}}">
+    <view>
+      总定金:
+      <view class="amount price">￥{{utils.toFix(item.retainer * item.backnowledgedQty)}}</view>
+    </view>
+     <view>
+      总返利:
+      <view class="amount">￥{{utils.toFix(item.retainer* item.rebateMoney)}}</view>
+    </view>
+  </view>
+  <view class="fill-view" wx:if= "{{productItem.data.discountTypeName == '套购' ||productItem.data.discountTypeName =='跨组织套购' }}">
+    <view>
+      组合数量:
+      <view class="amount price">{{item.packageRateNum}}</view>
+    </view>
+    <view>
+      套数:
+      <view class="amount price">{{item.packageNum}}</view>
+    </view>
+  </view>
+  <view class="this-inventory">
+    当前可用库存
+  </view>
+  <view class="fill-view">
+    <view>
+      自有仓:
+      <view>{{item.invQty}}</view>
+      <view class="quick-gratification" data-type="own" bindtap="quickGratification">快速满足</view>
+    </view>
+    <view>
+      共享仓:
+      <view>{{item.gicInvQty}}</view>
+      <view class="quick-gratification" data-type="shared" bindtap="quickGratification">快速满足</view>
+    </view>
+  </view>
+  <view class="fill-view">
+    <view wx:if="{{item.inventory!=null}}">
+      海信:
+      <view>{{item.inventory}}</view>
+    </view>
+    <view wx:if="{{item.sharedInv != null}}">
+      共享:
+      <view>{{item.sharedInv}}</view>
+    </view>
+  </view>
+</view>
+
+<!-- 库存状态选择 -->
+<van-popup
+  show="{{ chooseInvShow }}"
+  closeable
+  position="bottom"
+  custom-style="height: 570rpx"
+  zIndex="400"
+  bind:click-overlay="onClose"
+>
+  <view class="item-inv">
+    <view class="item-inv-head">
+      <view class="item-inv-head-context">
+        <view class="item-inv-head-context-title">库存状态</view>
+      <van-icon name="cross" class="item-inv-head-context-close" bindtap="onClose" />
+      </view>
+    </view>
+    <scroll-view scroll-y class="item-inv-scroll">
+      <view wx:for="{{ item.invStatus.options }}" wx:key="{{ it.invStatusId }}" wx:for-item="it" class="item-inv-scroll-row" data-key="{{ it.invStatusId }}" bindtap="chooseInv">
+        <view  data-key="{{ it.invStatusId }}" class="item-inv-scroll-row-desc {{ it.invStatusId === item.invStatus.selected.invStatusId ? 'checked' : ''}}">
+          {{ it.invStatusName }}
+        </view>
+        <block wx:if="{{ it.invStatusId === item.invStatus.selected.invStatusId }}">
+          <view class="b-icon icon-check item-inv-scroll-row-checked checked"></view>
+        </block>
+      </view>
+
+    </scroll-view>
+  </view>
+  </van-popup>

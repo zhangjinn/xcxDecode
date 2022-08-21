@@ -1,0 +1,1 @@
+function composeP(){if(0===arguments.length)throw new Error("composeP requires at least one argument");return pipeP.apply(this,reverse(arguments))}var pipeP=require("./pipeP.js"),reverse=require("./reverse.js");module.exports=composeP;

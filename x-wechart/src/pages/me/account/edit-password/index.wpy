@@ -1,0 +1,56 @@
+<template>
+  <view class="me-account-edit-password">
+    <form bindsubmit="onSubmitForm" class="password-form">
+      <van-cell-group>
+        <van-field
+          name="rowpassword"
+          value="{{ form.rowpassword }}"
+          required
+          clearable
+          label="原密码"
+          placeholder="请填写原密码"
+          error-message="{{errorMessage.rowpassword}}"
+          bind:focus="onClearError('rowpassword')"
+          password="{{!rowpasswordVisible}}"
+          right-icon="{{ rowpasswordVisible ? 'eye-o' : 'closed-eye' }}"
+          data-name="rowpassword"
+          bind:click-icon="togglePwd"
+        />
+        <van-field
+          name="password"
+          value="{{ form.password }}"
+          label="新密码"
+          clearable
+          placeholder="请填写新密码"
+          required
+          error-message="{{errorMessage.password}}"
+          bind:focus="onClearError('password')"
+          password="{{!passwordVisible}}"
+          right-icon="{{ passwordVisible ? 'eye-o' : 'closed-eye' }}"
+          data-name="password"
+          bind:click-icon="togglePwd"
+        />
+        <van-field
+          name="npassword"
+          value="{{ form.npassword }}"
+          clearable
+          label="确认密码"
+          placeholder="请确认新密码"
+          required
+          error-message="{{errorMessage.npassword}}"
+          bind:focus="onClearError('npassword')"
+          password="{{!npasswordVisible}}"
+          right-icon="{{ npasswordVisible ? 'eye-o' : 'closed-eye' }}"
+          data-name="npassword"
+          bind:click-icon="togglePwd"
+        />
+      </van-cell-group>
+      <view class="form-button-area">
+        <button form-type="submit" class="form-submit">保存</button>
+      </view>
+    </form>
+    <van-toast id="van-toast"/>
+  </view>
+</template>
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts"></script>

@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),_dispatchable=require("./internal/_dispatchable.js"),_dropLast=require("./internal/_dropLast.js"),_xdropLast=require("./internal/_xdropLast.js"),dropLast=_curry2(_dispatchable([],_xdropLast,_dropLast));module.exports=dropLast;

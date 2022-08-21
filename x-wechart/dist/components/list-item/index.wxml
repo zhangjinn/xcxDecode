@@ -1,0 +1,80 @@
+<wxs src="../../wxs/utils.wxs" module="utils"/>
+<view catchtap="goods" url="" class="item">
+    <view class="item-main">
+      <view class="item-main-org" wx:if="{{type!='noLogin'}}">
+        <text wx:if="{{item.isFenXiao !== 'Y'}}">{{ item.orgName }}</text>
+        <text wx:else>{{item.agentName}}</text>
+      </view>
+      <view class="item-main-org" wx:if="{{type=='noLogin'}}">
+        <view  wx:if="{{item.type=='hotProduct'}}" class="hotProduct tag">热卖</view>
+        <view  wx:if="{{item.type=='popularProduct'}}" class="popularProduct tag">爆款</view>
+        <view  wx:if="{{item.type=='newProduct'}}" class="newProduct tag">新品</view>
+      </view>
+      <img class="item-main-img" flag="{{ item.productCode }}" src="{{item.img}}" errSrc="{{item.errImg}}" lazyLoad="{{ lazyLoad }}" bind:lose="imgLose" />
+
+      <view class="newProductStatus">
+        <view style="display:flex;align-item:center;">
+          <view class="item-main-bottom-type " style="border-color: #00AAA6;color:#00AAA6;" wx:if="{{item.isFenXiao !== 'Y' && (item.purchaseType == '2'||item.purchaseType == '3')}}">常</view>
+          <view class="item-main-bottom-type" style="border-color: #FF8F3C;color:#FF8F3C;" wx:if="{{item.isFenXiao !== 'Y' && (item.purchaseType == '1'||item.purchaseType == '3')}}">急</view>
+        </view>
+        <block wx:if="{{ !hiddenCollecion&&type!='noLogin' }}">
+          <view class="item-main-bottom-collection">
+            <view catchtap="toggleCollection" class="b-icon {{ item.collection ? 'icon-shoucangzhongxin' : 'icon-star-e' }} item-main-bottom-collection-icon"></view>
+          </view>
+        </block>
+      </view>
+      <view class="item-main-bottom">
+            <!--  分销 -->
+            <!-- 分销商，如果有invQty字段则显示自由仓，如果没有invQty字段则不显示 -->
+            <view wx:if="{{item.invQty !== undefined && (item.invQty || item.invQty === 0) && item.isFenXiao == 'Y'}}" class="item-main-bottom-type" style="border-color: #CCCCCC;color:#AAAAAA" > {{item.agentShareFlag == 'Y'? '自有仓' : '库存'}} {{item.invQty}}</view>
+            <view wx:if="{{(item.gicInvQty || item.gicInvQty === 0) && item.isFenXiao == 'Y' && item.agentShareFlag == 'Y'}}" class="item-main-bottom-type" style="border-color: #CCCCCC;color:#AAAAAA" >共享仓 {{item.gicInvQty}}</view>
+            <!-- 代理商 -->
+            <view wx:if="{{(item.inventory || item.inventory === 0) && item.isFenXiao != 'Y'}}" class="item-main-bottom-type" style="border-color: #CCCCCC;color:#AAAAAA" >海信{{item.inventory}}</view>
+            <view wx:if="{{(item.sharedInv || item.sharedInv === 0) && item.isFenXiao != 'Y'}}" class="item-main-bottom-type" style="border-color: #CCCCCC;color:#AAAAAA" >共享{{item.sharedInv}}</view>
+      </view>
+    </view>
+    <view class="item-info">
+      <view class="item-info-header">
+        <view wx:if="{{utils.isFreeShipping(item.productLabel)}}" class="item-info-tag">免运费</view>
+        <view class="item-info-name">
+          {{ item.b2bName||item.productName }}
+        </view>
+      </view>
+
+      <block wx:if="{{ item.importInfo }}">
+        <view class="item-info-import">
+          {{ item.importInfo || '' }}
+        </view>
+      </block>
+      <block wx:else>
+        <view class="item-info-null">
+        </view>
+      </block>
+      <view class='item-info-import' wx:if="{{ item.retailPriceL }}">
+        建议零售价: ￥{{ item.retailPriceL }}
+      </view>
+      <view wx:else class="item-info-null">
+      </view>
+        <!--<view wx:if="{{ !item.loadingPrice }}" class="item-info-bottom-price-num">
+          ￥{{ item.retailPriceL }}
+        </view>-->
+      <view class="item-info-bottom" wx:if="{{type!='noLogin'}}">
+        <view class="item-info-bottom-no-price" wx:if="{{ item.isFenXiao == 'Y' &&  item.price == ''}}"> 暂无价格 </view>
+        <view wx:else class="item-info-bottom-price">
+          <!--<view class="item-info-bottom-price-tip">
+
+          </view>-->
+
+          <view wx:if="{{ !item.loadingPrice }}" class="item-info-bottom-price-num">
+            ￥{{ item.price }}
+          </view>
+          <view wx:else class="item-info-bottom-price-loading">
+            <van-loading size="24rpx" />
+          </view>
+        </view>
+        <view catchtap="addCart" class="item-info-bottom-cart">
+          加入购物车
+        </view>
+      </view>
+    </view>
+  </view>

@@ -1,0 +1,312 @@
+<template>
+  <view class="order">
+    <!-- 日历弹框,账号弹框 -->
+    <van-popup
+      show="{{ purchaseVisable }}"
+      position="bottom"
+      custom-style="height: 50%; border-radius: 24rpx 24rpx 0rpx 0rpx;"
+      custom-class="base-model-popup-picker"
+      bind:close="touchFilter"
+    >
+      <view wx:if="{{CurrentFilterName==='date'}}">
+        <van-datetime-picker
+          type="year-month"
+          title="选择时间"
+          column-class="date-picker"
+          value="{{ currentDate }}"
+          min-date="{{ minDate }}"
+          max-date="{{ maxDate }}"
+          bind:input="onInput"
+          bind:confirm="onConfirm"
+          bind:cancel="touchFilter"/>
+      </view>
+      <view class="datetime-picker-box" wx:if="{{CurrentFilterName==='account'}}">
+        <view class="datetime-picker-header">
+          <view class="space"></view>
+          <view class="pop-title">选择账号</view>
+          <view @tap="touchFilter" class="b-icon h-icon icon-close space"></view>
+        </view>
+        <view class="datetime-picker-container">
+          <scroll-view
+            scroll-y
+            class="purchase-inv-scroll">
+              <view wx:for="{{ accountOption }}" wx:key="id" item="item" class="datetime-picker-item {{item.id == filterForm.terms.accountId ? 'active' : ''}}" @tap="onAccountchange({{item}})">
+                <view>{{item.name}}</view>
+                <view wx:if="{{ item.id == filterForm.terms.accountId}}" class="b-icon icon-check operation-icon"></view>
+              </view>
+          </scroll-view>
+        </view>
+      </view>
+    </van-popup>
+
+    <!-- 右侧弹框筛选条件弹框列表 -->
+    <van-popup
+      show="{{agentPopup}}"
+      position="right"
+      overlay="{{ true }}"
+      z-index="200"
+      custom-style="height: 100%;"
+    >
+      <view class="order-drawer">
+        <view class="order-drawer-time">
+          <view class="order-drawer-time-header">
+            <van-icon
+              name="arrow-left"
+              class="order-drawer-time-header-back"
+              bind:click="selectAgentPopup"
+            ></van-icon>
+            <view class="order-drawer-time-header-title">{{popupTitle}}</view>
+          </view>
+
+          <view wx:if="{{popupTitle == '销售组织'}}" class="order-drawer-time-content">
+            <repeat for="{{salesOrgList}}" item="item">
+              <view
+                class="order-drawer-time-content-line"
+                catchtap="selectStatus({{item.name}},{{item.id}})"
+              >
+                <view
+                  class="text {{filterForm.terms.salesOrgId === item.id ? 'active' : ''}}"
+                >{{item.name}}</view>
+                <van-icon
+                  wx:if="{{filterForm.terms.salesOrgId === item.id}}"
+                  name="success"
+                  class="time-selected"
+                  size="32rpx"
+                />
+              </view>
+            </repeat>
+          </view>
+          <view wx:if="{{popupTitle == '仅查合作关系'}}" class="order-drawer-time-content">
+            <repeat for="{{partnershipList}}" item="item">
+              <view
+                class="order-drawer-time-content-line"
+                catchtap="selectStatus({{item.name}},{{item.id}})"
+              >
+                <view
+                  class="text {{filterForm.terms.partnershipId === item.id ? 'active' : ''}}"
+                >{{item.name}}</view>
+                <van-icon
+                  wx:if="{{filterForm.terms.partnershipId === item.id}}"
+                  name="success"
+                  class="time-selected"
+                  size="32rpx"
+                />
+              </view>
+            </repeat>
+          </view>
+          <view wx:if="{{popupTitle == '信贷范围'}}" class="order-drawer-time-content">
+            <repeat for="{{creditRangeList}}" item="item">
+              <view
+                class="order-drawer-time-content-line"
+                catchtap="selectStatus({{item.name}},{{item.id}})"
+              >
+                <view
+                  class="text {{filterForm.terms.creditRangeId === item.id ? 'active' : ''}}"
+                >{{item.name}}</view>
+                <van-icon
+                  wx:if="{{filterForm.terms.creditRangeId === item.id}}"
+                  name="success"
+                  class="time-selected"
+                  size="32rpx"
+                />
+              </view>
+            </repeat>
+          </view>
+          <view wx:if="{{popupTitle == '业务类型'}}" class="order-drawer-time-content">
+            <view class="order-drawer-time-content-line" catchtap="selectStatus('全部','')">
+              <view class="text {{filterForm.terms.businessTypeId === '' ? 'active' : ''}}">全部</view>
+              <van-icon
+                wx:if="{{filterForm.terms.businessTypeId === ''}}"
+                name="success"
+                class="time-selected"
+                size="32rpx"
+              />
+            </view>
+            <repeat for="{{businessTypeList}}" item="item">
+              <view
+                class="order-drawer-time-content-line"
+                catchtap="selectStatus({{item.name}},{{item.id}})"
+              >
+                <view
+                  class="text {{filterForm.terms.businessTypeId === item.id ? 'active' : ''}}"
+                >{{item.name}}</view>
+                <van-icon
+                  wx:if="{{filterForm.terms.businessTypeId === item.id}}"
+                  name="success"
+                  class="time-selected"
+                  size="32rpx"
+                />
+              </view>
+            </repeat>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    <!-- 筛选侧边弹框 -->
+    <van-popup
+      show="{{visible}}"
+      position="right"
+      overlay="{{ true }}"
+      bind:close="orderfiltering"
+      custom-style="height: 100%;"
+      z-index="130"
+    >
+      <view class="order-drawer">
+        <view class="order-drawer-attr">
+          <scroll-view
+            class="order-drawer-attr-scroll"
+            scroll-y>
+            <view class="attr-item">
+              <view class="item-trans">
+                <view class="item-project" @tap="selectAgentPopup('salesOrg')">
+                  <view class="item-name">销售组织</view>
+                  <view class="text">
+                    <text>{{filterForm.terms.salesOrgName || '请选择'}} ></text>
+                  </view>
+                </view>
+              </view>
+              <view class="item-trans">
+                <view class="item-project" @tap="selectAgentPopup('partnership')">
+                  <view class="item-name">仅查合作关系</view>
+                  <view class="text">
+                    <text>{{filterForm.terms.partnershipName || '请选择'}} ></text>
+                  </view>
+                </view>
+              </view>
+              <view class="item-trans">
+                <view class="item-project" @tap="selectAgentPopup('creditRange')">
+                  <view class="item-name">信贷范围</view>
+                  <view class="text">
+                    <text>{{filterForm.terms.creditRangeName || '请选择'}} ></text>
+                  </view>
+                </view>
+              </view>
+              <view class="item-trans">
+                <view class="item-project" @tap="selectAgentPopup('businessType')">
+                  <view class="item-name">业务类型</view>
+                  <view class="text">
+                    <text>{{filterForm.terms.businessTypeName || '请选择'}} ></text>
+                  </view>
+                </view>
+              </view>
+              <view class="projectem">
+                <view class="project">
+                  <text style="font-size: 28rpx;color: #777777">交易凭证</text>
+                </view>
+                <van-field
+                  placeholder="请输入交易凭证"
+                  border="{{ false }}"
+                  placeholder-style="font-size: 24rpx;"
+                  data-name="certificate"
+                  bind:change="onFilterFormChange"
+                  custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;"
+                  clearable
+                  value="{{filterForm.terms.certificate}}"
+                />
+              </view>
+
+            </view>
+          </scroll-view>
+          <!-- 底部按钮 -->
+          <view class="order-drawer-attr-footer">
+             <view
+              @tap="onResetFilterForm"
+              class="order-drawer-attr-footer-btn reset"
+              hover-class="order-drawer-attr-footer-btn-hover"
+            >重置</view>
+            <view
+              @tap="onSubmitFilterForm"
+              class="order-drawer-attr-footer-btn confirm"
+              hover-class="order-drawer-attr-footer-btn-hover"
+            >确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    <view class="account-select" @tap="touchFilter('account')">
+      <text class="account-name">{{ filterForm.terms.accountName }}</text>
+      <view class="b-icon iconxialajiantou order-icons" />
+    </view>
+    <view class="account-box">
+      <view class="account-bg">
+        <image class="img-bg" src="{{imgObj.capitalFlowBg}}"/>
+      </view>
+      <view class="account-box-wrapper">
+        <view class="account-warn">
+          <view class="account-warn-text">
+            <text class="b-icon icon-zhushi order-icons"></text>
+            <text>仅限商家在海信的账户往来</text>
+          </view>
+        </view>
+        <view class="account-date" @tap="touchFilter('date')">
+          <text class="date-text">{{ filterForm.terms.queryDate }}</text>
+          <text class="date-unit">月</text>
+          <text class="b-icon iconxialajiantou order-icons"></text>
+        </view>
+        <view class="account-statistics">
+          <text>期初 ￥{{ utils.toFix(balanceInfo.beginBalance)}}</text>
+          <text>期末 ￥{{ utils.toFix(balanceInfo.endBalance)}}</text>
+        </view>
+        <view class="account-statistics">
+          <text>支出 ￥{{ utils.toFix(balanceInfo.outFund)}}</text>
+          <text>收入 ￥{{ utils.toFix(balanceInfo.inFund)}}</text>
+        </view>
+      </view>
+    </view>
+    <!--  头部筛选  -->
+    <view class="order-header">
+      <view class="order-header-inner">
+        <view @tap="onSelectStatus('ALL')" class="order-header-label {{filterForm.terms.status=='ALL' ? 'active' : ''}}" hover-class="hover">
+          <text>全部</text>
+        </view>
+        <view @tap="onSelectStatus('1')" class="order-header-label order-header-label-margin {{filterForm.terms.status=='1' ? 'active' : ''}}" hover-class="hover">
+          <text>支出</text>
+        </view>
+        <view @tap="onSelectStatus('0')" class="order-header-label order-header-label-margin {{filterForm.terms.status=='0' ? 'active' : ''}}" hover-class="hover">
+          <text>收入</text>
+        </view>
+        <view @tap="orderfiltering" class="orderfilter" hover-class="hover">
+          <view class="orderfilter-inner">
+            <text class="orderfilter-text">筛选</text>
+          </view>
+        </view>
+      </view>
+
+    </view>
+    <!--  bindscroll="onScroll"   bindscrolltolower="onGetOrderListNext"  暂时不加分页先隐藏属性-->
+    <scroll-view
+      wx:if="{{ orderList && orderList.length}}"
+      scroll-y="true"
+      class="order-scroll"
+      enable-flex
+      scroll-top="{{ scrollTop }}"
+      bindscroll="onScroll"
+      bindscrolltolower="onGetOrderListNext"
+    >
+      <repeat for="{{orderList}}" item="item">
+        <view class="order-container">
+          <view class="card-title">
+            <text class="type">
+              <text>{{ item.inOutTypeName }}</text>-<text>{{item.businessTypeName}}</text>
+            </text>
+            <text wx:if="{{item.inOutType == '0'}}" class="amount amount-income">+{{ item.orderFund }}</text>
+            <text wx:if="{{item.inOutType == '1'}}" class="amount">-{{ item.orderFund }}</text>
+          </view>
+          <view class="card-detail">
+            <text class="single-number">{{ item.voucher }}</text>
+            <text class="date">{{ item.orderDateStr }}</text>
+          </view>
+        </view>
+      </repeat>
+      <view wx:if="{{(filterForm.page.totalPages == filterForm.page.pageNo) && (orderList.length == filterForm.page.totalRows) }}" class="no-loading-data">没有更多了~</view>
+    </scroll-view>
+    <emptyDataType wx:else/>
+
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

@@ -1,0 +1,84 @@
+<wxs src="../../../wxs/utils.wxs" module="utils"/>
+
+  <view class="out-warehouse-order-detail">
+    <view class="order-detail-main">
+      <view class="order-detail-main-header">
+        <view class="order-detail-main-label">计划说明：</view>
+        <view class="order-detail-main-value">{{ orderDetail.name }}</view>
+      </view>
+      <view class="order-detail-main-content">
+        <view class="order-detail-main-line">
+          <view class="order-detail-main-label">计划编码：</view>
+          <view class="order-detail-main-value">{{ orderDetail.code }}</view>
+        </view>
+        <view class="order-detail-main-line">
+          <view class="order-detail-main-label">计划有效期：</view>
+          <view class="order-detail-main-value">{{ orderDetail.submitDate }} ~ {{ orderDetail.endDate }}</view>
+        </view>
+      </view>
+    </view>
+    <view class="order-detail-items">
+      <view class="order-detail-items-title">物料明细信息</view>
+    <block wx:for="{{orderDetail.detailList}}" wx:for-index="itemIndex" wx:for-item="orderItem" wx:key="order_detail_item_{{orderItem.id}}">
+      <view class="order-detail-item-card">
+          <view class="order-detail-item-info">
+            <view class="order-detail-item-card-bar"/>
+            <view class="order-detail-item-card-header">{{ orderItem.code }}</view>
+            <view class="order-detail-item-card-line">
+              <view class="order-detail-item-card-label">物料名称：</view>
+              <view class="order-detail-item-card-value">{{orderItem.name || ''}}</view>
+            </view>
+            <view class="order-detail-item-card-line number-of-escalations">
+              <view class="order-detail-item-card-label">最终数量(单位)：</view>
+              <view class="order-detail-item-card-value">
+                <van-stepper integer="integer" value="{{orderItem.submitQuantity}}" min="0" data-index="{{itemIndex}}" custom-class="cart-stepper" input-class="cart-input-class" plus-class="cart-action-class" minus-class="cart-action-class"  bind:change="onShippedBqtyChg" bind:plus="onShippedBqtyChg" bind:minus="onShippedBqtyChg" disabled="{{ pageType !== 'handle' }}"/>
+              </view>
+            </view>
+
+            <view  wx:if="{{orderItem.unit == '米(M)' && pageType === 'handle'}}" class="msgItem-filed">
+              <text class="label">米数(m)</text>
+              <view class="training-filed-item">
+                <van-field type="number" value="{{ orderItem.itemMeters }}" data-index="{{itemIndex}}" data-type="itemMeters" placeholder="请输入" input-align="right" cell-class="field-cell"  bind:change="onChange" data-wpyonchange-a="{{$event}}"/>
+              </view>
+            </view>
+
+            <block  wx:if="{{orderItem.unit == '平方米(M2)' && pageType === 'handle'}}">
+              <view class="msgItem-filed">
+                <text class="label">长度(米)</text>
+                <view class="training-filed-item">
+                  <van-field type="number" value="{{ orderItem.itemLength }}" data-index="{{itemIndex}}" data-type="itemLength" placeholder="请输入" input-align="right" cell-class="field-cell" bind:change="onChange" data-wpyonchange-a="{{$event}}"/>
+                </view>
+              </view>
+              <view class="msgItem-filed">
+                <text class="label">宽度(米)</text>
+                <view class="training-filed-item">
+                  <van-field type="number" value="{{ orderItem.itemWidth }}" data-index="{{itemIndex}}" data-type="itemWidth" placeholder="请输入" input-align="right" cell-class="field-cell" bind:change="onChange" data-wpyonchange-a="{{$event}}"/>
+                </view>
+              </view>
+            </block>
+
+            <view class="msgItem-filed">
+              <text class="label">备注</text>
+              <view class="training-filed-item">
+                <van-field value="{{ orderItem.remark }}" data-index="{{itemIndex}}" data-type="remark" placeholder="请输入" input-align="right" cell-class="field-cell" bind:change="onChange" disabled="{{ pageType !== 'handle' }}" data-wpyonchange-a="{{$event}}"/>
+              </view>
+            </view>
+
+        </view>
+      </view>
+    </block>
+
+      <view class="order-detail-footer" wx:if="{{ pageType === 'handle' }}">
+        <block>
+          <view class="button-wrapper temporary-storage" bindtap="sava" data-wpysava-a="0">
+            <view class="button-text">暂存</view>
+          </view>
+          <view class="button-wrapper" bindtap="sava" data-wpysava-a="1">
+            <view class="button-text">提交</view>
+          </view>
+        </block>
+      </view>
+      <van-toast id="van-toast"/>
+      <van-dialog id="van-dialog"/>
+    </view>
+  </view>

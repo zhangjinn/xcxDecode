@@ -1,0 +1,38 @@
+.screen {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: 24rpx;
+  bottom: 50rpx;
+  width: 65rpx;
+  height: 65rpx;
+  border-radius: 100%;
+  // background-color:black;
+  border: 1rpx solid #fff;
+  box-shadow: 0 4rpx 8rpx 0 rgba(0, 0, 0, 0.15);
+  z-index: 7;
+  padding: 0;
+  .shareBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+}
+
+.collection {
+  height: 100%;
+  .scroll-grid {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    padding: 14rpx;
+    .context {
+      width: 354rpx;
+      padding-bottom: 10rpx;
+    }
+  }
+
+}

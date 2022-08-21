@@ -1,0 +1,83 @@
+@import '../../../styles/utils.less';
+@import '../../../styles/index.less';
+@import '../../../components/vant/common/style/hairline.less';
+@import '../../../components/vant/common/style/ellipsis.less';
+
+.container {
+  margin-bottom: 100rpx;
+  .warn {
+    background-color: #ECF8F8;
+    color: #00AAA6;
+    font-size: 24rpx;
+    padding: 20rpx 40rpx;
+  }
+  .card {
+    margin: 16rpx;
+    background-color: #FFFFFF;
+    .header {
+      padding: 24rpx 24rpx 26rpx 24rpx;
+      border-bottom: 1rpx solid #EEEEEE;
+      .first {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        &-left {
+          display: flex;
+          .order-no {
+            margin-left: 16rpx;
+            font-size: 28rpx;
+            color: #262626;
+            font-weight: 500;
+          }
+        }
+        &-right {
+          background-color: #EE8A7A;
+          font-size: 20rpx;
+          padding: 4rpx 12rpx;
+          color: #FFFFFF;
+        }
+      }
+      .second {
+        font-size: 24rpx;
+        color: #777777;
+        padding-left: 56rpx;
+      }
+    }
+    .item {
+      border-bottom: 1rpx solid #EEEEEE;
+      &-name {
+        padding: 22rpx 64rpx 8rpx 24rpx;
+        font-size: 24rpx;
+        color: #262626;
+      }
+      &-color {
+        padding: 0rpx 64rpx 0rpx 24rpx;
+        font-size: 24rpx;
+        color: #262626;
+      }
+      &-stock {
+        margin: 16rpx 24rpx 26rpx 24rpx;
+        background-color: #F7F7F7;
+        padding-bottom: 16rpx;
+        padding-left: 16rpx;
+        &-detail {
+          padding-top: 16rpx;
+          font-size: 24rpx;
+          color: #777777;
+        }
+      }
+    }
+  }
+  .footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #00AAA6;
+    color: #FFFFFF;
+    height: 100rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

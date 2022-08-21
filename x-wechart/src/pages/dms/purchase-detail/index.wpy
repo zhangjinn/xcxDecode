@@ -1,0 +1,232 @@
+<template>
+  <view class="order">
+    <van-popup show="{{WarehouseListvisible}}" position="bottom" bind:close="closePolicy">
+      <view class="policy">
+        <view @tap="closePolicy" class="policy-close" hover-class="hover">
+          <van-icon color="#262626" name="cross" />
+        </view>
+        <view class="policy-header van-hairline--bottom">入库仓库</view>
+        <scroll-view
+          scroll-y
+          enable-flex
+          enable-back-to-top="true"
+          scroll-with-animation="true"
+          class="policy-scroll"
+        >
+          <repeat
+            for="{{orderdetail.purchaseOrderItem[itemindex].baseData}}"
+            index="in"
+            item="item"
+          >
+            <view class="warehouse-list-container">
+              <view
+                @tap="chooseWarehouse({{item.key}},{{item.value}})"
+                class="warehouse-list-{{ orderdetail.purchaseOrderItem[itemindex].selectInfo[index].info.warehouseId == item.key ? 'name': 'named' }}"
+              >{{item.value}}</view>
+              <view
+                class="b-icon {{orderdetail.purchaseOrderItem[itemindex].selectInfo[index].info.warehouseId == item.key ? 'icon-check': '' }} warehouse-list-icon"
+              ></view>
+            </view>
+          </repeat>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-popup show="{{WarehouseStatus}}" position="bottom" bind:close="closePolicy">
+      <view class="policy">
+        <view @tap="closePolicy" class="policy-close" hover-class="hover">
+          <van-icon color="#262626" name="cross" />
+        </view>
+        <view class="policy-header van-hairline--bottom">库存状态</view>
+        <scroll-view
+          scroll-y
+          enable-flex
+          enable-back-to-top="true"
+          scroll-with-animation="true"
+          class="policy-scroll"
+        >
+          <repeat
+            for="{{orderdetail.purchaseOrderItem[itemindex].InvStatusList}}"
+            index="in"
+            item="item"
+          >
+            <view class="warehouse-list-container">
+              <view
+                @tap="WarehouseStatuse({{item.key}},{{item.value}})"
+                class="warehouse-list-{{orderdetail.purchaseOrderItem[itemindex].selectInfo[index].info.invStatusId == item.key ? 'name': 'named' }}"
+              >{{item.value}}</view>
+              <view
+                class="b-icon {{orderdetail.purchaseOrderItem[itemindex].selectInfo[index].info.invStatusId == item.key ? 'icon-check': '' }} warehouse-list-icon"
+              ></view>
+            </view>
+          </repeat>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <scroll-view scroll-y="true" class="order-scroll">
+      <view class="order-container">
+        <view class="order-id">{{orderdetail.documentNum}}</view>
+        <!-- TODO: -->
+        <view wx:if="{{orderdetail.supplierCode !== orderdetail.orgCode}}" class="order-shopname">
+          <text class="text van-ellipsis">{{orderdetail.supplierName}}</text>
+        </view>
+        <view wx:if="{{orderdetail.orgName}}" class="order-supply">
+          <text class="text van-ellipsis">{{orderdetail.orgName}}</text>
+        </view>
+        <view wx:if="{{orderdetail.data.BHOnum}}"  class="order-time-start">
+          <text class="text">BHO单号:</text>
+          <text class="text-time">{{orderdetail.BHOnum}}</text>
+        </view>
+        <view class="order-time-start">
+          <text class="text">单据日期:</text>
+          <text class="text-time">{{orderdetail.documentDate}}</text>
+        </view>
+        <view class="order-time-start">
+          <text class="text">期望到货期:</text>
+          <text class="text-time">{{orderdetail.edt}}</text>
+        </view>
+        <view class="order-time-start">
+          <text class="text">结算单位:</text>
+          <text class="text-time van-ellipsis">{{orderdetail.billTo}}</text>
+        </view>
+        <view class="order-address">
+          <view class="address-name">收货地址:</view>
+          <view class="address-rel van-ellipsis">{{orderdetail.address}}</view>
+        </view>
+        <view class="order-address">
+          <view class="address-name">联系人:</view>
+          <view class="address-rel van-ellipsis">{{orderdetail.contact}}</view>
+        </view>
+        <view class="order-address">
+          <view class="address-name">联系方式:</view>
+          <view class="address-rel van-ellipsis">{{orderdetail.contactInfo}}</view>
+        </view>
+        <view class="order-time-start">
+          <text class="text">入库仓库:</text>
+          <text class="text-time">{{orderdetail.warehouseName}}</text>
+        </view>
+        <view class="order-time-start">
+          <text class="text">配送方式:</text>
+          <text class="text-time">{{orderdetail.deliveryMode}}</text>
+        </view>
+        <view class="order-time-start">
+          <text class="text">采购人员:</text>
+          <text class="text-time">{{orderdetail.userName}}</text>
+        </view>
+        <view class="order-time-start">
+          <text class="text">创建人:</text>
+          <block wx:if="{{user.info.userName !== undefined }}">
+            <text class="text-time">{{user.info.userName}}</text>
+          </block>
+          <block wx:else>
+            <view class="shop-relnumber">
+              <van-loading size="24rpx" />
+            </view>
+          </block>
+        </view>
+        <view class="order-note">
+          <view class="note-name">备注:</view>
+          <view class="note-rel van-ellipsis">{{orderdetail.message}}</view>
+        </view>
+      </view>
+      <view class="order-card">
+        <view class="order-details">
+          <text class="order-details-name">订单明细</text>
+        </view>
+        <repeat for="{{orderdetail.purchaseOrderItem}}" index="itemindex" item="item">
+          <view class="order-card-container">
+            <view class="order-card-container-name">
+              <view class="shop-name">
+                <view class="shop-id">{{item.model}}</view>
+                <view class="shop-price">￥{{item.price}}</view>
+              </view>
+              <view class="shop-type">
+                <view class="shop-type-one">颜色： {{item.colour}},{{item.priceGroupName}}</view>
+                <view class="shop-type-number">×{{item.orderedQty}}</view>
+              </view>
+              <view class="shop-relnumber">已入库数量({{item.shippedQty}}), 出库数量({{utils.transInt(item.outQty, 10)}})</view>
+            </view>
+            <repeat for="{{item.selectInfo}}" item="cardItem" index="index">
+              <view class="order-card-list">
+                <view class="card-number van-hairline--bottom">
+                  <view class="card-number-text">入库数量</view>
+                  <view class="card-number-text-index">
+                    <van-stepper
+                      disabled
+                      integer
+                      value="{{cardItem.info.shippedBqty}}"
+                      min="0"
+                      max="{{cardItem.info.waitshippedBqty}}"
+                      custom-class="cart-stepper"
+                      input-class="cart-input-class"
+                      plus-class="cart-action-class"
+                      minus-class="cart-action-class"
+                      data-item-index="{{itemindex}}"
+                      data-index="{{index}}"
+                      bind:change="onShippedBqtyChg"
+                      bind:plus="onShippedBqtyChg"
+                      bind:minus="onShippedBqtyChg"
+                    />
+                  </view>
+                </view>
+                <view
+                  @tap="besureHouse({{itemindex}},{{index}})"
+                  class="card-warehouse van-hairline--bottom"
+                >
+                  <view class="warehouse-text">仓库</view>
+                  <view class="warehouse-select">
+                    <view class="morencangku">{{cardItem.morencangku}}</view>
+                    <view class="b-icon icon-more warehouse-select-icon"></view>
+                  </view>
+                </view>
+
+                <!-- 修改库存状态为不可修改 只将选择库存状态注释 -->
+                <!-- <view
+                  @tap="besureHouseStatus({{itemindex}},{{index}})"
+                  class="card-warehouse-style van-hairline--bottom"
+                > -->
+                <view
+                  class="card-warehouse-style van-hairline--bottom"
+                >
+                  <view class="warehouse-text">库存状态</view>
+                  <view class="warehouse-select">
+                    <view class="morencangku">{{item.invStatusName}}</view>
+                    <!-- <view class="b-icon icon-more warehouse-select-icon"></view> -->
+                  </view>
+                </view>
+                <view class="card-list-del">
+                  <view></view>
+                  <view @tap="delItem({{itemindex}},{{index}})" class="del-container">
+                    <view class="b-icon icon-remove del-icon"></view>
+                    <view class="del-text">删除</view>
+                  </view>
+                </view>
+              </view>
+            </repeat>
+            <view @tap="addItem({{item.productCode}},{{itemindex}})" class="order-card-footer">
+              <view class="b-icon icon-add-full footer-icon">
+                <text>继续添加</text>
+              </view>
+            </view>
+          </view>
+        </repeat>
+      </view>
+    </scroll-view>
+    <view class="order-footer van-hairline--top">
+      <view class="order-footer-bar">
+        <!--直配到用户的订单，采购入库详情中，入库按钮置灰，不可操作-->
+        <view wx:if="{{deliveryTypeCode == '04'}}"
+          class="order-footer-bar-btn disabled"
+          hover-class="hover">确认入库</view>
+
+        <view wx:else
+          @tap="submitOrder"
+          class="order-footer-bar-btn {{totalPrice == 0 ? 'disabled': ''}}"
+          hover-class="hover">确认入库</view>
+      </view>
+    </view>
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" ></style>
+<script lang="typescript" src="./index.ts" ></script>

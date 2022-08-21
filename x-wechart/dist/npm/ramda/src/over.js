@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),Identity=function(r){return{value:r,map:function(n){return Identity(n(r))}}},over=_curry3(function(r,n,e){return r(function(r){return Identity(n(r))})(e).value});module.exports=over;

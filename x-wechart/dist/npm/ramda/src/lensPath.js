@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),assocPath=require("./assocPath.js"),lens=require("./lens.js"),path=require("./path.js"),lensPath=_curry1(function(r){return lens(path(r),assocPath(r))});module.exports=lensPath;

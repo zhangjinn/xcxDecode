@@ -1,0 +1,1 @@
+function _map(r,a){for(var e=0,n=a.length,o=Array(n);e<n;)o[e]=r(a[e]),e+=1;return o}module.exports=_map;

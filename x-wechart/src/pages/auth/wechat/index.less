@@ -1,0 +1,59 @@
+@import '../../../styles/utils.less';
+.wechat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #ffffff;
+  padding: 0 72rpx;
+  &-avatar {
+    width: 200rpx;
+    height: 200rpx;
+    border-radius: 200rpx;
+    overflow: hidden;
+    margin-bottom: 24rpx;
+  }
+  &-name {
+    font-size: 32rpx;
+    font-weight: 400;
+    color: #262626;
+    margin-bottom: 32rpx;
+  }
+  &-info {
+    &-tip {
+      font-size: 28rpx;
+      font-weight: 400;
+      color: #262626;
+      margin-bottom: 16rpx;
+    }
+    &-desc {
+      font-size: 24rpx;
+      font-weight: 400;
+      color: #777777;
+    }
+  }
+  &-footer {
+    width: 100%;
+    margin-top: 80rpx;
+  }
+
+  &-popup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 36rpx;
+    height: 752rpx;
+    &-actions {
+      width: 580rpx;
+      &-title {
+        font-size: 38rpx;
+        font-weight: 500;
+        color: #262626;
+        margin-bottom: 140rpx;
+      }
+    }
+  }
+}

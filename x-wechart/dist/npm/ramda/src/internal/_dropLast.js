@@ -1,0 +1,1 @@
+function dropLast(e,t){return take(e<t.length?t.length-e:0,t)}var take=require("./../take.js");module.exports=dropLast;

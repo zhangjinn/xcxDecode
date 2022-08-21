@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),equals=require("./equals.js"),map=require("./map.js"),where=require("./where.js"),whereEq=_curry2(function(e,r){return where(map(equals,e),r)});module.exports=whereEq;

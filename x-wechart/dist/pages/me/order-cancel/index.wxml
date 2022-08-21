@@ -1,0 +1,126 @@
+
+  <view class="order-cancel">
+    <van-popup show="{{ orderpopup }}" overlay="{{ true }}">
+      <view class="orderpopup">
+        <view class="text">您确定取消订单？</view>
+        <view class="operation">
+          <view bindtap="cancel" class="operation-one">取消</view>
+          <view bindtap="beSure" class="operation-two">确定</view>
+        </view>
+      </view>
+    </van-popup>
+    <scroll-view scroll-y="true" class="order-scroll">
+      <view class="order-container van-hairline--bottom" style="margin-top: 14rpx">
+        <!--  组合购 -->
+        <block  wx:if="{{ orderdetail.orderHeader.productGroupFlag == 'Y' }}">
+          <view wx:for="{{ orderdetail.orderLines }}" wx:for-index="idx" wx:key="idx" wx:for-item="modelList">
+            <view class="modelSeriesHeader">
+              <view>{{ modelList.productGroupRemark }}</view>
+              <view class="condition">x{{ modelList.packageNum }}</view>
+            </view>
+            <block wx:for-index="index" wx:for-item="item" wx:for="{{modelList.child}}" wx:key="key">
+<!--              <view class="order-goods" wx:if="{{ (ly=='1' && id==item.id) || ly != '1' }}">-->
+              <view class="order-goods">
+                <navigator class="order-goods-img" url="/pages/goods/item/index?code={{item.productId}}&orgId={{orderdetail.orderHeader.orgId}}&orgCode={{orderdetail.orderHeader.orgCode}}">
+                  <img class="goodimg" src="{{ item.img }}" errSrc="{{ item.errImg }}"/>
+                </navigator>
+                <view class="order-goods-detail">
+                  <view class="order-goods-detail-name">
+                    <text class="detail-text">{{item.b2bName}}/{{item.color || ''}}</text>
+                  </view>
+                  <view class="order-goods-detail-explain">
+                    <text class="explain-text van-ellipsis">{{ item.fixedDiscount ? '固定折扣：' + item.fixedDiscount + '%，' : ''}}{{item.makeUpType ? '补差类型：' + item.makeUpType : ''}}</text>
+                  </view>
+                  <view class="order-goods-detail-number">
+                    <text class="good-price">￥{{item.billPrice}}{{item.priceGroupName ? '(' + item.priceGroupName + ')' : ''}}</text>
+                    <text class="good-number">×{{item.qty}}</text>
+                  </view>
+
+                </view>
+              </view>
+            </block>
+          </view>
+
+        </block>
+
+        <!--  非组合购 -->
+        <block  wx:else>
+          <block wx:for="{{orderdetail.orderLines}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <view class="order-goods" wx:if="{{ (ly=='1' && id==item.id) || ly != '1' }}">
+              <navigator class="order-goods-img" url="/pages/goods/item/index?code={{item.productId}}&orgId={{orderdetail.orderHeader.orgId}}&orgCode={{orderdetail.orderHeader.orgCode}}">
+                <img class="goodimg" src="{{ item.img }}" errSrc="{{ item.errImg }}"/>
+              </navigator>
+              <view class="order-goods-detail">
+                <view class="order-goods-detail-name">
+                  <text class="detail-text">{{item.b2bName}}/{{item.color || ''}}</text>
+                </view>
+                <view class="order-goods-detail-explain">
+                  <text class="explain-text van-ellipsis">{{ item.fixedDiscount ? '固定折扣：' + item.fixedDiscount + '%，' : ''}}{{item.makeUpType ? '补差类型：' + item.makeUpType : ''}}</text>
+                </view>
+                <view class="order-goods-detail-number">
+                  <text class="good-price">￥{{item.billPrice}}{{item.priceGroupName ? '(' + item.priceGroupName + ')' : ''}}</text>
+                  <text class="good-number">×{{item.qty}}</text>
+                </view>
+
+              </view>
+            </view>
+          </block>
+        </block>
+
+      </view>
+      <view wx:if="{{!type}}" class="order-finals">
+        <view class="order-final">
+          <text class="order-expect-price" wx:if="{{purchaseType==='2' && orderdetail.orderHeader.isPujie == false }}">预付款 ￥{{orderdetail.orderHeader.orderAdvanceAmt}}   </text>
+          <text class="order-final-price">合计 ￥{{orderdetail.orderHeader.orderAmt}}</text>
+        </view>
+      </view>
+
+      <view class="cancel-container">
+        <!--取消原因-->
+        <view bindtap="openChoose" class="cancel-classify" data-wpyopenchoose-a="cancelReasonList" data-wpyopenchoose-b="cancelReasonList" data-wpyopenchoose-c="取消原因">
+          <view class="cancel-classify-text">取消原因</view>
+          <view class="cancel-classify-selected">
+            <view class="cancel-classify-selected-name {{cancel.cancelReasonList.name!='请选择'?'selected':''}}  van-ellipsis">{{cancel.cancelReasonList.name}}</view>
+            <view class="b-icon icon-more cancel-classify-selected-icon"/>
+          </view>
+        </view>
+      </view>
+
+      <view class="cancel-container" wx:if="{{reasonVisible}}">
+        <!--问题描述-->
+        <view class="cancel-reason">
+          <textarea class="cancel-reason-textarea" placeholder="请在此处填写您取消订单的原因～" auto-height bindinput="onDescChange" value="{{form.reason}}"/>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 选择弹窗 -->
+    <van-popup show="{{ popVisible }}" closeable="closeable" position="bottom" custom-style="height: 570rpx"  bind:click-overlay="onClose">
+      <view class="pose-inv">
+        <view class="pose-inv-head">
+          <view class="pose-inv-head-context">
+            <view class="pose-inv-head-context-title">{{ popTitle }}</view>
+            <van-icon name="cross" class="pose-inv-head-context-close" bindtap="onClose"/>
+          </view>
+        </view>
+        <scroll-view scroll-y class="pose-inv-scroll">
+          <view wx:for="{{ popList }}" wx:key="{{ item.id }}" item="item" class="pose-inv-scroll-row" data-key="{{ item.id }}" data-index="{{ index }}" bindtap="onChoose">
+            <view class="pose-inv-scroll-row-desc {{ item.code === compareInfo.code ? 'checked' : ''}}">{{ item.name }}</view>
+            <block wx:if="{{ item.code === compareInfo.code }}">
+              <view class="b-icon icon-check pose-inv-scroll-row-checked checked"/>
+            </block>
+          </view>
+
+        </scroll-view>
+      </view>
+    </van-popup>
+
+    <view class="footer van-hairline--top">
+      <view class="footer-bar">
+        <view bindtap="start" class="footer-bar-btn " hover-class="hover">提交</view>
+      </view>
+    </view>
+
+    <van-toast id="van-toast"/>
+    <van-dialog id="van-dialog"/>
+  </view>

@@ -1,0 +1,1 @@
+var _has=require("./_has.js"),toString=Object.prototype.toString,_isArguments=function(){return"[object Arguments]"===toString.call(arguments)?function(t){return"[object Arguments]"===toString.call(t)}:function(t){return _has("callee",t)}}();module.exports=_isArguments;

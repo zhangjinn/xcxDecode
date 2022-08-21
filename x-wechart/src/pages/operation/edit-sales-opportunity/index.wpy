@@ -1,0 +1,59 @@
+<template>
+  <view class="order">
+    <view class="order-scroll">
+      <view class="basic-info-wrapper">
+        <view class="basic-info-container">
+          <view class="order-scroll-info">
+            <view
+              class="item-row"
+              @tap="openTopAddress"
+            >
+              <view class="item-row-left">
+                <text>用户所在地区</text>
+                <text class="redXing">*</text>
+              </view>
+              <view class="item-row-right">
+                <view class="item-row-right-inventory {{ baseFormData.chooseProvinceInfo.id ? '' : 'placeholder' }}">
+                  {{ baseFormData.addressTip }}
+                </view>
+                <van-icon
+                  name="arrow"
+                  custom-class="dms-item-row-right-arrow"
+                />
+              </view>
+            </view>
+            <addressDetail
+              class="address-detail-row"
+              :chooseRegionId.sync="chooseRegionId"
+              :isRequired.sync="addressDetailRequired"
+              :defaultAddressName.sync="defaultAddressName"
+            />
+          </view>
+        </view>
+      </view>
+      <!--  购买意向列表  -->
+      <purchaseIntention :list.sync="purchaseIntentionInfo" :pageType.sync="pageType"/>
+    </view>
+    <view class="order-footer" data-type="add" data-id="" @tap="submit">
+      <view class="btn">确认提交</view>
+    </view>
+    <!--  地址选择框  -->
+    <address title="用户所在地区"/>
+    <van-dialog id="van-dialog" />
+    <van-toast id="van-toast" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<style lang="less">
+  .popup-wrapper{
+    .van-cell{
+      background: #F7F7F7;
+      border-radius: 20rpx;
+      padding: 10px 15px;
+    }
+  }
+  .address-detail-row{
+    border-bottom: none !important;
+  }
+</style>
+<script lang="typescript" src="./index.ts"></script>

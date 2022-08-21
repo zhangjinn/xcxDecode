@@ -1,0 +1,1 @@
+function pipeP(){if(0===arguments.length)throw new Error("pipeP requires at least one argument");return _arity(arguments[0].length,reduce(_pipeP,arguments[0],tail(arguments)))}var _arity=require("./internal/_arity.js"),_pipeP=require("./internal/_pipeP.js"),reduce=require("./reduce.js"),tail=require("./tail.js");module.exports=pipeP;

@@ -1,0 +1,27 @@
+<template>
+  <view class="container">
+    <emptyDataType wx:if="{{ list.pageSize === 0 }}" description="公告"/>
+    <scroll-view wx:else bindscrolltolower="loadNextPage"  scroll-y enable-back-to-top class="scroll">
+      <repeat for="{{ list.notices }}" index="id" key="id" item="item">
+        <view class="item-wrapper"  @tap="goDetails({{item.id}})">
+          <view class="item">
+            <view class="item-title">
+              <view class="item-title-content">{{ item.title==null ? '' : item.title }}</view>
+              <view class="item-title-new-tag" wx:if="{{ item.newMessage }}">New</view>
+            </view>
+
+            <view class="item-info">
+              <view class="item-info-org">{{ item.organizationName }}</view>
+              <view class="item-info-time">{{ item.publishAt }}</view>
+            </view>
+          </view>
+        </view>
+
+      </repeat>
+    </scroll-view>
+    <van-toast id="van-toast" />
+  </view>
+</template>
+
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts"></script>

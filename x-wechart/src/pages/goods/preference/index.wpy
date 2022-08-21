@@ -1,0 +1,98 @@
+<template>
+  <view class="order">
+    <view
+      class="order-scroll"
+    >
+      <view class="order-header">
+        <view class="order-header-title">项目编码 {{order.basic.reportCode}}</view>
+        <view class="order-header-item">
+          <view class="order-header-item-label">供应商：</view>
+          <view class="order-header-item-value">{{order.basic.fwOrgName}}</view>
+        </view>
+        <view class="order-header-item">
+          <view class="order-header-item-label">状态：</view>
+          <view class="order-header-item-value">{{order.basic.status}}</view>
+        </view>
+        <view class="order-header-item">
+          <view class="order-header-item-label">有效截止日期：</view>
+          <view
+            class="order-header-item-value"
+          >{{order.basic.startDate}} 至 {{order.basic.endDate}}</view>
+        </view>
+        <view class="order-header-item">
+          <view class="order-header-item-label">发布时间：</view>
+          <view class="order-header-item-value">{{order.basic.createDate}}</view>
+        </view>
+      </view>
+      <order />
+      <van-cell-group>
+        <van-cell bind:click="chooseItems" title-class="order-title-class" title="选购商品" is-link="true">
+          <view class="order-common-extra">查看商品</view>
+        </van-cell>
+        <view hidden="{{order.itemsSelected.length === 0}}" class="order-items">
+          <repeat for="{{order.itemsSelected}}">
+            <view class="order-items-item">
+              <view class="order-items-item-label">{{item.productName}}</view>
+              <view class="order-items-item-value">
+                <text class="black">¥{{utils.formatPrice(item.billPrice)}}</text>
+                <text class="gray">x{{item.num}}</text>
+              </view>
+            </view>
+          </repeat>
+        </view>
+      </van-cell-group>
+      <van-submit-bar
+        disabled="{{order.itemsSelected.length === 0}}"
+        button-text="提交订单"
+        bind:submit="confirmSaveOrder"
+        button-class-container="order-btn"
+        button-class="order-confirm"
+      >
+        <view class="order-footer-header van-hairline--top-bottom" slot="top">
+          <view class="order-footer-header-item">
+            <view class="label">
+              <view class="label-text">账号余额</view>
+              <view class="label-value">¥{{utils.formatPrice(order.balanceAccount)}}</view>
+            </view>
+            <view class="label">
+              <view class="label-text">待审核订单金额</view>
+              <view class="label-value">¥{{utils.formatPrice(order.waitMoney)}}</view>
+            </view>
+          </view>
+          <view class="order-footer-header-item">
+            <view class="label">
+              <van-checkbox
+                disabled="{{true}}"
+                checked-color="#00AAA6"
+                custom-class="order-checkbox"
+              >
+                <view
+                  class="label-checkbox"
+                >预计使用返利金额¥ 0</view>
+              </van-checkbox>
+            </view>
+            <view class="label">
+              <view class="label-text">实际使用返利金额以最终发票金额为准</view>
+            </view>
+          </view>
+        </view>
+        <view class="order-footer-body">
+          <view class="order-footer-body-item">
+            <view class="item-label">体积:{{utils.formatPrice(order.loadVolumeAll)}}m³</view>
+            <view class="item-label">共{{order.totalNum}}件</view>
+            <view class="item-label">合计</view>
+            <view class="item-value">¥{{utils.formatPrice(order.totalPrice)}}</view>
+          </view>
+          <view class="order-footer-body-item">
+            <view class="item-unit">账户可用余额</view>
+            <view class="item-price">¥{{utils.formatPrice(order.canUseMoney)}}</view>
+          </view>
+        </view>
+      </van-submit-bar>
+    </view>
+    <van-toast id="van-toast" />
+    <payconfrim />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

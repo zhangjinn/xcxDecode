@@ -1,0 +1,397 @@
+<template>
+  <view class="store">
+    <view class="store-wrapper">
+      <view class="form-wrapper">
+
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>营销中心</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory">
+              {{ activeDetail.marketCenterName }}
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>办事处</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory">
+              {{ activeDetail.orgName }}
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>申请活动时间</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory">
+              {{ activeDetail.applyMonth }}
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>活动承接代理(运营)商</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory">
+              {{ activeDetail.custInfoName }}
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>活动主题</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory">
+              {{ activeDetail.activityTheme }}
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>活动编码</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory">
+              {{ activeDetail.activityCode }}
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>活动地点</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory">
+              {{ activeDetail.activityPlace }}
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>项目目标(万元)</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory">
+              {{ activeDetail.activityTarget }}
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>活动开始时间</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory">
+              {{ utils.removeIllegalStr(activeDetail.applyStartTime) }}
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>活动结束时间</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory">
+              {{ utils.removeIllegalStr(activeDetail.applyEndTime )}}
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>参与分销商</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-fx">
+              <text>{{ utils.removeIllegalStr(activeDetail.fxCustName) }}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>可兑现金额(元)</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory">
+              {{ utils.removeIllegalStr(activeDetail.cashableMoney) }}
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>活动实际销售额(万元)</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory">
+              {{ utils.removeIllegalStr(activeDetail.activityReal) }}
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>股份公司分摊金额(元)</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory">
+              {{ utils.removeIllegalStr(activeDetail.stockMoney) }}
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>空调公司分摊金额(元)</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory">
+              {{ utils.removeIllegalStr(activeDetail.airConditionerMoney) }}
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>冰箱公司分摊金额(元)</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory">
+              {{ utils.removeIllegalStr(activeDetail.refrigeratorMoney) }}
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>各项投入合计(元)</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory">
+              {{ activeDetail.totalMoney }}
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>待制作广告公司</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory">
+              {{ activeDetail.adCompany }}
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row-upload no-bottom-line">
+          <view class="item-row-top">
+            <text>附件</text>
+          </view>
+          <view wx:if="{{ formData.experienceSharing.length > 0 }}" class="item-row-bottom">
+            <van-uploader
+              disabled
+              show-upload="{{ false }}"
+              deletable="{{ false }}"
+              max-count="{{ formData.experienceSharing.length }}"
+              accept="image"
+              file-list="{{ formData.experienceSharing }}"
+              sizeType="compressed">
+            </van-uploader>
+          </view>
+          <view wx:else class="no-picture">无</view>
+        </view>
+
+        <view class="item-row-upload no-bottom-line">
+          <view class="item-row-top">
+            <text>结算凭证</text>
+          </view>
+          <view wx:if="{{ formData.voucherAttachs.length > 0 }}" class="item-row-bottom">
+            <van-uploader
+              disabled
+              show-upload="{{ false }}"
+              deletable="{{ false }}"
+              max-count="{{ formData.voucherAttachs.length }}"
+              accept="image"
+              file-list="{{ formData.voucherAttachs }}"
+              sizeType="compressed">
+            </van-uploader>
+          </view>
+          <view wx:else class="no-picture">无</view>
+        </view>
+      </view>
+
+      <view class="sales-info-wrapper">
+        <view class="sales-info-wrapper-inner">
+          <view class="tab-wrapper-box">
+            <van-tabs active="{{tabActive}}" custom-class="agency-tab-wrapper" tab-class="agency-tab-class" bind:change="tabChange">
+              <repeat for="{{tabList}}" item="item">
+                <van-tab title="{{item.title}}"></van-tab>
+              </repeat>
+            </van-tabs>
+          </view>
+          <view class="sales-info-items">
+            <block wx:if="{{ tabActive === 'category' }}">
+              <block wx:if="{{tabInfoItem.category.items && tabInfoItem.category.items.length>0}}">
+                <view class="sales-info-item" wx:for="{{tabInfoItem.category.items}}">
+                  <view class="item-row">
+                    <view class="item-row-left">
+                      <text>物料组</text>
+                    </view>
+                    <view class="item-row-right">
+                      <view class="item-row-right-inventory">
+                        {{ item.materialGroup.name }}
+                      </view>
+                    </view>
+                  </view>
+                  <view class="item-row">
+                    <view class="item-row-left">
+                      <text>计划分摊金额</text>
+                    </view>
+                    <view class="item-row-right">
+                      <view class="item-row-right-inventory">
+                        {{ item.applyCost || 0 }}
+                      </view>
+                    </view>
+                  </view>
+                  <view class="item-row">
+                    <view class="item-row-left">
+                      <text>预计销售额</text>
+                    </view>
+                    <view class="item-row-right">
+                      <view class="item-row-right-inventory">
+                        {{ item.writeOffAmount || 0 }}
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </block>
+              <view wx:else class="sales-info-item no-data">暂无数据～</view>
+            </block>
+            <block wx:else>
+              <block wx:if="{{tabInfoItem[tabActive].items && tabInfoItem[tabActive].items.length>0}}">
+                <view class="sales-info-item" wx:for="{{tabInfoItem[tabActive].items}}">
+                  <view class="item-row">
+                    <view class="item-row-left">
+                      <text>种类</text>
+                    </view>
+                    <view class="item-row-right">
+                      <view class="item-row-right-inventory">
+                        {{ item.type }}
+                      </view>
+                    </view>
+                  </view>
+                  <view class="item-row">
+                    <view class="item-row-left">
+                      <text>数量</text>
+                    </view>
+                    <view class="item-row-right">
+                      <view class="item-row-right-inventory">
+                        {{ item.num }}
+                      </view>
+                    </view>
+                  </view>
+                  <view class="item-row">
+                    <view class="item-row-left">
+                      <text>单价</text>
+                    </view>
+                    <view class="item-row-right">
+                      <view class="item-row-right-inventory">
+                        {{ item.price }}
+                      </view>
+                    </view>
+                  </view>
+                  <view class="item-row">
+                    <view class="item-row-left">
+                      <text>小计</text>
+                    </view>
+                    <view class="item-row-right">
+                      <view class="item-row-right-inventory">
+                        {{ item.total }}
+                      </view>
+                    </view>
+                  </view>
+                  <view class="item-row">
+                    <view class="item-row-left">
+                      <text>实际数量</text>
+                    </view>
+                    <view class="item-row-right">
+                      <view class="item-row-right-inventory">
+                        {{ utils.removeIllegalStr(item.realNum) }}
+                      </view>
+                    </view>
+                  </view>
+                  <view class="item-row">
+                    <view class="item-row-left">
+                      <text>实际单价(元)</text>
+                    </view>
+                    <view class="item-row-right">
+                      <view class="item-row-right-inventory">
+                        {{ utils.removeIllegalStr(item.realPrice) }}
+                      </view>
+                    </view>
+                  </view>
+                  <view class="item-row">
+                    <view class="item-row-left">
+                      <text>实际小计(元)</text>
+                    </view>
+                    <view class="item-row-right">
+                      <view class="item-row-right-inventory">
+                        {{ utils.removeIllegalStr(item.realTotal) }}
+                      </view>
+                    </view>
+                  </view>
+                  <view class="item-row">
+                    <view class="item-row-left">
+                      <text>备注</text>
+                    </view>
+                    <view class="item-row-right">
+                      <view class="item-row-right-inventory">
+                        {{ utils.removeIllegalStr(item.remark) }}
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </block>
+              <view wx:else class="sales-info-item no-data">暂无数据～</view>
+            </block>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<style lang="less" >
+.add-store-note {
+  .van-cell {
+    padding: 8rpx 0;
+  }
+}
+.tab-wrapper-box{
+  .van-tabs--line .van-tabs__wrap {
+    height: 90rpx !important;
+  }
+}
+</style>
+<script lang="typescript" src="./index.ts" ></script>

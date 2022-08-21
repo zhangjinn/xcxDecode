@@ -1,0 +1,225 @@
+<wxs src="../../../wxs/utils.wxs" module="utils" class="_73d8da0"/>
+
+  <view class="order _73d8da0">
+    <view class="order-scroll _73d8da0">
+      <view class="sign _73d8da0">
+        <view class="text _73d8da0">数量有限,欲购从速~</view>
+      </view>
+<!--      <view wx:if="{{isFenXiao == 'Y'}}" class="order-agent">-->
+<!--        <view class="agent-name">-->
+<!--          <view class="text">上级代理</view>-->
+<!--        </view>-->
+<!--        <view wx:if="{{order.agentArr.agentCode}}" class="merchant-code">商家编码: {{order.agentArr.agentCode}}</view>-->
+<!--        <view wx:if="{{order.agentArr.agentName}}" class="merchant-address">{{order.agentArr.agentName}}</view>-->
+<!--      </view>-->
+      
+  <view class="order-common _bb200b4 _73d8da0">
+    <van-cell-group class="_bb200b4">
+      <van-cell title-class="order-title-class" title="活动名称" class="_bb200b4">
+        <view class="order-common-value _bb200b4">{{$order$common.custActivity.activityName}}</view>
+      </van-cell>
+      <van-cell title-class="order-title-class" title="有效期截至" class="_bb200b4">
+        <view class="order-common-value gray _bb200b4">{{$order$common.custActivity.endDate || '-'}}</view>
+      </van-cell>
+    </van-cell-group>
+  </view>
+
+      <view class="goods-attr-popup-org _73d8da0">
+        <van-cell  wx:if="{{isRePay && orgName}}" title-class="order-title-class" title="供应商" custom-class="goods-attr-popup-org-cell" class="_73d8da0">
+          <view class="order-common-value gray _73d8da0">{{orgName}}</view>
+        </van-cell>
+        <van-cell  wx:if="{{!isRePay && orgList.length>0}}" title-class="order-title-class" title="选择供应商" is-link="is-link"  bind:click="openOrg" border="{{false}}" customClass="goods-attr-popup-org-cell" class="_73d8da0">
+          <view class="order-common-value gray _73d8da0">{{orgName || '请选择'}}</view>
+        </van-cell>
+      </view>
+
+      <!-- 组合购 -->
+      <view  wx:if="{{order.discountTypeName == '组合购'}}" class="order-items _73d8da0">
+        <block class="_73d8da0" wx:for="{{order.items}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+          <view class="modelSeriesHeader _73d8da0">
+            <view class="_73d8da0">{{ item.productGroupRemark }}</view>
+            <view class="condition _73d8da0">x{{ item.packageNum }}</view>
+          </view>
+          <view class="{{index === order.items.length-1?'order-items-item':'order-items-item van-hairline--bottom'}} _73d8da0">
+            <view class="img-box _73d8da0">
+              <navigator url="/pages/goods/item/index?code={{item.productId}}&orgId={{item.orgId}}&orgCode={{item.orgCode}}" class="_73d8da0">
+                <img class="img _73d8da0" src="{{item.src}}" errSrc="{{item.errImg}}"/>
+              </navigator>
+            </view>
+
+            <view class="content _73d8da0">
+              <view class="content-title _73d8da0">{{item.productInfoZzprdmodel}}/{{item.color || ''}}</view>
+              <view class="content-price _73d8da0">
+                <view class="price-item _73d8da0">
+                  <text class="price-symbol _73d8da0">¥</text>
+                  <text class="price-num _73d8da0">{{utils.formatPrice(item.price)}}</text>
+                </view>
+              </view>
+              <view class="content-price-ding _73d8da0">
+                <view class="ding-price _73d8da0" wx:if="{{item.deposit != null}}">
+                  <view class="price-number _73d8da0">定金￥{{utils.formatPrice(item.deposit)}}</view>
+                </view>
+                <view class="fan-price _73d8da0" wx:if="{{item.rebateMoney != null}}">
+                  <view class="price-number _73d8da0">返利金￥{{utils.formatPrice(item.rebateMoney)}}</view>
+                </view>
+              </view>
+
+              <view class="content-tip _73d8da0">
+                <view class="_73d8da0">请选择</view>
+                <block wx:if="{{item.child.length>3}}" class="_73d8da0">
+                  <view wx:if="{{item.isFold}}" bindtap="productFold" class="fold _73d8da0" data-wpyproductfold-a="{{index}}">
+                    <text class="_73d8da0">展开</text>
+                    <van-icon name="arrow-down" class="_73d8da0"/>
+                  </view>
+                  <view wx:else bindtap="productFold" class="fold _73d8da0" data-wpyproductfold-a="{{index}}">
+                    <text class="_73d8da0">收起</text>
+                    <van-icon name="arrow-up" class="_73d8da0"/>
+                  </view>
+                </block>
+              </view>
+              <view class="content-wrapper _73d8da0">
+                  <view wx:for="{{item.child}}" wx:for-item="childItem" wx:for-index="itemIndex" class="wrapper-item {{ item.isFold && itemIndex>2?  'hide' : ''}} _73d8da0">
+                    <view class="modelOptionItem {{ childItem.isActive?'active':''}} _73d8da0" catchtap="changeModel" data-seriesindex="{{ index }}" data-itemindex="{{ itemIndex }}">
+                      <view class="prdmodel van-ellipsis _73d8da0">{{ childItem.productInfoZzprdmodel }}</view>
+                      <view class="_73d8da0">¥ {{ childItem.price }}</view>
+                    </view>
+
+                    <van-stepper integer="{{true}}" value="{{childItem.quantity}}" min="0" max="{{userActId ? childItem.maxQty : 100}}" disabled="{{userActId ? true : false}}" data-seriesindex="{{ index }}" data-itemindex="{{ itemIndex }}"  bind:change="onCombinationPurchaseNumChange" custom-class="order-wrapper-stepper" input-class="cart-input-class" plus-class="cart-action-class" minus-class="cart-action-class" class="_73d8da0"/>
+                  </view>
+              </view>
+              <view class="content-selected _73d8da0">
+                已选择{{ item.productGroupRemark }}组产品  共{{ item.totleBuyNum || 0 }}台
+              </view>
+            </view>
+          </view>
+        </block>
+      </view>
+
+      <!-- 非组合购 -->
+      <view wx:else class="order-items _73d8da0">
+        <block class="_73d8da0" wx:for="{{order.items}}" wx:for-index="index" wx:for-item="item" wx:key="{{id}}">
+          <view class="{{index===order.items.length-1?'order-items-item':'order-items-item van-hairline--bottom'}} _73d8da0">
+            <navigator url="/pages/goods/item/index?code={{item.productId}}&orgId={{item.orgId}}&orgCode={{item.orgCode}}" class="_73d8da0">
+              <img class="img _73d8da0" src="{{item.src}}" errSrc="{{item.errImg}}"/>
+            </navigator>
+            <view class="content _73d8da0">
+              <view class="content-title _73d8da0">{{item.productName}}/{{item.color || ''}}</view>
+
+              <view class="content-price _73d8da0">
+                <view class="price-item _73d8da0">
+                  <text class="price-symbol _73d8da0">¥</text>
+                  <text class="price-num _73d8da0">{{utils.formatPrice(item.price)}}</text>
+                </view>
+
+                <view class="extra _73d8da0" wx:if="{{isRePay && (discountTypeName=='套购'||discountTypeName=='跨品类套购')}}">x{{item.packageNum}}</view>
+                <view class="extra _73d8da0" wx:else>x{{item.quantity}}</view>
+              </view>
+
+              <view class="content-price-ding _73d8da0">
+                <view class="ding-price _73d8da0" wx:if="{{item.deposit != null}}">
+                  <view class="price-number _73d8da0">定金￥{{utils.formatPrice(item.deposit)}}</view>
+                </view>
+                <view class="fan-price _73d8da0" wx:if="{{item.rebateMoney != null}}">
+                  <view class="price-number _73d8da0">返利金￥{{utils.formatPrice(item.rebateMoney)}}</view>
+                </view>
+              </view>
+
+            </view>
+
+            <block wx:if="{{order.MatklCodeAll.length>1}}" class="_73d8da0">
+              <image wx:if="{{order.isPackage==='1'}}" class="status-img _73d8da0" src="{{imgObj.nopay}}"/>
+            </block>
+          </view>
+        </block>
+        <view class="step-wrap  van-hairline--top _73d8da0" wx:if="{{order.isPackage==='1'}}">
+          <van-stepper wx:if="{{isRePay && (order.items[0].discountTypeName=='套购'||order.items[0].discountTypeName=='跨品类套购')}}" disabled="{{isRePay}}" integer="{{true}}" value="{{(order.items[0].quantity/order.items[0].packageNum)}}" min="1" max="100"  bind:change="onPackageNumChange" custom-class="order-stepper" input-class="cart-input-class" plus-class="cart-action-class" minus-class="cart-action-class" class="_73d8da0"/>
+          <van-stepper wx:else disabled="" integer="{{true}}" value="{{packageNum}}" min="1" max="100" bind:change="onPackageNumChange" custom-class="order-stepper" input-class="cart-input-class" plus-class="cart-action-class" minus-class="cart-action-class" class="_73d8da0"/>
+        </view>
+      </view>
+      <block class="_73d8da0">
+        <view class="info-wrap _73d8da0" wx:if="{{order.MatklCodeAll.length>1}}">
+          您还有<text class="num _73d8da0">{{order.MatklCodeAll.length||0}}笔</text>订单待支付
+        </view>
+        <van-submit-bar disabled="" button-text="{{order.totalDeposit>0?isFenXiao=='Y'?'同意转款并支付':'确认支付':'确认抢购'}}" bind:submit="{{payMethods}}" custom-class="{{(order.discountTypeName == '组合购'&&!order.isPurchaseStandard) || (!isRePay && !orgName) ? 'order-submit-bar-disabled' : 'order-submit-bar'}}" button-class-container="order-btn" button-class="{{order.totalDeposit && isFenXiao=='Y'?'order-confirm-fx':'order-confirm'}}" class="_73d8da0">
+          <view wx:if="{{order.totalDeposit>0 && isFenXiao=='Y' && order.isPurchaseStandard}}" class="order-footer-header van-hairline--top-bottom _73d8da0" slot="top">
+            <view class="order-footer-header-item _73d8da0">
+              <view class="label _73d8da0">
+                <van-checkbox bind:change="onChange" value="{{agreeStatus}}" checked-color="#00AAA6" custom-class="order-checkbox" class="_73d8da0">
+                  <view class="label-checkbox _73d8da0">
+                    我已阅读并同意
+                  </view>
+                </van-checkbox>
+                <text bindtap="openSurePop" class="a-btn _73d8da0">《转款到此代理商》</text>
+              </view>
+            </view>
+          </view>
+          <view class="order-footer-body _73d8da0">
+            <view class="order-footer-body-item _73d8da0">
+              <view class="item-label _73d8da0">共{{order.totalNum}}件</view>
+              <view class="item-label item-label-max _73d8da0">合计</view>
+              <view class="item-value _73d8da0">¥{{utils.formatPrice(order.totalDeposit)}}</view>
+            </view>
+          </view>
+        </van-submit-bar>
+      </block>
+    </view>
+    <van-popup show="{{orgSelShow}}" position="bottom" bind:close="closeOrgSel" class="_73d8da0">
+      <view class="t-popup _73d8da0">
+        <view bindtap="closeOrgSel" hover-class="hover" class="t-popup-close _73d8da0">
+          <van-icon name="cross" color="#262626" class="_73d8da0"/>
+        </view>
+        <view class="t-popup-header van-hairline--bottom _73d8da0">选择供应商</view>
+        <view class="t-popup-body _73d8da0">
+          <block class="_73d8da0" wx:for="{{ orgList }}" wx:for-index="index" wx:for-item="item" wx:key="code">
+            <view bindtap="chooseOrg" hover-class="hover" class="t-popup-body-item _73d8da0" data-wpychooseorg-a="{{item.code}}">
+              <text class="t-popup-body-item-text {{ orgId == item.code ? 'active' : ''}}  _73d8da0">{{ item.name }}</text>
+              <view wx:if="{{orgId == item.code}}" class="_73d8da0">
+                <van-icon name="success" color="#00AAA6" class="_73d8da0"/>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ surePopShow }}" close-on-click-overlay="true" z-index="9999" custom-style="background:none;text-algin:right;" position="top" class="_73d8da0">
+      <view class="agree-inner-wrap _73d8da0">
+        <view class="header _73d8da0">转款到此代理商协议</view>
+        <view class="content _73d8da0">
+          1、本次活动订金用于认购产品提货权益，可抵扣对应金额货款。若未按期完成提货，订金不予返还。
+          2、如支付方下单支付，视为支付方同意将所支付订金自动转入上级代理商所属公司账户，并相应形成债权债务关系，由此产生的一切法律责任及经济纠纷由支付方与代理商双方自行协商解决。
+        </view>
+        <view class="btns _73d8da0">
+          <view class="btn btn-no _73d8da0" bindtap="disAgree">不同意</view>
+          <view class="btn _73d8da0" bindtap="agree">同意</view>
+        </view>
+      </view>
+    </van-popup>
+    <van-toast id="van-toast" class="_73d8da0"/>
+    
+  <van-popup show="{{$payconfrim$show}}" custom-style="border-radius: 12rpx;overflow:hidden;" class="_9d7a5ae _73d8da0">
+    <view class="pay-confirm _9d7a5ae">
+      <view bindtap="$payconfrim$close" hover-class="hover" class="pay-confirm-close _9d7a5ae">
+        <van-icon name="cross" color="#AAAAAA" class="_9d7a5ae"/>
+      </view>
+      <view class="pay-confirm-header _9d7a5ae">请输入账号密码</view>
+      <view class="pay-confirm-body _9d7a5ae">¥{{$payconfrim$price}}</view>
+      <view class="pay-confirm-input _9d7a5ae">
+        <view class="pay-confirm-input-border van-hairline--surround _9d7a5ae">
+          <van-field focus clearable="clearable" password="{{!$payconfrim$passwordVisible}}" value="{{$payconfrim$password}}" size="small" border="{{$payconfrim$false}}" placeholder="请输入密码"  bind:change="$payconfrim$onChange" bind:click-icon="$payconfrim$togglePwd" right-icon="{{ $payconfrim$passwordVisible ? 'eye-o' : 'closed-eye' }}" class="_9d7a5ae"/>
+        </view>
+      </view>
+      <van-button  bind:click="$payconfrim$validatePwd" block="block" color="#00AAA6" disabled="{{!$payconfrim$password }}" class="_9d7a5ae">确认提交</van-button>
+    </view>
+  </van-popup>
+    
+  <van-popup show="{{$payCapacityConfirm$show}}" custom-style="border-radius: 12rpx;overflow:hidden;" class="_9b275a4 _73d8da0">
+    <view class="pay-confirm _9b275a4">
+      <view bindtap="$payCapacityConfirm$close" hover-class="hover" class="pay-confirm-close _9b275a4">
+        <van-icon name="cross" color="#AAAAAA" class="_9b275a4"/>
+      </view>
+      <view class="pay-confirm-header _9b275a4">您的账户财务信息不完整，不能直接支付，请保存订单联系分公司财务完善账户信贷范围信息后再支付，或者转代理商下单！</view>
+      <van-button  bind:click="$payCapacityConfirm$onBind" block="block" color="#00AAA6" class="_9b275a4" data-wpyonbind-a="cancel">取消</van-button>
+      <van-button  bind:click="$payCapacityConfirm$onBind" block="block" color="#00AAA6" class="_9b275a4" data-wpyonbind-a="save">保存订单</van-button>
+    </view>
+  </van-popup>
+  </view>

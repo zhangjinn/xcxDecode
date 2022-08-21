@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),_dispatchable=require("./internal/_dispatchable.js"),_xdropRepeatsWith=require("./internal/_xdropRepeatsWith.js"),dropRepeatsWith=require("./dropRepeatsWith.js"),equals=require("./equals.js"),dropRepeats=_curry1(_dispatchable([],_xdropRepeatsWith(equals),dropRepeatsWith(equals)));module.exports=dropRepeats;

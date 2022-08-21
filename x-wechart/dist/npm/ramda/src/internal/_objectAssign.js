@@ -1,0 +1,1 @@
+function _objectAssign(n){if(null==n)throw new TypeError("Cannot convert undefined or null to object");for(var e=Object(n),r=1,o=arguments.length;r<o;){var t=arguments[r];if(null!=t)for(var s in t)_has(s,t)&&(e[s]=t[s]);r+=1}return e}var _has=require("./_has.js");module.exports="function"==typeof Object.assign?Object.assign:_objectAssign;

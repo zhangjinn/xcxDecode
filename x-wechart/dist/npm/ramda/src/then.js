@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),_assertPromise=require("./internal/_assertPromise.js"),then=_curry2(function(r,e){return _assertPromise("then",e),e.then(r)});module.exports=then;

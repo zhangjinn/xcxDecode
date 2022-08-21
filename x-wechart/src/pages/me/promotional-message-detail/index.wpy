@@ -1,0 +1,27 @@
+<template>
+  <view class="container">
+    <view wx:if="{{ messageList && messageList.length > 0 }}" class="container-wrapper">
+      <view class="wrapper-header">
+        {{ messageList[0].yearStr }}年{{ messageList[0].monthStr }}月代理商市场活动总计完成核销{{ messageList[0].sumCost }}元，完成核销活动信息如下：
+      </view>
+      <scroll-view class="container-scroll" scroll-y>
+        <repeat for="{{messageList}}" item="item">
+          <view class="item">
+            <view class="title">{{ item.activityTheme }}</view>
+            <view class="desc">活动编码：{{ item.activityCode }}</view>
+            <view class="desc">
+              <view class="time">发起时间：{{ item.applyMonth }}</view>
+              <view class="amount">核销金额(元)：<text class="amount-num">{{ item.applyCost }}</text></view>
+            </view>
+          </view>
+        </repeat>
+      </scroll-view>
+    </view>
+    <emptyDataType wx:else description="数据"/>
+
+    <van-toast id="van-toast" />
+  </view>
+</template>
+
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

@@ -1,0 +1,39 @@
+
+    <view class="container">
+        <van-popup show="{{TimeFilterVisible}}" position="top" overlay="{{ true }}"  bind:close="touchTimeFilter">
+        <view class="filter-container">
+            <block wx:for="{{timeList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                <view class="order-operation" bindtap="onSelectTime" data-wpyonselecttime-a="{{item.value}}" data-wpyonselecttime-b="{{item.label}}">
+                <view class="operation-text van-hairline--bottom">
+                    <view class="operation-status {{ time === item.value ? 'active' : '' }}">{{item.label}}</view>
+                    <view  wx:if="{{ time === item.value }}" class="b-icon icon-check operation-icon"/>
+                </view>
+                </view>
+            </block>
+        </view>
+        </van-popup>
+        <view class="head">
+            <view class="input-group">
+                <input class="input" placeholder="输入问题关键字" value="{{title}}"  bind:change="onTitleChange"/>
+                <view class="btn" bindtap="onSearch">查询</view>
+            </view>
+        </view>
+        <view class="filter-header van-hairline--bottom">
+            <view bindtap="touchTimeFilter" class="filter-header-label" hover-class="hover" data-wpytouchtimefilter-a="">
+                <text>{{timelabel}}</text>
+                <van-icon class="icon" name="play" size="20rpx" color="#00AAA6"/>
+            </view>
+        </view>
+        <scroll-view bindscrolltolower="loadNextPage" scroll-y="true" class="problem-scroll">
+            <block wx:for="{{problemlist.problems}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <view class="item " bindtap="gotodetail" data-wpygotodetail-a="{{item.id}}">
+                <view class="item-content van-hairline--bottom">
+                    <view class="title van-ellipsis">{{item.title}}</view>
+                    <view class="date">{{item.startAt}}</view>
+                    <view class="b-icon h-icon icon-more"/>
+                </view>
+            </view>
+            </block>
+        </scroll-view>
+      <van-toast id="van-toast"/>
+    </view>

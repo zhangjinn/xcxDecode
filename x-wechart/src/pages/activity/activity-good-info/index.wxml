@@ -1,0 +1,255 @@
+<!--认购-->
+<view wx:if="{{item.activityType == '认购'}}" class="item van-hairline--bottom">
+  <view class="item-img">
+
+    <!-- 只有直降、后返点击图片可查看详情，其他不允许查看详情 -->
+    <view wx:if="{{containerItem.discountTypeId == '90601'||containerItem.discountTypeId=='90602'}}"
+      catchtap="goNext"
+      data-url="../../goods/item/index?code={{item.productInfoId}}&orgId={{item.fwOrgId}}&orgCode={{item.fwOrgCode}}&promotionId={{item.id}}"
+      class="img"
+    >
+      <img class="rel-img" flag="{{item.id}}" src="{{item.img}}" errSrc="{{item.errImg}}" lazyLoad="{{ lazyLoad }}" bind:lose="imgLose" />
+      <view wx:if="{{item.activityStatus.custPurchaseQty > 0 && timestatus == 2 }}" class="sell-ing">已抢</view>
+      <view wx:if="{{item.activityStatus.custPurchaseQty > 0 && timestatus == 3 }}" class="sell-ed">已抢</view>
+    </view>
+
+    <view wx:else class="img">
+      <img class="rel-img" flag="{{item.id}}" src="{{item.img}}" errSrc="{{item.errImg}}" lazyLoad="{{ lazyLoad }}"
+           bind:lose="imgLose" />
+    </view>
+
+    <view wx:if="{{ timestatus == 3 }}" class="sell-over">已结束</view>
+    <view wx:if="{{ timestatus == 2 && item.activityStatus.progress >= 100}}" class="sell-over">已抢完</view>
+
+  </view>
+  <view class="item-operator" style="width: 442rpx">
+
+    <!-- 只有直降、后返点击产品名称可查看详情，其他不允许查看详情 -->
+    <view class="name-org-name-wrap">
+      <view wx:if="{{containerItem.discountTypeId == '90601'||containerItem.discountTypeId=='90602'}}"
+            catchtap="goNext"
+            data-url="../../goods/item/index?code={{item.productInfoId}}&orgId={{item.fwOrgId}}&orgCode={{item.fwOrgCode}}&promotionId={{item.id}}"
+            class="goods-name van-ellipsis">{{item.productInfoZzprdmodel}}</view>
+      <view wx:else class="goods-name van-ellipsis">{{item.productInfoZzprdmodel}}</view>
+
+      <view class="zhuzhi-wrap van-ellipsis">{{item.fwOrgName}}</view>
+    </view>
+    <view wx:if="{{item.productSubtitle}}" class="goods-info van-ellipsis">{{item.productSubtitle === null ? '' : item.productSubtitle }}</view>
+    <view class="goods-price">
+      <view class="price-wrap">
+        <view class="now-price">
+          <view class="price-sym">￥</view>
+          <view class="price-number">{{item.billPrice}}</view>
+        </view>
+        <view class="old-price" wx:if="{{ item.standardPrice }}">
+          <view class="price-number">￥{{item.standardPrice}}</view>
+        </view>
+      </view>
+      <view class="num-wrap" wx:if="{{(containerItem.discountTypeName=='套购'||containerItem.discountTypeName=='跨品类套购')}}">
+        x{{item.packageNum}}
+      </view>
+    </view>
+
+    <view class="active-price">
+      <view class="ding-price" wx:if="{{item.deposit != null}}">
+        <view class="price-number">定金￥{{item.deposit}}</view>
+      </view>
+      <view class="fan-price" wx:if="{{item.rebateMoney != null}}">
+        <view class="price-number">返利金￥{{item.rebateMoney}}</view>
+      </view>
+    </view>
+
+    <!-- 进行中 -->
+    <view wx:if="{{ timestatus == 2}}" class="goods-rel-operator">
+      <view class="progress">
+        <van-progress-activity
+          style="width:100%;height:100%"
+          color="linear-gradient(90deg, #FC3F85 0%, #FD3D23 100%)"
+          percentage="{{item.activityStatus.unprogress }}"
+          progress="{{item.activityStatus.progress }}" />
+      </view>
+      <block wx:if="{{containerItem.discountTypeId == '90601'||containerItem.discountTypeId=='90602'}}">
+        <view catchtap="goNext"
+              class="operator"
+              data-url="../../goods/item/index?code={{item.productInfoId}}&orgId={{item.fwOrgId}}&orgCode={{item.fwOrgCode}}&promotionId={{item.id}}"
+              wx:if="{{(item.activityStatus.purchaseLimitQty === item.activityStatus.custPurchaseQty || item.activityStatus.qty === item.activityStatus.purchaseQty)}}"
+        >去看看
+        </view>
+        <view catchtap="goNext"
+              class="operator"
+              data-url="../../goods/item/index?code={{item.productInfoId}}&orgId={{item.fwOrgId}}&orgCode={{item.fwOrgCode}}&promotionId={{item.id}}"
+              wx:if="{{(item.activityStatus.purchaseLimitQty !== item.activityStatus.custPurchaseQty && item.activityStatus.qty !== item.activityStatus.purchaseQty) }}"
+        >马上抢
+        </view>
+      </block>
+    </view>
+
+    <!-- 未开始 -->
+    <view wx:if="{{ timestatus == 1 }}" class="goods-rel-operator">
+      <view class="progress-will">限量{{item.qty}}台</view>
+      <view wx:if="{{containerItem.discountTypeId == '90601'||containerItem.discountTypeId=='90602'}}"
+            catchtap="goNext"
+            data-url="../../goods/item/index?code={{item.productInfoId}}&orgId={{item.fwOrgId}}&orgCode={{item.fwOrgCode}}&promotionId={{item.id}}"
+            class="operator-will">敬请期待</view>
+    </view>
+
+    <!-- 组合购型号列表-->
+    <view class="modelOptionsContainer"
+          wx:if="{{containerItem.discountTypeId == '90605'}}">
+      <view class="modelOptionAll">
+        <view>选择</view>
+        <view catchtap="showMoreModel" wx:if="{{item.child.length>3}}" class="showMoreModel">更多<view class="b-icon icon-more icons"></view></view>
+      </view>
+      <block wx:for="{{item.child}}" wx:for-item="itemThree" wx:for-index="itemIndex">
+        <block wx:if="{{itemIndex<3}}">
+          <view
+            class="modelOptionItem {{ itemThree.isActive ?'active':''}}"
+            catchtap="changeModel"
+            data-index="{{itemIndex}}"
+            data-item="{{ item }}"
+            data-child="{{ itemThree }}">
+            <view class="model-item van-ellipsis">{{ itemThree.productInfoZzprdmodel }}</view>
+            <view class="model-price">¥ {{ itemThree.billPrice }}</view>
+          </view>
+        </block>
+      </block>
+    </view>
+  </view>
+</view>
+
+<!--抢购-->
+<view wx:else class="item van-hairline--bottom" style="height: auto">
+
+  <!-- 抢购直降、后返有选择框 -->
+  <block wx:if="{{timestatus == 2&&(containerItem.discountTypeId == '90601'||containerItem.discountTypeId=='90602')}}">
+    <block wx:if="{{ item.activityStatus.nowMaxnumber == 0}}">
+      <view class="item-select">
+        <view class="item-select-normal" style="background-color: #dddddd;"></view>
+      </view>
+    </block>
+    <block wx:else>
+      <view catchtap="goodSelect" wx:if="{{!itemSelect}}" class="item-select">
+        <view class="item-select-normal" style="background-color: #ffffff;"></view>
+      </view>
+      <view catchtap="goodSelect" wx:else class="item-select">
+        <view class="item-select-normal">
+          <view class="b-icon icon-check icon-check" />
+        </view>
+      </view>
+    </block>
+  </block>
+
+  <!-- 只有直降、后返点击图片可查看详情，其他不允许查看详情 -->
+  <view class="item-img">
+    <view wx:if="{{containerItem.discountTypeId=='90601'||containerItem.discountTypeId=='90602'}}"
+          catchtap="goNext"
+          data-url="../../goods/item/index?code={{item.productInfoId}}&orgId={{item.fwOrgId}}&orgCode={{item.fwOrgCode}}&promotionId={{item.id}}&type=order"
+          class="img">
+      <img class="rel-img" flag="{{item.id}}" src="{{item.img}}" errSrc="{{item.errImg}}" lazyLoad="{{ lazyLoad }}"
+        bind:lose="imgLose" />
+      <view wx:if="{{item.activityStatus.custPurchaseQty > 0 && timestatus == 2 }}" class="sell-ing">已抢</view>
+      <view wx:if="{{item.activityStatus.custPurchaseQty > 0 && timestatus == 3 }}" class="sell-ed">已抢</view>
+    </view>
+    <view wx:else class="img">
+      <img class="rel-img" flag="{{item.id}}" src="{{item.img}}" errSrc="{{item.errImg}}" lazyLoad="{{ lazyLoad }}"
+           bind:lose="imgLose" />
+    </view>
+    <view wx:if="{{ timestatus == 3 }}" class="sell-over">已结束</view>
+    <view wx:if="{{ timestatus == 2 && item.activityStatus.progress >= 100}}" class="sell-over">已抢完</view>
+  </view>
+
+  <view class="item-operator" style="{{(containerItem.discountTypeId == '90601'||containerItem.discountTypeId=='90602') && timestatus == 2 ? 'width: 390rpx' : 'width:442rpx'}}">
+    <view class="name-org-name-wrap">
+
+      <!-- 只有直降、后返点击产品名称可查看详情，其他不允许查看详情 -->
+      <view wx:if="{{containerItem.discountTypeId == '90601'||containerItem.discountTypeId=='90602'}}"
+            catchtap="goNext"
+            data-url="../../goods/item/index?code={{item.productInfoId}}&orgId={{item.fwOrgId}}&orgCode={{item.fwOrgCode}}&promotionId={{item.id}}&type=order"
+            class="goods-name van-ellipsis">{{item.productInfoZzprdmodel}}</view>
+      <view wx:else class="goods-name van-ellipsis">{{item.productInfoZzprdmodel}}</view>
+      <view class="zhuzhi-wrap van-ellipsis">{{item.fwOrgName}}</view>
+    </view>
+    <view wx:if="{{item.importInfo}}" class="goods-info van-ellipsis">{{item.importInfo === null ? '' : item.importInfo }}</view>
+    <view class="goods-price">
+      <view class="price-wrap">
+        <view class="now-price">
+          <view class="price-sym">￥</view>
+          <view class="price-number">{{item.billPrice}}</view>
+        </view>
+        <view class="old-price" wx:if="{{ item.standardPrice }}">
+          <view class="price-number">￥{{item.standardPrice}}</view>
+        </view>
+      </view>
+      <view class="num-wrap" wx:if="{{(containerItem.discountTypeName=='套购'||containerItem.discountTypeName=='跨品类套购')}}">
+        x{{item.packageNum}}
+      </view>
+    </view>
+    <view wx:if="{{item.activityStatus.custPurchaseQty == 0 }}" class="good-limited-purchase">
+      <view class="limited">限购{{item.activityStatus.purchaseLimitQty}}件</view>
+    </view>
+    <view wx:else class="good-limited-purchase">
+      <view class="limited">限购{{item.activityStatus.purchaseLimitQty}}件,已购{{item.activityStatus.custPurchaseQty}}件
+      </view>
+    </view>
+
+    <view class="active-price">
+      <view class="fan-price" wx:if="{{item.rebateMoney != null}}">
+        <view class="price-number">返利金￥{{item.rebateMoney}}</view>
+      </view>
+    </view>
+
+    <!-- 进行中 -->
+    <view wx:if="{{ timestatus == 2}}" class="goods-rel-operator">
+      <view class="progress">
+        <van-progress-activity
+          style="width:100%;height:100%"
+          color="linear-gradient(90deg, #FC3F85 0%, #FD3D23 100%)"
+          percentage="{{item.activityStatus.unprogress }}"
+          progress="{{item.activityStatus.progress }}" />
+      </view>
+      <view class="counter" wx:if="{{(containerItem.discountTypeId == '90601'||containerItem.discountTypeId=='90602')}}">
+        <van-stepper
+          disabled="{{ item.activityStatus.nowMaxnumber == 0}}"
+          value="{{ 1 }}"
+          max="{{item.activityStatus.nowMaxnumber || item.activityStatus.purchaseLimitQty}}"
+          bind:change="onChange"
+          input-class="cart-input-class"
+          plus-class="cart-action-class"
+          minus-class="cart-action-class"/>
+      </view>
+    </view>
+
+    <!-- 未开始 -->
+    <view wx:if="{{ timestatus == 1 }}" class="goods-rel-operator">
+      <view class="progress-will">限量{{item.qty}}台</view>
+      <view wx:if="{{containerItem.discountTypeId == '90601'||containerItem.discountTypeId=='90602'}}"
+        catchtap="goNext"
+        data-url="../../goods/item/index?code={{item.productInfoId}}&orgId={{item.fwOrgId}}&orgCode={{item.fwOrgCode}}&promotionId={{item.id}}&type=order"
+        class="operator-will">敬请期待</view>
+    </view>
+
+
+    <!-- 组合购型号列表 -->
+    <view class="modelOptionsContainer"
+          wx:if="{{containerItem.discountTypeId == '90605'}}">
+      <view class="modelOptionAll">
+        <view>选择</view>
+        <view catchtap="showMoreModel" wx:if="{{item.child.length>3}}" class="showMoreModel">更多<view class="b-icon icon-more icons"></view></view>
+      </view>
+      <block wx:for="{{item.child}}" wx:for-item="itemThree" wx:for-index="itemIndex">
+        <block wx:if="{{itemIndex<3}}">
+          <view
+            class="modelOptionItem {{ itemThree.isActive ?'active':''}}"
+            catchtap="changeModel"
+            data-index="{{itemIndex}}"
+            data-item="{{ item }}"
+            data-child="{{ itemThree }}">
+            <view class="model-item van-ellipsis">{{ itemThree.productInfoZzprdmodel }}</view>
+            <view class="model-price">¥ {{ itemThree.billPrice }}</view>
+          </view>
+        </block>
+      </block>
+    </view>
+
+  </view>
+</view>

@@ -1,0 +1,104 @@
+<!--认购-->
+<view class="item">
+  <view class="modelSeriesHeader">
+    <view>{{ item.productGroupRemark }}</view>
+    <view class="condition">x{{ item.packageNum }}</view>
+  </view>
+  <view class="card-container">
+    <view class="item-img">
+      <view wx:if="{{containerItem.discountTypeId == '90601'||containerItem.discountTypeId=='90602'}}"
+            catchtap="goNext"
+            data-url="../../goods/item/index?code={{item.productInfoId}}&orgId={{item.fwOrgId}}&orgCode={{item.fwOrgCode}}&promotionId={{item.id}}"
+            class="img"
+      >
+        <img class="rel-img" flag="{{item.id}}" src="{{item.img}}" errSrc="{{item.errImg}}" lazyLoad="{{ lazyLoad }}"
+             bind:lose="imgLose" />
+        <view wx:if="{{item.activityStatus.custPurchaseQty > 0 && timestatus == 2 }}" class="sell-ing">已抢</view>
+        <view wx:if="{{item.activityStatus.custPurchaseQty > 0 && timestatus == 3 }}" class="sell-ed">已抢</view>
+      </view>
+
+      <view wx:else catchtap="goNext" class="img">
+        <img class="rel-img" flag="{{item.id}}" src="{{item.img}}" errSrc="{{item.errImg}}" lazyLoad="{{ lazyLoad }}"
+             bind:lose="imgLose" />
+      </view>
+    </view>
+    <view class="item-operator">
+      <view class="name-org-name-wrap">
+        <view catchtap="goNext"
+              data-url="../../goods/item/index?code={{item.productInfoId}}&orgId={{item.fwOrgId}}&orgCode={{item.fwOrgCode}}&promotionId={{item.id}}"
+              class="goods-name van-ellipsis">{{ item.productInfoZzprdmodel }}</view>
+        <view class="zhuzhi-wrap van-ellipsis">{{item.fwOrgName}}</view>
+      </view>
+      <view wx:if="{{ item.productSubtitle }}" class="goods-info van-ellipsis">{{item.productSubtitle === null ? '' : item.productSubtitle }}</view>
+      <view class="goods-price">
+        <view class="price-wrap">
+          <view class="now-price">
+            <view class="price-sym">￥</view>
+            <view class="price-number">{{item.billPrice}}</view>
+          </view>
+          <view class="old-price">
+            <view class="price-number">￥{{item.standardPrice}}</view>
+          </view>
+        </view>
+        <view class="num-wrap" wx:if="{{(containerItem.discountTypeName=='套购'||containerItem.discountTypeName=='跨品类套购')}}">
+          x{{item.packageNum}}
+        </view>
+      </view>
+
+      <view class="active-price">
+        <view class="ding-price">
+          <view class="price-number">定金￥{{item.deposit}}</view>
+        </view>
+        <view class="fan-price" wx:if="{{item.rebateMoney && item.rebateMoney>0}}">
+          <view class="price-number">返利金￥{{item.rebateMoney}}</view>
+        </view>
+      </view>
+
+      <!-- 进行中 -->
+      <view wx:if="{{ containerItem.timestatus == 2}}" class="goods-rel-operator">
+        <view class="progress">
+          <van-progress-activity
+            style="width:100%; height:100%"
+            color="linear-gradient(90deg, #FC3F85 0%, #FD3D23 100%)"
+            percentage="{{item.activityStatus.unprogress }}"
+            progress="{{item.activityStatus.progress }}" />
+        </view>
+      </view>
+
+      <!-- 未开始 -->
+      <view wx:if="{{ containerItem.timestatus == 1 }}" class="goods-rel-operator">
+        <view class="progress-will">限量{{item.qty}}台</view>
+      </view>
+
+      <!-- 已结束 -->
+      <view wx:if="{{ containerItem.timestatus == 3 }}" class="goods-rel-operator">
+        <view class="progress-will"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 组合购型号列表-->
+  <view class="modelOptionAll">
+    <view>型号选择</view>
+  </view>
+  <view class="modelOptionsContainer">
+    <scroll-view class="filter-drawer-attr-scroll" scroll-y>
+      <view class="attr-item">
+        <view class="attr-item-content">
+          <block wx:for="{{item.child}}" wx:for-item="itemThree" wx:for-index="itemIndex">
+            <view
+              class="modelOptionItem {{ itemThree.isActive ? 'active' : ''}}"
+              catchtap="changePopModel"
+              data-index="{{ itemIndex }}"
+              data-child="{{ itemThree }}">
+              <view class="model-item van-ellipsis">{{ itemThree.productInfoZzprdmodel }}</view>
+              <view class="model-price">¥ {{ itemThree.billPrice }}</view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </scroll-view>
+
+  </view>
+</view>
+

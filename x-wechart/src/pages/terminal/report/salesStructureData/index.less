@@ -1,0 +1,157 @@
+@import '../../../../styles/utils.less';
+@import '../../../../styles/index.less';
+@import '../../../../components/vant/common/style/hairline.less';
+
+.purchase {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .container-list-scroll{
+    flex: 1;
+    overflow-y: auto;
+  }
+  .h-icon {
+    font-size: 28rpx;
+    color: rgba(0, 170, 166, 1);
+  }
+  .canvas {
+    width: 280rpx;
+    height: 240rpx;
+  }
+  .dongxioalv-inner{
+    margin-bottom: 16rpx;
+    margin-top: 16rpx;
+    background: #fff;
+    border-radius: 16rpx;
+    min-height: 200rpx;
+    width: 100%;
+    .t-td{
+      text-align: center;
+      width:25%;
+    }
+    .t-header{
+      display: flex;
+      height: 64rpx;
+      line-height: 64rpx;
+      color: #333;
+    }
+    .t-body{
+      .tr{
+        height: 64rpx;
+        line-height: 64rpx;
+        display: flex;
+        width: 100%;
+        //&:nth-child(odd){
+        //  background: rgba(0,0,0,0.05);
+        //}
+        .t-td{
+          font-size: 20rpx;
+          color: #727272;
+          text-align: center;
+        }
+      }
+    }
+  }
+  .purchase-name {
+    font-size: 32rpx;
+    font-weight: 500;
+    color: rgba(38, 38, 38, 1);
+    line-height: 44rpx;
+    padding-left: 24rpx;
+    padding-top: 24rpx;
+    background-color: #FFFFFF;
+    display: flex;
+    .icon {
+      height: 40rpx;
+      width: 40rpx;
+      display: flex;
+      font-size: 36rpx;
+      align-items: center;
+      color: #cccccc;
+      padding-left: 4rpx;
+    }
+  }
+  .text-box {
+    margin: 16rpx 24rpx 24rpx 24rpx;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.12);
+    border-radius: 2px;
+    padding: 24rpx;
+    .text-heard {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .name {
+        display: flex;
+        align-items: center;
+        color: #262626;
+        font-size: 28rpx;
+        font-weight: 500;
+        .small {
+          width: 2px;
+          height: 10px;
+          background: rgba(0, 170, 166, 1);
+          margin-right: 8rpx;
+        }
+      }
+      .icon {
+        height: 40rpx;
+        width: 40rpx;
+        display: flex;
+        font-size: 32rpx;
+        align-items: center;
+        color: #cccccc;
+      }
+    }
+    .text-area {
+      color: #aaaaaa;
+      font-size: 28rpx;
+      padding-top: 8rpx;
+    }
+  }
+  .purchase-inv-scroll-row {
+    display: flex;
+    padding: 22rpx;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 28rpx;
+    border-bottom: 1rpx solid #eeeeee;
+  }
+  .icon-check {
+    font-size: 20rpx;
+  }
+  .checked {
+    color: #00aaa6;
+  }
+}
+.paiming-wrap{
+  margin-top: 16rpx;
+  background: #ffff;
+  line-height: 38px;
+  height: 70rpx;
+  padding-left: 30rpx;
+  .title{
+
+  }
+  .paiming{
+    margin-left: 20rpx;
+    color: #3ad1a0;
+    .jiantou{
+      margin-left: 10rpx;
+    }
+  }
+  .up{
+    color: #f69e78;
+  }
+}
+.no-data{
+  text-align: center;
+  line-height: 100rpx;
+}
+.order-s-filter-container{
+  padding-top: 134rpx;
+}
+.expiry-date{
+  z-index: 111;
+}

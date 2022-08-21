@@ -1,0 +1,218 @@
+@import '../../../styles/utils.less';
+
+@padding-normal: 16rpx;
+@border-color: #EEEEEE;
+
+@font-size-1: 24rpx;
+@font-size-2: 26rpx;
+@font-size-3: 28rpx;
+
+.me-comment {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+  .me-comment-filter {
+    display: flex;
+    justify-content: flex-end;
+    background-color: #fff;
+    padding: 20rpx;
+    margin-bottom: @padding-normal;
+    .filter-down {
+      font-size: 28rpx;
+      color: #262626;
+      height: 32rpx;
+      line-height: 32rpx;
+    }
+  }
+  .me-comment-scroll {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 0rpx;
+    // height: 100%;
+    &-item {
+      background-color: #fff;
+      margin-bottom: @padding-normal;
+      &:last-child {
+        margin-bottom: 0;
+      }
+      .item-header {
+        border-bottom: 2rpx solid @border-color;
+        padding: 24rpx;
+        &-line {
+          display: flex;
+          justify-content: space-between;
+          height: 32rpx;
+          &-left {
+            font-size: 24rpx;
+            color: #262626;
+          }
+          &-right {
+            font-size: 20rpx;
+            color: #777777;
+          }
+        }
+      }
+      .item-card {
+        padding: 24rpx 24rpx 0 24rpx;
+        .item-card-detail {
+          display: flex;
+          .item-img {
+            width: 128rpx;
+            height: 128rpx;
+          }
+          .item-info {
+            width: 100%;
+            padding-left: 16rpx;
+            &-title {
+              font-size: 26rpx;
+              color: #262626;
+              line-height: 36rpx;
+              height: 36rpx;
+            }
+            &-other {
+              display: flex;
+              justify-content: space-between;
+              font-size: 24rpx;
+            }
+            &-price {
+              color: #D9161C;
+              height: 32rpx;
+              line-height: 32rpx;
+            }
+            &-num {
+              color: #262626;
+              height: 32rpx;
+              line-height: 32rpx;
+            }
+          }
+        }
+      }
+      .item-options {
+        display: flex;
+        justify-content: flex-end;
+        padding: 24rpx;
+        van-button {
+          margin-left: 32rpx;
+        }
+      }
+    }
+  }
+
+}
+
+.me-comment-detail-popup {
+  width: 604rpx;
+  padding: 32rpx;
+  .comment-detail-header {
+    text-align: center;
+    position: relative;
+    padding-bottom: 22rpx;
+    border-bottom: 2rpx solid @border-color;
+    .header-close {
+      position: absolute;
+      top: 4rpx;
+      right: 0;
+      font-size: 26rpx;
+    }
+  }
+  .comment-detail-content {
+    .comment-detail-time {
+      font-size: 24rpx;
+      color: #777777;
+      height: 32rpx;
+      line-height: 32rpx;
+      margin: 36rpx 0;
+    }
+    .comment-level {
+      display: flex;
+      align-items: center;
+      margin-bottom: 36rpx;
+      .comment-label {
+        font-size: 28rpx;
+        color: #333333;
+        height: 28rpx;
+        line-height: 28rpx;
+      }
+    }
+    .comment-content {
+      font-size: 24rpx;
+      color: #262626;
+      line-height: 40rpx;
+
+    }
+  }
+}
+
+.me-comment-filter-popup {
+  width: 672rpx;
+  height: 100%;
+  position: relative;
+  .input-group {
+    padding: 24rpx;
+    font-size: @font-size-1;
+    .input-label {
+      font-size: @font-size-3;
+      color: #777777;
+      height: 40rpx;
+      line-height: 40rpx;
+      margin-bottom: 16rpx;
+    }
+    .me-comment-filter-input {
+      font-size: @font-size-1;
+      min-height: 32rpx;
+      height: 32rpx;
+      line-height: 32rpx;
+    }
+    .date-group {
+      display: flex;
+      align-items: center;
+      .date-input {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 288rpx;
+        height: 64rpx;
+        font-size: 24rpx;
+        background-color: #F7F7F7;
+      }
+      .date-mid-label {
+        width: 48rpx;
+        color: #AAAAAA;
+        text-align: center;
+      }
+    }
+  }
+  .me-comment-filter-options {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    .form-submit-button {
+      background: #00AAA6;
+      border-radius: 0;
+      color: #FFF;
+      font-size: 32rpx;
+    }
+  }
+}
+
+.date-time-picker-popup {
+  width: 100%;
+}
+
+.collection {
+  display: flex;
+  height: 100%;
+  .scroll-grid {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    padding: 14rpx;
+    .context {
+      width: 354rpx;
+      padding-bottom: 10rpx;
+    }
+  }
+}

@@ -1,0 +1,389 @@
+<template>
+
+  <view class="order">
+    <popup title="编辑零售订单失败" />
+    <view class="order-scroll">
+      <view class="order-scroll-head">
+        <view class="item-row clear-height-border" @tap="openChoose('stores', 'store', '所属门店')">
+          <stores style="width:100%;" return_title="{{ store.name }}" List="{{ storeMaterial }}" />
+        </view>
+
+        <!-- <view class="item-row" @tap="openChoose('outInvs','outInv','是否出库')">
+          <view class="item-row-left">
+            是否出库
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory {{ outInv.id ? '' : 'placeholder' }}">
+              {{ outInv.name }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+          </view>
+        </view> -->
+        <view class="item-row" @tap="openChooseFiBook">
+          <view class="item-row-left">
+            <text>销售组织</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory {{ fiBook.id ? '' : 'placeholder' }}">
+              {{ fiBook.name }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+          </view>
+        </view>
+        <view class="item-row" @tap="openChoose('saleTypes', 'saleType', '销售类型')">
+          <view class="item-row-left">
+            <text>销售类型</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory {{ saleType.id ? '' : 'placeholder' }}">
+              {{ saleType.name }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+          </view>
+        </view>
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>客户</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-note">
+              <van-field
+                value="{{ customerName }}"
+                placeholder="请填写客户名称"
+                border="{{ false }}"
+                input-align="right"
+                bind:change="onCustomerNameChange"
+                class="dms-order-note"
+              />
+            </view>
+          </view>
+        </view>
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>客户联系电话</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-note">
+              <van-field
+                value="{{ customerPhone }}"
+                placeholder="请填写联系电话"
+                border="{{ false }}"
+                input-align="right"
+                bind:change="onCustomerPhoneChange"
+                class="dms-order-note"
+              />
+            </view>
+          </view>
+        </view>
+        <view class="item-row" @tap="openTopAddress">
+          <view class="item-row-left">
+            <text>省市区县</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory {{ chooseProvinceInfo.id ? '' : 'placeholder' }}">
+              {{ addressTip }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+          </view>
+        </view>
+        <view class="item-row">
+          <view class="item-row-left">
+            <text>详细地址</text>
+            <text class="redXing" wx:if="{{sendInventoryInfo.type=='20'}}">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-note">
+              <van-field
+                value="{{ receiverDetail }}"
+                placeholder="请填写详细地址"
+                border="{{ false }}"
+                input-align="right"
+                bind:change="onReceiverDetailChange"
+                class="dms-order-note"
+              />
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row" @tap="openChoose('warehouseList','sendInventoryInfo','发货仓库')">
+          <view class="item-row-left">
+            <text>发货仓库</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory {{ sendInventoryInfo.id ? '' : 'placeholder' }}">
+              {{ sendInventoryInfo.name }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+          </view>
+        </view>
+
+
+        <!-- <view class="item-row" @tap="openChoose('warehouse','sendInventoryInfo','发货仓库')">
+          <view class="item-row-left">
+            发货仓库
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory {{ sendInventoryInfo.id ? '' : 'placeholder' }}">
+              {{ sendInventoryInfo.name }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+          </view>
+        </view> -->
+
+        <!-- <view class="item-more" @tap="showMore" hidden="{{ showMore }}">
+          <view class="item-more-tip">
+            查看更多
+          </view>
+          <van-icon name="arrow-down" class="icon" />
+        </view> -->
+
+        <!---->
+        <!-- <view  class="item-more-container">
+          <view class="item-row" @tap="openChoose('billFrom', 'invoiceInfo', '开票方')">
+            <view class="item-row-left">
+              开票方
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-inventory {{ invoiceInfo.id ? '' : 'placeholder' }}">
+                {{ invoiceInfo.name }}
+              </view>
+              <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+            </view>
+          </view>
+          <view class="item-row" @tap="openChoose('seller', 'saler', '业务员')">
+            <view class="item-row-left">
+              业务员
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-inventory {{ saler.id ? '' : 'placeholder' }}">
+                {{ saler.name }}
+              </view>
+              <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+            </view>
+          </view> -->
+
+        <view class="item-row item-row-delivery" @tap="openChoose('deliveryMode', 'deliveryMethod', '配送方式')">
+          <view class="item-row-left">
+            <text>配送方式</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory {{ deliveryMethod.id ? 'item-row-right-delivery' : 'placeholder' }}">
+              {{ deliveryMethod.name }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+          </view>
+        </view>
+        <view class="item-row-delivery-tip">
+          <!-- 选择仓库为统仓,及不同配送方式时给出不同提示；-->
+          <!--    tip1-配送方式选择“配送、自提、配送（加急）“，校验商家已经签订2C协议；      -->
+          <view wx:if="{{sendInventoryInfo.type=='20' && deliveryMethod.id!='07' && isSignTheAgreement}}" class="tip1">*海信物流2C配送为您服务</view>
+          <!--    tip3-配送方式选择“配送、自提、配送（加急）“，校验商家未签订2C协议；      -->
+          <view wx:if="{{sendInventoryInfo.type=='20' && deliveryMethod.id!='07' && !isSignTheAgreement}}" class="tip3">*您暂未开通共享仓2C配送服务，请联系营销中心签订2C配送服务合同或者选择其他发货仓库。</view>
+          <!--    配送方式选择“直配到工地“      -->
+          <view wx:if="{{sendInventoryInfo.type=='20' && deliveryMethod.id=='07'}}" class="tip2">*本服务今年送货到2B商家或工地，不含楼上宅配或送装等2C服务，2C 入户工程需要与营销中心签订2C配送服务合同，且配送方式选择配送。</view>
+
+        </view>
+<!--        <view class="item-row" @tap="openChoose('deliveryAndInstall', 'isDeliveryAndInstall', '是否送装一体')">-->
+<!--          <view class="item-row-left">-->
+<!--            是否送装一体-->
+<!--          </view>-->
+<!--          <view class="item-row-right">-->
+<!--            <view class="item-row-right-inventory {{ isDeliveryAndInstall.id ? '' : 'placeholder' }}">-->
+<!--              {{ isDeliveryAndInstall.name }}-->
+<!--            </view>-->
+<!--            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />-->
+<!--          </view>-->
+<!--        </view>-->
+        <!-- 根据发货仓库+配送方式，服务方式字段变化显示
+                如果仓库为统仓，配送方式选择“配送、自提、配送（加急）“，服务方式字段显示，可选择
+                如果仓库为统仓，配送方式为“直配到工地“，服务方式字段隐藏，取值空
+                如果仓库为原仓，服务方式字段隐藏，取值空 -->
+        <view class="item-row" @tap="openServerPopVisible()" wx:if="{{sendInventoryInfo.type=='20'&& deliveryMethod.id!='07'}}">
+          <view class="item-row-left">
+            <text>服务方式</text>
+            <text class="redXing">*</text>
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory {{ zoneB2cService.length>0 ? '' : 'placeholder' }}">
+              {{ zoneB2cServiceNames }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+          </view>
+        </view>
+        <view class="item-row">
+          <view class="item-row-left">
+            备注
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-note">
+              <van-field
+                value="{{ note }}"
+                placeholder="请填写备注"
+                border="{{ false }}"
+                input-align="right"
+                bind:change="onNoteChange"
+                class="dms-order-note"
+              />
+            </view>
+          </view>
+        </view>
+        <view class="annex-content-info">
+          <text class="annex-content-info-text">附件</text>
+          <view class="pose-issue-content annex-upload">
+            <van-uploader accept="image" file-list="{{ fileList }}" bind:before-read="beforeRead" bind:after-read="afterRead" bind:delete="delImg"/>
+          </view>
+        </view>
+
+          <!-- <view class="item-row" @tap="openChoose('saleTypes', 'saleType', '销售类型')">
+            <view class="item-row-left">
+              销售类型
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-inventory {{ saleType.id ? '' : 'placeholder' }}">
+                {{ saleType.name }}
+              </view>
+              <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+            </view>
+          </view> -->
+          <!-- <view class="item-row">
+            <view class="item-row-left">
+              备注
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-note">
+                <van-field
+                  value="{{ note }}"
+                  placeholder="请填写备注"
+                  border="{{ false }}"
+                  input-align="right"
+                  bind:change="onNoteChange"
+                  class="dms-order-note"
+                />
+              </view>
+            </view>
+          </view> -->
+      </view>
+      <order  :out.sync="sendInventoryInfo" :outInv.sync= "outInv"  :orgId.sync= "fiBook"/>
+    </view>
+
+    <van-submit-bar
+      button-text="提交并出库"
+      custom-class="order-bottom"
+      button-class-container="dms-order-bottom-button-save"
+      button-class="dms-order-bottom-button-save-submit"
+      bind:submit="submit"
+    >
+      <view class="order-bottom-button-temp" @tap="cache">
+        暂存
+      </view>
+      <view slot="top" class="order-bottom-amount">
+        <view class="order-bottom-amount-tip">
+          合计
+        </view>
+
+        <view class="order-bottom-amount-num">
+          ￥{{ amount }}
+        </view>
+      </view>
+    </van-submit-bar>
+    <!--    服务列表-->
+    <van-popup
+      show="{{ serverPopVisible }}"
+      closeable
+      position="bottom"
+      custom-style="height: 570rpx"
+      bind:click-overlay="closeServerPopVisible"
+    >
+      <view class="order-inv">
+        <view class="order-inv-head">
+          <view class="order-inv-head-context">
+            <view class="order-inv-head-context-title">服务列表</view>
+            <van-icon name="cross" class="order-inv-head-context-close" bindtap="closeServerPopVisible" />
+          </view>
+        </view>
+        <scroll-view scroll-y class="order-inv-scroll">
+          <view wx:for="{{ serviceList }}" wx:key="id" item="item" class="order-inv-scroll-row" data-key="{{ item.serviceCode }}" data-name="{{ item.serviceName }}" data-index="{{ index }}" data-issupport="{{ item.isSupport }}" bindtap="onChooseService">
+            <view class="order-inv-scroll-row-desc {{utils.includes(item.serviceCode, zoneB2cService) ? 'checked' : ''}} {{item.isSupport=='0' ? 'disabled' : ''}}">
+              {{ item.serviceName }}
+            </view>
+            <block wx:if="{{ utils.includes(item.serviceCode, zoneB2cService) }}">
+              <view class="b-icon icon-check order-inv-scroll-row-checked checked">
+              </view>
+            </block>
+          </view>
+
+        </scroll-view>
+      </view>
+    </van-popup>
+    <!-- 销售组织 -->
+    <van-popup
+      show="{{ popFiBookVisible }}"
+      closeable
+      position="bottom"
+      custom-style="height: 570rpx"
+      bind:click-overlay="onCloseFiBook"
+    >
+    <view class="order-inv">
+      <view class="order-inv-head">
+        <view class="order-inv-head-context">
+          <view class="order-inv-head-context-title">销售组织</view>
+        <van-icon name="cross" class="order-inv-head-context-close" bindtap="onCloseFiBook" />
+        </view>
+      </view>
+      <scroll-view scroll-y class="order-inv-scroll">
+        <view wx:for="{{ fibookList }}" wx:key="{{ item.id }}" item="item" class="order-inv-scroll-row" data-key="{{ item.id }}" data-name="{{ item.name }}" bindtap="onChooseFiBook">
+          <view class="order-inv-scroll-row-desc {{ item.id === fiBook.id ? 'checked' : ''}}">
+            {{ item.name }}
+          </view>
+          <block wx:if="{{ item.id === fiBook.id }}">
+            <view class="b-icon icon-check order-inv-scroll-row-checked checked">
+            </view>
+          </block>
+        </view>
+
+      </scroll-view>
+    </view>
+    </van-popup>
+    <van-popup
+      show="{{ popVisible }}"
+      closeable
+      position="bottom"
+      custom-style="height: 570rpx"
+      bind:click-overlay="onClose"
+    >
+    <view class="order-inv">
+      <view class="order-inv-head">
+        <view class="order-inv-head-context">
+          <view class="order-inv-head-context-title">{{ popTitle }}</view>
+        <van-icon name="cross" class="order-inv-head-context-close" bindtap="onClose" />
+        </view>
+      </view>
+      <scroll-view scroll-y class="order-inv-scroll">
+        <view wx:for="{{ popList }}" wx:key=" item.id " item="item" class="order-inv-scroll-row" data-key="{{ item.id }}" data-index="{{ index }}" bindtap="onChoose">
+          <view class="order-inv-scroll-row-desc {{ item.id === compareInfo.id ? 'checked' : ''}}">
+            {{ item.name }}
+          </view>
+          <block wx:if="{{ item.id === compareInfo.id }}">
+            <view class="b-icon icon-check order-inv-scroll-row-checked checked">
+            </view>
+          </block>
+        </view>
+
+      </scroll-view>
+    </view>
+    </van-popup>
+    <van-dialog id="van-dialog" />
+    <address />
+    <van-toast id="van-toast" />
+  </view>
+
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

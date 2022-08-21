@@ -1,0 +1,93 @@
+<template>
+  <view class="return">
+    <view class="return-header">
+      <van-search
+        placeholder="请输入销售单号/客户名称/客户编码"
+        use-action-slot
+        bind:change="onChange"
+        @search="onClick"
+      >
+        <view slot="action" bind:tap="onClick">搜索</view>
+      </van-search>
+    </view>
+    <block wx:if="{{list && list.length > 0}}">
+      <view class="return-middle">
+        <view class="info">选择退货信息</view>
+      </view>
+      <scroll-view scroll-y enable-flex class="search-result" bindscrolltolower="loadNextPage">
+        <repeat for="{{list}}" item="item">
+          <view
+            catchtap="selectItem({{item.id}}, {{item.customerTypeCode}}, {{item.returnNum}})"
+            wx:if="{{item.customerTypeCode == 'isHisense'}}"
+            style="{{item.id == itemId ? 'border:1px solid rgba(0,170,166,1);': ''}}"
+            class="container"
+          >
+            <view wx:if="{{item.id == itemId}}" class="triangle"></view>
+            <view wx:if="{{item.id == itemId}}" class="b-icon icon-check icon "></view>
+            <!-- 增加销售退货单号和发起方标识 -->
+            <block wx:if="{{item.returnNum}}">
+              <view class="pre-first">
+                <view class="pre-first-no">销售退货单号：{{item.returnNum}}</view>
+                <block wx:if="{{item.returnBy === 'bySales'}}">
+                  <view class="pre-first-initiator">代理发起</view>
+                </block>
+                <block wx:elif="{{item.returnBy === 'byPurchase'}}">
+                  <view class="pre-first-initiator">分销发起</view>
+                </block>
+              </view>
+            </block>
+            <view class="first">
+              <view class="sales-number">销售单号: {{item.documentNum}}</view>
+              <view class="sales-status">{{item.returnStatus}}</view>
+            </view>
+            <view class="second van-ellipsis">{{item.legalPerson}}</view>
+            <view class="second van-ellipsis">{{item.customerName}}</view>
+            <view class="second van-ellipsis">地址: {{item.address}}</view>
+          </view>
+          <view wx:else
+            catchtap="selectItem({{item.id}}, {{item.customerTypeCode}}, {{item.returnNum}})"
+            style="{{item.id == itemId ? 'border:1px solid rgba(0,170,166,1);': ''}}"
+            class="container"
+          >
+            <view wx:if="{{item.id == itemId}}" class="triangle"></view>
+            <view wx:if="{{item.id == itemId}}" class="b-icon icon-check icon "></view>
+            <!-- 增加销售退货单号和发起方标识 -->
+            <block wx:if="{{item.returnNum}}">
+              <view class="pre-first">
+                <view class="pre-first-no">销售退货单号：{{item.returnNum}}</view>
+                <block wx:if="{{item.returnBy === 'bySales'}}">
+                  <view class="pre-first-initiator">代理发起</view>
+                </block>
+                <block wx:elif="{{item.returnBy === 'byPurchase'}}">
+                  <view class="pre-first-initiator">分销发起</view>
+                </block>
+              </view>
+            </block>
+            <view class="first">
+              <view class="sales-number">销售单号: {{item.documentNum}}</view>
+              <view class="sales-status">{{item.returnStatus}}</view>
+            </view>
+            <view class="second van-ellipsis">{{item.customerName}}</view>
+            <view class="second van-ellipsis">{{item.customerCode}}</view>
+            <view class="second van-ellipsis">地址: {{item.address}}</view>
+          </view>
+        </repeat>
+        <view style="padding-bottom: 100rpx;"></view>
+      </scroll-view>
+    </block>
+    <emptyDataType wx:else/>
+
+    <view wx:if="{{list && list.length > 0}}" class="return-footer van-hairline--top">
+      <view class="return-footer-bar">
+        <view
+          @tap="goNext"
+          class="return-footer-bar-btn {{itemId == '' ? 'disabled': ''}}"
+        >下一步</view>
+      </view>
+    </view>
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

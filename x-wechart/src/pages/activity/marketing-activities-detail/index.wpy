@@ -1,0 +1,160 @@
+<template>
+  <view class="activity-detail">
+    <view class="activity-wrapper">
+      <view class="activity-header">
+        <view class="activity-code">
+          <text class="code">{{marketingActivityDetail.activityCode}}</text>
+          <text class="type">{{ marketingActivityDetail.statusDesc }}</text>
+        </view>
+        <view class="activity-info">
+          <text class="label">活动名称：</text>
+          <text class="info">{{ marketingActivityDetail.activityName }}</text>
+        </view>
+        <view class="activity-info">
+          <text class="label">促销方式：</text>
+          <text class="info">{{ marketingActivityDetail.discountTypeName }}</text>
+        </view>
+        <view class="activity-info">
+          <text class="label">开始时间：</text>
+          <text class="info">{{ marketingActivityDetail.startDate }}</text>
+        </view>
+        <view class="activity-info">
+          <text class="label">结束时间：</text>
+          <text class="info">{{ marketingActivityDetail.endDate }}</text>
+        </view>
+        <view class="activity-info">
+          <text class="label">商家范围：</text>
+          <text class="info">{{ marketingActivityDetail.custTagName }}</text>
+        </view>
+      </view>
+
+      <view class="activity-content">
+        <view class="view-distributors" @tap="viewDistributor">查看参与分销商</view>
+        <view class="product-relationship-title-txt">产品关系</view>
+        <repeat for="{{marketingActivityDetail.productDtoList}}" item="item">
+          <view class="product-relationship-list">
+            <view class="product-name">
+              <text class="name">{{ item.productName }} <text wx:if="{{ item.color }}">/ {{ item.color }}</text></text>
+              <text class="nums">x{{ item.qty }}</text>
+            </view>
+            <view class="product-desc">
+              <block wx:if="{{ item.discountTypeId == '90601' || item.discountTypeId == '90602' }}">
+                <view class="desc-item">
+                  <text>提货价：</text>
+                  <text>￥{{ item.standardPrice }}</text>
+                </view>
+                <view class="desc-item">
+                  <text>开票单价：</text>
+                  <text>￥{{ item.billPrice }}</text>
+                </view>
+                <view class="desc-item">
+                  <text>单个商家限量：</text>
+                  <text>{{ item.purchaseLimitQty }}</text>
+                </view>
+                <view class="desc-item">
+                  <text>本次活动返利：</text>
+                  <text wx:if="{{item.rebateMoney}}">￥{{ item.rebateMoney }}</text>
+                </view>
+                <view class="instruction-item">
+                  <text>活动说明：</text>
+                  <text wx:if="{{item.productSubtitle}}">{{ item.productSubtitle }}</text>
+                </view>
+                <view class="instruction-item">
+                  <text>备注：</text>
+                  <text wx:if="{{item.remark}}">{{ item.remark }}</text>
+                </view>
+              </block>
+              <block wx:if="{{ item.discountTypeId == '90603' }}">
+                <view class="desc-item">
+                  <text>组合编码：</text>
+                  <text>{{ item.packageCode }}</text>
+                </view>
+                <view class="desc-item">
+                  <text>组合数量：</text>
+                  <text>{{ item.packageNum }}</text>
+                </view>
+                <view class="desc-item">
+                  <text>提货价：</text>
+                  <text>￥{{ item.standardPrice }}</text>
+                </view>
+                <view class="desc-item">
+                  <text>开票单价：</text>
+                  <text>￥{{ item.billPrice }}</text>
+                </view>
+                <view class="desc-item">
+                  <text>单个商家限量：</text>
+                  <text>{{ item.purchaseLimitQty }}</text>
+                </view>
+                <view class="desc-item">
+                  <text>本次活动返利：</text>
+                  <text wx:if="{{item.rebateMoney}}">￥{{ item.rebateMoney }}</text>
+                </view>
+                <view class="instruction-item">
+                  <text>活动说明：</text>
+                  <text wx:if="{{item.productSubtitle}}">{{ item.productSubtitle }}</text>
+                </view>
+                <view class="instruction-item">
+                  <text>备注：</text>
+                  <text wx:if="{{item.remark}}">{{ item.remark }}</text>
+                </view>
+              </block>
+              <block wx:if="{{ item.discountTypeId == '90605' }}">
+                <view class="desc-item">
+                  <text>组合编码：</text>
+                  <text>{{ item.packageCode }}</text>
+                </view>
+                <view class="desc-item">
+                  <text>组合数量：</text>
+                  <text>{{ item.packageNum }}</text>
+                </view>
+                <view class="desc-item">
+                  <text>分组编码：</text>
+                  <text>{{ item.productGroup }}</text>
+                </view>
+                <view class="desc-item">
+                  <text>分组描述：</text>
+                  <text>{{ item.productGroupRemark }}</text>
+                </view>
+                <view class="desc-item">
+                  <text>提货价：</text>
+                  <text>￥{{ item.standardPrice }}</text>
+                </view>
+                <view class="desc-item">
+                  <text>开票单价：</text>
+                  <text>￥{{ item.billPrice }}</text>
+                </view>
+                <view class="desc-item">
+                  <text>单个商家限量：</text>
+                  <text>{{ item.purchaseLimitQty }}</text>
+                </view>
+                <view class="desc-item">
+                  <text>本次活动返利：</text>
+                  <text wx:if="{{item.rebateMoney}}">￥{{ item.rebateMoney }}</text>
+                </view>
+                <view class="instruction-item">
+                  <text>活动说明：</text>
+                  <text wx:if="{{item.productSubtitle}}">{{ item.productSubtitle }}</text>
+                </view>
+                <view class="instruction-item">
+                  <text>是否默认：</text>
+                  <text wx:if="{{ item.defaultFlag == '1' }}">是</text>
+                  <text wx:if="{{ item.defaultFlag == '0' }}">否</text>
+                </view>
+                <view class="instruction-item">
+                  <text>备注：</text>
+                  <text wx:if="{{item.remark}}">{{ item.remark }}</text>
+                </view>
+              </block>
+
+            </view>
+          </view>
+        </repeat>
+
+      </view>
+    </view>
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

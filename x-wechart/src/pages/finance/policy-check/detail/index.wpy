@@ -1,0 +1,93 @@
+<template>
+    <view class="container">
+      <!-- 阻止弹框 -->
+      <van-popup show="{{ IKnow }}" overlay="{{ true }}">
+      <!-- <van-popup show="{{ true }}" overlay="{{ true }}"> -->
+        <view class="todo-popup">
+          <view class="text">
+            <view class="text-first">小程序端支持查看详情及操作上上签电子签章</view>
+            <view class="text-last">U盾签章请在PC端操作</view>
+          </view>
+          <view @tap="allIKnow" class="operation">
+            <view class="operation-text">我知道了</view>
+          </view>
+        </view>
+      </van-popup>
+        <view class="detail-top">
+            <table>
+                <tbody>
+                    <tr class="detail-pic">
+                        <view class="b-icon h-icon icon-hisense" />
+                        <view class="barcode">
+                            <canvas canvas-id="barcode" />
+                            <view class="code">{{checkDetail.rows.docNo}}</view>
+                        </view>
+                    </tr>
+                    <tr>
+                         <td class="left">发布时间 </td>
+                        <td class="right">{{checkDetail.rows.createdDate}}</td>
+                    </tr>
+                      <tr>
+                         <td class="left">所属期间 </td>
+                        <td class="right">{{checkDetail.rows.rsYear}}-{{checkDetail.rows.periodIdx}}</td>
+                    </tr>
+                      <tr>
+                         <td class="left">产品品类 </td>
+                        <td class="right">{{checkDetail.rows.prfcName}}</td>
+                    </tr>
+                      <tr>
+                         <td class="left">币种/单位 </td>
+                        <td class="right">{{checkDetail.rows.currencyName}}/元</td>
+                    </tr>
+                      <tr>
+                         <td class="left">销售组织 </td>
+                        <td class="right">{{checkDetail.rows.rsUnitName}}</td>
+                    </tr>
+                      <tr>
+                         <td class="left">公司代码</td>
+                        <td class="right">{{checkDetail.rows.fiBookCode}}</td>
+                    </tr>
+                      <tr>
+                         <td class="left">客户名称 </td>
+                        <td class="right">{{checkDetail.rows.customerName}}</td>
+                    </tr>
+                     <tr>
+                         <td class="left">客户代码 </td>
+                        <td class="right">{{checkDetail.rows.customerCode}}</td>
+                    </tr>
+                     <tr>
+                         <td class="left">政策名称 </td>
+                        <td class="right">{{checkDetail.rows.policyName}}</td>
+                    </tr>
+                     <tr>
+                         <td class="left">政策金额 </td>
+                        <td class="right">{{checkDetail.rows.rbAmt}}</td>
+                    </tr>
+                     <tr>
+                         <td class="left">差异金额 </td>
+                        <td class="right">{{checkDetail.rows.diffAmt}}</td>
+                    </tr>
+                     <tr>
+                         <td class="left">调整后金额 </td>
+                        <td class="right">{{checkDetail.rows.adjustAmt}}</td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </view>
+        <view class="detail-center">
+            <button type="button" class="detail-btn" @tap="onClick({{checkDetail.rows.rowId}},{{checkDetail.rows.ssqBind}})">查看</button>
+        </view>
+        <view class="detail-bottom">
+            <view class="detail-bottom-title"> 注：</view>
+            <view class="detail-bottom-content">1.未达账项包括但不限于：a 客户方已发生，而海信方尚未确认的政策；b. 双方确认的政策，海信方已兑现，而客户方尚未收到或未入账；c. 客户方办理政策折让证明，而海信方未收到或未入账；d. 对客户奖励或促销支持等，客户未入账或海信方未入账情况。</view>
+            <view class="detail-bottom-content">2.此对账单是对期末余额进行确认。</view>
+            <view class="detail-bottom-content">3.若双方期末余额不一致，存在未达账项，后期需要凭海信确认的见证性资料原件进行解决。</view>
+            <view class="detail-bottom-content">4.下次双方对账自本次截止日期起核对。</view>
+        </view>
+    </view>
+</template>
+
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

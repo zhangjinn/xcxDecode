@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),_has=require("./internal/_has.js"),hasPath=_curry2(function(r,e){if(0===r.length)return!1;for(var a=e,n=0;n<r.length;){if(!_has(r[n],a))return!1;a=a[r[n]],n+=1}return!0});module.exports=hasPath;

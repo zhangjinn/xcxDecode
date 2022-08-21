@@ -1,0 +1,124 @@
+<template>
+  <view class="order">
+    <view class="order-header">
+      <view class="top">
+        <view class="name">{{detail.applyNo}}</view>
+        <view class="status">{{detail.statusName}}</view>
+      </view>
+      <view class="info-line">
+        <text class="lab">流程名称：</text>
+        <text class="val">超期库存共享申请</text>
+      </view>
+      <view class="info-line">
+        <text class="lab">流程主题：</text>
+        <text class="val">{{detail.theme}}</text>
+      </view>
+      <view class="info-line">
+        <text class="lab">申请人：</text>
+        <text class="val">{{detail.creator}}</text>
+      </view>
+      <view class="info-line">
+        <text class="lab">申请时间：</text>
+        <text class="val">{{detail.createdDate}}</text>
+      </view>
+      <view class="info-line" wx:if="{{detail.modifier}}">
+        <text class="lab">最后审批人：</text>
+        <text class="val">{{detail.modifier||'--'}}</text>
+      </view>
+      <view class="info-line" wx:if="{{detail.modifiedDate}}">
+        <text class="lab">审批结束时间：</text>
+        <text class="val">{{detail.modifiedDate||'--'}}</text>
+      </view>
+    </view>
+    <view class="order-scroll">
+      <view class="title">
+        明细信息
+      </view>
+      <repeat for="{{list}}" item="item" index="index">
+        <view class="order-container">
+          <view class="order-top">
+            <view class="order-name">
+              <view class="order-rel-name">
+                <view class="order-name-left">{{item.zzprdmodel}}</view>
+              </view>
+              <view class="order-number">{{item.qualitylv}}/{{item.invstatusName}}</view>
+            </view>
+          </view>
+          <view class="order-content">
+            <view class="order-content-laster order-content-laster1">
+              <span class="lab-mg-10">仓库: </span>
+              {{item.warehouseInfoLgortName}}</view>
+            <view class="order-content-status">{{item.statusName}}</view>
+          </view>
+          <view class="order-content">
+            <view class="order-content-laster">
+              <span class="lab-mg-10">入库时间: </span>
+              {{item.ininvdate || '无'}}</view>
+          </view>
+          <view class="order-options order-option-four">
+            <view class="item">
+              <span>可用</span>
+              ({{item.avaqty || '0'}})
+            </view>
+            <view class="item">
+              <span>已共享</span>
+              ({{item.alreadyshareqty || '0'}})
+            </view>
+            <view class="item" style="margin-right: 0">
+              <span>可共享</span>
+              ({{item.avbshareqty}})
+            </view>
+          </view>
+          <view class="order-options order-option-four">
+            <view class="item">
+              <span>申请共享</span>
+              ({{item.planqty || '0'}})
+            </view>
+            <view class="item">
+              <span>允许共享</span>
+              ({{item.updateqty || '0'}})
+            </view>
+            <view class="item" style="margin-right: 0">
+              <span>实际共享</span>
+              ({{item.realqty}})
+            </view>
+          </view>
+          <view class="order-content" style="height: unset;" wx:if="{{item.checkRemark}}">
+            <view class="order-content-laster" style="overflow: hidden">
+              <span class="lab-mg-10" style="float: left">变更说明: </span>
+              <span class="wrap-val">{{item.checkRemark}}</span>
+            </view>
+          </view>
+          <view class="order-content" wx:if="{{item.auditMsg}}">
+            <view class="order-content-laster">
+              <span class="lab-mg-10">审批意见:</span>
+              {{item.auditMsg}}</view>
+          </view>
+        </view>
+      </repeat>
+    </view>
+    <view class="order-footer">
+      <view class="title">审批记录</view>
+      <view class="order-audit-logistics-information-steps-rec">
+        <van-steps
+          steps="{{ steps }}"
+          active="{{ active }}"
+          direction="vertical"
+          active-color="#00aaa6"
+        />
+      </view>
+    </view>
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>
+<style lang="less" >
+  .order-audit-logistics-information-steps-rec{
+    .van-step__title{
+      font-size: 22rpx;
+      view:first-child{
+        margin-bottom: 14rpx;
+      }
+    }
+  }
+</style>

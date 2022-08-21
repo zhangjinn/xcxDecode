@@ -1,0 +1,169 @@
+// @import '../../../../styles/utils.less';
+// @import '../../../../styles/index.less';
+// @import '../../../../components/vant/common/style/hairline.less';
+
+.container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  .invoice-top-num {
+    height: 112rpx;
+    display: flex;
+    align-items: center;
+    padding: 0 24rpx;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 1);
+    font-size: 32rpx;
+  }
+
+  .invoice-top-message {
+    height: 140rpx;
+    padding: 0 24rpx;
+    background: linear-gradient(360deg, rgba(242, 242, 242, 1) 0%, rgba(0, 170, 166, 1) 100%);
+
+  }
+
+  .invoice-top {
+    background: rgba(0, 170, 166, 1);
+  }
+
+  .invoice-top-detail {
+    background: rgba(255, 255, 255, 1);
+    border-radius: 4rpx 4rpx 0rpx 0px;
+    padding: 24rpx;
+    width: 702rpx;
+    box-sizing: border-box;
+
+  }
+
+  .invoice-top-detail-li1 {
+
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    padding-bottom: 12rpx;
+    font-size: 24rpx;
+    color: rgba(38, 38, 38, 1);
+  }
+
+  .invoice-top-detail-li2 {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    font-size: 24rpx;
+    font-weight: 400;
+    color: rgba(119, 119, 119, 1);
+
+  }
+
+  .invoice-main {
+    background: rgba(242, 242, 242, 1);
+    padding: 0 24rpx;
+    font-size: 24rpx;
+    display: flex;
+  }
+
+  .invoice-scroll{
+    display: flex;
+    flex: 1;
+  }
+
+  .invoice-sale {
+    background: #ffffff;
+    padding: 16rpx 24rpx;
+    margin-bottom: 16rpx;
+
+    &-li {
+      &:nth-child(1) {
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 16rpx;
+        border-bottom: 1rpx solid #eeeeee;
+      }
+
+      &:nth-child(2) {
+          padding: 16rpx 0 18rpx;
+          border-bottom: 1rpx solid #eeeeee;
+          .invoice-sale-li-detail{
+              padding-bottom: 12rpx;
+             
+          }
+          text{
+              color: #777777;
+          }
+          .invoice-sale-li-detail-right{
+            color: #262626;
+            text{
+                color: #262626;
+            }
+        }
+         
+      }
+      &:nth-child(3){
+          padding: 14rpx 0  0;
+          .invoice-sale-li-detail:nth-child(2){
+              padding: 12rpx 0;
+          }
+      } 
+
+      &-detail {
+        display: flex;
+        justify-content: space-between;
+        color: #777777;
+        text{
+            color: #262626;
+            margin-left: 4rpx ;
+        }
+      }
+    }
+
+    .invoice-sale-li-right {
+      text-align: right;
+    }
+
+    .invoice-sale-li-left1,
+    .invoice-sale-li-right1 {
+      padding-bottom: 4rpx;
+      font-weight: 400;
+      color: rgba(119, 119, 119, 1);
+      font-size: 20rpx;
+
+    }
+
+    .invoice-sale-li-left2,
+    .invoice-sale-li-right2 {
+      font-weight: 500;
+      color: rgba(38, 38, 38, 1);
+      font-size: 28rpx;
+    }
+    .invoice-sale-li-right2{
+      font-weight: 400;
+    }
+
+  }
+  .color26{
+    color: #262626;
+    margin-left: 4rpx;
+}
+  .invoice-detail-li{
+      display: flex;
+      font-size: 24rpx;
+      color: #777777;
+     
+      &:nth-child(2){
+          padding: 12rpx 0;
+      }
+  }
+  .invoice-detail{
+      padding-top:16rpx ;
+  }
+  .invoie-unbilled-li{
+      display: flex;
+      padding-top: 14rpx;
+      color: #777777;
+      .invoie-unbilled-li1{
+          flex: 1;
+      }
+  }
+}

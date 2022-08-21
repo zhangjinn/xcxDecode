@@ -1,0 +1,317 @@
+<wxs src="../../../../wxs/utils.wxs" module="utils"/>
+
+  <view class="out-warehouse-order-detail">
+    <view class="order-detail-content">
+      <view class="detail-bg">
+        <image class="img-bg" src="{{imgObj.assessmentNoticeBg}}"/>
+      </view>
+      <view class="detail-info-wrapper">
+        <view class="detail-info-wrapper-inner">
+          <view class="notice-content">
+            <view class="notice-content-info">
+              <text class="serial-number">通知单编号：{{ orderDetail.noticeCode }}</text>
+              <text class="operator-name">{{ orderDetail.agentCustomerName }}：</text>
+              <text class="serial-reason">{{orderDetail.month}}，因您辖区内分销客户终端规范未达标准，根据月度运营管理要求，对不规范项按{{ orderDetail.standardPrice }} 元/店/项/次考核共计 {{orderDetail.actualAssessMoney}} 元（大写金额：{{ orderDetail.differenceAmtDx }}），于本月价差中扣除。其中：</text>
+              <!-- 表格 -->
+              <view class="su-table-box">
+                <view class="su-table">
+                  <!-- 表格标题 -->
+                  <view class="su-tr">
+                    <view class="su-th"  wx:for="{{tableData.th}}" wx:key="index">{{item}}</view>
+                  </view>
+                  <!-- 表格内容 -->
+                  <block  wx:if="{{ tableData.td && tableData.td.length > 0}}">
+                    <view class="su-tr" wx:for="{{tableData.td}}" wx:key="index">
+                      <view class="su-td">{{item.index + 1}}</view>
+                      <view class="su-td">{{item.shopTypeName}}</view>
+                      <view class="su-td">{{item.proportion}}<text wx:if="{{item.proportion}}"/></view>
+                      <view class="su-td">{{item.deductionAmount}}</view>
+                    </view>
+                  </block>
+                </view>
+                <view wx:if="{{ tableData.td && tableData.td.length == 0 }}" class="table-data-null">暂无数据！</view>
+              </view>
+              <view class="instruction">说明：各品类分摊比例来源于本年度截止{{ orderDetail.endDate }}（考核结束日期）各品类累计销售额比例。</view>
+              <view class="sign">
+                <view class="hereby-inform"/>
+                <view class="signature">
+                  <view class="name">{{ orderDetail.salesCenterName }}</view>
+                  <view class="date">{{ orderDetail.noticeTime }}</view>
+                </view>
+              </view>
+            </view>
+        </view>
+        <view class="appeal-content">
+          <!--   申诉提交信息   -->
+          <view wx:if="{{pageType=='ISSUED' && appealBtnShow}}" class="appeal-information">
+
+            <!-- 如果是市场跑动类型的通知单。申诉原因显示，申诉原因、申诉减免缺口必填；原因说明非必填 -->
+            <!-- 如果不是市场跑动类型的。申诉原因不显示，申诉减免缺口必填；原因说明必填 -->
+<!--            <view class="msgItem" wx:if="{{orderDetail.noticeType == 'SCPD'}}" bindtap="handleComplaintReasonPop">-->
+<!--              <view>-->
+<!--                <text class="label">申诉原因</text>-->
+<!--                <text class="redXin">*</text>-->
+<!--              </view>-->
+<!--              <view class="grayFont">-->
+<!--                <view wx:if="{{formData.complaintReasonName}}" class="currVal">-->
+<!--                  <text>{{formData.complaintReasonName}}</text>-->
+<!--                  <van-icon name="arrow" class="location" />-->
+<!--                </view>-->
+<!--                <view wx:else class="holder">-->
+<!--                  <text>请选择</text>-->
+<!--                  <van-icon name="arrow" class="location" />-->
+<!--                </view>-->
+<!--              </view>-->
+<!--            </view>-->
+            <view class="msgItem-filed">
+              <text class="label">申诉减免缺口(个)</text>
+              <text class="redXin">*</text>
+              <view class="training-filed-item">
+                <van-field type="number" value="{{ formData.gapReduction }}" placeholder="请输入" input-align="right" cell-class="field-cell"  bind:change="ongapReductionChange" data-wpyongapreductionchange-a="{{$event}}"/>
+              </view>
+            </view>
+            <view class="calculate" wx:if="{{formData.gapReduction}}">
+              <view class="cal-gap">
+                <text>申诉后缺口：</text>
+                <text class="num">{{formData.gapAfterComplaintNum}}个</text>
+              </view>
+              <view class="cal-amount">
+                <text>实际考核金额：</text>
+                <text class="num">{{ formData.actualAssessmentAmount }}元</text>
+              </view>
+            </view>
+            <view class="msgItem-filed">
+              <text class="label">原因说明</text>
+              <text class="redXin">*</text>
+              <view class="training-filed-item">
+                <van-field value="{{ formData.reasonExplanation }}" placeholder="请输入" input-align="right" cell-class="field-cell"  bind:change="onReasonExplanationChange" data-wpyonreasonexplanationchange-a="{{$event}}"/>
+              </view>
+            </view>
+            <view class="explanation-tip">提示：请详细说明减免原因，比如：缺口门店、未跑动原因、未动销原因等。</view>
+            <view class="certifiedDocItem">
+              <text>证明文件</text>
+            </view>
+            <view>
+              <van-uploader max-count="3" accept="image" sizeType="compressed" file-list="{{ formData.fileList }}" bind:after-read="afterRead" bind:delete="deleteImg">
+                <view class="upload-customize">
+                  <text class="b-icon h-icon photograph"/>
+                  <text class="upload-text">拍照上传</text>
+                </view>
+              </van-uploader>
+            </view>
+          </view>
+
+          <!--   申诉结果待确认   -->
+          <block wx:if="{{pageType=='APPEALED'}}">
+            <!--   申诉信息   -->
+            <view class="appeal-information">
+              <view class="appeal-title">申诉信息</view>
+              <view class="appeal-cell">
+                <text class="label">申诉原因：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.appealReason) }}</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">原因说明：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.reasonExplain) }}</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">申诉减免缺口：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.appealDecreaseCount) }}个</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">同意减免缺口：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.agreeDecreaseCount) }}个</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">审批意见：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.appealCheckContent) }}</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">实际考核缺口：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.finalCount) }}个</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">实际考核金额：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.finalMoney) }}元</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">失败原因：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.fillReason) }}</text>
+              </view>
+            </view>
+          </block>
+
+          <!--   申诉中   -->
+          <block wx:if="{{pageType=='INAPPEAL'}}">
+            <!--   申诉流程   -->
+            <view class="appeal-information appeal-process-info">
+              <view class="appeal-title appeal-process-title">申诉流程</view>
+              <view class="appeal-process">
+                <view class="van-steps van-steps--horizontal">
+                  <view class="van-step__wrapper">
+                    <view wx:for="{{ steps }}" wx:key="index" class="van-hairline van-step van-step--horizontal">
+                      <view class="van-step__circle-container">
+                        <text wx:if="{{ index != active }}" class="b-icon {{item.icon}} van-step__circle {{item.isBorder ? 'icon-border' : ''}} {{ index < active ? 'activeColor' : '' }}"/>
+                        <text wx:else class="b-icon {{item.icon}} van-step__circle {{item.isBorder ? 'icon-border' : ''}} activeColor"/>
+                      </view>
+                      <view wx:if="{{ index != steps.length - 1 }}" class="van-step__line {{ index < active ? 'activeLineColor': '' }}"/>
+                      <view wx:if="{{ index != steps.length - 1 }}" class="b-icon icon-process-arrow van-step__line-icon {{ index < active ? 'activeLineIconColor': '' }}"/>
+                      <view class="van-step__title {{ index <= active ? 'activeTextColor': '' }}">
+                        <view class="{{  item.text.length > 6? 'more_text': '' }}">{{ item.text }}</view>
+                        <view>{{ item.desc }}</view>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+            <!--   申诉信息   -->
+            <view class="appeal-information">
+              <view class="appeal-title">申诉信息</view>
+              <view class="appeal-cell">
+                <text class="label">申诉原因：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.appealReason) }}</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">原因说明：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.reasonExplain) }}</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">申诉减免缺口：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.appealDecreaseCount) }}个</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">同意减免缺口：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.agreeDecreaseCount) }}个</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">审批意见：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.appealCheckContent) }}</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">实际考核缺口：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.finalCount) }}个</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">实际考核金额：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.finalMoney) }}元</text>
+              </view>
+            </view>
+          </block>
+
+          <!--   申诉详情   -->
+          <block wx:if="{{pageObj.noticeStatus=='CONFIRMED' || pageObj.noticeStatus=='APPEALCONFIRMED'}}">
+            <!--   申诉信息 只有申诉已确认才展示   -->
+            <view class="appeal-information" wx:if="{{pageType=='APPEALCONFIRMED'}}">
+              <view class="appeal-title">申诉信息</view>
+              <view class="appeal-cell">
+                <text class="label">申诉原因：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.appealReason) }}</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">原因说明：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.reasonExplain) }}</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">申诉减免缺口：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.appealDecreaseCount) }}个</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">同意减免缺口：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.agreeDecreaseCount) }}个</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">审批意见：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.appealCheckContent) }}</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">实际考核缺口：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.finalCount) }}个</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">实际考核金额：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.finalMoney) }}元</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">失败原因：</text>
+                <text class="value">{{ utils.removeIllegalStr(orderDetail.fillReason) }}</text>
+              </view>
+            </view>
+            <!--   确认信息   未申诉确认和申诉已确认都展示-->
+            <view class="appeal-information">
+              <view class="appeal-title">确认信息</view>
+              <view class="appeal-cell">
+                <text class="label">确认账号：</text>
+                <!-- <text class="value">{{ utils.removeIllegalStr(orderDetail.affirmAccount) }}</text> -->
+                <text class="value">{{ utils.removeIllegalStr(pageObj.affirmuCust) }}</text>
+              </view>
+              <view class="appeal-cell">
+                <text class="label">确认时间：</text>
+                <!-- <text class="value">{{ utils.removeIllegalStr(orderDetail.affirmTime) }}</text> -->
+                <text class="value">{{ utils.removeIllegalStr(pageObj.affirmTimeStr) }}</text>
+              </view>
+            </view>
+          </block>
+
+        </view>
+      </view>
+    </view>
+   </view>
+
+    <!--  未申诉  -->
+    <view class="order-detail-footer" wx:if="{{pageObj.noticeStatus=='ISSUED' && !appealBtnShow}}">
+      <view class="button-wrapper cancel-btn" bindtap="handleCancel" data-wpyhandlecancel-a="">
+        <view class="button-text">取消</view>
+      </view>
+      <view class="button-wrapper appeal-btn" bindtap="handleAppeal" data-wpyhandleappeal-a="">
+        <view class="button-text">申诉</view>
+      </view>
+      <view class="button-wrapper confirm-btn" bindtap="handleConfirm" data-wpyhandleconfirm-a="">
+        <view class="button-text">确认</view>
+      </view>
+    </view>
+
+    <!--  提交申诉  -->
+    <view class="order-detail-footer" wx:if="{{pageType=='ISSUED' && appealBtnShow}}">
+      <view class="button-wrapper cancel-btn" bindtap="handleCancelAppeal" data-wpyhandlecancelappeal-a="">
+        <view class="button-text">取消</view>
+      </view>
+      <view class="button-wrapper confirm-btn" bindtap="handleSubmitAppeal" data-wpyhandlesubmitappeal-a="">
+        <view class="button-text">提交申诉</view>
+      </view>
+    </view>
+
+    <!--  申诉失败或成功确认  -->
+    <view class="order-detail-footer" wx:if="{{pageType=='APPEALED'}}">
+      <view class="button-wrapper cancel-btn" bindtap="handleAppealFailCancel" data-wpyhandleappealfailcancel-a="">
+        <view class="button-text">取消</view>
+      </view>
+      <view class="button-wrapper confirm-btn" bindtap="handleAppealFailConfirm" data-wpyhandleappealfailconfirm-a="">
+        <view class="button-text">确认</view>
+      </view>
+    </view>
+    <van-toast id="van-toast"/>
+    <van-dialog id="van-dialog"/>
+
+    <!-- 申诉原因选择 -->
+    <van-popup show="{{ complaintReasonPopShow }}" closeable="closeable" position="bottom" custom-style="height: 570rpx" zIndex="400" bind:click-overlay="onClose">
+      <view class="item-inv">
+        <view class="item-inv-head">
+          <view class="item-inv-head-context">
+            <view class="item-inv-head-context-title">申诉原因</view>
+            <van-icon name="cross" class="item-inv-head-context-close" bindtap="onComplaintReasonPopClose"/>
+          </view>
+        </view>
+        <scroll-view scroll-y class="item-inv-scroll">
+          <view wx:for="{{ complaintReasonOptions }}" wx:key="{{ item.id }}" wx:for-item="item" class="item-inv-scroll-row" bindtap="chooseComplaintReason" data-wpychoosecomplaintreason-a="{{item}}">
+            <view data-key="{{ item.id }}" class="item-inv-scroll-row-desc {{ item.id === formData.complaintReasonId ? 'checked' : ''}}">
+              {{ item.name }}
+            </view>
+            <block wx:if="{{ item.id === formData.complaintReasonId }}">
+              <view class="b-icon icon-check item-inv-scroll-row-checked checked"/>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+  </view>

@@ -1,0 +1,1 @@
+function _isString(t){return"[object String]"===Object.prototype.toString.call(t)}module.exports=_isString;

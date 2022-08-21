@@ -1,0 +1,75 @@
+
+    <view class="container">
+        <!-- 时间选择弹窗开始 -->
+        <van-popup show="{{TimeFilterVisible}}" position="top" overlay="{{ true }}" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"  bind:close="onToggleFilterItem">
+        <view class="filter-container">
+            <block wx:for="{{timeList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                <view class="order-operation" bindtap="onSelectTime" data-wpyonselecttime-a="{{item.value}}" data-wpyonselecttime-b="{{item.label}}">
+                <view class="operation-text van-hairline--bottom">
+                    <view class="operation-status {{ beginDate === item.value ? 'active' : '' }}">{{item.label}}</view>
+                    <view  wx:if="{{ beginDate === item.value }}" class="b-icon icon-check operation-icon"/>
+                </view>
+                </view>
+            </block>
+        </view>
+        </van-popup>
+        <!-- 时间选择弹窗结束 -->
+        <!-- 状态选择弹窗开始 -->
+        <van-popup show="{{StatusFilterVisible}}" position="top" overlay="{{ true }}" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"  bind:close="onToggleFilterItem">
+        <view class="filter-container">
+            <block wx:for="{{statusList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                <view class="order-operation" bindtap="onSelectStatus" data-wpyonselectstatus-a="{{item.value}}" data-wpyonselectstatus-b="{{item.label}}">
+                <view class="operation-text van-hairline--bottom">
+                    <view class="operation-status {{ answerFlag === item.value ? 'active' : '' }}">{{item.label}}</view>
+                    <view  wx:if="{{ answerFlag === item.value }}" class="b-icon icon-check operation-icon"/>
+                </view>
+                </view>
+            </block>
+        </view>
+        </van-popup>
+        <!-- 状态选择弹窗结束 -->
+        <view class="head">
+            <view class="input-group">
+                <input class="input" placeholder="输入问题关键字" value="{{title}}" bind:change="onTitleChange"/>
+                <view class="btn" bindtap="onSearch">查询</view>
+            </view>
+        </view>
+
+        
+  <view class="header-tab">
+    <view class="left-btn">
+      <block  wx:for="{{ $headerTab$tabListNew }}">
+        <view class="btn-item {{ item.selectValue ? 'active' : '' }}" bindtap="$headerTab$changeTab" data-wpychangetab-a="{{item}}">
+          <text>{{ item.name }}</text>
+          <i wx:if="{{ $headerTab$showArrowIcon }}" class="b-icon iconxialajiantou"/>
+        </view>
+      </block>
+    </view>
+    <view class="right-btn"  wx:if="{{ $headerTab$showRightBtn }}" bindtap="$headerTab$onSideFilter">
+      <view class="line-shadow" wx:if="{{ $headerTab$showRightBtnLine }}"/>
+      <view class="side-filter-btn">
+        <text>筛选</text>
+        <i class="b-icon shaixuan"/>
+      </view>
+    </view>
+  </view>
+
+        <scroll-view bindscrolltolower="loadNextPage" scroll-y="true" class="problem-scroll">
+            <block wx:for="{{consultlist.consults}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <view class="item " bindtap="gotodetail" data-wpygotodetail-a="{{item.id}}">
+                <view class="item-content van-hairline--bottom">
+                    <view class="row">
+                        <view class="title {{ item.status === '已关闭' ? 'done' : ''}} van-ellipsis">[{{item.questionTypeName}}] {{item.title}}</view>
+                        <view class="status">{{item.status}}</view>
+                    </view>
+                    <view class="row">
+                        <view class="date">{{item.pubAt}}</view>
+                        <view wx:if="" class="btn">查看详情</view>
+                        <view wx:else class="btn">关闭</view>
+                    </view>
+                </view>
+            </view>
+            </block>
+        </scroll-view>
+      <van-toast id="van-toast"/>
+    </view>

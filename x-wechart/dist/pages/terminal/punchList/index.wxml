@@ -1,0 +1,117 @@
+
+  <view class="_7f3d76a">
+    <view class="_7f3d76a">
+      <view class="titleITemBlock _7f3d76a">
+        <view class="datitle _7f3d76a">
+          <view class="_7f3d76a">{{recodeList[0].storeName}}</view>
+        </view>
+        <view class="datitle1 _7f3d76a">
+          <view class="_7f3d76a">
+            <text class="iconfont _7f3d76a" style="color: #78f2d6;margin-right:10rpx"></text>
+            {{recodeList[0].storeAddress}}
+          </view>
+          <view bindtap="openTank" class="_7f3d76a">
+            <text class="iconfont _7f3d76a" style="font-size: 40rpx"></text>
+          </view>
+        </view>
+      </view>
+      <view class="baiseBlock _7f3d76a">
+        <view class="_7f3d76a">
+          <text class="wenzi _7f3d76a">次数</text>
+          <text class="_7f3d76a">{{signCishu.signCount}}</text>
+        </view>
+        <view class="_7f3d76a">
+          <text class="wenzi _7f3d76a">天数</text>
+          <text class="_7f3d76a">{{signCishu.signDay}}</text>
+        </view>
+      </view>
+      <view class="_7f3d76a">
+        <view class="itemDaka _7f3d76a">
+          <view class="_7f3d76a">打卡记录</view>
+          <view class="_7f3d76a">
+            <view bindtap="unqualifiedChange" class="_7f3d76a">
+              <text class="iconfont _7f3d76a"  wx:if="{{isUnqualified}}" style="font-size:27rpx;margin-right: 10rpx;color: #1ca496"></text>
+              <text class="iconfont _7f3d76a"  wx:else style="font-size:27rpx;margin-right: 10rpx;color: #0ba5a3"></text>
+              <text class="_7f3d76a">不合格</text>
+            </view>
+            <view bindtap="onChange" class="_7f3d76a">
+              <text class="iconfont _7f3d76a"  wx:if="{{checked}}" style="font-size:27rpx;margin-right: 10rpx;color: #1ca496"></text>
+              <text class="iconfont _7f3d76a" wx:else style="font-size:27rpx;margin-right: 10rpx;color: #0ba5a3"></text>
+              <text class="_7f3d76a">仅看自己</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view style="text-align: center;margin-bottom: 20rpx" wx:if="{{loading==true}}" class="_7f3d76a">
+        <van-loading type="spinner" class="_7f3d76a"/>
+      </view>
+      <scroll-view bindscrolltolower="tolower" bindscrolltoupper="upper" scroll-y="true" style="height: 93vh" class="_7f3d76a">
+        <navigator hover-class="none" wx:for="{{recodeList}}" wx:for-index="idx" wx:key="idx" url="/pages/terminal/punchMsg/index?id={{item.id}}" class="CardBox _7f3d76a">
+          <view class="shopItemMsg _7f3d76a">
+            <view class="fubiaotiColor _7f3d76a">
+              <view class="_7f3d76a">{{item.signAddress}}</view>
+              <view class="_7f3d76a">{{item.signTime }}</view> 
+              <image wx:if="{{item.xjResult == 'T'}}" class="qualified _7f3d76a" src="http://3s-static.hisense.com/wechat/1/14722429883/1644215714352_e50f16df1b0d4ee6a386fe5df801b043.png"/>
+              <image wx:if="{{item.xjResult == 'F'}}" class="qualified _7f3d76a" src="http://3s-static.hisense.com/wechat/1/14722429883/1644216494020_0107b4ee34c041da89336f25f7211db0.png"/>
+            </view>
+            <view class="_7f3d76a">
+              <block wx:if="{{item.img1[0].length>0}}" class="_7f3d76a">
+                <image wx:for="{{item.img1}}" wx:key="index" src="{{item}}" data-fatheridx="{{idx}}" data-arr="img1" data-current="{{item}}" class="imgBLock _7f3d76a"/>
+              </block>
+              <block wx:if="item.img2[0].length>0" class="_7f3d76a">
+                <image wx:for="{{item.img2}}" wx:key="index" src="{{item}}" data-fatheridx="{{idx}}" data-arr="img2" data-current="{{item}}" class="imgBLock _7f3d76a"/>
+              </block>
+              <block wx:if="{{item.img3[0].length>0}}" class="_7f3d76a">
+                <image wx:for="{{item.img3}}" wx:key="index" src="{{item}}" data-fatheridx="{{idx}}" data-arr="img3" data-current="{{item}}" class="imgBLock _7f3d76a"/>
+              </block>
+              <block wx:if="{{item.img4[0].length>0}}" class="_7f3d76a">
+                <image wx:for="{{item.img4}}" wx:key="index" src="{{item}}" data-fatheridx="{{idx}}" data-arr="img4" data-current="{{item}}" class="imgBLock _7f3d76a"/>
+              </block>
+              <block wx:if="{{item.img5[0].length>0}}" class="_7f3d76a">
+                <image wx:for="{{item.img5}}" wx:key="index" src="{{item}}" data-fatheridx="{{idx}}" data-arr="img5" data-current="{{item}}" class="imgBLock _7f3d76a"/>
+              </block>
+            </view>
+          </view>
+        </navigator>
+
+      </scroll-view>
+    </view>
+    <navigator url="/pages/terminal/addrecord/index" hover-class="none" class="xinzhenBtn _7f3d76a">巡店</navigator>
+<!--    //下面的弹出框-->
+    <van-action-sheet show="{{ show2 }}" overlay="true" close-on-click-overlay="true"  bind:close="onClose2" class="_7f3d76a">
+      <view class="tankuangBox _7f3d76a">
+        <view class="closeIcon _7f3d76a">
+          <view class="_7f3d76a"/>
+          <van-icon name="cross" bindclick="closeTankuan" color="#00b7b3" size="45rpx" custom-style="text-align:right;display:inlin-block" class="_7f3d76a"/>
+        </view>
+        <block wx:if="{{storeRenList.length>0}}" class="_7f3d76a">
+          <block wx:for="{{storeRenList}}" wx:key="index" class="_7f3d76a">
+            <view class="blockItemxx _7f3d76a" wx:if="{{item.tel!=''}}">
+
+                <view class="_7f3d76a">
+                  <view class="_7f3d76a">
+                    <text class="mendian _7f3d76a">{{item.positionName}}</text>
+                    <!--              <text class="gongshi">(海信视像科技青岛分公司)</text>-->
+                  </view>
+                  <view class="gonshiName _7f3d76a">
+                    <text class="_7f3d76a">{{item.name}}</text>
+                    <text class="left10 _7f3d76a">{{item.tel1}}</text>
+                  </view>
+                </view>
+                <view class="dianhauBox _7f3d76a">
+                  <van-icon name="phone" color="#ffb828" size="40rpx" bindtap="telphontFun" data-tel="{{item.tel}}" class="_7f3d76a"/>
+                </view>
+
+            </view>
+          </block>
+
+        </block>
+       <block wx:else class="_7f3d76a">
+         <view style="text-align: center" class="_7f3d76a">暂无电话信息</view>
+       </block>
+
+
+      </view>
+      </van-action-sheet>
+
+  </view>

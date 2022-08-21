@@ -1,0 +1,12 @@
+<!--miniprogram/custom-tab-bar/index.wxml-->
+<cover-view class="tab-bar-new" wx:if='{{isShowTabBar}}'>
+  <cover-view class="tab-bar-inner">
+    <cover-view class="tab-bar-border"></cover-view>
+    <cover-view class="tab-bar-wrapper">
+      <cover-view wx:for="{{ list }}" wx:key="index" class="tab-bar-item" data-path="{{ item.pagePath }}" data-index="{{ index }}" bind:tap="switchTab">
+        <cover-image class="item-img {{ index === 2 ? 'big-img' : '' }}" src="{{ selected === index ? item.selectedIconPath : item.iconPath }}"></cover-image>
+        <cover-view class="item-text" wx:if="{{ index !== 2 }}" style="color: {{ selected === index ? item.selectedColor : item.color }}">{{ item.text }}</cover-view>
+      </cover-view>
+    </cover-view>
+  </cover-view>
+</cover-view>

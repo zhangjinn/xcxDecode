@@ -1,0 +1,186 @@
+<template>
+  <view class="order">
+    <view class="scroll-wrapper">
+      <scroll-view
+        class="card-scroll"
+        scroll-y
+      >
+      <view class="scroll-wrapper-inner">
+        <view class="return-goods-header-card">
+          <view class="return-goods-header-info">
+            <view class="return-goods-header-info-inner">
+              <view class="return-info">
+                <view class="name-box">
+                  <view class="tip">退货信息</view>
+                </view>
+                <view class="return-back" @tap="returnBack">更改 <van-icon name="arrow" class="location" /></view>
+              </view>
+              <view class="desc">{{ orderdetail.customerName }}</view>
+              <view class="desc">地址：{{ orderdetail.addressDesc }}</view>
+            </view>
+          </view>
+          <view class="document-info">
+            <view class="document-info-inner">
+              <view class="document-desc">
+                <view><text class="label">销售单号：</text>{{ orderdetail.refNum }}</view>
+              <!-- documentType="retail"->零售订单；documentType='normal'->代理发起-->
+                <view wx:if="{{orderdetail.documentType === 'normal'}}" class="status">代理发起</view>
+              </view>
+              <view class="document-desc">
+                <view><text class="label">出库仓库：</text>{{ orderdetail.outWarehouseList }}</view>
+              </view>
+              <view class="document-desc">
+                <!--  非零售单时为空  -->
+                <view><text class="label">所属门店：</text>{{ orderdetail.storeName }}</view>
+              </view>
+              <view class="document-desc">
+                <view><text class="label">单据日期：</text>{{ orderdetail.documentDate }}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="form-info">
+          <view class="msgItem-filed">
+            <text class="label">备注</text>
+            <view class="training-filed-item">
+              <van-field
+                value="{{ formData.remark }}"
+                disabled
+                data-key="remark"
+                placeholder="请输入"
+                input-align="right"
+                cell-class="field-cell"
+                bind:change="onRemarkChange({{$event}})"
+              />
+            </view>
+          </view>
+        </view>
+        <view class="details-title">明细信息</view>
+        <repeat for="{{orderdetail.itemList}}" item="item" index="itemIndex">
+          <view class="details-wrapper">
+            <view class="details-info">
+              <view class="product-name">{{ item.model }}</view>
+              <view class="product-num">
+                <text>退货数量：{{ item.borderedQty }}</text>
+                <text>已入库数量：{{ item.shippedBqty }}</text>
+              </view>
+            </view>
+            <repeat for="{{item.outItems}}" key="order_detail_item_{{itemIndex}}_out_{{outIndex}}" item="outItem" index="outIndex">
+              <view class="details-list">
+                <view class="order-detail-item-inner-info">
+                  <view class="msgItem" data-title="仓库" data-key="warehouse"  data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}">
+                    <view>
+                      <text class="label">仓库</text>
+                    </view>
+                    <view class="grayFont">
+                      <view wx:if="{{outItem.warehouse.name}}" class="currVal">
+                        <text>{{outItem.warehouse.name}}</text>
+<!--                        <van-icon name="arrow" class="location" />-->
+                      </view>
+<!--                      <view wx:else class="holder">-->
+<!--                        <text>请选择</text>-->
+<!--                        <van-icon name="arrow" class="location" />-->
+<!--                      </view>-->
+                    </view>
+                  </view>
+                  <view  class="detail-item-num">
+                    <view class="item-info-line-out-quantity">正品退货数量</view>
+                    <view class="item-info-line-out-quantity-input">
+                      <van-stepper
+                        integer
+                        value="{{outItem.bactualQty}}"
+                        min="0"
+                        max="{{item.maxQty}}"
+                        custom-class="order-wrapper-stepper"
+                        input-class="cart-input-class"
+                        plus-class="cart-action-class"
+                        minus-class="cart-action-class"
+                        data-key="bactualQty"
+                        data-item-index="{{itemIndex}}"
+                        data-out-index="{{outIndex}}"
+                        bind:change="onShippedBqtyChg"
+                        bind:plus="onShippedBqtyChg"
+                        bind:minus="onShippedBqtyChg"
+                      />
+                    </view>
+                  </view>
+                  <view  class="detail-item-num">
+                    <view class="item-info-line-out-quantity">残次退货数量</view>
+                    <view class="item-info-line-out-quantity-input">
+                      <van-stepper
+                        integer
+                        value="{{outItem.defectiveQty}}"
+                        min="0"
+                        max="{{item.maxQty}}"
+                        custom-class="order-wrapper-stepper"
+                        input-class="cart-input-class"
+                        plus-class="cart-action-class"
+                        minus-class="cart-action-class"
+                        data-key="defectiveQty"
+                        data-item-index="{{itemIndex}}"
+                        data-out-index="{{outIndex}}"
+                        bind:change="onShippedBqtyChg"
+                        bind:plus="onShippedBqtyChg"
+                        bind:minus="onShippedBqtyChg"
+                      />
+                    </view>
+                  </view>
+                  <view class="msgItem-filed return-price">
+                    <text class="label">退货价格(元)</text>
+                    <view class="training-filed-item">
+                      <van-field
+                        value="{{outItem.bprice}}"
+                        disabled
+                        placeholder="请输入"
+                        input-align="right"
+                        cell-class="field-cell"
+                      />
+                    </view>
+                  </view>
+                  <view class="order-detail-item-out-info-footer">
+                    <view class="footer-handle-item subtotal">
+                      <text>小计：¥{{ outItem.subtotal }}</text>
+                    </view>
+                    <view class="footer-handle-item remove" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}" @tap="onRemoveOutItem">
+                      <i class="b-icon shanchu footer-remove"></i>
+                      <text>删除</text>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </repeat>
+            <view wx:if="{{ item.outItems.length === 0 }}" class="order-detail-item-out-add" data-item-index="{{itemIndex}}" data-type="add" @tap="jumpClick">
+              <i class="b-icon icon-add out-add"></i>
+              <text class="out-add-text">添加仓库信息</text>
+            </view>
+          </view>
+        </repeat>
+      </view>
+      </scroll-view>
+    </view>
+    <view class="footer-wrapper">
+    <!--  零售单不显示驳回按钮    -->
+      <view wx:if="{{orderdetail.documentType!=='retail'}}" class="handle-footer turn-down" @tap="onTurnDown">驳回</view>
+      <view class="handle-footer" @tap="onInitSubmit">确认入库</view>
+    </view>
+    <!-- 选择列表弹框 -->
+    <popupCustomize
+      :options.sync="warehouseOptions"
+      :selectedOption.sync="popSelectedOption"
+      :title.sync="popTitle"
+      @onSelect.user="onSelect"
+    />
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<style lang="less">
+.msgItem-filed{
+  .van-cell::after{
+    left: -8px;
+    border-bottom-width: 0;
+  }
+}
+</style>
+<script lang="typescript" src="./index.ts" ></script>

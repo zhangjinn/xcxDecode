@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),curryN=require("./curryN.js"),useWith=_curry2(function(r,e){return curryN(e.length,function(){for(var t=[],u=0;u<e.length;)t.push(e[u].call(this,arguments[u])),u+=1;return r.apply(this,t.concat(Array.prototype.slice.call(arguments,e.length)))})});module.exports=useWith;

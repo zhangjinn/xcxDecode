@@ -1,0 +1,244 @@
+<template>
+  <view class="order">
+
+    <!--调拨录入基本信息-->
+    <view class="order-scroll">
+      <view class="free-shipping-tip">{{ freeShippingTip }}</view>
+      <view class="order-scroll-head">
+        <view class="item-row">
+          <view class="item-row-left">
+            单据日期
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-note">
+              {{sysDate}}
+            </view>
+          </view>
+        </view>
+        <view class="item-row" @tap="openChooseFiBook">
+          <view class="item-row-left">
+            销售组织
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory}">
+              {{ fiBook.name}}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+          </view>
+        </view>
+        <view class="item-row" @tap="openChoose('warehousesOutList', 'gicOutWrehouse', '移出仓库')">
+          <view class="item-row-left">
+            移出仓库
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory}">
+              {{ gicOutWrehouse.name}}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+          </view>
+        </view>
+        <view class="item-row" @tap="openChoose('warehousesInList', 'gicInWrehouse', '移入仓库')">
+          <view class="item-row-left">
+            移入仓库
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory">
+              {{ gicInWrehouse.name }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+          </view>
+        </view>
+        <view class="item-row" @tap="openChoose('deliveryMode', 'deliveryMethod', '配送方式')">
+          <view class="item-row-left">
+            配送方式
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory {{ deliveryMethod.id ? '' : 'placeholder' }}">
+              {{ deliveryMethod.name }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+          </view>
+        </view>
+        <view class="item-row" @tap="openChoose('addressList', 'allotAddress', '收货地址')">
+          <view class="item-row-left">
+            收货地址
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-inventory {{ allotAddress.id ? '' : 'placeholder' }}">
+              {{ allotAddress.name }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+          </view>
+        </view>
+
+        <view class="item-row">
+          <view class="item-row-left">
+            收货联系人
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-note">
+              <van-field
+                value="{{ customerName }}"
+                placeholder="请填写收货联系人"
+                border="{{ false }}"
+                input-align="right"
+                bind:change="onCustomerNameChange"
+                class="dms-order-note"
+              />
+            </view>
+          </view>
+        </view>
+        <view class="item-row">
+          <view class="item-row-left">
+            联系电话
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-note">
+              <van-field
+                value="{{ customerPhone }}"
+                placeholder="请填写联系电话"
+                border="{{ false }}"
+                input-align="right"
+                bind:change="onCustomerPhoneChange"
+                class="dms-order-note"
+              />
+            </view>
+          </view>
+        </view>
+        <view class="item-row">
+          <view class="item-row-left">
+            备注
+          </view>
+          <view class="item-row-right">
+            <view class="item-row-right-note">
+              <van-field
+                value="{{ note }}"
+                placeholder="请填写备注"
+                border="{{ false }}"
+                input-align="right"
+                bind:change="onNoteChange"
+                class="dms-order-note"
+              />
+            </view>
+          </view>
+        </view>
+      </view>
+      <order :out.sync="sendInventoryInfo" :outInv.sync= "outInv" :orgId.sync= "fiBook" :isDisabled.sync="isDisabled"/>
+    </view>
+    <view class="check-allocation-ratio" @tap="handleCheckAllocationRatio">查看调拨比例</view>
+    <van-submit-bar
+      button-text="提交并出库"
+      custom-class="order-bottom"
+      button-class-container="dms-order-bottom-button-save"
+      button-class="dms-order-bottom-button-save-submit"
+      bind:submit="submit"
+    >
+      <!--<view class="order-bottom-button-temp" @tap="cache">
+        暂存
+      </view>-->
+    </van-submit-bar>
+
+    <!--下拉框-->
+    <van-popup
+      show="{{ popVisible }}"
+      closeable
+      position="bottom"
+      custom-style="height: 570rpx"
+      bind:click-overlay="onClose"
+    >
+    <view class="order-inv">
+      <view class="order-inv-head">
+        <view class="order-inv-head-context">
+          <view class="order-inv-head-context-title">{{ popTitle }}</view>
+        <van-icon name="cross" class="order-inv-head-context-close" bindtap="onClose" />
+        </view>
+      </view>
+      <scroll-view scroll-y class="order-inv-scroll">
+        <view wx:for="{{ popList }}" wx:key="id" item="item" class="order-inv-scroll-row" data-key="{{ item.id }}" data-index="{{ index }}" bindtap="onChoose">
+          <view class="order-inv-scroll-row-desc {{ item.id === compareInfo.id ? 'checked' : ''}}">
+            {{ item.name }}
+          </view>
+          <block wx:if="{{ item.id === compareInfo.id }}">
+            <view class="b-icon icon-check order-inv-scroll-row-checked checked">
+            </view>
+          </block>
+        </view>
+
+      </scroll-view>
+    </view>
+    </van-popup>
+
+    <!-- 销售组织 -->
+    <van-popup
+      show="{{ popFiBookVisible }}"
+      closeable
+      position="bottom"
+      custom-style="height: 570rpx"
+      bind:click-overlay="onCloseFiBook"
+    >
+      <view class="order-inv">
+        <view class="order-inv-head">
+          <view class="order-inv-head-context">
+            <view class="order-inv-head-context-title">销售组织</view>
+            <van-icon name="cross" class="order-inv-head-context-close" bindtap="onCloseFiBook" />
+          </view>
+        </view>
+        <scroll-view scroll-y class="order-inv-scroll">
+          <view wx:for="{{ fibookList }}" wx:key="id" item="item" class="order-inv-scroll-row" data-key="{{ item.id }}" data-name="{{ item.name }}" bindtap="onChooseFiBook">
+            <view class="order-inv-scroll-row-desc {{ item.id === fiBook.id ? 'checked' : ''}}">
+              {{ item.name }}
+            </view>
+            <block wx:if="{{ item.id === fiBook.id }}">
+              <view class="b-icon icon-check order-inv-scroll-row-checked checked">
+              </view>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+
+    <!-- 调拨比例 -->
+    <van-popup
+      show="{{ popAllocationRatioVisible }}"
+      closeable
+      position="bottom"
+      custom-style="height: 860rpx"
+      bind:click-overlay="onCloseAllocationRatio"
+    >
+      <view class="order-inv allocation-inv">
+        <view class="order-inv-head allocation-head">
+          <view class="order-inv-head-context">
+            <view class="order-inv-head-context-title">调拨比例</view>
+            <van-icon name="cross" class="order-inv-head-context-close" bindtap="onCloseAllocationRatio" />
+          </view>
+        </view>
+        <scroll-view scroll-y class="order-inv-scroll allocation-scroll">
+            <view class="allocation-ratio-box">
+              <view class="allocation-ratio-item" wx:for={{allocationRatioList}} wx:key="index" wx:for-item="item">
+                <view class="allocation-ratio-title">{{ item.title }}</view>
+                <view class="allocation-ratio-container">
+                  <view wx:for="{{item.content}}" wx:for-item="child" class="allocation-ratio-info">
+                    <view class="org"><text class="org-txt">{{child.orgName}}</text></view>
+                    <view class="statistics">
+                      <view class="statistics-txt">销售出库台数：{{ child.salesCount }}</view>
+                      <view class="statistics-txt">调拨台数：{{ child.transCount }}</view>
+                      <view class="statistics-txt">总数量：{{ child.total }}</view>
+                      <view class="statistics-txt">当前比例：{{ child.transRate }}</view>
+                      <view class="statistics-txt">系统限制比例：{{ child.availableMaxTransRate }}</view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+              <view class="allocation-ratio-tip">提示：该数据每天24点更新</view>
+            </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-dialog id="van-dialog" />
+    <address />
+    <van-toast id="van-toast" />
+  </view>
+
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

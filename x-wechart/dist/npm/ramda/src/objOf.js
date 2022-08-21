@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),objOf=_curry2(function(r,u){var e={};return e[r]=u,e});module.exports=objOf;

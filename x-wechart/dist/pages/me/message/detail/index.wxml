@@ -1,0 +1,42 @@
+
+  <view class="container _a4b5d70">
+    
+  <view class="empty-data _a4b5d70" wx:if="{{ messageList.length == 0 }}">
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+    <scroll-view  wx:else bindscrolltolower="loadNextPage" class="container-scroll _a4b5d70" scroll-y>
+      <block class="_a4b5d70" wx:for="{{messageList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="item _a4b5d70">
+          <view class="item-title _a4b5d70">
+            <view class="row _a4b5d70">
+              <view class="title _a4b5d70">
+                {{ item.title }}
+                <view wx:if="{{item.status == '0' }}" class="reddot _a4b5d70"/>
+              </view>
+              <!-- <view class="status">
+                {{ item.status }}
+              </view> -->
+            </view>
+            <view class="row _a4b5d70" style="padding-bottom: 32rpx">
+              <view class="date _a4b5d70">
+                {{ item.createdDate }}
+              </view>
+            </view>
+          </view>
+          <view class="item-content van-hairline--bottom _a4b5d70">
+            <view class="content _a4b5d70">
+              {{ item.content || ''}}
+            </view>
+          </view>
+          <view wx:if="{{ isCanJump }}" bindtap="viewDetail" class="item-foot _a4b5d70" data-wpyviewdetail-a="{{item.sourceId}}" data-wpyviewdetail-b="{{item.typeCode}}" data-wpyviewdetail-c="{{item.id}}" data-wpyviewdetail-d="{{item.orgCode}}">
+            <view class="card-footer-handle _a4b5d70">查看详情</view>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+    <van-toast id="van-toast" class="_a4b5d70"/>
+  </view>

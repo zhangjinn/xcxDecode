@@ -1,0 +1,8 @@
+<view class="custom-group-radio">
+<view wx:for="{{ options }}" class="custom-radio" data-option="{{ item }}" bindtap="onRadioChange">
+  <view class="icon-border {{activeItem.id == item.id ? 'radio-active-border' : ''}}">
+    <view class="icon-round {{activeItem.id == item.id ? 'radio-active-round' : ''}}"></view>
+  </view>
+  <text class="radio-label">{{ item.name }}</text>
+</view>
+</view>

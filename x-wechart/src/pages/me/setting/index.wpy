@@ -1,0 +1,26 @@
+<template>
+  <view class="setting">
+    <van-popup show="{{bindAccountVisible}}" bind:close="toggleBindAccount">
+      <view class="wechat-popup">
+        <view class="wechat-popup-actions">
+          <view class="wechat-popup-actions-title">请选择绑定方式</view>
+          <van-button @tap="chooseLoginType('account')" custom-class="auth-vant-btn" color="#00AAA6" square="{{true}}" block="{{true}}">密码绑定</van-button>
+          <van-button @tap="chooseLoginType('mobile')" custom-class="auth-vant-btn" color="#00AAA6" square="{{true}}" block="{{true}}">验证码绑定</van-button>
+        </view>
+      </view>
+    </van-popup>
+    <view class="setting-list">
+      <van-cell custom-class="setting-custom" title="隐私协议" is-link bind:click="goPrivacyPolicy"/>
+      <van-cell custom-class="setting-custom" title="账户注销" is-link bind:click="accountCancellation"/>
+      <van-cell custom-class="setting-custom" title="绑定账号" is-link bind:click="toggleBindAccount"/>
+      <van-cell custom-class="setting-custom" title="默认账号设置" is-link link-type="navigateTo" url="/pages/me/defaultaccount/index"/>
+      <van-cell custom-class="setting-custom setting-custom-last" title="解绑账号" is-link bind:click="onUnbind"/>
+    </view>
+    <view class="setting-logout">
+      <view class="logout-btn" @tap="logout">退出登录</view>
+    </view>
+    <van-toast id="van-toast"/>
+  </view>
+</template>
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts"></script>

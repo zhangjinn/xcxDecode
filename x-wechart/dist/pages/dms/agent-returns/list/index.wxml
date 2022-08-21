@@ -1,0 +1,52 @@
+
+  <view class="order _a31f3ee">
+    <view class="return-header _a31f3ee">
+      <van-search custom-class="header-search" shape="round" use-action-slot="use-action-slot" use-left-icon-slot="{{ true }}" leftSearchIconSow="{{ false }}" placeholder="请输入销售单号/退货单号/客户信息" placeholder-style="color: #AAAAAA; font-size: 28rpx;"  bind:change="onChange" class="_a31f3ee">
+        <view slot="label" class="search-left-icon _a31f3ee">
+          <i class="b-icon shouyesousuo _a31f3ee"/>
+        </view>
+        <view slot="action" bind:tap="onClick" class="_a31f3ee">搜索</view>
+      </van-search>
+    </view>
+    <view class="scroll-wrapper _a31f3ee">
+      <scroll-view  wx:if="{{ msgList && msgList.length }}" class="card-scroll _a31f3ee" scroll-y enable-back-to-top="enable-back-to-top" scroll-top="{{ scrollTop }}" bindscroll="onScroll" bindscrolltolower="onGetOrderListNext">
+        <block class="_a31f3ee" wx:for="{{ msgList }}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="card-item _a31f3ee">
+            <view class="card-item-header _a31f3ee">
+              <view class="code _a31f3ee">销售单号：{{ item.documentNum }}</view>
+              <!-- 退货状态 returned已退货  unreturn未退货  part_returned部分退货-->
+              <view wx:if="{{item.returnStatusName && item.returnStatus==='returned'}}" class="tip returned _a31f3ee">{{ item.returnStatusName }}</view>
+              <view wx:if="{{item.returnStatusName && item.returnStatus==='unreturn'}}" class="tip not-returned _a31f3ee">{{ item.returnStatusName }}</view>
+              <view wx:if="{{item.returnStatusName && item.returnStatus==='part-returned'}}" class="tip partial-return _a31f3ee">{{ item.returnStatusName }}</view>
+            </view>
+            <view class="card-item-container _a31f3ee">
+              <view class="org-box _a31f3ee" wx:if="{{ item.orgName }}"><text class="org _a31f3ee">{{ item.orgName }}</text></view>
+              <view class="desc _a31f3ee"><text class="_a31f3ee">客户名称：{{ item.customerName }}</text></view>
+              <view wx:if="{{ item.returnNum }}" class="desc return-num _a31f3ee">
+                <text wx:if="{{ item.returnNum }}" class="_a31f3ee">销售退货单号：{{ item.returnNum }}</text>
+                <text class="status _a31f3ee" wx:if="{{ item.returnOrderStatusName }}">{{item.returnOrderStatusName}}</text>
+              </view>
+              <view class="desc _a31f3ee"><text class="_a31f3ee">单据日期：{{ item.documentDate }}</text></view>
+              <view class="desc _a31f3ee"><text class="_a31f3ee">已退数量：{{ item.totalReturnedQty }}</text></view>
+              <view class="desc _a31f3ee"><text class="_a31f3ee">销售数量：{{ item.totalNum }}</text></view>
+            </view>
+            <view class="card-item-footer _a31f3ee">
+              <view class="card-footer-handle _a31f3ee" data-item="{{ item }}" bindtap="viewDetails">查看详情</view>
+              <view wx:if="{{item.canReturn === '1'}}" class="card-footer-handle _a31f3ee" data-item="{{ item }}" bindtap="returnInitiation">退货发起</view>
+              <view wx:if="{{item.canReturnInbound === '1'}}" class="card-footer-handle _a31f3ee" data-item="{{ item }}" bindtap="returnWarehousing">退货入库</view>
+            </view>
+          </view>
+        </block>
+      </scroll-view>
+      
+  <view class="empty-data _a31f3ee" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+    </view>
+    <van-toast id="van-toast" class="_a31f3ee"/>
+    <van-dialog id="van-dialog" class="_a31f3ee"/>
+  </view>

@@ -1,0 +1,55 @@
+
+  <view class="dakaBox _017ae43">
+    <view class="_017ae43">
+      <view class="_017ae43">门店综合评价</view>
+      <view class="table _017ae43">
+        <view class="hanBox titleBgc _017ae43">
+          <view class="_017ae43">指标</view>
+          <view class="_017ae43">本店实际值</view>
+          <view class="_017ae43">区域平均值</view>
+          <view class="_017ae43">区域最大值</view>
+        </view>
+        <view class="hanBox block2Bgc _017ae43">
+          <view class="_017ae43">
+            <view class="_017ae43">规模</view>
+            <view class="_017ae43">(万元)</view>
+          </view>
+          <view class="_017ae43">{{storeMsg.storeScale}}</view>
+          <view class="_017ae43">{{storeMsg.avageScale}}</view>
+          <view class="_017ae43">{{storeMsg.maxScale}}</view>
+        </view>
+        <view class="hanBox block1Bgc _017ae43">
+          <view class="_017ae43">
+            <view class="_017ae43">坪效</view>
+            <view class="_017ae43">(万元/平米)</view>
+          </view>
+          <view class="_017ae43">{{storeMsg.storeSqmRatio}}</view>
+          <view class="_017ae43">{{storeMsg.avageSqmRatio}}</view>
+          <view class="_017ae43">{{storeMsg.maxHighRatio}}</view>
+        </view>
+        <view class="hanBox block2Bgc _017ae43">
+          <view class="_017ae43">费率</view>
+          <view class="_017ae43">{{storeMsg.storeCostRatio}}</view>
+          <view class="_017ae43">{{storeMsg.avageCostRatio}}</view>
+          <view class="_017ae43">{{storeMsg.maxCostRatio}}</view>
+        </view>
+        <view class="hanBox block1Bgc _017ae43">
+          <view class="_017ae43">高端占比</view>
+          <view class="_017ae43">{{storeMsg.storeHighRatio}}%</view>
+          <view class="_017ae43">{{storeMsg.avageHighRatio}}%</view>
+          <view class="_017ae43">{{storeMsg.maxHighRatio}}%</view>
+        </view>
+      </view>
+    </view>
+    <view class="introduce _017ae43">
+      <view class="_017ae43">数据时间及范围:</view>
+      <view class="paddingLeft20 _017ae43">2019年同分公司范围内，相同渠道的门店。</view>
+      <view class="_017ae43">指标定义:</view>
+      <view class="paddingLeft20 _017ae43">
+        <view class="_017ae43">1.规模：销售额</view>
+        <view class="_017ae43">2.高端占比：高端型号销售额/所有型号销售额</view>
+        <view class="_017ae43">3.费率：装修及场地费用/销售额</view>
+        <view class="_017ae43">4.坪效：销售额/展厅面积</view>
+      </view>
+    </view>
+  </view>

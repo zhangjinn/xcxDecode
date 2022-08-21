@@ -1,0 +1,366 @@
+<template>
+  <view class="order">
+    <view
+      class="order-scroll"
+    >
+      <view class="sign">
+        <view class="text">数量有限,欲购从速~</view>
+      </view>
+      <view wx:if="{{order.isFenXiao == 'Y'}}" class="order-agent">
+        <view class="agent-name">
+          <view class="text">上级代理</view>
+        </view>
+        <view wx:if="{{order.agentArr.agentCode}}" class="merchant-code">商家编码: {{order.agentArr.agentCode}}</view>
+        <view wx:if="{{order.agentArr.agentName}}" class="merchant-address">{{order.agentArr.agentName}}</view>
+      </view>
+      <order wx:if="{{orderType=='rengou'}}" orgName="orgName"/>
+      <order3 wx:if="{{orderType=='activity'}}" orgName="orgName"/>
+      <order2 wx:if="!orderType" orgName="orgName"/>
+      <van-cell wx:if="{{orgList.length>0}}" title-class="order-title-class" title="供应商" is-link="true" bind:click="openSelShow" class="org-wrap">
+        <view class="order-common-value gray">{{orgName}}</view>
+      </van-cell>
+
+      <!-- 直降、后返 -->
+      <view class="order-items" wx:if="{{order.items && (order.items[0].discountTypeId == '90601' || order.items[0].discountTypeId == '90602')}}">
+        <view class="series-label">
+          <view class="org">
+            <view class="item-body-content-title-Type normalLabel">
+              {{ order.items[0].discountTypeName}}
+            </view>
+            <view class="item-body-content-title-org">
+              <text wx:if="{{orgList.length>0}}">{{ orgName }}</text>
+              <text wx:else>{{ order.items[0].fwOrgName }}</text>
+            </view>
+          </view>
+        </view>
+        <repeat for="{{order.items}}" key="{{id}}">
+          <view class="order-items-item van-hairline--bottom">
+            <navigator url="/pages/goods/item/index?code={{item.productId}}&orgId={{item.orgId}}&orgCode={{item.orgCode}}">
+              <img class="img" src="{{item.src}}" errSrc="{{item.errImg}}" />
+            </navigator>
+            <view class="content">
+              <view class="content-title">
+                <view class="product-name">
+                  {{item.productName}}
+                </view>
+              </view>
+              <view class="content-price">
+                <view class="price-item">
+                  <text class="price-symbol">¥</text>
+                  <text class="price-num">{{utils.formatPrice(item.price)}}</text>
+                  <text class="price-color" wx:if="{{item.color}}">({{item.color}})</text>
+                </view>
+              </view>
+              <view class="bottom-block-view-box">
+                <view class="bottom-block-view">
+                  <text class="desc" wx:if="{{item.priceGroupName}}">{{ item.priceGroupName }}</text>
+                  <text class="desc" wx:if="{{item.deposit != null}}">定金￥{{ item.deposit }}</text>
+                  <text class="desc" wx:if="{{item.rebateMoney != null}}">返利￥{{ item.rebateMoney }}</text>
+                </view>
+                <view class="fall-stepper-box">
+                  <van-stepper
+                    disabled="{{!userActId ? true :false}}"
+                    integer="{{true}}"
+                    value="{{item.quantity}}"
+                    min="1"
+                    max="{{item.maxQty}}"
+                    bind:change="onShippedBqtyChg"
+                    custom-class="order-stepper"
+                    input-class="cart-input-class"
+                    plus-class="cart-action-class"
+                    minus-class="cart-action-class"
+                  />
+                </view>
+              </view>
+            </view>
+          </view>
+        </repeat>
+      </view>
+
+      <!-- 套购 -->
+      <view class="order-items tg" wx:if="{{order.items && order.items[0].discountTypeId == '90603'}}">
+        <view class="series-label">
+          <view class="org">
+            <view class="item-body-content-title-Type normalLabel">
+              {{ order.items[0].discountTypeName }}
+            </view>
+            <view class="item-body-content-title-org">
+              <text wx:if="{{orgList.length>0}}">{{ orgName }}</text>
+              <text wx:else>{{ order.items[0].fwOrgName }}</text>
+            </view>
+          </view>
+        </view>
+        <repeat for="{{order.items}}" key="{{id}}" index="index">
+          <view class="order-items-item van-hairline--bottom">
+            <navigator url="/pages/goods/item/index?code={{item.productId}}&orgId={{item.orgId}}&orgCode={{item.orgCode}}">
+              <img class="img" src="{{item.src}}" errSrc="{{item.errImg}}" />
+            </navigator>
+            <view class="content">
+              <view class="content-title">
+                <view class="product-name">
+                  {{item.productName}}
+                </view>
+              </view>
+              <view class="content-price">
+                <view class="price-item">
+                  <text class="price-symbol">¥</text>
+                  <text class="price-num">{{utils.formatPrice(item.price)}}</text>
+                  <text class="price-color" wx:if="{{item.color}}">({{item.color}})</text>
+                </view>
+                <view class="content-count">x{{item.packageNum}}</view>
+              </view>
+
+              <view class="bottom-block-view">
+                <text class="desc" wx:if="{{item.priceGroupName}}">{{ item.priceGroupName }}</text>
+                <text class="desc" wx:if="{{item.deposit != null}}">定金￥{{ item.deposit }}</text>
+                <text class="desc" wx:if="{{item.rebateMoney != null}}">返利￥{{ item.rebateMoney }}</text>
+              </view>
+
+            </view>
+          </view>
+        </repeat>
+        <view class="step-box">
+           <van-stepper
+            class="tg-step"
+            disabled=""
+            integer="{{true}}"
+            value="{{order.items[0].defaultNum}}"
+            min="1"
+            max="{{order.items[0].maxQty/order.items[0].packageNum}}"
+            bind:change="onStepTg"
+            custom-class="order-stepper"
+            input-class="cart-input-class"
+            plus-class="cart-action-class"
+            minus-class="cart-action-class"
+          />
+        </view>
+      </view>
+
+      <!-- 组合购 -->
+      <view wx:if="{{ order.items && order.items[0].discountTypeId == '90605'}}" class="order-items">
+        <repeat for="{{order.items}}" key="id" index="index">
+          <view class="modelSeriesHeader">
+            <view>{{ item.productGroupRemark }}</view>
+            <view class="series-label">
+              <view class="org" wx:if="{{index==0}}">
+                <view class="item-body-content-title-Type combinationPurchaseLabel">
+                  {{item.discountTypeName}}
+                </view>
+                <view class="item-body-content-title-org">
+                  <text wx:if="{{orgList.length>0}}">{{ orgName }}</text>
+                  <text wx:else>{{ item.fwOrgName }}</text>
+                </view>
+              </view>
+              <view class="condition">x{{ item.packageNum }}</view>
+            </view>
+          </view>
+          <view class="{{index === order.items.length-1?'order-items-item':'order-items-item van-hairline--bottom'}}">
+            <view class="img-box">
+              <navigator url="/pages/goods/item/index?code={{item.productId}}&orgId={{item.orgId}}&orgCode={{item.orgCode}}">
+                <img class="img" src="{{item.src}}" errSrc="{{item.errImg}}" />
+              </navigator>
+            </view>
+
+            <view class="content">
+              <view class="content-title">{{item.productInfoZzprdmodel}}</view>
+              <view class="content-price">
+                <view class="price-item">
+                  <text class="price-symbol">¥</text>
+                  <text class="price-num">{{utils.formatPrice(item.price)}}</text>
+                  <text class="price-color" wx:if="{{item.color}}">({{item.color}})</text>
+                </view>
+              </view>
+              <view class="bottom-block-view">
+                <text class="desc" wx:if="{{item.priceGroupName}}">{{ item.priceGroupName }}</text>
+                <text class="desc" wx:if="{{item.deposit != null}}">定金￥{{ item.deposit }}</text>
+                <text class="desc" wx:if="{{item.rebateMoney != null}}">返利￥{{ item.rebateMoney }}</text>
+              </view>
+
+              <view class="content-tip">
+                <view>请选择</view>
+                <block wx:if="{{item.child.length>3}}">
+                  <view wx:if="{{item.isFold}}" @tap="productFold({{index}})" class="fold">
+                    <text>展开</text>
+                    <van-icon name="arrow-down" />
+                  </view>
+                  <view wx:else @tap="productFold({{index}})" class="fold">
+                    <text>收起</text>
+                    <van-icon name="arrow-up" />
+                  </view>
+                </block>
+              </view>
+
+              <view class="content-wrapper">
+                <view wx:for="{{item.child}}" wx:for-item="childItem" wx:for-index="itemIndex" class="wrapper-item {{ item.isFold && itemIndex>2?  'hide' : ''}}">
+                  <view  class="modelOptionItem {{ childItem.isActive?'active':''}}" catchtap="changeModel" data-seriesindex="{{ index }}" data-itemindex="{{ itemIndex }}">
+                    <view class="van-ellipsis prdmodel">{{ childItem.productInfoZzprdmodel }}</view>
+                    <view>¥ {{ childItem.price }}</view>
+                  </view>
+                  <van-stepper
+                    disabled=""
+                    integer="{{true}}"
+                    value="{{childItem.quantity}}"
+                    min="0"
+                    max="{{ userActId ? childItem.maxQty : 100 }}"
+                    disable-input="{{ userActId ? true : false}}"
+                    data-seriesindex="{{ index }}"
+                    data-itemindex="{{ itemIndex }}"
+                    bind:change="onCombinationPurchaseNumChange"
+                    custom-class="order-wrapper-stepper"
+                    input-class="cart-input-class"
+                    plus-class="cart-action-class"
+                    minus-class="cart-action-class"
+                  />
+                </view>
+              </view>
+              <view class="content-selected">
+                已选择{{ item.productGroupRemark }}组产品  共{{ item.totleBuyNum || 0 }}台
+              </view>
+            </view>
+          </view>
+        </repeat>
+      </view>
+
+      <!--
+      <block wx:if="{{ order.totalMoney > (order.canUseMoney + order.rebate) }}">
+        <van-submit-bar
+          button-text="支付"
+          bind:submit="confirmWxPay"
+          button-class-container="order-btn"
+          button-class="order-confirm"
+        >
+          <view class="order-footer-header van-hairline&#45;&#45;top-bottom" slot="top">
+            <view class="order-footer-header-item">
+              <view class="label">
+                <van-checkbox
+                  disabled
+                  value="{{ false }}"
+                  checked-color="#00AAA6"
+                  custom-class="order-checkbox"
+                >
+                  <view class="label-checkbox">
+                    账号余额 ¥{{utils.formatPrice(order.balanceAccount)}}
+                  </view>
+                </van-checkbox>
+              </view>
+              <view class="label">
+                <view class="label-text">待审核订单金额</view>
+                <view class="label-value">¥{{utils.formatPrice(order.waitMoney)}}</view>
+              </view>
+            </view>
+            <view class="order-footer-header-item" @tap="onBateChange">
+              <view class="label">
+                <van-checkbox
+                  value="{{rebateCheckBox}}"
+                  checked-color="#00AAA6"
+                  custom-class="order-checkbox"
+                >
+                  <view class="label-checkbox">
+                    预计使用返利金额¥ {{utils.formatPrice(rebateCheckBox ? order.rebate : 0)}}
+                  </view>
+                </van-checkbox>
+              </view>
+              <view class="label">
+                <view class="label-text">实际使用返利金额以最终发票金额为准</view>
+              </view>
+            </view>
+          </view>
+          <view class="order-footer-body">
+            <view class="order-footer-body-item">
+              <view class="item-label">共{{order.totalNum}}件</view>
+              <view class="item-label">合计</view>
+              <view class="item-value">¥{{utils.formatPrice(order.totalMoney)}}</view>
+            </view>
+            <view class="order-footer-body-item">
+              <view class="item-unit">账户可用余额</view>
+              <view class="item-price">¥{{utils.formatPrice(order.canUseMoney)}}</view>
+            </view>
+
+          </view>
+        </van-submit-bar>
+      </block>
+      -->
+      <van-submit-bar
+          disabled=""
+          button-text="{{payName}}"
+          bind:submit="{{payMethods}}"
+          custom-class="{{order.items[0].discountTypeId == '90605'&&!order.isPurchaseStandard ? 'order-submit-bar-disabled' : 'order-submit-bar'}}"
+          button-class-container="order-btn"
+          button-class="order-confirm"
+        >
+          <view class="order-footer-header van-hairline--top-bottom" slot="top">
+            <view class="order-footer-header-item">
+              <view class="label" @tap="onPayChange">
+                <van-checkbox
+                  value="{{payStatus}}"
+                  checked-color="#00AAA6"
+                  custom-class="order-checkbox"
+                >
+                  <view class="label-checkbox">
+                    账号余额 ¥{{utils.formatPrice(order.balanceAccount)}}
+                  </view>
+                </van-checkbox>
+                <!-- <view class="label-text">账号余额</view>
+                <view class="label-value">¥{{utils.formatPrice(order.balanceAccount)}}</view> -->
+              </view>
+              <view class="label">
+                <view class="label-text">待审核订单金额</view>
+                <view class="label-value">¥{{utils.formatPrice(order.waitMoney)}}</view>
+              </view>
+            </view>
+            <view class="order-footer-header-item" @tap="onBateChange">
+              <view class="label">
+                <van-checkbox
+                  value="{{rebateCheckBox}}"
+                  checked-color="#00AAA6"
+                  custom-class="order-checkbox"
+                >
+                  <view class="label-checkbox">
+                    预计使用返利金额¥ {{utils.formatPrice(rebateCheckBox ? order.rebate : 0)}}
+                  </view>
+                </van-checkbox>
+              </view>
+              <view class="label">
+                <view class="label-text">实际使用返利金额以最终发票金额为准</view>
+              </view>
+            </view>
+          </view>
+          <view class="order-footer-body">
+            <view class="order-footer-body-item">
+              <view class="item-label">共{{order.totalNum}}件</view>
+              <view class="item-label">合计</view>
+              <view class="item-value">¥{{utils.formatPrice(order.totalMoney)}}</view>
+            </view>
+            <view class="order-footer-body-item">
+              <view class="item-unit">账户可用余额</view>
+              <view class="item-price">¥{{utils.formatPrice(order.canUseMoney)}}</view>
+            </view>
+          </view>
+        </van-submit-bar>
+
+    </view>
+    <van-popup show="{{orgSelShow}}" position="bottom" bind:close="closeOrgSel">
+      <view class="t-popup">
+        <view @tap="closeOrgSel" hover-class="hover" class="t-popup-close">
+          <van-icon name="cross" color="#262626" />
+        </view>
+        <view class="t-popup-header van-hairline--bottom">选择供应商</view>
+        <view class="t-popup-body">
+          <repeat for="{{ orgList }}" index="index" key="code" item="item">
+            <view @tap="chooseOrg({{item.code}},{{item.name}})" hover-class="hover" class="t-popup-body-item">
+              <text class="t-popup-body-item-text {{ orgId == item.code ? 'active' : ''}} ">{{ item.name }}</text>
+              <view wx:if="{{orgId == item.code}}">
+                <van-icon name="success" color="#00AAA6" />
+              </view>
+            </view>
+          </repeat>
+        </view>
+      </view>
+    </van-popup>
+    <van-toast id="van-toast" />
+    <payconfrim />
+    <payCapacityConfirm />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),transpose=_curry1(function(r){for(var e=0,n=[];e<r.length;){for(var o=r[e],t=0;t<o.length;)void 0===n[t]&&(n[t]=[]),n[t].push(o[t]),t+=1;e+=1}return n});module.exports=transpose;

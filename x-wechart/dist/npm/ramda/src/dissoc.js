@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),dissoc=_curry2(function(r,e){var u={};for(var c in e)u[c]=e[c];return delete u[r],u});module.exports=dissoc;

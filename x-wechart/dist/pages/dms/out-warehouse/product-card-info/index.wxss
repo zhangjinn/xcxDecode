@@ -1,0 +1,90 @@
+.van-ellipsis._32a4835 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.van-multi-ellipsis--l2._32a4835 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+}
+.van-multi-ellipsis--l3._32a4835 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+}
+.item-content._32a4835 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  width: 100%;
+  font-weight: 400;
+}
+.item-content .item-content-img._32a4835 {
+  width: 120rpx;
+  height: 120rpx;
+  background: #F7F7F7;
+  border-radius: 8rpx;
+  margin-right: 16rpx;
+}
+.item-content .item-content-right._32a4835 {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+}
+.item-content .item-content-right .item-info-title._32a4835 {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #262626;
+}
+.item-content .item-content-right .item-info-line._32a4835 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-top: 8rpx;
+}
+.item-content .item-content-right .item-info-line .item-info-line-price._32a4835 {
+  font-size: 24rpx;
+}
+.item-content .item-content-right .item-info-line .item-info-line-price .order-code._32a4835 {
+  font-size: 20rpx;
+  font-weight: 500;
+  color: #262626;
+}
+.item-content .item-content-right .item-info-line .item-info-line-price .order-num._32a4835 {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #262626;
+}
+.item-content .item-content-right .item-info-line .item-info-line-price .order-color._32a4835 {
+  font-size: 24rpx;
+  color: #777777;
+  margin-left: 8rpx;
+}
+.item-content .item-content-right .item-info-line .item-info-line-quantity._32a4835 {
+  font-size: 24rpx;
+  color: #AAAAAA;
+}
+.item-content .item-content-right .order-goods-detail-desc._32a4835 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  font-size: 24rpx;
+  color: #777777;
+}
+.item-content .item-content-right .order-goods-detail-desc view._32a4835 {
+  margin-top: 8rpx;
+  margin-right: 24rpx;
+}

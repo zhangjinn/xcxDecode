@@ -1,0 +1,1 @@
+var _checkForMethod=require("./internal/_checkForMethod.js"),_curry2=require("./internal/_curry2.js"),forEach=_curry2(_checkForMethod("forEach",function(r,e){for(var c=e.length,o=0;o<c;)r(e[o]),o+=1;return e}));module.exports=forEach;

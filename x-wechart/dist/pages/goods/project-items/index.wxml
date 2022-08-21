@@ -1,0 +1,52 @@
+<wxs src="../../../wxs/utils.wxs" module="utils" class="_48b052b"/>
+
+  <view class="project-items _48b052b">
+    <scroll-view scroll-y enable-back-to-top="true" scroll-with-animation="true" class="project-items-scroll _48b052b">
+      <block class="_48b052b" wx:for="{{list}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <van-swipe-cell disabled="{{item.count === 0}}" right-width="{{ 74 }}" class="_48b052b">
+          <view class="project-items-scroll-item _48b052b">
+            <view hidden="{{ item.count === 0 }}" class="selected-item _48b052b">已选择</view>
+            <view class="project-title _48b052b">
+              <view  wx:if="{{utils.isFreeShipping(item.productLabel)}}" class="item-info-tag _48b052b">免运费</view>
+              <view class="_48b052b">商品: {{item.productName}}</view>
+            </view>
+            <view class="project-item _48b052b">
+              <view class="project-item-tag _48b052b">工程单价</view>
+              <view class="project-item-price _48b052b">¥{{utils.formatPrice(item.singlePrice)}}</view>
+              <view class="project-item-desc _48b052b">(提货价¥{{utils.formatPrice(item.standardPrice)}}，直扣¥{{utils.formatPrice(item.buckle)}})</view>
+            </view>
+            <view class="project-item _48b052b">
+              <view class="project-item-tag _48b052b">竣工后补差金额(元/套)</view>
+              <view class="project-item-price _48b052b">¥{{utils.formatPrice(item.diffentPrice)}}</view>
+            </view>
+            <view class="project-desc van-hairline--top _48b052b">
+              <view class="project-desc-num _48b052b">协议数量({{item.amount}})</view>
+              <view class="project-desc-order _48b052b">已下单({{item.finishOrder}})</view>
+            </view>
+            <view class="project-footer _48b052b">
+              <view class="project-footer-price _48b052b">¥{{utils.formatPrice(item.singlePrice)}}</view>
+              <van-stepper integer="{{true}}" value="{{item.count || 0}}" min="0" max="{{item.canBuy}}"  bind:change="onCountChange" custom-class="cart-stepper" input-class="cart-input-class" plus-class="cart-action-class" minus-class="cart-action-class" class="_48b052b" data-wpyoncountchange-a="{{item.product_id}}"/>
+            </view>
+          </view>
+          <view class="project-items-scroll-item-action _48b052b" slot="right">
+            <view bindtap="cancelChoose" hover-class="hover" class="project-items-scroll-item-action-cancel _48b052b" data-wpycancelchoose-a="{{item.product_id}}">取消选择</view>
+          </view>
+        </van-swipe-cell>
+      </block>
+    </scroll-view>
+    <van-submit-bar button-text="去结算"  bind:submit="confirmChoose" button-class-container="order-btn" button-class="order-confirm" class="_48b052b">
+      <view class="project-items-footer _48b052b">
+        <view bindtap="viewChecked" hover-class="hover" class="project-items-footer-item _48b052b">
+          <view class="project-items-footer-item-radio {{all ? 'checked' : ''}} _48b052b">
+            <view class="b-icon icon-check _48b052b"/>
+          </view>
+          <view class="project-items-footer-item-text _48b052b">查看已选</view>
+        </view>
+        <view class="project-items-footer-item _48b052b">
+          <view class="project-items-footer-item-unit _48b052b">合计 </view>
+          <view class="project-items-footer-item-price _48b052b">¥{{utils.formatPrice(totalPrice)}}</view>
+        </view>
+      </view>
+    </van-submit-bar>
+    <van-toast id="van-toast" class="_48b052b"/>
+  </view>

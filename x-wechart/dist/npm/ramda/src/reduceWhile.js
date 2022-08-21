@@ -1,0 +1,1 @@
+var _curryN=require("./internal/_curryN.js"),_reduce=require("./internal/_reduce.js"),_reduced=require("./internal/_reduced.js"),reduceWhile=_curryN(4,[],function(e,r,u,c){return _reduce(function(u,c){return e(u,c)?r(u,c):_reduced(u)},u,c)});module.exports=reduceWhile;

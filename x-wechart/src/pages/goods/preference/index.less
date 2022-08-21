@@ -1,0 +1,42 @@
+@import '../../../styles/order.less';
+
+.order {
+  &-header {
+    padding: 24rpx;
+    margin-bottom: 16rpx;
+    background-color: #ffffff;
+    &-title {
+      font-size: 24rpx;
+      font-weight: 500;
+      color: #00AAA6;
+      margin-bottom: 16rpx;
+    }
+    &-item {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      font-size: 22rpx;
+      font-weight:400;
+      margin-bottom: 8rpx;
+      &-label {
+        color: #777777;
+      }
+      &-value {
+        color: #262626;
+      }
+    }
+    &-footer {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      height: 64rpx;
+      text {
+        font-size: 22rpx;
+        font-weight: 400;
+        color: #AAAAAA;
+        margin-right: 6rpx;
+      }
+    }
+  }
+}

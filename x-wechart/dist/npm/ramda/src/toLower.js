@@ -1,0 +1,1 @@
+var invoker=require("./invoker.js"),toLower=invoker(0,"toLowerCase");module.exports=toLower;

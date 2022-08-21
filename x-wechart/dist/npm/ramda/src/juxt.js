@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),converge=require("./converge.js"),juxt=_curry1(function(r){return converge(function(){return Array.prototype.slice.call(arguments,0)},r)});module.exports=juxt;

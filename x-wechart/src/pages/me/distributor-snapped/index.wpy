@@ -1,0 +1,32 @@
+<template>
+  <view class="snapped">
+    <block wx:if="{{ pagingActivityResult.total === 0 && loading }}">
+      <!-- 总数为0，并且loading状态说明刚进页面，展示为空 -->
+    </block>
+    <block wx:elif="{{ pagingActivityResult.total === 0 }}">
+      <emptyDataType description="抢购"/>
+    </block>
+    <block wx:else>
+      <scroll-view class="snapped-scroll" enable-flex scroll-y bindscrolltolower="loadNextPage" bindscroll="onScroll" scroll-top="{{ scrollPosition }}" >
+        <repeat for="{{ pagingActivityResult.list }}" key="{{ item.id }}">
+          <item :currentPage="currentPage" :item="item" />
+        </repeat>
+      </scroll-view>
+    </block>
+
+    <filter :currentPage="currentPage" @submitFilter.user="submitFilter" />
+
+    <button class="screening shareBar" lang="zh_CN" @tap="openFilter">
+      <text class="shareBarname">筛选</text>
+    </button>
+    <!-- 回到上方 -->
+    <button hidden="{{!visibelTop}}" @tap="scrollToTop" class="screen shareBar" lang="zh_CN">
+      <view class="b-icon icon-top" />
+    </button>
+
+
+    <van-toast id="van-toast" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

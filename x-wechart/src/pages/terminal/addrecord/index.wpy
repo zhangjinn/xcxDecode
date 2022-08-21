@@ -1,0 +1,349 @@
+<template>
+  <view class="page-wrap">
+
+    <view class="clock-header">
+      <image class="trademark-bg" src="{{imgObj.addClockInBg}}"/>
+      <view class="clock-info">
+        <view class="cardTitle">
+          <view class="time">{{currentTime}}</view>
+          <view class="top-header-wrap">
+            <van-icon name="location" class="location position-icon" />
+            <text class="location-name">{{location}}</text>
+            <view @tap='updataDidian' class="b-icon check-in-to-refresh location update" style="font-size: 35rpx"/>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="msgBox">
+      <view class="main-info-filed">
+        <view class="msgItem">
+          <view>
+            类别<text class="redXin">*</text>
+          </view>
+          <view class="baifang">巡店/培训</view>
+        </view>
+        <view class="msgItem" @tap="selStore">
+          <view>
+            名称<text class="redXin">*</text>
+          </view>
+          <view class="grayFont">
+            <text>{{storeName}}</text>
+            <van-icon name="arrow" class="location" />
+          </view>
+        </view>
+        <view class="msgItem">
+          <view>地址</view>
+          <view class="addressd">{{newAdress.shAddress||shAddress}}</view>
+        </view>
+        <view class="msgItem">
+          <view>距离</view>
+          <block wx:if="{{distance!='NaN'}}">
+            <view class="grayFont">{{newAdress.distance||distance}}km</view>
+          </block>
+        </view>
+        <view class="msgItem" @tap="handleTrainingPop">
+          <view>
+            培训主题
+          </view>
+          <view class="grayFont">
+            <text wx:if="{{trainingTopics}}">{{trainingTopics}}</text>
+            <text wx:else>请选择</text>
+            <van-icon wx:if="{{!trainingType}}" name="arrow" class="location" />
+          </view>
+        </view>
+        <view class="msgItem-filed msgItem-filed-training training-filed">
+          <text>培训人数</text>
+          <text wx:if="{{trainingTopics}}" class="redXin">*</text>
+          <view class="training-filed-item">
+            <van-field
+              disabled="{{!trainingTopics ? true : false}}"
+              type="number"
+              value="{{ traineesNumber }}"
+              placeholder="请输入"
+              input-align="right"
+              bind:change="onTraineesChange({{$event}})"
+            />
+          </view>
+        </view>
+        <view class="address-box">
+          <view class="mapRelative" @tap='openLocation'>
+            <view class="modemap"></view>
+            <view class="mapfont">点击查看门店位置</view>
+            <map id="map" longitude="{{newAdress.dlongitude||dlongitude}}" markers="{{markers}}" latitude="{{newAdress.dlatitude||dlatitude}}" scale="12"   class="imgMap"></map>
+          </view>
+          <view class="msgItem" wx:if="{{checkinRecord.length>0}}">
+            <view>终端检查</view>
+            <block>
+              <van-button size="small" type="default" class="button" block="block"  bind:click="gotoPoint">门店检查</van-button>
+            </block>
+          </view>
+        </view>
+
+        <!-- 上传图片 -->
+        <view class="upload-img-box" wx:if="{{checkinRecord.length>0}}">
+          <view class="borBottom">
+            <view>
+              <text>门头状态</text>
+              <text class="redXin">*</text>
+            </view>
+            <van-uploader max-count="3" data-state="1" capture="{{camera}}" accept="image" file-list="{{ doorImgs }}" bind:delete="deleteImg"  bind:after-read="afterRead" sizeType="compressed">
+            </van-uploader>
+          </view>
+          <view class="borBottom">
+            <view>
+              <text>展台状态</text>
+              <text class="redXin">*</text>
+            </view>
+            <van-uploader max-count="3" data-state="2" capture="{{camera}}" accept="image" file-list="{{ boothImgs }}" bind:delete="deleteImg"  bind:after-read="afterRead" sizeType="compressed">
+            </van-uploader>
+          </view>
+          <view class="borBottom">
+            <view>
+              <text>样机状态</text>
+              <text class="redXin">*</text>
+            </view>
+            <van-uploader max-count="3" data-state="3" capture="{{camera}}" accept="image" file-list="{{ sampleImgs }}" bind:delete="deleteImg"  bind:after-read="afterRead" sizeType="compressed">
+            </van-uploader>
+          </view>
+          <view class="borBottom">
+            <view>
+              <text>门店卫生</text>
+            </view>
+            <van-uploader max-count="3" data-state="4" capture="{{camera}}" accept="image" file-list="{{ healthImgs }}" bind:delete="deleteImg"  bind:after-read="afterRead" sizeType="compressed">
+            </van-uploader>
+          </view>
+          <view class="borBottom">
+            <view>
+              <text>员工状态</text>
+            </view>
+            <van-uploader max-count="3" data-state="5" capture="{{camera}}" accept="image" file-list="{{ staffImgs }}" bind:delete="deleteImg"  bind:after-read="afterRead" sizeType="compressed">
+            </van-uploader>
+          </view>
+          <view class="borBottom">
+            <view>
+              <text>培训状态</text>
+              <text wx:if="{{ trainingTopics }}" class="redXin">*</text>
+            </view>
+            <van-uploader disabled="{{!trainingTopics ? true : false}}" max-count="3" data-state="6" capture="{{camera}}" accept="image" file-list="{{ trainingImgs }}" bind:delete="deleteImg"  bind:after-read="afterRead" sizeType="compressed">
+            </van-uploader>
+          </view>
+        </view>
+      </view>
+
+    <!-- 问题 -->
+      <view class="problem-info-field" wx:if="{{checkinRecord.length>0}}">
+        <view class="problem-info-list">
+          <block wx:for="{{stibBean}}" wx:key="id" wx:for-item="item" wx:for-index="index">
+            <view class="list-wrap">
+              <view class="list-item" >
+                <view  class="msgItem" @tap="openTypeList({{index}})">
+                  <view>
+                    问题类型<text class="redXin">*</text>
+                  </view>
+                  <view class="grayFont">
+                    <text>{{item.type||'请选择问题类型'}}</text>
+                    <van-icon name="arrow" class="location" />
+                  </view>
+                </view>
+                <view  class="msgItem-filed">
+                  <van-field bind:change="onDescriptionChange({{index}},{{$event}})" label="问题描述" placeholder="请输入问题描述" input-align="right" />
+                </view>
+                <view  class="msgItem-filed">
+                  <van-field bind:change="onAffiliationChange({{index}},{{$event}})" label="所属单位" placeholder="请输入所属单位" input-align="right" />
+                </view>
+                <view  class="msgItem" @tap="openDateSel({{index}})">
+                  <view>
+                    解决日期<text class="redXin">*</text>
+                  </view>
+                  <view class="grayFont">
+                    <text>{{item.expDate||'请选择日期'}}</text>
+                    <van-icon name="arrow" class="location" />
+                  </view>
+                </view>
+                <view  class="msgItem" @tap="gotoPeople({{index}})">
+                  <view>
+                    责任人<text class="redXin">*</text>
+                  </view>
+                  <view class="grayFont">
+                    <text>{{item.responsible||'请选择责任人'}}</text>
+                    <van-icon name="arrow" class="location" />
+                  </view>
+                </view>
+                <view  class="msgItem-filed">
+                  <van-field bind:change="onSolutionChange({{index}},{{$event}})" label="解决方案" placeholder="请输入解决方案" input-align="right"/>
+                </view>
+                <view class="msgItem">
+                  <view></view>
+                  <view class="remove-problem" @tap="removeSiteBean({{index}})">
+                    <text class="b-icon icon-remove"></text>
+                    <text class="remove-problem-text">删除</text>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </block>
+        </view>
+        <view class="add-problem" @tap="addSiteBean">
+          <view class="b-icon icon-add"/><text>添加问题</text>
+        </view>
+      </view>
+
+      <!-- 备注 -->
+      <view class="botm-wrap" wx:if="{{checkinRecord.length>0}}">
+        <view class="remark-area">
+          <van-field
+            value="{{ value }}"
+            border="{{ false }}"
+            custom-style="background-color:#FAFAFA;width:100%;color:#AAAAAA;font-size: 26rpx;min-height:176rpx"
+            type="textarea"
+            autosize
+            maxlength="200"
+            placeholder="请输入备注"
+            show-word-limit
+            input-class="textarea-field"
+            bind:change="onChange"/>
+        </view>
+      </view>
+    </view>
+
+    <view class="daka" wx:if="{{checkinRecord.length>0}}" @tap="punchClock">打卡签退</view>
+    <view class="daka" wx:else @tap="checkIn">
+      <text>打卡签到</text>
+      <text class="curTime">({{curTime}})</text>
+    </view>
+<!--    //下面弹出框-->
+    <van-action-sheet
+      show="{{ show2 }}"
+      actions="{{ actions }}"
+      title="请选择方式"
+      cancel-text="取消"
+      overlay="true"
+      close-on-click-overlay="true"
+      bind:close="onClose2"
+      bind:select="onSelect"
+    />
+<!--    提示弹框-->
+    <van-dialog
+      use-slot
+      title="提示"
+      show="{{ show1 }}"
+      width="50"
+      show-cancel-button="{{cancelBtn}}"
+      confirm-button-open-type="getUserInfo"
+      custom-style="font-size:25rpx"
+      close-on-click-overlay="true"
+      bind:confirm="onClose"
+    >
+      <text class="tishiContent">{{photoTis}}</text>
+    </van-dialog>
+<!--    成功提示框-->
+    <van-dialog
+      use-slot
+      title="提示"
+      show="{{ show3 }}"
+      width="50"
+      show-cancel-button="{{cancelBtn}}"
+      confirm-button-open-type="getUserInfo"
+      custom-style="font-size:25rpx"
+      close-on-click-overlay="true"
+      bind:confirm="onClose3"
+    >
+      <text class="tishiContent">提交成功</text>
+    </van-dialog>
+<!--    错误提示框-->
+    <!--    成功提示框-->
+    <van-dialog
+      use-slot
+      title="提示"
+      show="{{ show4 }}"
+      width="50"
+      show-cancel-button="{{cancelBtn}}"
+      confirm-button-open-type="getUserInfo"
+      custom-style="font-size:25rpx"
+      close-on-click-overlay="true"
+      bind:confirm="onClose4"
+    >
+      <text class="tishiContent">请先打开手机定位哦</text>
+    </van-dialog>
+    <van-dialog id="van-dialog" />
+    <!-- 选择时间 -->
+    <van-popup show="{{ dateSelVisable }}"  position="bottom"  custom-class="purchase-top" z-index="210" close-on-click-overlay>
+      <view>
+        <van-datetime-picker type="date" value="{{ currentDate }}" bind:confirm="onConfirm" bind:cancel="onCancel"/>
+      </view>
+    </van-popup>
+    <!--底部类型弹框-->
+    <van-popup
+      show="{{problemTypeListVisible}}"
+      position="bottom"
+      closeable
+      bind:close="onCloseTypeList"
+      close-on-click-overlay
+      custom-style="min-height: 400rpx;max-height: 600rpx;"
+    >
+      <view class="order-s-filter-container">
+        <repeat for="{{problemTypeList}}" item="item">
+          <view class="order-operation">
+            <view class="operation-text van-hairline--bottom" @tap="onSelProblemType({{item}},{{index}})">
+              <view class="operation-status {{ selProblemType==item.value? 'active' : '' }}">{{item.text}}</view>
+              <view wx:if="{{ selProblemType==item.value }}" class="b-icon icon-check operation-icon"></view>
+            </view>
+          </view>
+        </repeat>
+      </view>
+    </van-popup>
+
+    <!-- 选择培训主题 -->
+    <van-popup
+      show="{{ trainingTopicsVisable }}"
+      round
+      position="bottom"
+      custom-style="height: 50%; border-radius: 24rpx 24rpx 0rpx 0rpx;"
+      custom-class="base-model-popup-picker"
+      bind:close="touchFilter">
+      <view class="datetime-picker-box">
+        <view class="datetime-picker-header">
+          <view class="handle-btn">
+            <text @tap="handleCanclePop">取消</text>
+            <text @tap="handleClearPop" class="training-clear">清空</text>
+          </view>
+          <text class="handle-btn handle-btn-title">培训主题</text>
+          <text class="handle-btn handle-btn-confirm" @tap="handleConfirmPop">确定</text>
+        </view>
+        <view class="datetime-picker-container">
+          <scroll-view
+            scroll-y
+            class="purchase-inv-scroll">
+            <view>
+              <view wx:for="{{ trainingTopicsOption }}" wx:key="id" item="item" class="datetime-picker-item {{item.id == trainingTopicsObj.id?'active':''}}" data-key="{{item.id}}" data-index="{{ index }}" @tap="onTrainingTopicschange({{ item }})">
+                {{item.title}}
+              </view>
+            </view>
+          </scroll-view>
+        </view>
+      </view>
+    </van-popup>
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<style lang="less" >
+.msgItem-filed{
+  .van-cell{
+    padding: 16rpx 0 16rpx 0;
+    &::after{
+      left: 0;
+      border-bottom: 2rpx solid #eee;
+    }
+  }
+}
+.msgItem-filed-training{
+  border-bottom: 2rpx solid #f8f8f8;
+  .van-cell{
+    &::after{
+      border-bottom-width: 0;
+    }
+  }
+}
+</style>
+<script lang="typescript" src="./index.ts"></script>

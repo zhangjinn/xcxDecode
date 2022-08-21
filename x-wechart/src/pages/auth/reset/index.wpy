@@ -1,0 +1,41 @@
+<template>
+  <view class="account">
+    <van-cell-group>
+      <van-field
+        placeholder="请输入新密码"
+        value="{{password}}"
+        password="{{!passwordVisible}}"
+        clearable="{{true}}"
+        cell-class="login-input"
+        right-icon="{{ passwordVisible ? 'eye-o' : 'closed-eye' }}"
+        placeholder-style="color: #aaa;font-size: 28rpx;"
+        bind:change="onPasswordChange"
+        bind:clear="clearPassword"
+        bind:click-icon="togglePwd"
+      />
+      <van-field
+        placeholder="请确认新密码"
+        value="{{rePassword}}"
+        password="{{!repasswordVisible}}"
+        clearable="{{true}}"
+        cell-class="login-input"
+        right-icon="{{ repasswordVisible ? 'eye-o' : 'closed-eye' }}"
+        placeholder-style="color: #aaa;font-size: 28rpx;"
+        bind:change="onRePasswordChange"
+        bind:clear="clearRePassword"
+        bind:click-icon="toggleRePwd"
+      />
+    </van-cell-group>
+    <van-button
+      bind:click="submit"
+      custom-class="login-vant-btn"
+      color="#00AAA6"
+      square="{{true}}"
+      block="{{true}}"
+      disabled="{{ !rePassword || !password }}"
+    >提交</van-button>
+    <van-toast id="van-toast" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

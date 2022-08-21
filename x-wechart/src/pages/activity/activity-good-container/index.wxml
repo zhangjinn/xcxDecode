@@ -1,0 +1,161 @@
+<view class="item">
+  <view class="item-header">
+    <view class="item-header-bg"></view>
+    <view class="item-header-content van-hairline--bottom">
+      <view class="item-name">
+        <view class="rel-name">{{containerItem.activityName}}</view>
+        <view wx:if="{{containerItem.timestatus == 1 }}" class="start-text">距离开始仅剩</view>
+        <view wx:if="{{containerItem.timestatus == 2 }}" class="start-text">距离结束仅剩</view>
+        <view wx:if="{{containerItem.timestatus == 3 }}" class="start-text">活动时间</view>
+      </view>
+      <view class="item-middle ">
+        <view class="type">
+          <view class="activity-type">{{containerItem.activityType}}</view>
+          <view class="activity-type2 {{containerItem.discountTypeId == '90605'?'combinationPurchaseLabel':'normalLabel'}}" wx:if="{{containerItem.discountTypeName}}">{{containerItem.discountTypeName}}</view>
+        </view>
+        <view wx:if="{{containerItem.timestatus !== 3 }}" class="countdown">
+          <activity-count-down time="{{ containerItem.time }}" />
+        </view>
+        <view wx:if="{{containerItem.timestatus == 3 }}" class="countdown">
+          <view class="text">{{containerItem.time}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="item-goods-content">
+
+    <!-- 套购卡片内容-->
+    <block wx:if="{{(containerItem.discountTypeName=='套购'||containerItem.discountTypeName=='跨品类套购')}}" class="setPurchase">
+      <view wx:for="{{containerItem.setPurchaseNumber}}" wx:for-item="item" wx:key="index" class="set-purchase-item">
+        <view wx:for="{{ containerItem.setPurchaseList[item] }}" wx:for-item="itemTwo" wx:for-index="idx" wx:key="idx">
+          <view>
+            <activity-good-info
+              timestatus="{{containerItem.timestatus}}"
+              containerItem="{{containerItem}}"
+              item="{{itemTwo}}"
+              bind:goodInfo="goodInfo" />
+          </view>
+        </view>
+        <block wx:if="{{containerItem.activityType == '认购'}}">
+          <block wx:if="{{containerItem.timestatus == 2}}">
+            <view class="on-control">
+              <view catchtap="submitMarketOrder" data-setpurchase="{{containerItem.setPurchaseList[item]}}" class="control-body" style="background-color: #FF4040;color: #FFFFFF; margin-left: 24rpx">
+                马上抢
+              </view>
+            </view>
+          </block>
+        </block>
+        <block wx:if="{{containerItem.activityType == '抢购'}}">
+          <block wx:if="{{containerItem.timestatus == 2}}">
+            <view class="on-control">
+              <view catchtap="submitOrder" data-setpurchase="{{containerItem.setPurchaseList[item]}}" class="control-body" style="background-color: #FF4040;color: #FFFFFF; margin-left: 24rpx">
+                去下单
+              </view>
+            </view>
+          </block>
+        </block>
+
+        <view wx:if="{{containerItem.setPurchaseList[item][0].activityStatus.custPurchaseQty > 0 && containerItem.timestatus == 2 }}" class="sell-ing set-purchase-status">已抢</view>
+        <view wx:if="{{containerItem.setPurchaseList[item][0].activityStatus.custPurchaseQty > 0 && containerItem.timestatus == 3 }}" class="sell-ed set-purchase-status">已抢</view>
+
+      </view>
+    </block>
+
+    <!-- 组合购卡片内容-->
+    <block wx:elif="{{(containerItem.discountTypeName=='组合购')}}" class="setPurchase">
+      <view wx:for="{{containerItem.setPurchaseNumber}}" wx:key="index" wx:for-item="item" class="set-purchase-item" >
+        <view wx:for="{{ containerItem.setPurchaseList[item] }}" wx:for-index="idx" wx:key="idx" wx:for-item="itemTwo" >
+          <view>
+            <view class="modelSeriesHeader">
+              <view>{{ itemTwo.productGroupRemark }}</view>
+              <view class="condition">x{{ itemTwo.packageNum }}</view>
+            </view>
+            <activity-good-info
+              bindchangeModel="changeModel"
+              bindshowMoreModel="showMoreModel"
+              timestatus="{{containerItem.timestatus}}"
+              containerItem="{{containerItem}}"
+              item="{{itemTwo}}"
+              mark="{{ item }}"
+              bind:goodInfo="goodInfo" />
+          </view>
+        </view>
+
+        <block wx:if="{{containerItem.activityType == '认购'}}">
+          <view class="on-control">
+            <view wx:if="{{timestatus == 2}}" catchtap="submitMarketOrder" data-setpurchase="{{containerItem.setPurchaseList[item]}}" class="control-body" style="background-color: #FF4040;color: #FFFFFF; margin-left: 24rpx">
+              马上抢
+            </view>
+          </view>
+        </block>
+        <block wx:if="{{containerItem.activityType == '抢购'}}">
+          <block wx:if="{{containerItem.timestatus == 2}}">
+            <view class="on-control">
+              <view wx:if="{{timestatus == 2}}" catchtap="submitOrder" data-setpurchase="{{containerItem.setPurchaseList[item]}}" class="control-body" style="background-color: #FF4040;color: #FFFFFF; margin-left: 24rpx">
+                去下单
+              </view>
+            </view>
+          </block>
+        </block>
+
+        <view wx:if="{{containerItem.setPurchaseList[item][0].activityStatus.custPurchaseQty > 0 && containerItem.timestatus == 2 }}" class="sell-ing purchase-status">已抢</view>
+        <view wx:if="{{containerItem.setPurchaseList[item][0].activityStatus.custPurchaseQty > 0 && containerItem.timestatus == 3 }}" class="sell-ed purchase-status">已抢</view>
+
+      </view>
+    </block>
+
+    <!-- 直降、后返卡片内容-->
+    <view wx:else class="single-card">
+      <view wx:for="{{ containerItem.productDtoList }}" wx:key="id" wx:for-index="idx" class="no-set-purchase {{(show && idx>50)? 'hide':''}}">
+        <view>
+          <activity-good-info
+            timestatus="{{containerItem.timestatus}}"
+            containerItem="{{containerItem}}"
+            item="{{item}}"
+            bind:goodInfo="goodInfo" />
+        </view>
+      </view>
+      <block wx:if="{{containerItem.activityType == '抢购'}}">
+        <block wx:if="{{containerItem.timestatus == 2}}">
+          <view wx:if="{{containerItem.productDtoList.length > 3 }}" class="on-control on-control-fold">
+            <view catchtap="closeItUp" wx:if="{{show}}" class="control-body-fold">
+              展开全部{{containerItem.number}}商品
+              <view class="b-icon iconliebiaoshaixuanjiantou-down icon" />
+            </view>
+            <view catchtap="closeItUp" wx:if="{{!show}}" class="control-body-fold">
+              收起商品
+              <view class="b-icon iconliebiaoshaixuanjiantou-up icon" />
+            </view>
+            <view catchtap="submitOrder" class="control-body"
+                  style="background-color: #FF4040;color: #FFFFFF; margin-left: 24rpx">
+              去下单
+            </view>
+          </view>
+          <view wx:else>
+            <view class="on-control">
+              <view catchtap="submitOrder" class="control-body"
+                    style="background-color: #FF4040;color: #FFFFFF; margin-left: 24rpx">
+                去下单
+              </view>
+            </view>
+          </view>
+        </block>
+        <block wx:else>
+          <view wx:if="{{containerItem.productDtoList.length > 3 }}" class="on-control on-control-fold">
+            <view catchtap="closeItUp" wx:if="{{show}}" class="control-body-fold">
+              展开全部{{containerItem.number}}商品
+              <view class="b-icon iconliebiaoshaixuanjiantou-down icon" />
+            </view>
+            <view catchtap="closeItUp" wx:if="{{!show}}" class="control-body-fold">
+              收起商品
+              <view class="b-icon iconliebiaoshaixuanjiantou-up icon" />
+            </view>
+          </view>
+        </block>
+      </block>
+    </view>
+
+  </view>
+
+</view>

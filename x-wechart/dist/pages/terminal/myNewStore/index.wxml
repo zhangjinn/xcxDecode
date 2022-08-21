@@ -1,0 +1,159 @@
+<wxs src="../../../wxs/utils.wxs" module="utils" class="_a29a390"/>
+
+  <view class="order _a29a390">
+    <!-- 日历弹框 -->
+    <van-popup show="{{calendarShow}}" position="bottom"  bind:close="closeCalendar" z-index="200" class="_a29a390">
+      <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay" class="_a29a390"/>
+    </van-popup>
+
+    <!-- 右侧弹框筛选条件弹框列表 -->
+    <van-popup show="{{agentPopup}}" position="right" overlay="{{ true }}" z-index="200" custom-style="height: 100%;" class="_a29a390">
+      <view class="order-drawer _a29a390">
+        <view class="order-drawer-time _a29a390">
+          <view class="order-drawer-time-header _a29a390">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back _a29a390"  bind:click="selectAgentPopup"/>
+            <view class="order-drawer-time-header-title _a29a390">{{popupTitle}}</view>
+          </view>
+
+          <view  wx:if="{{popupTitle == '是否下沉'}}" class="order-drawer-time-content _a29a390">
+            <block class="_a29a390" wx:for="{{whetherToSinkList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="order-drawer-time-content-line _a29a390" catchtap="selectStatus" data-wpyselectstatus-a="{{item.name}}" data-wpyselectstatus-b="{{item.id}}">
+                <view class="text {{filterForm.terms.whetherToSinkId === item.id ? 'active' : ''}} _a29a390">{{item.name}}</view>
+                <van-icon wx:if="{{filterForm.terms.whetherToSinkId === item.id}}" name="success" class="time-selected _a29a390" size="32rpx"/>
+              </view>
+            </block>
+          </view>
+
+        </view>
+      </view>
+    </van-popup>
+    <!-- 筛选侧边弹框 -->
+    <van-popup show="{{visible}}" position="right" overlay="{{ true }}"  bind:close="orderfiltering" custom-style="height: 100%;" z-index="130" class="_a29a390">
+      <view class="order-drawer _a29a390">
+        <view class="order-drawer-attr _a29a390">
+          <scroll-view class="order-drawer-attr-scroll _a29a390" scroll-y>
+            <view class="attr-item _a29a390">
+              <view class="projectem _a29a390">
+                <view class="project _a29a390">
+                  <text style="font-size: 28rpx;color: #777777" class="_a29a390">门店名称</text>
+                </view>
+                <van-field placeholder="请输入" border="{{ false }}" placeholder-style="font-size: 24rpx;" data-key="storeName" bind:change="onFieldChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;" clearable="clearable" value="{{filterForm.terms.storeName}}" class="_a29a390"/>
+              </view>
+              <view class="projectem _a29a390">
+                <view class="project _a29a390">
+                  <text style="font-size: 28rpx;color: #777777" class="_a29a390">门店简称</text>
+                </view>
+                <van-field placeholder="请输入" border="{{ false }}" placeholder-style="font-size: 24rpx;" data-key="storeAbbreviation" bind:change="onFieldChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;" clearable="clearable" value="{{filterForm.terms.storeAbbreviation}}" class="_a29a390"/>
+              </view>
+              <view class="item-trans _a29a390">
+                <view class="item-project _a29a390" bindtap="selectAgentPopup" data-wpyselectagentpopup-a="whetherToSink">
+                  <view class="item-name _a29a390">是否下沉</view>
+                  <view class="text _a29a390">
+                    <text class="_a29a390">{{filterForm.terms.whetherToSinkName || '请选择'}} ></text>
+                  </view>
+                </view>
+              </view>
+              <view class="order-data _a29a390">
+                <view class="project _a29a390">
+                  <text style="font-size: 28rpx;color: #777777" class="_a29a390">提交时间</text>
+                </view>
+                <view class="order-data-input _a29a390">
+                  <view class="order-data-input-one _a29a390" data-name="startDate" data-type="sapDate" bindtap="openCalendar">
+                    {{filterForm.terms.startDate || '开始日期'}}
+                    <van-icon  wx:if="{{filterForm.terms.startDate}}" class="close-icon _a29a390" name="clear" bindtap="clearCalendar" data-wpyclearcalendar-a="startDate"/>
+                  </view>
+                  <view class="order-data-input-line _a29a390">-</view>
+                  <view class="order-data-input-one _a29a390" data-name="endDate" data-type="sapDate" bindtap="openCalendar">
+                    {{filterForm.terms.endDate|| '结束日期'}}
+                    <van-icon  wx:if="{{filterForm.terms.endDate}}" class="close-icon _a29a390" name="clear" bindtap="clearCalendar" data-wpyclearcalendar-a="endDate"/>
+                  </view>
+                </view>
+              </view>
+
+            </view>
+          </scroll-view>
+          <!-- 底部按钮 -->
+          <view class="order-drawer-attr-footer _a29a390">
+             <view bindtap="onResetFilterForm" class="order-drawer-attr-footer-btn reset _a29a390" hover-class="order-drawer-attr-footer-btn-hover">重置</view>
+            <view bindtap="onSubmitFilterForm" class="order-drawer-attr-footer-btn confirm _a29a390" hover-class="order-drawer-attr-footer-btn-hover">确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <!-- 快捷筛选顶部弹框 提报状态 -->
+    <van-popup show="{{OrderSFilterVisible}}" position="top" overlay="{{ true }}" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;" bind:close="touchOrderSFilter" class="_a29a390">
+      <view wx:if="{{CurrentOrderSFilterName === 'orderStatus'}}" class="order-s-filter-container _a29a390">
+        <view class="order-operation _a29a390">
+          <view class="operation-text van-hairline--bottom _a29a390" bindtap="onSelectStatus" data-wpyonselectstatus-a="">
+            <view class="operation-status {{ filterForm.terms.status === '' ? 'active' : '' }} _a29a390">全部</view>
+            <view wx:if="{{ filterForm.terms.status === '' }}" class="b-icon icon-check operation-icon _a29a390"/>
+          </view>
+        </view>
+        <view class="order-operation _a29a390" wx:for="{{saleFilterList}}">
+          <view class="operation-text van-hairline--bottom _a29a390" bindtap="onSelectStatus" data-wpyonselectstatus-a="{{ item.id}}">
+            <view class="operation-status {{ filterForm.terms.status === item.id ? 'active' : '' }} _a29a390">{{item.value}}</view>
+            <view wx:if="{{ filterForm.terms.status ===  item.id }}" class="b-icon icon-check operation-icon _a29a390"/>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    
+  <view class="header-tab _a29a390">
+    <view class="left-btn">
+      <block  wx:for="{{ $headerTab$tabListNew }}">
+        <view class="btn-item {{ item.selectValue ? 'active' : '' }}" bindtap="$headerTab$changeTab" data-wpychangetab-a="{{item}}">
+          <text>{{ item.name }}</text>
+          <i wx:if="{{ $headerTab$showArrowIcon }}" class="b-icon iconxialajiantou"/>
+        </view>
+      </block>
+    </view>
+    <view class="right-btn"  wx:if="{{ $headerTab$showRightBtn }}" bindtap="$headerTab$onSideFilter">
+      <view class="line-shadow" wx:if="{{ $headerTab$showRightBtnLine }}"/>
+      <view class="side-filter-btn">
+        <text>筛选</text>
+        <i class="b-icon shaixuan"/>
+      </view>
+    </view>
+  </view>
+
+    <scroll-view wx:if="{{ myAddShopList && myAddShopList.length !== 0}}" scroll-y="true" class="order-scroll _a29a390" enable-flex="enable-flex" scroll-top="{{ scrollTop }}">
+      <block class="_a29a390" wx:for="{{ myAddShopList }}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="order-container _a29a390" bindtap="viewDetail" data-wpyviewdetail-a="{{item.processInstId}}">
+          <view class="order-container-inner _a29a390">
+            <view class="card-title _a29a390">
+              <view class="card-coding _a29a390">
+                <text class="_a29a390">{{ item.custAddShopReqDto.fullName }}</text>
+              </view>
+
+              <view class="card-status _a29a390">
+                <text wx:if="{{item.checkStatus == '发布'}}" class="added _a29a390">已添加</text>
+                <text wx:elif="{{item.checkStatus == '作废'}}" class="revoked _a29a390">已撤销</text>
+                <text wx:else class="approval _a29a390">审批中</text>
+              </view>
+            </view>
+            <view class="card-address _a29a390">
+              <text class="b-icon h-icon punch-card-positioning _a29a390"/>
+              <text class="address _a29a390">{{ item.address	 }}</text>
+            </view>
+            <view class="card-footer _a29a390">
+              <view class="check-the-details _a29a390">查看详情</view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+    
+  <view class="empty-data _a29a390" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+    <view class="order-footer _a29a390" bindtap="viewDetail" data-wpyviewdetail-a="">
+      新增门店
+    </view>
+    <van-toast id="van-toast" class="_a29a390"/>
+    <van-dialog id="van-dialog" class="_a29a390"/>
+  </view>

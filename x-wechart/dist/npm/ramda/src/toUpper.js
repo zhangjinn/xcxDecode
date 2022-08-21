@@ -1,0 +1,1 @@
+var invoker=require("./invoker.js"),toUpper=invoker(0,"toUpperCase");module.exports=toUpper;

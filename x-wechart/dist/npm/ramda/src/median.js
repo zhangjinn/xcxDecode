@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),mean=require("./mean.js"),median=_curry1(function(r){var e=r.length;if(0===e)return NaN;var n=2-e%2,a=(e-n)/2;return mean(Array.prototype.slice.call(r,0).sort(function(r,e){return r<e?-1:r>e?1:0}).slice(a,a+n))});module.exports=median;

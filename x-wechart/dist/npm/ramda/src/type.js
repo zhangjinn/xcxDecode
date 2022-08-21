@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),type=_curry1(function(r){return null===r?"Null":void 0===r?"Undefined":Object.prototype.toString.call(r).slice(8,-1)});module.exports=type;

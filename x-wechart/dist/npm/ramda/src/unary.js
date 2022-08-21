@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),nAry=require("./nAry.js"),unary=_curry1(function(r){return nAry(1,r)});module.exports=unary;

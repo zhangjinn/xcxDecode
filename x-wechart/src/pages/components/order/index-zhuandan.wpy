@@ -1,0 +1,181 @@
+<template>
+  <view class="order-common">
+    <van-cell-group>
+      <van-cell bind:click="openBill" title-class="order-title-class" title="开票户头" is-link="true">
+        <view class="order-common-value">{{common.bill.drawerName}}</view>
+      </van-cell>
+      <van-cell bind:click="openAddress" title-class="order-title-class" title="{{addressTitle}}" is-link="true">
+        <view class="order-common-value">
+          <text class="order-common-value-text">{{common.receiver.name}}</text>
+        </view>
+      </van-cell>
+      <van-cell bind:click="openDelivery" title-class="order-title-class" title="配送方式" is-link="true">
+        <view class="order-common-tag van-hairline--surround"><text>{{common.delivery.propertyName}}</text></view>
+      </van-cell>
+      <view hidden="{{ common.delivery.id != 502004 }}">
+        <van-cell bind:click="openTopAddress" title-class="order-title-class" title="直送地址" is-link="true">
+          <view class="order-common-value">{{common.toAddress.name}}</view>
+        </van-cell>
+        <van-field
+          placeholder="请输入地址详情"
+          input-align="right"
+          bind:change="changeText(address3)"
+          placeholder-style="color:#aaa;font-size:26rpx;"
+        >
+          <view slot="label" class="order-common-label">地址详情</view>
+        </van-field>
+      </view>
+      <view hidden="{{ common.delivery.id != 502005 }}">
+        <van-cell bind:click="openCustMarket" title-class="order-title-class" title="分销商" is-link="true">
+          <view class="order-common-value line-height-34">{{common.custMarket.name}}</view>
+        </van-cell>
+        <van-cell bind:click="openCustMarketAddress" title-class="order-title-class" title="分销商地址" is-link="true">
+          <view class="order-common-value line-height-34">{{common.custMarketAddress.name}}</view>
+        </van-cell>
+      </view>
+      <!--
+        1、启用共享仓后联系人、联系方式不可修改
+        2、直配到用户(502004)，联系人/联系方式可修改
+      -->
+      <van-field
+        placeholder="请输入联系人"
+        value="{{marketReceiver.contactPerson ||common.receiver.contactPerson}}"
+        input-align="right"
+        bind:change="changeText(contact)"
+        placeholder-style="color:#aaa;font-size:26rpx;"
+        disabled="{{common.delivery.id !== 502004 && common.shareFlag && common.shareFlag === 'Y'}}"
+      >
+        <view slot="label" class="order-common-label">联系人</view>
+      </van-field>
+      <van-field
+        placeholder="请输入联系方式"
+        value="{{marketReceiver.contactPersonTel || common.receiver.contactPersonTel}}"
+        type="number"
+        input-align="right"
+        bind:change="changeText(mobile)"
+        placeholder-style="color:#aaa;font-size:26rpx;"
+        disabled="{{common.delivery.id !== 502004 && common.shareFlag && common.shareFlag === 'Y'}}"
+      >
+        <view slot="label" class="order-common-label">联系方式</view>
+      </van-field>
+      <van-cell title-class="order-title-class" title="活动名称">
+        <view class="order-common-value">{{common.custActivity.activityName}}</view>
+      </van-cell>
+      <view hidden="{{!purchaseType}}">
+        <van-cell bind:click="openWeek" title-class="order-title-class" title="要求到货周" is-link="true">
+          <view class="order-common-value">{{week.name}}</view>
+        </van-cell>
+      </view>
+      <!-- 订单为常规订单式显示 是否允许提前发货  purchaseType = 2 为常规订单 -->
+      <van-cell wx:if="{{purchaseType == '2'}}" title-class="order-title-class" title="允许提前发货">
+        <!-- <view class="order-common-value">{{aheadSend == '0'?'不允许':'允许'}}</view> -->
+        <view class="order-common-value order-common-valueReserve"><van-checkbox shape="square" checked-color="#00AAA6" value="{{ aheadSend }}" @change="chooseAheadSend"></van-checkbox></view>
+      </van-cell>
+      <!--bind:click="openCalendar"  不允许修改有效期-->
+      <van-cell title-class="order-title-class" title="有效期截至" is-link="true">
+        <view class="order-common-value gray">{{day || common.deadMaxDate || '请选择截至有效期'}}</view>
+      </van-cell>
+    </van-cell-group>
+    <van-popup show="{{billShow}}" position="bottom" bind:close="closeBill">
+      <view class="t-popup">
+        <view @tap="closeBill" hover-class="hover" class="t-popup-close">
+          <van-icon name="cross" color="#262626" />
+        </view>
+        <view class="t-popup-header van-hairline--bottom">开票户头</view>
+        <view class="t-popup-body">
+          <repeat for="{{common.bills}}" key="{{id}}">
+            <view @tap="chooseBill({{item}})" hover-class="hover" class="t-popup-body-item">
+              <text class="t-popup-body-item-text {{ item.id === common.bill.id ? 'active' : ''}}">{{item.drawerName}}</text>
+              <view hidden="{{item.id !== common.bill.id}}">
+                <van-icon name="success" color="#00AAA6" />
+              </view>
+            </view>
+          </repeat>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{deliveryShow}}" position="bottom" bind:close="closeDelivery">
+      <view class="t-popup">
+        <view @tap="closeDelivery" hover-class="hover" class="t-popup-close">
+          <van-icon name="cross" color="#262626" />
+        </view>
+        <view class="t-popup-header van-hairline--bottom">配送方式</view>
+        <view class="t-popup-body">
+          <repeat for="{{common.deliveries}}" key="{{id}}">
+            <view @tap="chooseDelivery({{item}})" hover-class="hover" class="t-popup-body-item">
+              <text class="t-popup-body-item-text {{ item.id === common.delivery.id ? 'active' : ''}}">{{item.propertyName}}</text>
+              <view hidden="{{item.id !== common.delivery.id}}">
+                <van-icon name="success" color="#00AAA6" />
+              </view>
+            </view>
+          </repeat>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{calendarShow}}" position="bottom" bind:close="closeCalendar">
+      <calendar
+        calendarConfig="{{calendarConfig}}"
+        bind:afterTapDay="chooseDay"
+      />
+    </van-popup>
+
+    <!--要求到货周-->
+    <van-popup show="{{weekShow}}" position="bottom" bind:close="closeWeek">
+      <view class="t-popup">
+        <view @tap="closeWeek" hover-class="hover" class="t-popup-close">
+          <van-icon name="cross" color="#262626" />
+        </view>
+        <view class="t-popup-header van-hairline--bottom">要求到货周</view>
+        <view class="t-popup-body">
+          <repeat for="{{weekList}}" key="{{id}}">
+            <view @tap="chooseWeek({{item}})" hover-class="hover" class="t-popup-body-item">
+              <text class="t-popup-body-item-text {{ item.code === week.code ? 'active' : ''}} ">{{item.name}}</text>
+              <view hidden="{{item.code !== week.code}}">
+                <van-icon name="success" color="#00AAA6" />
+              </view>
+            </view>
+          </repeat>
+        </view>
+      </view>
+    </van-popup>
+
+    <!--允许提前发货-->
+    <van-popup show="{{aheadSendShow}}" position="bottom" bind:close="closeAheadSend">
+      <view class="t-popup">
+        <view @tap="closeAheadSend" hover-class="hover" class="t-popup-close">
+          <van-icon name="cross" color="#262626" />
+        </view>
+        <view class="t-popup-header van-hairline--bottom">允许提前发货</view>
+        <view class="t-popup-body">
+          <view @tap="chooseAheadSend('0')" hover-class="hover" class="t-popup-body-item">
+            <text class="t-popup-body-item-text {{ aheadSend == '0' ? 'active' : ''}} ">不允许</text>
+            <view wx:if="{{aheadSend == '0'}}">
+              <van-icon name="success" color="#00AAA6" />
+            </view>
+          </view>
+          <view @tap="chooseAheadSend('1')" hover-class="hover" class="t-popup-body-item">
+            <text class="t-popup-body-item-text {{ aheadSend == '1' ? 'active' : ''}} ">允许</text>
+            <view wx:if="{{aheadSend == '1'}}">
+              <van-icon name="success" color="#00AAA6" />
+            </view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    <!--海信办事处：原来隐藏，改为显示，模糊下拉搜索，-->
+    <van-cell bind:click="openOffice" wx:if="{{common.shareFlag && common.shareFlag === 'Y'}}" title-class="order-title-class" title="海信办事处" is-link="true">
+      <view class="order-common-value">
+        <text class="order-common-value-text">{{common.office.name}}</text>
+      </view>
+    </van-cell>
+
+    <search title="请选择" />
+    <customMarket title="分销商" />
+    <customMarketAddress title="分销商地址" />
+    <address />
+    <van-toast id="van-toast" />
+  </view>
+</template>
+<style lang="less" src="@/components/order/index.less" scoped></style>
+<script lang="typescript" src="@/components/order/index.ts"></script>

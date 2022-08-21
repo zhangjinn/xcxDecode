@@ -1,0 +1,308 @@
+<template>
+  <view class="dms-out-warehouse-order-list">
+    <headerTab
+      :tabList.sync="headerTabList"
+      @onTabChange.user="onToggleFilterItem"
+      @onSideFilter.user="onToggleFilterForm"
+    />
+    <view wx:if="{{freeShippingTip}}" class="free-shipping-tip">{{ freeShippingTip }}</view>
+    <scroll-view
+      wx:if="{{page.totalCount > 0}}"
+      scroll-y
+      enable-back-to-top="true"
+      scroll-with-animation="true"
+      scroll-top="{{visibelTop}}"
+      bindscrolltolower="onGetListNext"
+      id="out-warehouse-scroll-view"
+      class="out-warehouse-scroll"
+    >
+      <repeat for="{{orderList}}" key="out_warehouse_order_{{order.id}}" index="orderIndex" item="order">
+        <view class="order-item-card">
+          <view class="card-scan" wx:if="{{order.isScan}}">
+             <view class="b-icon xuyaosaoma xuyaosaoma-icon"></view>
+          </view>
+          <view class="card-header ">
+            <block wx:if="{{!order.isScan}}">
+              <view wx:if="{{!order.disableCheck}}" class="header-checker" @tap="onCheckOrder({{orderIndex}})">
+                <van-checkbox value="{{order.outChecked}}"></van-checkbox>
+              </view>
+              <view wx:else class="header-checker">
+                <van-checkbox disabled="{{true}}"></van-checkbox>
+              </view>
+            </block>
+
+            <view class="header-content">
+              <view class="content-line">
+                <view class="content-line-order-main">
+                  <view class="content-line-order-main-title">{{order.documentType}}{{order.documentNum}}</view>
+                </view>
+                <view class="content-line-order-status">{{order.status}}</view>
+              </view>
+              <view class="content-line">
+                <view class="content-line-order-customer">
+                  <view class="content-line-order-customer-code">{{order.customerCode}}</view>
+                  <view class="content-line-order-customer-name">{{order.customerName}}</view>
+                </view>
+                <view wx:if="{{order.warehouseName}}" class="content-line-order-main-warehouse">{{order.warehouseName}}</view>
+
+                <!-- <view wx:else class="content-line-order-customer">
+                  <view class="content-line-order-customer-code">分销商编码</view>
+                  <view class="content-line-order-customer-name">分销商名字我得U盘啊啊啊啊啊 啊啊啊啊啊啊啊 a</view>
+                </view> -->
+              </view>
+              <view class="content-line">
+                <view class="content-line-order-date">{{order.documentDate}}</view>
+              </view>
+            </view>
+          </view>
+          <view class="card-content">
+
+            <!--   组合购   -->
+            <block wx:if="{{order.discountTypeName == '组合购'}}">
+              <view wx:for="{{ order.salesOrderItem }}" wx:for-index="idx" wx:key="idx" wx:for-item="modelList" class="card-wrapper">
+                <view class="modelSeriesHeader">
+                  <view>{{ modelList.productGroupRemark ||'' }}</view>
+                  <view class="condition">x{{ modelList.packageRateNum}}</view>
+                </view>
+                <repeat for="{{modelList.child}}" key="out_warehouse_order_{{order.id}}_{{orderItem.itemId}}" index="itemIndex" item="orderItem">
+                  <view class="card-content-item">
+
+                    <productCardInfo
+                      :orderItem.sync="orderItem"
+                    />
+                    <view class="warehouse-info" wx:for="{{ orderItem.notReleaseds }}" wx:for-item="stockItem">
+                      <view class="warehouse-info-inner">
+                        <view class="title">
+                          <text>仓库：{{ stockItem.gicWarehouseName }}</text>
+                          <text>出库：{{ stockItem.qty }}</text>
+                        </view>
+                        <view class="desc">
+                          <text>{{ stockItem.material }}</text>
+                          <text>{{ stockItem.invStatusName }}{{ stockItem.invStatusTypeName }}</text>
+                        </view>
+                      </view>
+                    </view>
+
+                  </view>
+                </repeat>
+              </view>
+            </block>
+
+            <!--   非组合购   -->
+            <block wx:else>
+              <repeat for="{{order.salesOrderItem}}" key="out_warehouse_order_{{order.id}}_{{orderItem.itemId}}" index="itemIndex" item="orderItem">
+                <view class="card-content-item">
+
+                  <productCardInfo
+                    :orderItem.sync="orderItem"
+                  />
+                  <view class="warehouse-info" wx:for="{{ orderItem.notReleaseds }}" wx:for-item="stockItem">
+                    <view class="warehouse-info-inner">
+                      <view class="title">
+                        <text>仓库：{{ stockItem.gicWarehouseName }}</text>
+                        <text>出库：{{ stockItem.qty }}</text>
+                      </view>
+                      <view class="desc">
+                        <text>{{ stockItem.material }}</text>
+                        <text>{{ stockItem.invStatusName }}{{ stockItem.invStatusTypeName }}</text>
+                      </view>
+                    </view>
+                  </view>
+
+                </view>
+              </repeat>
+            </block>
+          </view>
+          <view class="card-footer">
+<!--            <navigator url="/pages/dms/out-warehouse/detail/index?id={{order.id}}&orgId={{order.orgId}}">-->
+<!--              <view class="button-wrapper">-->
+<!--                <view class="button-text">订单明细</view>-->
+<!--              </view>-->
+<!--            </navigator>-->
+            <block wx:if="{{order.status === '待发货' || order.status === '部分出库'}}">
+              <view @tap="onCancelOrder({{order.id}})" class="card-footer-handle">取消审核</view>
+            </block>
+            <block>
+              <view @tap="onBatchSubmitItemOut({{order.id}})" class="card-footer-handle card-footer-handle-active">出库</view>
+            </block>
+          </view>
+        </view>
+      </repeat>
+    </scroll-view>
+    <emptyDataType wx:else description="订单"/>
+
+    <view wx:if="{{page.totalCount > 0}}" class="out-warehouse-footer">
+<!--      <view class="footer-left">-->
+<!--        <view @tap="onCheckAll">-->
+<!--          <van-checkbox value="{{allChecked}}">全选</van-checkbox>-->
+<!--        </view>-->
+<!--      </view>-->
+      <view class="button-wrapper" @tap="onBatchSubmitOut">
+        <view class="button-text">批量出库</view>
+      </view>
+    </view>
+    <van-popup show="{{statusVisible || documentTypeVisible}}" position="top" bind:close="onToggleFilterItem" custom-class="out-warehouse-filter-item-popup" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;">
+      <view class="order-s-filter-container">
+        <view wx:if="{{statusVisible}}" class="filter-select">
+          <repeat for="{{statusList}}" item="item">
+            <view class="filter-select-line {{filterForm.status === item.value ? 'active' : ''}}" @tap="onSelectFilterItem('status', {{item.value}})">
+              <view class="filter-select-line-text">{{item.label}}</view>
+              <i wx:if="{{filterForm.status === item.value}}" class="b-icon icon-check filter-select-line-checked"></i>
+            </view>
+          </repeat>
+        </view>
+        <view wx:if="{{documentTypeVisible}}" class="filter-select">
+          <repeat for="{{documentTypeList}}" item="item">
+            <view class="filter-select-line {{filterForm.documentType === item.value ? 'active' : ''}}" @tap="onSelectFilterItem('documentType', {{item.value}})">
+              <view class="filter-select-line-text">{{item.label}}</view>
+              <i wx:if="{{filterForm.documentType === item.value}}" class="b-icon icon-check filter-select-line-checked"></i>
+            </view>
+          </repeat>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup
+      show="{{filterFormVisible}}"
+      position="right"
+      z-index="200"
+      bind:close="onToggleFilterForm"
+      custom-class="out-warehouse-filter-form-popup"
+    >
+      <view class="out-warehouse-filter-form-scroll-wrapper">
+      <scroll-view scroll-y class="out-warehouse-filter-form-scroll">
+        <view class="input-group">
+          <view class="input-label">订单号</view>
+          <van-field
+            value="{{filterForm.documentNum}}"
+            placeholder="请输入订单号"
+            border="{{ false }}"
+            placeholder-style="font-size: 24rpx;color: #AAAAAA;"
+            custom-style="background-color: #f7f7f7;height: 75rpx"
+            clearable
+            data-name="documentNum"
+            bind:change="onFilterFormChange"
+            >
+          </van-field>
+        </view>
+        <view class="input-group">
+          <view class="input-label">客户编码</view>
+          <van-field
+            value="{{filterForm.customerCode}}"
+            placeholder="请输入客户编码"
+            border="{{ false }}"
+            placeholder-style="font-size: 24rpx;color: #AAAAAA;"
+            custom-style="background-color: #f7f7f7;height: 75rpx"
+            clearable
+            data-name="customerCode"
+            bind:change="onFilterFormChange"
+            >
+          </van-field>
+        </view>
+        <view class="input-group">
+          <view class="input-label">客户名称</view>
+          <van-field
+            value="{{filterForm.customerName}}"
+            placeholder="请输入客户名称"
+            border="{{ false }}"
+            placeholder-style="font-size: 24rpx;color: #AAAAAA;"
+            custom-style="background-color: #f7f7f7;height: 75rpx"
+            clearable
+            data-name="customerName"
+            bind:change="onFilterFormChange"
+            >
+          </van-field>
+        </view>
+        <view class="input-group">
+          <view class="input-label">仓库编码</view>
+          <van-field
+            value="{{filterForm.warehouseCode}}"
+            placeholder="请输入仓库编码"
+            border="{{ false }}"
+            placeholder-style="font-size: 24rpx;color: #AAAAAA;"
+            custom-style="background-color: #f7f7f7;height: 75rpx"
+            clearable
+            data-name="warehouseCode"
+            bind:change="onFilterFormChange"
+            >
+          </van-field>
+        </view>
+        <view class="input-group">
+          <view class="input-label">仓库名称</view>
+          <van-field
+            value="{{filterForm.warehouseName}}"
+            placeholder="请输入仓库名称"
+            border="{{ false }}"
+            placeholder-style="font-size: 24rpx;color: #AAAAAA;"
+            custom-style="background-color: #f7f7f7;height: 75rpx"
+            clearable
+            data-name="warehouseName"
+            bind:change="onFilterFormChange"
+            >
+          </van-field>
+        </view>
+        <view class="input-group">
+          <view class="input-label">单据日期</view>
+          <view class="date-input-group">
+            <view class="date-begin">
+              <view class="{{filterForm.startDate ? '' : 'placeholder'}}" data-name="startDate" @tap="openCalendar">{{filterForm.startDate || '开始日期'}}</view>
+              <view class="close-icon" @tap="clearCalendar('startDate')">
+                <van-icon wx:if="{{filterForm.startDate}}" name="clear"/>
+              </view>
+            </view>
+            <view class="date-between">-</view>
+            <view class="date-end">
+              <view class="{{filterForm.endDate ? '' : 'placeholder'}}" data-name="endDate" @tap="openCalendar">{{filterForm.endDate || '结束日期'}}</view>
+              <view class="close-icon" @tap="clearCalendar('endDate')">
+                <van-icon wx:if="{{filterForm.endDate}}" name="clear"/>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="input-group">
+          <view class="input-label">业务员</view>
+          <van-field
+            value="{{filterForm.sellerName}}"
+            placeholder="请输入业务员"
+            border="{{ false }}"
+            placeholder-style="font-size: 24rpx;color: #AAAAAA;"
+            custom-style="background-color: #f7f7f7;height: 75rpx"
+            clearable
+            data-name="sellerName"
+            bind:change="onFilterFormChange"
+            >
+          </van-field>
+        </view>
+      </scroll-view>
+      <view class="out-warehouse-filter-form-footer">
+        <view class="button-wrapper" @tap="onResetFilterForm">
+          <view class="button-text">重置</view>
+        </view>
+        <view class="button-wrapper primary" @tap="onSubmitFilterForm">
+          <view class="button-text">确定</view>
+        </view>
+      </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{calendarShow}}" position="bottom" bind:close="closeCalendar" z-index="300">
+      <calendar
+        calendarConfig="{{calendarConfig}}"
+        bind:afterTapDay="chooseDay"
+      />
+    </van-popup>
+    <van-popup show="{{outFormVisible}}" position="bottom" bind:close="closeOutForm" z-index="300">
+      <van-picker
+        show-toolbar
+        title="出库仓库"
+        value-key="value"
+        columns="{{warehouseList}}"
+        bind:cancel="onOutFormCancel"
+        bind:confirm="onOutFormConfirm"
+      />
+    </van-popup>
+
+    <van-toast id="van-toast"/>
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts"></script>

@@ -1,0 +1,191 @@
+<template>
+  <view class="filter-side">
+    <!-- 筛选侧边弹框内容 -->
+    <view class="order-drawer">
+      <view class="order-drawer-attr">
+        <scroll-view
+          class="order-drawer-attr-scroll"
+          style="padding-top:{{drawerTopHeight}}rpx"
+          scroll-y>
+          <view class="attr-item">
+            <block wx:for="{{formData}}">
+              <view wx:if="{{ item.type==='field' }}" class="projectem">
+                <view class="project">
+                  <text class="project-name">{{ item.label }}</text>
+                </view>
+                <van-field
+                  placeholder="{{ item.placeholder || '请输入' }}"
+                  placeholder-style="font-size: 24rpx;"
+                  value="{{ item.value }}"
+                  border="{{ false }}"
+                  data-index="{{ index }}"
+                  bind:change="onFieldChange"
+                  custom-style="background-color: #f7f7f7; border-radius: 32rpx; padding: 8rpx 30rpx; font-size: 24rpx;"
+                  clearable
+                />
+              </view>
+              <view wx:if="{{ item.type==='select' }}" class="parent-agent">
+                <view class="agent-name">{{ item.label }}</view>
+                <view
+                  @tap="selectagentPopup"
+                  class="agent-select"
+                  data-popupTitle="{{ item.label }}"
+                  data-index="{{ index }}"
+                >
+                  <block wx:if="{{ item.multiple}}">
+                    <text wx:if="{{ item.name && item.name.length }}">{{ item.name }}</text>
+                    <text wx:else>{{ item.placeholder || '请选择' }}</text>
+                  </block>
+                  <block wx:else>
+                    <text wx:if="{{ item.name }}">{{ item.name }}</text>
+                    <text wx:else>{{ item.placeholder || '请选择' }}</text>
+                  </block>
+
+                  <view class="b-icon iconliebiaoshaixuanjiantou-down icons"></view>
+                </view>
+              </view>
+              <view wx:if="{{ item.type==='yearMonth' }}" class="parent-agent">
+                <view class="agent-name">{{ item.label }}</view>
+                <view
+                  @tap="selectYearMonthPopup"
+                  class="agent-select"
+                  data-popupTitle="{{ item.label }}"
+                  data-index="{{ index }}"
+                >
+                  <text wx:if="{{ item.value }}">{{ item.value }}</text>
+                  <text wx:else>{{ item.placeholder || '请选择' }}</text>
+                  <view class="b-icon iconliebiaoshaixuanjiantou-down icons"></view>
+                </view>
+              </view>
+              <view wx:if="{{ item.type==='date' }}" class="order-data">
+                <view class="project">
+                  <text class="project-name">{{ item.label }}</text>
+                </view>
+                <view class="order-data-input">
+                  <view class="order-data-input-one" data-name="startDate" data-index="{{ index }}" @tap="openCalendar">
+                    <text wx:if="{{ item.startDate }}">{{ item.startDate }}</text>
+                    <text wx:else>{{ item.placeholderStart || '请选择'}}</text>
+                    <van-icon wx:if="{{ item.startDate }}" class="close-icon" name="clear" data-name="startDate" data-index="{{ index }}" @tap="clearCalendar"/>
+                  </view>
+                  <view class="order-data-input-line">-</view>
+                  <view class="order-data-input-one" data-name="endDate" data-index="{{ index }}" @tap="openCalendar">
+                    <text wx:if="{{ item.endDate }}">{{ item.endDate }}</text>
+                    <text wx:else>{{ item.placeholderEnd || '请选择'}}</text>
+                    <van-icon wx:if="{{ item.endDate }}" class="close-icon" name="clear" data-name="endDate" data-index="{{ index }}" @tap="clearCalendar"/>
+                  </view>
+                </view>
+              </view>
+              <view wx:if="{{ item.type==='quickDate' }}" class="quick-filter-date">
+                <block wx:for="{{quickFilterDateOption}}" wx:for-item="quickDate" wx:for-index="quickDateIndex">
+                  <view class="quick-date-item {{item.value === quickDate.id ? 'active' : '' }}" data-index="{{ index }}" data-item="{{ quickDate }}" @tap="onChangeQuickDate">{{ quickDate.value }}</view>
+                </block>
+              </view>
+            </block>
+          </view>
+        </scroll-view>
+        <!-- 底部按钮 -->
+        <view class="order-drawer-attr-footer">
+          <view class="order-drawer-attr-row">
+            <view
+              @tap="onResetFilterForm"
+              class="order-drawer-attr-footer-btn reset"
+              hover-class="order-drawer-attr-footer-btn-hover"
+            >重置</view>
+            <view
+              @tap="onSubmitFilterForm"
+              class="order-drawer-attr-footer-btn confirm"
+              hover-class="order-drawer-attr-footer-btn-hover"
+            >确定</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 日历弹框 -->
+    <van-popup show="{{calendarShow}}" position="bottom" bind:close="closeCalendar" z-index="200">
+      <calendar
+        calendarConfig="{{calendarConfig}}"
+        bind:afterTapDay="chooseDay"
+      />
+    </van-popup>
+
+    <!-- 选择年月 -->
+    <van-popup
+      show="{{ yearsVisable }}"
+      position="bottom"
+      custom-class="purchase-top"
+      bind:close="touchFilter"
+      wx:if="{{ yearsVisable }}" >
+      <view>
+        <van-datetime-picker
+          type="year-month"
+          value="{{ currentDate }}"
+          min-date="{{ minDate }}"
+          max-date="{{ maxDate }}"
+          bind:input="onInput"
+          bind:confirm="onConfirm"
+          bind:cancel="onCancel"/>
+      </view>
+    </van-popup>
+
+    <!-- 筛选侧边单选、多选弹框列表 -->
+    <van-popup
+      show="{{ agentPopup }}"
+      position="right"
+      overlay="{{ true }}"
+      z-index="200"
+      custom-style="height: 100%;"
+      close-on-click-overlay="{{false}}"
+    >
+      <view wx:if="{{ popupTitle }}" class="order-drawer" style="padding-top:{{drawerTopHeight}}rpx">
+        <view class="order-drawer-time">
+          <view class="order-drawer-time-header">
+            <van-icon  name="arrow-left" class="order-drawer-time-header-back" bind:click="closeAgentPopup"></van-icon>
+            <view class="order-drawer-time-header-title">{{popupTitle}}</view>
+          </view>
+
+          <view class="item-inv-search" wx:if="{{ formData[currIndex].isSearch }}">
+            <van-search
+              custom-class="header-search"
+              shape="round"
+              value="{{ searchStr }}"
+              use-action-slot
+              use-left-icon-slot="{{ true }}"
+              leftSearchIconSow="{{ false }}"
+              placeholder="请输入搜索关键字"
+              placeholder-style="color: #AAAAAA; font-size: 28rpx;"
+              data-key="{{ formData[currIndex].key }}"
+              bind:change="onSearch"
+            >
+              <view slot="label" class="search-left-icon">
+                <i class="b-icon shouyesousuo"></i>
+              </view>
+            </van-search>
+          </view>
+
+          <scroll-view class="order-drawer-time-content" scroll-y>
+            <block wx:if="{{selectOptions && selectOptions.length>0}}">
+              <view wx:for="{{selectOptions}}">
+                <view class="order-drawer-time-content-line" data-item="{{ item }}" @tap="selectChangeFilterStatus">
+                  <block wx:if="{{formData[currIndex].multiple}}">
+                    <view class="text {{utils.includes(item.id, formData[currIndex].value) ? 'active' : ''}}">{{item.value}}</view>
+                    <van-icon wx:if="{{utils.includes(item.id, formData[currIndex].value) }}" name="success" class="time-selected" size="32rpx"/>
+                  </block>
+                  <block wx:else>
+                    <view class="text {{formData[currIndex].value === item.id ? 'active' : ''}}">{{item.value}}</view>
+                    <van-icon wx:if="{{formData[currIndex].value === item.id }}" name="success" class="time-selected" size="32rpx"/>
+                  </block>
+                </view>
+              </view>
+            </block>
+            <block wx:else>
+              <view class="no-data">暂无数据~</view>
+            </block>
+          </scroll-view>
+        </view>
+      </view>
+    </van-popup>
+  </view>
+</template>
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts" ></script>

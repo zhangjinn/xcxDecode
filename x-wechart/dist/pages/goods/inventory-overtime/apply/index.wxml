@@ -1,0 +1,108 @@
+
+  <view class="order _f9781c8">
+    <scroll-view  wx:if="{{inventoryList.length !== 0}}" scroll-y="true" class="order-scroll _f9781c8" enable-flex="enable-flex" bindscrolltolower="onGetOrderListNext">
+      <block class="_f9781c8" wx:for="{{inventoryList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="order-container _f9781c8" wx:if="{{(item.checked&&showCheckedOnly)||!showCheckedOnly}}">
+          <view class="order-top _f9781c8">
+            <view class="order-name _f9781c8">
+              <view class="order-rel-name _f9781c8">
+                <view class="order-name-left _f9781c8">{{item.modelnum}}</view>
+                <view class="order-name-right _f9781c8">{{item.share==0?'未共享':'已共享'}}</view>
+              </view>
+              <view class="order-number _f9781c8">{{item.qualitylv}}/{{item.invstatusName}}</view>
+            </view>
+          </view>
+          <view class="order-options order-option-four _f9781c8">
+            <view class="item _f9781c8">
+              <span class="_f9781c8">库存</span>({{item.baseqty || '0'}})</view>
+            <view class="item _f9781c8">
+              <span class="_f9781c8">预留</span>({{item.baseqty-item.avbbaseqty}})
+            </view>
+            <view class="item _f9781c8">
+              <span class="_f9781c8">可用</span>({{item.avbbaseqty||0}})</view>
+            <view class="item is-lock _f9781c8" style="margin-right: 0">
+              <span class="_f9781c8">可共享</span>({{item.avbshareqty}})
+            </view>
+          </view>
+          <view class="order-options _f9781c8">
+            <view class="item _f9781c8">
+              <span class="_f9781c8">入库时间: </span>
+              {{item.ininvdate || '无'}}</view>
+            <view class="item _f9781c8">
+              <span class="_f9781c8">库龄: </span>
+              {{item.invage}}
+            </view>
+            <view class="item _f9781c8">
+              <span class="_f9781c8">超期天数: </span>
+              {{item.overduedays || '无'}}</view>
+          </view>
+          <view class="order-options _f9781c8">
+            <view class="item _f9781c8">
+              <span class="_f9781c8">仓库: </span>
+              {{item.warehouse}}
+            </view>
+          </view>
+
+          <view class="order-options _f9781c8" style="justify-content: flex-start;">
+            <view class="item _f9781c8">
+              <span class="_f9781c8">物料组: </span>
+              {{item.materialgroup}}
+            </view>
+            <view class="item _f9781c8" style="margin-left: 40rpx">
+              <span class="_f9781c8">库存类型: </span>
+              {{item.invtypeName}}
+            </view>
+          </view>
+          <view class="order-options _f9781c8" style="justify-content: flex-start;">
+            <view class="item _f9781c8">
+              <span class="_f9781c8">共享审批中: </span>
+              {{item.checkqty||'0'}}
+            </view>
+          </view>
+          <view class="count-box _f9781c8">
+            <view class="lab _f9781c8">本次申请共享</view>
+            <van-stepper class="step _f9781c8" integer="{{true}}" value="{{item.quantity}}" min="0" max="{{item.maxQuantity}}"  bind:change="onCountChange" custom-class="cart-stepper" input-class="cart-input-class" plus-class="cart-action-class" minus-class="cart-action-class" data-wpyoncountchange-a="{{item}}" data-wpyoncountchange-b="{{index}}" data-wpyoncountchange-c="{{$event}}"/>
+          </view>
+          <view class="van-hairline--bottom top-line _f9781c8"/>
+          <view class="order-detail-item-out-info-footer _f9781c8" bindtap="removeItem" data-wpyremoveitem-a="{{index}}">
+            <i class="b-icon icon-remove footer-remove _f9781c8"/>
+            <text class="_f9781c8">删除</text>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+    
+  <view class="empty-data _f9781c8" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+    <view class="bom-wrap _f9781c8">
+      <view class="apply-btn cancle-btn _f9781c8" bindtap="cancle">取消</view>
+      <view class="apply-btn _f9781c8" bindtap="submit">提交</view>
+    </view>
+    <view class="success-wrap _f9781c8"  wx:if="{{showResult}}">
+      <view class="top-box _f9781c8">
+        <view class="icon-box _f9781c8">
+          <text class="b-icon tijiaocehngong _f9781c8"/>
+        </view>
+        <view class="msg _f9781c8">您的申请已提交成功!</view>
+        <view class="line-box _f9781c8"/>
+        <view class="info-box _f9781c8">
+          <text style="margin-right: 16rpx" class="_f9781c8">申请编码</text>
+          <text class="_f9781c8">{{appleCode}}</text>
+        </view>
+      </view>
+      <view class="btn-box _f9781c8">
+        <view class="btn _f9781c8" bindtap="goHome">
+          返回首页
+        </view>
+        <view class="btn btn-fill _f9781c8" bindtap="goApply">
+          继续申请
+        </view>
+      </view>
+    </view>
+    <van-toast id="van-toast" class="_f9781c8"/>
+  </view>

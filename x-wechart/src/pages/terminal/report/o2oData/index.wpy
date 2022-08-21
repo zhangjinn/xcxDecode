@@ -1,0 +1,180 @@
+<template>
+  <view class="purchase">
+    <!-- 时效日期说明，数据更新至当天的前一天日期 -->
+    <view class="expiry-date">数据更新至{{ previousDayDate }}</view>
+    <!-- 顶部筛选 -->
+    <view class="purchase-screen">
+      <view class="header-tab-box">
+        <headerTab
+          :showRightBtn="showRightBtn"
+          :tabList.sync="headerTabList"
+          @onTabChange.user="touchFilter"
+        />
+      </view>
+      <view class="b-icon o2owenti" @tap="openQuestionDialog"></view>
+    </view>
+
+    <!-- 筛选弹出框 -->
+    <van-popup show="{{ purchaseVisable }}" position="top" custom-class="purchase-top" bind:close="touchFilter"
+               wx:if="{{CurrentFilterName==='supplier'}}" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;">
+      <!-- 选择供应商 -->
+      <view wx:if="{{CurrentFilterName==='supplier'}}" class="order-s-filter-container">
+        <scroll-view scroll-y class="purchase-inv-scroll">
+          <view
+            wx:for="{{ supplierList }}"
+            wx:key="{{ item.code}}"
+            item="item"
+            class="purchase-inv-scroll-row"
+            data-key="{{item.code}}"
+            data-index="{{ index }}"
+            @tap="onChooseMa({{item.code}})"
+          >
+            <view
+              class="pose-inv-scroll-row-desc {{ item.code === supplierItem.code ? 'checked' : ''}}"
+            >{{ item.name }}
+            </view>
+            <block wx:if="{{ item.code === supplierItem.code }}">
+              <view class="b-icon icon-check pose-inv-scroll-row-checked checked"></view>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ purchaseVisable }}" position="bottom" custom-class="purchase-top" bind:close="touchFilter"
+               wx:if="{{CurrentFilterName==='date'}}">
+      <!-- 选择时间 -->
+      <view>
+        <van-datetime-picker type="year-month" value="{{ currentDate }}" min-date="{{ minDate }}" max-date="{{maxDate}}"
+                             bind:input="onInput" bind:confirm="onConfirm" bind:change="getValues"
+                             bind:cancel="onCancel"/>
+      </view>
+    </van-popup>
+     <view wx:if="{{supplierList.length>0}}" class="container-list-scroll">
+       <view class="purchase-survey">
+         <view class="inner-wrap">
+           <view class="item-twice van-hairline--bottom">
+             <view class="item van-hairline--right">
+               <view class="lab">
+                 上月收入
+               </view>
+               <view class="val val2">
+                 {{ incomeData.lastMonthTotalFee }}
+               </view>
+             </view>
+             <view class="item">
+               <view class="lab">
+                 本月预估收入
+               </view>
+               <view class="val val2">
+                 {{ incomeData.thisMonthTotalFee }}
+               </view>
+             </view>
+           </view>
+         </view>
+
+       </view>
+       <view class="purchase-survey">
+         <view class="title van-hairline--bottom">销售佣金</view>
+         <view class="inner-wrap">
+           <view class="item-twice van-hairline--bottom">
+             <view class="item van-hairline--right">
+               <view class="lab">
+                 上月佣金
+               </view>
+               <view class="val val2">
+                 {{ incomeData.lastMonthRebate }}
+               </view>
+             </view>
+             <view class="item">
+               <view class="lab">
+                 本月预估佣金
+               </view>
+               <view class="val">
+                 {{ incomeData.thisMonthRebate }}
+               </view>
+             </view>
+           </view>
+           <view class="item-twice van-hairline--bottom">
+             <view class="item van-hairline--right">
+               <view class="lab">
+                 暂未结算佣金
+               </view>
+               <view class="val">
+                 {{ incomeData.waitSettleRebate }}
+               </view>
+             </view>
+             <view class="item">
+               <view class="lab">
+                 累计已结算佣金
+               </view>
+               <view class="val">
+                 {{ incomeData.sumAlreadyRebateFee }}
+               </view>
+             </view>
+           </view>
+           <view class="item-twice">
+             <view class="item van-hairline--right">
+               <view class="lab">
+                 年累计销售额
+               </view>
+               <view class="val">
+                 {{ incomeData.yearSaleFee }}
+               </view>
+             </view>
+             <view class="item">
+               <view class="lab">
+                 月累计销售额
+               </view>
+               <view class="val">
+                 {{ incomeData.monthSaleFee }}
+               </view>
+             </view>
+           </view>
+         </view>
+       </view>
+       <view class="purchase-survey">
+         <view class="title van-hairline--bottom">会员激励</view>
+         <view class="inner-wrap">
+           <view class="item-twice van-hairline--bottom">
+             <view class="item van-hairline--right">
+               <view class="lab">
+                 上月激励
+               </view>
+               <view class="val val2">
+                 {{ incomeData.lastMonthReward }}
+               </view>
+             </view>
+             <view class="item">
+               <view class="lab">
+                 本月预估激励
+               </view>
+               <view class="val">
+                 {{ incomeData.thisMonthReward }}
+               </view>
+             </view>
+           </view>
+           <view class="item-twice van-hairline--bottom">
+             <view class="item van-hairline--right">
+               <view class="lab">
+                 暂未结算激励
+               </view>
+               <view class="val">
+                 {{ incomeData.waitSettleReward }}
+               </view>
+             </view>
+           </view>
+         </view>
+       </view>
+     </view>
+    <view class="nodata" wx:else>暂无数据</view>
+    <van-dialog id="van-dialog" class="o2o-dialog" />
+  </view>
+</template>
+
+<style lang="less" src="./index.less" scoped></style>
+<style lang="less">
+.o2o-dialog .van-dialog__message{
+    text-align: left;
+}
+</style>
+<script lang="typescript" src="./index.ts"></script>

@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),ap=require("./ap.js"),map=require("./map.js"),prepend=require("./prepend.js"),reduceRight=require("./reduceRight.js"),sequence=_curry2(function(e,r){return"function"==typeof r.sequence?r.sequence(e):reduceRight(function(e,r){return ap(map(prepend,e),r)},e([]),r)});module.exports=sequence;

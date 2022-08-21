@@ -1,0 +1,1 @@
+var _objectAssign=require("./internal/_objectAssign.js"),_curry2=require("./internal/_curry2.js"),mergeLeft=_curry2(function(e,r){return _objectAssign({},r,e)});module.exports=mergeLeft;

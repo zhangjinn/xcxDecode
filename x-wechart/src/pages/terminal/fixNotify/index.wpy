@@ -1,0 +1,55 @@
+<template>
+
+  <view class="page-wrap">
+    <view class="top-wrap">
+      <view class="left-wrap">
+        <view class="text name">{{ detail.storeName }}</view>
+        <view class="text">
+          <text class="lab">创建日期</text>
+          <text class="val">{{ detail.checkTime }}</text>
+        </view>
+        <view class="text">
+          <text class="lab">督办 人员</text>
+          <text class="val">{{ detail.checkUserName }}</text>
+        </view>
+      </view>
+      <view class="right-wrap">
+        <image class="img" src="{{detail.checkResult=='T' ? imgObj.pointPass : imgObj.pointUnpass}}"/>
+      </view>
+    </view>
+    <view class="prob-wrap">
+      <view class="name van-hairline--bottom">不合格项</view>
+      <repeat for="{{detail.listStandard}}" item="item" index="index">
+        <view class="item">
+          <view class="num">
+            {{ index+1 }}.
+          </view>
+          <view class="cont">
+            {{ item.contentRead }}
+          </view>
+        </view>
+      </repeat>
+    </view>
+    <view class="form-wrap" wx:if="{{!optionsTemp.read}}">
+      <view class="name van-hairline--bottom"><text class="cell--required nbsp"></text>整改结果</view>
+      <view class="upload-wrap">
+        <van-uploader max-count="3" data-state="4" capture="{{camera}}" accept="image" file-list="{{ imgList }}" bind:delete="deleteImg"  bind:after-read="afterRead" sizeType="compressed">
+          <!--          <image src="/images/newpage/jia.png" class="jiaImg"></image>-->
+        </van-uploader>
+      </view>
+      <view class="remark-wrap">
+        <van-field value="{{planConent}}" bind:change="onDescriptionChange" placeholder="请输入备注" maxlength="200" border="{{ false }}" custom-style="width:100%;color:#969698;height:100%;" type="textarea" autosize="{ maxHeight: 200, minHeight: 200 }"/>
+      </view>
+    </view>
+    <view class="bottom-wrap">
+      <view class="btn" @tap="back">
+        返回
+      </view>
+      <view wx:if="{{!optionsTemp.read}}" class="btn btn-ok" @tap="submit">
+        提交
+      </view>
+    </view>
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

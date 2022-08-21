@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),concat=require("./concat.js"),difference=require("./difference.js"),symmetricDifference=_curry2(function(e,r){return concat(difference(e,r),difference(r,e))});module.exports=symmetricDifference;

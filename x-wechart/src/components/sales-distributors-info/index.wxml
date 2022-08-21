@@ -1,0 +1,91 @@
+<wxs src="../../wxs/utils.wxs" module="utils" />
+<view class="order-goods van-hairline--bottom">
+  <navigator class="order-goods-img" url="">
+    <img class="goodimg" src="{{ goods.img }}" errSrc="{{ goods.err }}" />
+  </navigator>
+  <view class="order-goods-detail">
+    <view class="order-goods-detail-name">
+<!--      <view wx:if="{{utils.isFreeShipping(goods.productLabel)}}" class="free-shipping-tag">免运费</view>-->
+      <text class="detail-model">{{goods.model}}</text>
+    </view>
+    <!-- 库存状态 -->
+    <!-- <view class="stock-status" bindtap="onTapStock">
+      <view class="stock-status-name">库存状态({{goods.invStatus.selected.invStatusName}})</view>
+      <view class="stock-status-i">
+        <i class="b-icon iconliebiaoshaixuanjiantou-down stock-status-i-icon"></i>
+      </view>
+    </view> -->
+    <!-- 价格 -->
+    <!-- wx:if="{{goods.isLock}}" -->
+    <view class="order-goods-detail-color">
+      <text class="color-left">
+        <text class="good-price">
+          <text class="order-code">￥</text>
+          <text class="order-num">{{goods.backnowledgedPrice}}</text>
+          <text wx:if="{{goods.colour}}" class="order-color">({{goods.colour}})</text>
+        </text>
+
+        <text wx:if="{{item.discountTypeName == '套购' || item.discountTypeName == '跨品类套购'}}" style="margin-left:24rpx;color:#777777">组合数量：{{goods.packageRateNum || 0}}</text>
+      </text>
+      <!--DMS预付金需要增加到产品行上-->
+      <text class="color-right">x{{goods.backnowledgedQty || 0}} </text>
+    </view>
+    <!-- <view wx:else class="order-goods-detail-name" style="display: flex;padding-top: 10rpx">
+      <view class="detail-text" style="color: #262626; display: flex">单价:￥
+        <view class="border-field">
+          <van-field input-class="field" type="digit"
+            custom-style="padding: 0; height: 34rpx; align-items: center;background-color: #F7F7F7;font-size: 24rpx;width: 140rpx; padding-left: 16rpx"
+            value="{{ goods.backnowledgedPrice }}" border="{{ false }}" bind:change="onChangeFieldPrice" />
+        </view>
+      </view>
+    </view> -->
+    <view class="order-goods-detail-desc">
+      <text class="detail-text">
+        <text class="deposit" wx:if="{{goods.retainer!=null && goods.retainer!=''}}">定金￥{{goods.retainer}}</text>
+        <text class="rebate" wx:if="{{goods.rebateMoney!=null && goods.rebateMoney!=''}}">返利金￥{{goods.rebateMoney}}</text>
+      </text>
+    </view>
+<!--    <view class="order-goods-detail-color" style="padding-top: 10rpx">-->
+<!--      <text class="detail-text">颜色：{{goods.colour}}</text>-->
+<!--    </view>-->
+  <!--  <view class="order-goods-detail-dms">
+      <view class="detail-text">销售数量:</view>
+      <view class="good-number">×{{goods.backnowledgedQty}}</view>
+       <view class="good-number">
+        <van-stepper custom-class="cart-stepper" input-class="cart-input-class" plus-class="cart-action-class"
+          minus-class="cart-action-class" integer="true" value="{{ goods.backnowledgedQty }}" min="0"
+          bind:change="onChangeFieldNumber" />
+      </view>
+    </view>-->
+  </view>
+  <!-- 库存状态选择 -->
+  <van-popup
+    show="{{ chooseInvShow }}"
+    closeable
+    position="bottom"
+    custom-style="height: 570rpx"
+    zIndex="400"
+    bind:click-overlay="onClose"
+  >
+  <view class="item-inv">
+    <view class="item-inv-head">
+      <view class="item-inv-head-context">
+        <view class="item-inv-head-context-title">库存状态</view>
+      <van-icon name="cross" class="item-inv-head-context-close" bindtap="onClose" />
+      </view>
+    </view>
+    <scroll-view scroll-y class="item-inv-scroll">
+      <view wx:for="{{ goods.invStatus.options }}" wx:key="{{ item.invStatusId }}" item="item" class="item-inv-scroll-row" data-key="{{ item.invStatusId }}"  bindtap="chooseInv">
+        <view data-key="{{ item.invStatusId }}" class="item-inv-scroll-row-desc {{ item.invStatusId === goods.invStatus.selected.invStatusId ? 'checked' : ''}}">
+          {{ item.invStatusName }}
+        </view>
+        <block wx:if="{{ item.invStatusId === goods.invStatus.selected.invStatusId }}">
+          <view class="b-icon icon-check item-inv-scroll-row-checked checked">
+          </view>
+        </block>
+      </view>
+
+    </scroll-view>
+  </view>
+  </van-popup>
+</view>

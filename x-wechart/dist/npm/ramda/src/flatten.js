@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),_makeFlat=require("./internal/_makeFlat.js"),flatten=_curry1(_makeFlat(!0));module.exports=flatten;

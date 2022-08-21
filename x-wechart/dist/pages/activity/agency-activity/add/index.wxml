@@ -1,0 +1,369 @@
+
+  <view class="store _da2cf4a">
+    <view class="store-wrapper _da2cf4a">
+      <view class="form-wrapper _da2cf4a">
+
+        <view class="item-row _da2cf4a" data-name="营销中心" data-key="marketCenter" bindtap="onPopOpen">
+          <view class="item-row-left _da2cf4a">
+            <text class="_da2cf4a">营销中心</text>
+            <text class="redXing _da2cf4a">*</text>
+          </view>
+          <view class="item-row-right _da2cf4a">
+            <view class="item-row-right-inventory {{ formData.marketCenter.name ? '' : 'placeholder' }} _da2cf4a">
+              {{ formData.marketCenter.name || '请选择' }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_da2cf4a"/>
+          </view>
+        </view>
+
+        <view class="item-row _da2cf4a" data-name="办事处" data-key="office" bindtap="onPopOpen">
+          <view class="item-row-left _da2cf4a">
+            <text class="_da2cf4a">办事处</text>
+            <text class="redXing _da2cf4a">*</text>
+          </view>
+          <view class="item-row-right _da2cf4a">
+            <view class="item-row-right-inventory {{ formData.office.name ? '' : 'placeholder' }} _da2cf4a">
+              {{ formData.office.name || '请选择' }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_da2cf4a"/>
+          </view>
+        </view>
+
+        <view class="item-row _da2cf4a" data-name="申请开始时间" data-key="timeStart" bindtap="onDatePopOpen">
+          <view class="item-row-left _da2cf4a">
+            <text class="_da2cf4a">申请活动时间</text>
+            <text class="redXing _da2cf4a">*</text>
+          </view>
+          <view class="item-row-right _da2cf4a">
+            <view class="item-row-right-inventory {{ formData.timeStart ? '' : 'placeholder' }} _da2cf4a">
+              {{ formData.timeStart || '请选择' }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_da2cf4a"/>
+          </view>
+        </view>
+
+        <view class="item-row _da2cf4a" data-name="活动承接代理(运营)商" data-key="agent" bindtap="onPopOpen">
+          <view class="item-row-left _da2cf4a">
+            <text class="_da2cf4a">活动承接代理(运营)商</text>
+            <text class="redXing _da2cf4a">*</text>
+          </view>
+          <view class="item-row-right _da2cf4a">
+            <view class="item-row-right-inventory {{ formData.agent.name ? '' : 'placeholder' }} _da2cf4a">
+              {{ formData.agent.name || '请选择' }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_da2cf4a"/>
+          </view>
+        </view>
+
+        <view class="item-row _da2cf4a">
+          <view class="item-row-left _da2cf4a">
+            <text class="_da2cf4a">活动主题</text>
+            <text class="redXing _da2cf4a">*</text>
+          </view>
+          <view class="item-row-right _da2cf4a">
+            <view class="item-row-right-note _da2cf4a">
+              <van-field value="{{ formData.theme }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="theme"  bind:change="onFilterFormChange" class="add-store-note _da2cf4a"/>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row _da2cf4a">
+          <view class="item-row-left _da2cf4a">
+            <text class="_da2cf4a">活动地点</text>
+            <text class="redXing _da2cf4a">*</text>
+          </view>
+          <view class="item-row-right _da2cf4a">
+            <view class="item-row-right-note _da2cf4a">
+              <van-field value="{{ formData.place }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="place"  bind:change="onFilterFormChange" class="add-store-note _da2cf4a"/>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row _da2cf4a">
+          <view class="item-row-left _da2cf4a">
+            <text class="_da2cf4a">项目目标(万元)</text>
+            <text class="redXing _da2cf4a">*</text>
+          </view>
+          <view class="item-row-right _da2cf4a">
+            <view class="item-row-right-note _da2cf4a">
+              <van-field type="digit" value="{{ formData.target }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="target"  bind:change="onFilterFormChange" class="add-store-note _da2cf4a"/>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row _da2cf4a" data-name="startDate" bindtap="openCalendar">
+          <view class="item-row-left _da2cf4a">
+            <text class="_da2cf4a">活动开始时间</text>
+            <text class="redXing _da2cf4a">*</text>
+          </view>
+          <view class="item-row-right _da2cf4a">
+            <view class="item-row-right _da2cf4a">
+              <view class="item-row-right-inventory {{ formData.startDate ? '' : 'placeholder' }} _da2cf4a">
+                {{ formData.startDate || '请选择' }}
+              </view>
+              <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_da2cf4a"/>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row _da2cf4a" data-name="endDate" bindtap="openCalendar">
+          <view class="item-row-left _da2cf4a">
+            <text class="_da2cf4a">活动结束时间</text>
+            <text class="redXing _da2cf4a">*</text>
+          </view>
+          <view class="item-row-right _da2cf4a">
+            <view class="item-row-right _da2cf4a">
+              <view class="item-row-right-inventory {{ formData.endDate ? '' : 'placeholder' }} _da2cf4a">
+                {{ formData.endDate || '请选择' }}
+              </view>
+              <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_da2cf4a"/>
+            </view>
+          </view>
+        </view>
+
+
+        <view class="item-row _da2cf4a" data-name="参与分销商" data-key="distributor" bindtap="onPopOpen">
+          <view class="item-row-left _da2cf4a">
+            <text class="_da2cf4a">参与分销商</text>
+          </view>
+          <view class="item-row-right _da2cf4a">
+            <view class="item-row-right-fx {{ formData.distributor.name.length>0 ? '' : 'placeholder' }} _da2cf4a">
+              <text  wx:if="{{formData.distributor.name.length>0}}" class="_da2cf4a">{{formData.distributor.name}}</text>
+              <text  wx:else class="_da2cf4a">请选择</text>
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_da2cf4a"/>
+          </view>
+        </view>
+
+        <view class="item-row _da2cf4a">
+          <view class="item-row-left _da2cf4a">
+            <text class="_da2cf4a">各项投入合计(元)</text>
+            <text class="redXing _da2cf4a">*</text>
+          </view>
+          <view class="item-row-right _da2cf4a">
+            <view class="item-row-right-note _da2cf4a">
+              <van-field type="digit" value="{{ formData.totalInput }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="totalInput" bind:change="onFilterFormChange" class="add-store-note _da2cf4a"/>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row _da2cf4a">
+          <view class="item-row-left _da2cf4a">
+            <text class="_da2cf4a">待制作广告公司</text>
+            <text class="redXing _da2cf4a">*</text>
+          </view>
+          <view class="item-row-right _da2cf4a">
+            <view class="item-row-right-note _da2cf4a">
+              <van-field value="{{ formData.adCompany }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="adCompany" bind:change="onFilterFormChange" class="add-store-note _da2cf4a"/>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row _da2cf4a" data-name="办事处经理" data-key="officeManager" bindtap="onPopOpen">
+          <view class="item-row-left _da2cf4a">
+            <text class="_da2cf4a">办事处经理</text>
+            <text class="redXing _da2cf4a">*</text>
+          </view>
+          <view class="item-row-right _da2cf4a">
+            <view class="item-row-right-inventory {{ formData.officeManager.name ? '' : 'placeholder' }} _da2cf4a">
+              {{ formData.officeManager.name || '请选择' }}
+            </view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_da2cf4a"/>
+          </view>
+        </view>
+
+        <view class="item-row _da2cf4a">
+          <view class="item-row-left _da2cf4a">
+            <text class="_da2cf4a">活动申请原因</text>
+            <text class="redXing _da2cf4a">*</text>
+          </view>
+          <view class="item-row-right _da2cf4a">
+            <view class="item-row-right-note _da2cf4a">
+              <van-field value="{{ formData.reason }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="reason" bind:change="onFilterFormChange" class="add-store-note _da2cf4a"/>
+            </view>
+          </view>
+        </view>
+
+        <view class="item-row-upload no-bottom-line _da2cf4a">
+          <view class="item-row-top _da2cf4a">
+            <text class="_da2cf4a">附件</text>
+          </view>
+          <view class="item-row-bottom _da2cf4a">
+            <van-uploader deletable="{{ true }}" max-count="6" data-key="experienceSharing" accept="image" file-list="{{ formData.experienceSharing }}" bind:delete="deleteImg" bind:after-read="afterRead" sizeType="compressed" class="_da2cf4a">
+            </van-uploader>
+          </view>
+        </view>
+      </view>
+
+      <view class="sales-info-wrapper _da2cf4a">
+        <view class="sales-info-wrapper-inner _da2cf4a">
+          <view class="item-title _da2cf4a">请选择信息</view>
+          <view class="tab-wrapper-box _da2cf4a">
+            <van-tabs active="{{tabActive}}" custom-class="agency-tab-wrapper" tab-class="agency-tab-class" bind:change="tabChange" class="_da2cf4a">
+              <block class="_da2cf4a" wx:for="{{tabList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                <van-tab title="{{item.title}}" class="_da2cf4a"/>
+              </block>
+            </van-tabs>
+          </view>
+          <view class="sales-info-items _da2cf4a">
+            <block  wx:if="{{ tabActive === 'category' }}" class="_da2cf4a">
+              <block wx:if="{{tabInfoItem.category.items && tabInfoItem.category.items.length>0}}" class="_da2cf4a">
+                <view class="sales-info-item _da2cf4a" wx:for="{{tabInfoItem.category.items}}">
+                  <view class="item-row _da2cf4a" data-name="物料组" data-key="materialGroup" data-index="{{index}}" bindtap="onPopOpen">
+                    <view class="item-row-left _da2cf4a">
+                      <text class="_da2cf4a">物料组</text>
+                    </view>
+                    <view class="item-row-right _da2cf4a">
+                      <view class="item-row-right-inventory {{ item.materialGroup.id ? '' : 'placeholder' }} _da2cf4a">
+                        {{ item.materialGroup.name || '请选择' }}
+                      </view>
+                      <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_da2cf4a"/>
+                    </view>
+                  </view>
+                  <view class="item-row _da2cf4a">
+                    <view class="item-row-left _da2cf4a">
+                      <text class="_da2cf4a">计划分摊金额</text>
+                    </view>
+                    <view class="item-row-right _da2cf4a">
+                      <view class="item-row-right-note _da2cf4a">
+                        <van-field type="digit" value="{{ item.applyCost }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="applyCost" data-index="{{ index }}" bind:change="onTabFilterFormChange" class="add-store-note _da2cf4a"/>
+                      </view>
+                    </view>
+                  </view>
+                  <view class="sales-info-item-footer _da2cf4a">
+                    <view class="_da2cf4a"/>
+                    <view class="handle-btn _da2cf4a" data-index="{{index}}" bindtap="deleteItem">
+                      <i class="b-icon shanchu _da2cf4a"/>
+                      <text class="_da2cf4a">删除</text>
+                    </view>
+                  </view>
+                </view>
+              </block>
+              <view wx:else class="sales-info-item no-data _da2cf4a">暂无数据～</view>
+            </block>
+            <block wx:else class="_da2cf4a">
+              <block wx:if="{{tabInfoItem[tabActive].items && tabInfoItem[tabActive].items.length>0}}" class="_da2cf4a">
+                <view class="sales-info-item _da2cf4a" wx:for="{{tabInfoItem[tabActive].items}}">
+                  <view class="item-row _da2cf4a">
+                    <view class="item-row-left _da2cf4a">
+                      <text class="_da2cf4a">种类</text>
+                    </view>
+                    <view class="item-row-right _da2cf4a">
+                      <view class="item-row-right-note _da2cf4a">
+                        <van-field value="{{ item.type }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="type" data-index="{{ index }}" bind:change="onTabFilterFormChange" class="add-store-note _da2cf4a"/>
+                      </view>
+                    </view>
+                  </view>
+                  <view class="item-row _da2cf4a">
+                    <view class="item-row-left _da2cf4a">
+                      <text class="_da2cf4a">数量</text>
+                    </view>
+                    <view class="item-row-right _da2cf4a">
+                      <view class="item-row-right-note _da2cf4a">
+                        <van-stepper integer="integer" value="{{ item.num }}" min="0" custom-class="order-wrapper-stepper" input-class="cart-input-class" plus-class="cart-action-class" minus-class="cart-action-class" data-key="num" data-index="{{ index }}" bind:change="onTabFilterFormChange" bind:plus="onTabFilterFormChange" bind:minus="onTabFilterFormChange" class="_da2cf4a"/>
+                      </view>
+                    </view>
+                  </view>
+                  <view class="item-row _da2cf4a">
+                    <view class="item-row-left _da2cf4a">
+                      <text class="_da2cf4a">单价(元)</text>
+                    </view>
+                    <view class="item-row-right _da2cf4a">
+                      <view class="item-row-right-note _da2cf4a">
+                        <van-field type="digit" value="{{ item.price }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="price" data-index="{{ index }}" bind:change="onTabFilterFormChange" class="add-store-note _da2cf4a"/>
+                      </view>
+                    </view>
+                  </view>
+                  <view class="item-row _da2cf4a">
+                    <view class="item-row-left _da2cf4a">
+                      <text class="_da2cf4a">备注</text>
+                    </view>
+                    <view class="item-row-right _da2cf4a">
+                      <view class="item-row-right-note _da2cf4a">
+                        <van-field value="{{ item.remark }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="remark" data-index="{{ index }}" bind:change="onTabFilterFormChange" class="add-store-note _da2cf4a"/>
+                      </view>
+                    </view>
+                  </view>
+                  <view class="sales-info-item-footer _da2cf4a">
+                    <view class="handle-btn _da2cf4a">
+                      <text class="subtotal _da2cf4a">小计：￥{{ item.total }}</text>
+                    </view>
+                    <view class="handle-btn _da2cf4a" data-index="{{index}}" bindtap="deleteItem">
+                      <i class="b-icon shanchu _da2cf4a"/>
+                      <text class="_da2cf4a">删除</text>
+                    </view>
+                  </view>
+                </view>
+                <view class="tab-info-total _da2cf4a">
+                  <view class="total _da2cf4a">
+                    <text class="label _da2cf4a">合计数量：</text>
+                    <text class="num _da2cf4a">{{ tabInfoItem[tabActive].totalNum }}</text>
+                  </view>
+                  <view class="total _da2cf4a">
+                    <text class="label _da2cf4a">合计金额：</text>
+                    <text class="num _da2cf4a">¥{{ tabInfoItem[tabActive].totalAmount }}</text>
+                  </view>
+                </view>
+              </block>
+              <view wx:else class="sales-info-item no-data _da2cf4a">暂无数据～</view>
+            </block>
+          </view>
+        </view>
+        <view class="add-sales _da2cf4a" bindtap="keepAdding"><i class="b-icon icon-add _da2cf4a"/>继续添加</view>
+      </view>
+    </view>
+    <view wx:if="{{ pageType !== 'detail' }}" class="add-store-footer _da2cf4a">
+      <view class="revoke-btn add-store-btn _da2cf4a" bindtap="toRevoke">取消</view>
+      <view class="submit-btn add-store-btn _da2cf4a" bindtap="toAddStore">提交</view>
+    </view>
+
+    <!-- 选择列表弹框 -->
+    <wxs src="../../../../wxs/utils.wxs" module="utils" class="_25d639b"/>
+
+  <van-popup show="{{ $popupCustomize$show }}" closeable="closeable" position="bottom" custom-style="height: 720rpx" zIndex="400"  bind:click-overlay="$popupCustomize$onClose" class="_25d639b _da2cf4a">
+    <view class="item-inv _25d639b">
+      <view class="item-inv-head _25d639b">
+        <view class="item-inv-head-context _25d639b">
+          <view class="item-inv-head-context-title _25d639b">{{ $popupCustomize$title }}</view>
+          <i class="b-icon iconyiquxiao item-inv-head-context-close _25d639b" bindtap="$popupCustomize$onClose"/>
+        </view>
+      </view>
+      <view class="item-inv-search _25d639b"  wx:if="{{ $popupCustomize$isSearch }}">
+        <van-search custom-class="header-search" shape="round" use-action-slot="use-action-slot" use-left-icon-slot="{{ $popupCustomize$true }}" leftSearchIconSow="{{ $popupCustomize$false }}" placeholder="请输入搜索关键字" placeholder-style="color: #AAAAAA; font-size: 28rpx;" bind:change="$popupCustomize$onChange" class="_25d639b">
+          <view slot="label" class="search-left-icon _25d639b">
+            <i class="b-icon shouyesousuo _25d639b"/>
+          </view>
+        </van-search>
+      </view>
+      <scroll-view scroll-y class="item-inv-scroll _25d639b">
+        <block  wx:if="{{$popupCustomize$options && $popupCustomize$options.length>0}}" class="_25d639b">
+          <view wx:for="{{ $popupCustomize$options }}" wx:key="{{ item.id }}" wx:for-item="item" class="item-inv-scroll-row _25d639b" data-item="{{item}}" bindtap="$popupCustomize$chooseOption">
+            <block wx:if="{{$popupCustomize$multiple}}" class="_25d639b">
+              <view class="item-inv-scroll-row-desc  {{ utils.includes(item.id, $popupCustomize$selectedOption.id) ? 'checked' : '' }} _25d639b">{{ item.name }}</view>
+              <view wx:if="{{ utils.includes(item.id, $popupCustomize$selectedOption.id) }}" class="b-icon icon-check item-inv-scroll-row-checked checked _25d639b"/>
+            </block>
+            <block wx:else class="_25d639b">
+              <view class="item-inv-scroll-row-desc {{ item.id == $popupCustomize$selectedOption.id ? 'checked' : ''}} _25d639b">{{ item.name }}</view>
+              <view wx:if="{{ item.id == $popupCustomize$selectedOption.id }}" class="b-icon icon-check item-inv-scroll-row-checked checked _25d639b"/>
+            </block>
+          </view>
+        </block>
+        <view  wx:else class="no-data _25d639b">暂无数据</view>
+      </scroll-view>
+    </view>
+  </van-popup>
+
+    <!-- 选择年月 -->
+    <van-popup show="{{ yearsVisable }}" position="bottom" custom-class="purchase-top"  bind:close="touchFilter" wx:if="{{ yearsVisable }}" class="_da2cf4a">
+      <view class="_da2cf4a">
+        <van-datetime-picker type="year-month" value="{{ currentDate }}" min-date="{{ minDate }}" max-date="{{ maxDate }}" bind:input="onInput" bind:confirm="onConfirm" bind:cancel="onCancel" class="_da2cf4a"/>
+      </view>
+    </van-popup>
+
+    <!-- 日历弹框 -->
+    <van-popup show="{{calendarShow}}" position="bottom" bind:close="closeCalendar" z-index="200" class="_da2cf4a">
+      <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay" class="_da2cf4a"/>
+    </van-popup>
+    <van-toast id="van-toast" class="_da2cf4a"/>
+    <van-dialog id="van-dialog" class="_da2cf4a"/>
+  </view>

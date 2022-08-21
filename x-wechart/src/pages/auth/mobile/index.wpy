@@ -1,0 +1,94 @@
+<template>
+  <view class="account">
+    <view class="account-title">信天翁-欢迎你</view>
+    <van-cell-group>
+      <van-field
+        placeholder="手机号"
+        clearable="{{true}}"
+        value="{{mobile}}"
+        type="idcard"
+        cell-class="login-input"
+        placeholder-style="color: #aaa;font-size: 28rpx;"
+        bind:change="onPhoneChange"
+        bind:blur="onMobileBlur"
+        bind:clear="clearMobile"
+      />
+      <view class="account-type van-hairline--bottom">
+        <van-collapse value="{{ toggleAccount }}" bind:change="onChange">
+          <van-collapse-item van-cell-class="login-van-collapse" name="account">
+            <view slot="title" class="account-type-title {{account.name ? '':'disbaled'}}">{{ account.name || '请选择账号' }}</view>
+            <view class="account-type-list">
+              <repeat for="{{accounts}}" key="account">
+                <view
+                  @tap="chooseAccount({{item}})"
+                  hover-class="hover"
+                  class="account-type-list-item {{ account.account === item.account ? 'selected van-hairline--surround' : '' }}"
+                >
+                  <text class="text">{{item.name}}</text>
+                  <van-icon
+                    custom-style="display: {{ account.account === item.account ? 'inline-block' : 'none' }}"
+                    hidden="{{ account.account === item.account }}"
+                    color="#00AAA6"
+                    name="success"
+                  />
+                </view>
+              </repeat>
+            </view>
+          </van-collapse-item>
+        </van-collapse>
+      </view>
+      <van-field
+        placeholder="短信验证码"
+        value="{{code}}"
+        clearable="{{true}}"
+        type="number"
+        cell-class="login-input"
+        placeholder-style="color: #aaa;font-size: 28rpx;"
+        bind:change="onCodeChange"
+        bind:clear="clearCode"
+      >
+        <view @tap="getSmsCode" class="login-input-sms {{ timer === 60 ? 'success':'disabled' }}" hover-class="hover" slot="button">
+          <block wx:if="{{timer === 60}}">发送验证码</block><block wx:else>({{timer}}s)重新获取</block>
+        </view>
+      </van-field>
+    </van-cell-group>
+    <van-button
+      bind:click="submit"
+      custom-class="login-vant-btn"
+      color="#00AAA6"
+      square="{{true}}"
+      block="{{true}}"
+      disabled="{{ !mobile || !account.account || !code }}"
+    >登录</van-button>
+    <view class="account-footer">
+      <view @tap="forgetPassword" hover-class="hover">忘记密码？</view>
+    </view>
+    <van-toast id="van-toast" />
+    <van-dialog
+      use-slot
+      show="{{secondLogin}}"
+      async-close="{{true}}"
+      showCancelButton="{{true}}"
+      showConfirmButton="{{confirmTelCode}}"
+      bind:confirm="confirmTel"
+      bind:cancel="confirmTelCancel"
+    >
+      <view class="need-confirm">
+        <van-cell-group>
+          <van-cell custom-class="confirm-account-tel" title="{{confirmTel}}" />
+          <van-field
+            placeholder="请输入短信验证码"
+            clearable="{{true}}"
+            type="number"
+            cell-class="login-input"
+            placeholder-style="color: #aaa;font-size: 28rpx;"
+            bind:change="onConfirmTelChange"
+            bind:clear="clearConfirmTel"
+          />
+        </van-cell-group>
+      </view>
+    </van-dialog>
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

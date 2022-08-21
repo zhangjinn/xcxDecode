@@ -1,0 +1,116 @@
+.x-goods-slider {
+  width: 100%;
+  white-space: nowrap;
+}
+.x-goods-slider .contianer {
+  display: inline-block;
+  width: 100%;
+  height: 440rpx;
+}
+.x-goods-slider .contianer .scroll-view {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  width: 100%;
+  height: 440rpx;
+  -webkit-box-align: stretch;
+  -webkit-align-items: stretch;
+          align-items: stretch;
+  padding: 0 20rpx;
+}
+.x-goods-slider-item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-flex-shrink: 0;
+          flex-shrink: 0;
+  width: 296rpx;
+  background-color: #ffffff;
+  margin: 6rpx;
+}
+.x-goods-slider-item .header {
+  width: 100%;
+  height: 296rpx;
+}
+.x-goods-slider-item .header .img {
+  width: 100%;
+  height: 100%;
+}
+.x-goods-slider-item .content {
+  height: 84rpx;
+  padding: 20rpx;
+}
+.x-goods-slider-item .content .title {
+  font-size: 28rpx;
+  font-weight: 300;
+  color: #2c2e2e;
+  line-height: 32rpx;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.x-goods-slider-item .content .title.hide {
+  display: none;
+}
+.x-goods-slider-item .content .desc {
+  font-weight: 300;
+  color: #aaaaaa;
+  font-size: 22rpx;
+  line-height: 28rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.x-goods-slider-item .content .desc.hide {
+  display: none;
+}
+.x-goods-slider-item .price {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  padding: 0 20rpx 10rpx 20rpx;
+  color: #d9161c;
+  font-size: 32rpx;
+}
+.x-goods-slider-more {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-flex-shrink: 0;
+          flex-shrink: 0;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  width: 296rpx;
+  height: 428rpx;
+  margin: 6rpx;
+  background-color: #ffffff;
+}
+.x-goods-slider-more .img {
+  width: 144rpx;
+  height: 144rpx;
+}
+.x-goods-slider-more .desc {
+  font-size: 28rpx;
+  color: #aaaaaa;
+  font-weight: 300;
+}
+.scroll-view-item_H {
+  height: 300rpx;
+  background-color: red;
+}

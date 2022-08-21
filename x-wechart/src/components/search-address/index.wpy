@@ -1,0 +1,43 @@
+<template>
+  <van-popup show="{{show}}" position="bottom" bind:close="closeSearch">
+    <view class="s-popup">
+      <view @tap="closeSearch" hover-class="hover" class="s-popup-close">
+        <van-icon name="cross" color="#262626" />
+      </view>
+      <view class="s-popup-header van-hairline--bottom">{{title}}</view>
+      <view class="s-popup-body">
+        <van-search bind:change="onSearchChange" custom-class="items-search" shape="round" placeholder="请输入搜索关键词" />
+        <block wx:if="{{items.length > 0}}">
+          <repeat for="{{items}}" key="{{id || code}}">
+            <view @tap="chooseItem({{item}})" hover-class="hover" class="s-popup-body-item van-hairline--bottom">
+              <view class="store-type">
+                <!--    只有销量所属门店才显示门店类型    -->
+                <block wx:if="{{ type && type === 'saleShop' }}">
+                  <text wx:if="{{item.isExclusiveShop === '1'}}" class="storePaizi specialShopBgColor">专卖</text>
+                  <text wx:if="{{item.isSinkShop === '1'}}" class="storePaizi sinkChannelBgColor">下沉</text>
+                  <text wx:if="{{item.isExclusiveShop !== '1' && item.isSinkShop !== '1'}}" class="storePaizi">门店</text>
+                </block>
+                <block wx:if="{{ type && (type === 'common'||type === 'agin') }}">
+                  <text wx:if="{{item.defaultType === 'SHOP' }}" class="storePaizi">门店</text>
+                  <text wx:else class="storePaizi sinkChannelBgColor">仓库</text>
+                </block>
+                <view class="s-popup-body-item-text {{ item.id == id ||  item.code == code ? 'active' : ''}}">{{item.name}}</view>
+              </view>
+              <view wx:if="{{item.id == id || item.code == code}}">
+                <van-icon name="success" color="#00AAA6" />
+              </view>
+            </view>
+          </repeat>
+        </block>
+        <block wx:else>
+          <view class="s-popup-body-item center">
+            <view class="s-popup-body-item-text">暂无数据</view>
+          </view>
+        </block>
+
+      </view>
+    </view>
+  </van-popup>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

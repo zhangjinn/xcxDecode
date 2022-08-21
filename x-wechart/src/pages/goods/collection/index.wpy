@@ -1,0 +1,23 @@
+<template>
+  <container loading="{{ loading }}" id="container" style="height: 100%">
+    <view class="collection">
+      <block wx:if="{{ list.length > 0 }}">
+        <view class="scroll-grid">
+          <repeat for="{{ list }}" item="item">
+            <item item="{{ item }}" hiddenCollecion="false" bind:img-lose="imgLose" />
+          </repeat>
+        </view>
+      </block>
+      <block wx:else>
+        <emptyDataType description="收藏"/>
+      </block>
+      <!-- 回到上方 -->
+      <button hidden="{{!visibelTop}}" @tap="scrollToTop" class="screen shareBar" lang="zh_CN">
+        <view class="b-icon icon-top" />
+      </button>
+      <!-- <van-toast id="van-toast" /> -->
+    </view>
+  </container>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

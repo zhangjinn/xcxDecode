@@ -1,0 +1,22 @@
+<view class="permission">
+  <view class="permission-logo {{ addHead ? 'permission-head' : '' }}">
+    <!--  no-permission.png  -->
+    <image src="http://3s-static.hisense.com/wechat/1/14722429883/1635993552769_20e3b5bd257b40e493851655e5a35ddb.png" />
+  </view>
+  <view class="permission-tip">
+    暂无权限，请先登录
+  </view>
+  <view style="display:flex">
+    <view bindtap="gotoLogin" class="permission-login">
+      去登录
+    </view>
+    <view bindtap="gotoHome" class="permission-back">
+      拒绝登录
+    </view>
+  </view>
+  <!--
+  <view bindtap="goPage" class="permission-entrance">
+      商家入驻
+  </view>
+  -->
+</view>

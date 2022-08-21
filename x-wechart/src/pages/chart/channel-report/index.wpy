@@ -1,0 +1,141 @@
+<template>
+  <view class="purchase">
+    <!-- 时效日期说明，数据更新至当天的前一天日期 -->
+    <view class="expiry-date">数据更新至{{ previousDayDate }}</view>
+    <!-- 顶部筛选 -->
+    <view class="header-tab-box">
+      <headerTab
+        :showRightBtn="showRightBtn"
+        :tabList.sync="headerTabList"
+        @onTabChange.user="touchFilter"
+      />
+    </view>
+    <!-- 筛选弹出框 -->
+    <van-popup show="{{ purchaseVisable }}" position="top" custom-class="purchase-top" bind:close="touchFilter" wx:if="{{CurrentFilterName==='material'}}" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;">
+      <!-- 选择物料组 -->
+      <view wx:if="{{CurrentFilterName==='material'}}">
+        <scroll-view scroll-y class="purchase-inv-scroll">
+          <view wx:for="{{  ItemgroupList }}" wx:key="{{ item.code}}" item="item" class="purchase-inv-scroll-row" data-key="{{item.code}}" data-index="{{ index }}" >
+            <view @tap="onMaterial({{item.code}})" class="pose-inv-scroll-row-desc {{ item.code === materialItem.code ? 'checked' : ''}}" >{{ item.name}}</view>
+            <block wx:if="{{ item.code === materialItem.code }}">
+              <view class="b-icon icon-check pose-inv-scroll-row-checked checked"></view>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ purchaseVisable }}" position="top" custom-class="purchase-top" bind:close="touchFilter" wx:if="{{CurrentFilterName==='supplier'}}" >
+      <view class="purchase-screen">
+        <view @tap="touchFilter('material')" class="purchase-screen-li">
+          <text>{{materialItem.name}}</text>
+          <view class="b-icon h-icon iconxialajiantou"></view>
+        </view>
+        <view @tap="touchFilter('date')" class="purchase-screen-li">
+          <text>{{selectDate}}</text>
+          <view class="b-icon h-icon iconxialajiantou"></view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ purchaseVisable }}"  position="bottom"  custom-class="purchase-top" bind:close="touchFilter"  wx:if="{{CurrentFilterName==='date'}}" >
+      <!-- 选择时间 -->
+      <view>
+        <van-datetime-picker type="year-month" value="{{ currentDate }}" min-date="{{ minDate }}" max-date="{{maxDate}}" bind:input="onInput" bind:confirm="onConfirm" bind:change="getValues" bind:cancel="onCancel"/>
+      </view>
+    </van-popup>
+    <view class="content-wrapper">
+    <view class="purchase-survey">
+        <view class="new-demand">
+          <view class="demand-text" style="padding-left:50rpx">提货额(元)
+            <view @tap="openNotice('1')" class="b-icon icon-zhushi icon"></view>
+          </view>
+          <view class="demand-text">提货量(台)
+            <view @tap="openNotice('2')" class="b-icon icon-zhushi icon"></view>
+          </view>
+        </view>
+        <view class="text-box" wx:if="{{deliveryAmount}}">
+          <view class="text-heard">
+            <view class="name">
+              <view class="small"></view>
+              提货额
+            </view>
+            <view @tap="openNotice('1')" class="b-icon icon-fail icon"></view>
+          </view>
+          <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.pickUpAmount }}</view>
+          <view class="text-heard" style="padding-top:24rpx">
+            <view class="name">
+              <view class="small"></view>
+              环比
+            </view>
+          </view>
+          <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.chainRatio }}</view>
+        </view>
+        <view class="text-box" wx:if="{{whichPopup}}">
+          <view class="text-heard">
+            <view class="name">
+              <view class="small"></view>
+              提货量
+            </view>
+            <view @tap="openNotice('2')" class="b-icon icon-fail icon"></view>
+          </view>
+          <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.pickUpQuantity }}</view>
+          <view class="text-heard" style="padding-top:24rpx">
+            <view class="name">
+              <view class="small"></view>
+              环比
+            </view>
+            <!-- <view class="b-icon icon-fail icon"></view> -->
+          </view>
+          <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.chainRatio }}</view>
+        </view>
+        <view class="info">
+          <view class="info-one" style="padding-left:50rpx">
+            <view class="number">{{currentMonth.amount.count}}</view>
+            <view class="info-than">环比<text style="{{utils.homeColor(currentMonth.amount.HB)}}">{{currentMonth.amount.HB}}</text></view>
+          </view>
+          <view class="info-one">
+            <view class="number" style="color: #262626">{{currentMonth.qty.count}}</view>
+            <view class="info-than">环比<text style="{{utils.homeColor(currentMonth.qty.HB)}}">{{currentMonth.qty.HB}}</text></view>
+          </view>
+        </view>
+    </view>
+    <!-- 折线图 -->
+    <view style="background-color: #FFFFFF;">
+      <view @tap="deliverySchedule" class="purchase-name">提货额 <text>(万元)</text><view class="b-icon icon-zhushi icon"></view></view>
+      <view class="text-box" wx:if="{{deliverySchedule}}">
+        <view class="text-heard">
+          <view class="name">
+            <view class="small"></view>
+            提货额
+          </view>
+          <view @tap="deliverySchedule" class="b-icon icon-fail icon"></view>
+        </view>
+<!--        <view class="text-area van-multi-ellipsis&#45;&#45;l2">展示选中月份及前5个月，已审核单为依据统计的采购总额-退货总额</view>-->
+        <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.pickUpAmount }}</view>
+      </view>
+      <view hidden="{{reportFlag}}">
+        <chart1 :option.sync="option1" canvasId="bbb" height="240px"></chart1>
+      </view>
+    </view>
+    <view style="background-color: #FFFFFF;">
+      <view @tap="deliveryScale" class="purchase-name">提货量 <text>(单位:台)</text><view class="b-icon icon-zhushi icon"></view></view>
+      <view class="text-box" wx:if="{{deliveryScale}}">
+        <view class="text-heard">
+          <view class="name">
+            <view class="small"></view>
+            提货量
+          </view>
+          <view @tap="deliveryScale" class="b-icon icon-fail icon"></view>
+        </view>
+<!--        <view class="text-area van-multi-ellipsis&#45;&#45;l2">展示选中月份及前5个月，已审核单为依据统计的采购总量-退货总量</view>-->
+        <view class="text-area van-multi-ellipsis--l2" style="white-space:pre-wrap">{{ dynamicMessage.pickUpQuantity }}</view>
+      </view>
+      <view hidden="{{reportFlag}}">
+        <chart2 :option.sync="option2" canvasId="ccc" height="240px"></chart2>
+      </view>
+    </view>
+    </view>
+  </view>
+</template>
+
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

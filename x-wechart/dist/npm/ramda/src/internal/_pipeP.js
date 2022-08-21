@@ -1,0 +1,1 @@
+function _pipeP(n,t){return function(){var e=this;return n.apply(e,arguments).then(function(n){return t.call(e,n)})}}module.exports=_pipeP;

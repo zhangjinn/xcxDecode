@@ -1,0 +1,12 @@
+<view class="_context custom-class">
+  <block wx:if="{{ loading }}">
+    <view class="_loading">
+
+    </view>
+  </block>
+  <block wx:else>
+    <slot></slot>
+  </block>
+
+  <van-toast id="van-toast" />
+</view>

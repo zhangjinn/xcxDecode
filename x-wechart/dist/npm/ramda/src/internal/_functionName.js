@@ -1,0 +1,1 @@
+function _functionName(n){var t=String(n).match(/^function (\w*)/);return null==t?"":t[1]}module.exports=_functionName;

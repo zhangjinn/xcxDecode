@@ -1,0 +1,21 @@
+<template>
+  <view class="header-tab">
+    <view class="left-btn">
+      <block wx:for="{{ tabListNew }}">
+        <view class="btn-item {{ item.selectValue ? 'active' : '' }}"  @tap="changeTab({{item}})">
+          <text>{{ item.name }}</text>
+          <i wx:if="{{ showArrowIcon }}" class="b-icon iconxialajiantou"></i>
+        </view>
+      </block>
+    </view>
+    <view class="right-btn" wx:if="{{ showRightBtn }}" @tap="onSideFilter">
+      <view class="line-shadow" wx:if="{{ showRightBtnLine }}"></view>
+      <view class="side-filter-btn">
+        <text>筛选</text>
+        <i class="b-icon shaixuan"></i>
+      </view>
+    </view>
+  </view>
+</template>
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts" ></script>

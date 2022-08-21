@@ -1,0 +1,6 @@
+<van-count-down use-slot time="{{ time }}" bind:change="onChange">
+  <view wx:if="{{timeData.days !== 0 }}" class="days">{{ timeData.days }}天</view>
+  <view class="items">{{ timeData.hours }}</view>:
+  <view class="items">{{ timeData.minutes }}</view>:
+  <view class="items">{{ timeData.seconds }}</view>
+</van-count-down>

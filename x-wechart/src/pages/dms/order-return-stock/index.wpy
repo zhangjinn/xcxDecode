@@ -1,0 +1,170 @@
+<template>
+  <view class="order">
+    <van-popup show="{{calendarShow}}" position="bottom" bind:close="closeCalendar" z-index="200">
+      <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay" />
+    </van-popup>
+    <view class="order-scroll">
+      <view class="order-scroll-head">
+        <block wx:if="{{ !chooseCustomerInfo.customerName}}">
+          <navigator
+            url="../order-customer-choose/index?from=return-stock"
+            class="item-row item-row-no-border"
+          >
+            <view class="item-row-left">客户信息</view>
+            <view class="item-row-right">
+              <view class="item-product">请输入老板名称/客户名称/客户编码</view>
+            </view>
+          </navigator>
+        </block>
+        <block wx:else>
+          <view class="item-customer-container">
+            <navigator url="../order-customer-choose/index?from=return-stock" class="item-customer">
+              <view wx:if="{{!chooseCustomerInfo.legalPerson}}" class="item-customer-title">
+                <view class="item-customer-title-left">
+                  <view class="item-customer-title-left-tag">客户</view>
+                  <view class="item-customer-title-left-name">{{ chooseCustomerInfo.customerName }}</view>
+                  <view class="item-customer-title-left-name">({{chooseCustomerInfo.customerCode}})</view>
+                </view>
+                <view class="item-customer-title-right">
+                  <view class="item-customer-title-right-update">更改</view>
+                  <van-icon
+                    name="arrow"
+                    class="item-customer-title-right-icon"
+                    customer-class="item-customer-title-right-content"
+                  />
+                </view>
+              </view>
+              <view wx:else class="item-customer-title">
+                <view class="item-customer-title-left">
+                  <view class="item-customer-title-left-tag">客户</view>
+                  <view class="item-customer-title-left-name">{{ chooseCustomerInfo.legalPerson }}</view>
+                </view>
+                <view class="item-customer-title-right">
+                  <view class="item-customer-title-right-update">更改</view>
+                  <van-icon
+                    name="arrow"
+                    class="item-customer-title-right-icon"
+                    customer-class="item-customer-title-right-content"
+                  />
+                </view>
+              </view>
+              <view
+                wx:if="{{chooseCustomerInfo.legalPerson}}"
+                style="padding-bottom: 8rpx;"
+                class="item-customer-address"
+              >{{ chooseCustomerInfo.customerName }}</view>
+              <view class="item-customer-address">地址: {{ chooseCustomerInfo.address }}</view>
+            </navigator>
+            <view wx:if="{{chooseCustomerInfo.legalPerson}}">
+              <distributor-material-group item="{{item}}" />
+            </view>
+          </view>
+        </block>
+        <view class="item-row van-hairline--top" @tap="openChoose('orgList', 'org', '供应商')">
+          <view class="item-row-left">供应商</view>
+          <view class="item-row-right">
+            <view
+              class="item-row-right-inventory {{ org.key ? '' : 'placeholder' }}"
+            >{{ org.value }}</view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+          </view>
+        </view>
+        <view class="item-row" @tap="openChoose('inWarehouseList','receiveInventoryInfo','入库仓库')">
+          <view class="item-row-left">入库仓库</view>
+          <view class="item-row-right">
+            <view
+              class="item-row-right-inventory {{ receiveInventoryInfo.key ? '' : 'placeholder' }}"
+            >{{ receiveInventoryInfo.value }}</view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+          </view>
+        </view>
+        <view
+          wx:if="{{chooseCustomerInfo && chooseCustomerInfo.customerTypeName && chooseCustomerInfo.customerTypeName == '零售客户'}}"
+          @tap="openChoose('StoresList','ssmdInfo','所属仓库')"
+        >
+          <stores return_title="{{ssmdInfo.value}}" List="{{ personalsupply }}" />
+        </view>
+        <view class="item-row" data-name="sapBeginDate" data-type="date" @tap="openCalendar">
+          <view class="item-row-left">单据日期</view>
+          <view class="item-row-right">
+            <view
+              class="item-row-right-inventory {{ documentDate !== '' ? '' : 'placeholder' }}"
+            >{{ documentDate || '请选择单据日期' }}</view>
+            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+          </view>
+        </view>
+        <view class="item-row">
+          <view class="item-row-left">备注</view>
+          <view class="item-row-right">
+            <view class="item-row-right-note">
+              <van-field
+                value="{{ note }}"
+                placeholder="请填写备注"
+                placeholder-style="color: #AAAAAA; font-size:26rpx;"
+                border="{{ false }}"
+                input-align="right"
+                bind:change="onNoteChange"
+                class="dms-order-note"
+              />
+            </view>
+          </view>
+        </view>
+      </view>
+      <order />
+    </view>
+
+    <view class="order-footer van-hairline--top">
+      <view class="order-footer-bar">
+        <view class="order-footer-bar-content">
+          <view class="check-all">
+            <view class="radio-name">合计:</view>
+            <view class="radio-text">￥{{ amount }}</view>
+          </view>
+        </view>
+        <view
+          @tap="OnseleWarehouse"
+          class="order-footer-bar-btn {{purchaseList.length == 0 ? 'disabled': ''}}"
+          hover-class="hover"
+        >入库</view>
+      </view>
+    </view>
+    <van-popup
+      show="{{ popVisible }}"
+      closeable
+      position="bottom"
+      custom-style="height: 570rpx"
+      bind:click-overlay="onClose"
+    >
+      <view class="order-inv">
+        <view class="order-inv-head">
+          <view class="order-inv-head-context">
+            <view class="order-inv-head-context-title">{{ popTitle }}</view>
+            <van-icon name="cross" class="order-inv-head-context-close" bindtap="onClose" />
+          </view>
+        </view>
+        <scroll-view scroll-y class="order-inv-scroll">
+          <view
+            wx:for="{{ popList }}"
+            wx:key="{{ item.id }}"
+            item="item"
+            class="order-inv-scroll-row"
+            data-key="{{ item.id }}"
+            data-index="{{ index }}"
+            bindtap="onChoose"
+          >
+            <view
+              class="order-inv-scroll-row-desc {{ item.key === compareInfo.key && item.orgId == compareInfo.orgId ? 'checked' : ''}}"
+            >{{ item.value }}</view>
+            <block wx:if="{{ item.key === compareInfo.key && item.orgId == compareInfo.orgId }}">
+              <view class="b-icon icon-check order-inv-scroll-row-checked checked"></view>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-dialog id="van-dialog" />
+    <van-toast id="van-toast" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

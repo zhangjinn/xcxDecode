@@ -1,0 +1,110 @@
+<wxs src="../../../wxs/utils.wxs" module="utils" class="_0582bc1"/>
+
+  <view class="order _0582bc1">
+    <view class="order-scroll _0582bc1">
+      <view class="basic-info-wrapper _0582bc1">
+        <view class="basic-info-container _0582bc1">
+          <view class="order-scroll-info _0582bc1">
+            <view class="item-row _0582bc1">
+              <view class="item-row-left _0582bc1">
+                <text class="_0582bc1">手机号</text>
+                <text class="redXing _0582bc1">*</text>
+              </view>
+              <view class="item-row-right _0582bc1">
+                <view class="item-row-right-note _0582bc1">
+                  <van-field disabled value="{{ baseFormData.customerPhone }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="customerPhone"  bind:change="onBaseFieldChange" class="dms-order-note _0582bc1"/>
+                </view>
+              </view>
+            </view>
+            <view class="item-row _0582bc1">
+              <view class="item-row-left _0582bc1">
+                <text class="_0582bc1">用户姓名</text>
+              </view>
+              <view class="item-row-right _0582bc1">
+                <view class="item-row-right-note _0582bc1">
+                  <van-field value="{{ baseFormData.customerName }}" placeholder="请输入" border="{{ false }}" input-align="right" data-key="customerName"  bind:change="onBaseFieldChange" class="dms-order-note _0582bc1"/>
+                </view>
+              </view>
+            </view>
+            <view class="item-row _0582bc1">
+              <view class="item-row-left _0582bc1">
+                <text class="_0582bc1">用户性别</text>
+              </view>
+              <view class="item-row-right _0582bc1">
+                <tile-radio options="{{ genderOption }}" activeItem="{{ baseFormData.gender }}" data-key="gender"  bind:onRadioChange="onRadioChange" class="_0582bc1"/>
+              </view>
+            </view>
+            <view class="item-row _0582bc1">
+              <view class="item-row-left _0582bc1">
+                <text class="_0582bc1">是否添加微信</text>
+              </view>
+              <view class="item-row-right _0582bc1">
+                <tile-radio options="{{ addWeChatOption }}" activeItem="{{ baseFormData.addWeChat }}" data-key="addWeChat" bind:onRadioChange="onRadioChange" class="_0582bc1"/>
+              </view>
+            </view>
+
+            <!--   用户来源(单选)    -->
+            <view class="item-row item-row-vertical _0582bc1">
+              <entry-source style="width: 100%" options="{{ sourceOption }}" activeItem="{{ baseFormData.source }}" bind:onSourceChange="onSourceChange" bind:saveSourcePop="saveSourcePop" class="_0582bc1"/>
+            </view>
+
+            <!--   用户标签(多选)    -->
+            <view class="item-row item-row-vertical _0582bc1">
+              <entry-label options="{{ tagOption }}" activeItem="{{ baseFormData.tag }}" bind:onTagChange="onTagChange" bind:saveTagPop="saveTagPop" class="_0582bc1"/>
+            </view>
+
+            <view class="item-row _0582bc1" data-title="变更跟进人" data-key="follower" data-options="followerOption" bindtap="openChoose">
+              <view class="item-row-left _0582bc1">
+                <text class="_0582bc1">变更跟进人</text>
+              </view>
+              <view class="item-row-right _0582bc1">
+                <view class="item-row-right-inventory {{ baseFormData.follower.id ? '' : 'placeholder' }} _0582bc1">
+                  {{ baseFormData.follower.name || '请选择'}}
+                </view>
+                <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_0582bc1"/>
+              </view>
+            </view>
+            <view class="item-row _0582bc1">
+              <view class="item-row-left _0582bc1">
+                <text class="_0582bc1">备注</text>
+              </view>
+              <view class="item-row-right _0582bc1">
+                <view class="item-row-right-note _0582bc1">
+                  <van-field value="{{ baseFormData.remark }}" placeholder="请填写备注" border="{{ false }}" input-align="right" data-key="remark" bind:change="onBaseFieldChange" class="dms-order-note _0582bc1"/>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="order-footer _0582bc1" data-type="add" data-id="" bindtap="submit">
+      <view class="btn _0582bc1">确认提交</view>
+    </view>
+
+    <van-popup show="{{ popVisible }}" closeable="closeable" position="bottom" custom-style="height: 570rpx" bind:click-overlay="onClose" class="_0582bc1">
+      <view class="order-inv _0582bc1">
+        <view class="order-inv-head _0582bc1">
+          <view class="order-inv-head-context _0582bc1">
+            <view class="order-inv-head-context-title _0582bc1">{{ popTitle }}</view>
+            <van-icon name="cross" class="order-inv-head-context-close _0582bc1" bindtap="onClose"/>
+          </view>
+        </view>
+        <scroll-view scroll-y class="order-inv-scroll _0582bc1">
+          <view  wx:for="{{ popList }}" wx:key="{{ item.id }}" item="item" class="order-inv-scroll-row _0582bc1" data-key="{{ item.id }}" data-index="{{ index }}" bindtap="onChoose">
+            <view class="order-inv-scroll-row-desc {{ item.id === compareInfo.id ? 'checked' : ''}} _0582bc1">
+              {{ item.name }}
+            </view>
+            <block wx:if="{{ item.id === compareInfo.id }}" class="_0582bc1">
+              <view class="b-icon icon-check order-inv-scroll-row-checked checked _0582bc1">
+              </view>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+
+    <van-dialog id="van-dialog" class="_0582bc1"/>
+    <van-toast id="van-toast" class="_0582bc1"/>
+  </view>

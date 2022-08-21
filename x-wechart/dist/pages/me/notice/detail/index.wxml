@@ -1,0 +1,30 @@
+
+  <view class="item">
+    <view class="item-head">
+      <view class="item-head-row">
+        <view class="item-title">
+          {{ billboardMessage.title }}
+        </view>
+        <view class="item-board">
+          {{ billboardMessage.billBoardName || '' }}
+        </view>
+      </view>
+      <view class="item-head-row">
+        <view class="item-info">
+          <view class="item-info-org">
+            {{ billboardMessage.organizationName }}
+          </view>
+          <view class="item-info-publish">
+            {{ billboardMessage.publishAt }}
+          </view>
+        </view>
+
+      </view>
+    </view>
+    <view class="item-body">
+      <parser html="{{ billboardMessage.content }}"/>
+    </view>
+    <view class="item-body item-load"  wx:if="{{billboardMessage.filePath.length > 0}}">
+      <text class="loadButton" bindtap="upload" data-wpyupload-a="{{billboardMessage}}">下载附件</text>
+    </view>
+  </view>

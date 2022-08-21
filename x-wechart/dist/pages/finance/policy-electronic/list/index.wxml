@@ -1,0 +1,197 @@
+
+    <view class="container _eee0a86">
+      <!-- 阻止弹框 -->
+      <van-popup show="{{ IKnow }}" overlay="{{ true }}" class="_eee0a86">
+        <view class="todo-popup _eee0a86">
+          <view class="text _eee0a86">
+            <view class="text-first _eee0a86">小程序端支持查看详情及操作上上签电子签章</view>
+            <view class="text-last _eee0a86">U盾签章请在PC端操作</view>
+          </view>
+          <view class="operation _eee0a86" bindtap="allIKnow">
+            <view class="operation-text _eee0a86">我知道了</view>
+          </view>
+        </view>
+      </van-popup>
+      <!-- 时间弹窗 -->
+        <van-popup show="{{calendarShow}}" position="bottom"  bind:close="closeCalendar" z-index="200" class="_eee0a86">
+        <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay" class="_eee0a86"/>
+        </van-popup>
+        <!-- 时间弹窗结束 -->
+        <!-- 时间段选择开始 -->
+        <van-popup show="{{timeFrameVisible}}" position="right" overlay="{{ true }}" z-index="200" custom-style="height: 100%;" close-on-click-overlay="{{false}}" class="_eee0a86">
+          <view class="container-drawer _eee0a86">
+            <view class="container-drawer-time _eee0a86">
+              <view class="container-drawer-time-header _eee0a86">
+                <van-icon name="arrow-left" class="container-drawer-time-header-back _eee0a86"  bind:click="onToggleTimeFrame"/>
+                <view class="container-drawer-time-header-title _eee0a86">订单日期</view>
+              </view>
+              <view class="container-drawer-time-content _eee0a86">
+                <block class="_eee0a86" wx:for="{{timeList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                  <view class="container-drawer-time-content-line _eee0a86" bindtap="onSelectTimeFrame" data-wpyonselecttimeframe-a="{{item.value}}">
+                    <view class="text {{filterForm.rows.queryType === item.value? 'active' : ''}} _eee0a86">{{item.label}}</view>
+                    <van-icon  wx:if="{{filterForm.rows.queryType === item.value}}" name="success" class="time-selected _eee0a86" size="32rpx"/>
+                  </view>
+                </block>
+              </view>
+              <view class="container-drawer-attr-footer _eee0a86">
+                <view bindtap="onToggleTimeFrame" class="container-drawer-attr-footer-btn confirm _eee0a86" hover-class="container-drawer-attr-footer-btn-hover">确定</view>
+              </view>
+            </view>
+          </view>
+        </van-popup>
+        <!-- 时间段选择结束 -->
+        <!-- 销售组织弹窗开始 -->
+        <van-popup show="{{fibookVisible}}" position="right" overlay="{{ true }}" z-index="200" custom-style="height: 100%;" close-on-click-overlay="{{false}}" class="_eee0a86">
+          <view class="container-drawer _eee0a86">
+            <view class="container-drawer-time _eee0a86">
+              <view class="container-drawer-time-header _eee0a86">
+                <van-icon name="arrow-left" class="container-drawer-time-header-back _eee0a86"  bind:click="onToggleOrg"/>
+                <view class="container-drawer-time-header-title _eee0a86">销售组织</view>
+              </view>
+              <view class="container-drawer-time-content _eee0a86">
+                <block class="_eee0a86" wx:for="{{fibookList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                  <view class="container-drawer-time-content-line _eee0a86" bindtap="onSelectOrg" data-wpyonselectorg-a="{{item.bookCode}}" data-wpyonselectorg-b="{{item.shortName}}">
+                    <view class="text {{filterForm.rows.fiBookCode === item.bookCode ? 'active' : ''}} _eee0a86">{{item.shortName}}</view>
+                    <van-icon  wx:if="{{filterForm.rows.fiBookCode ===  item.bookCode}}" name="success" class="time-selected _eee0a86" size="32rpx"/>
+                  </view>
+                </block>
+              </view>
+            </view>
+          </view>
+        </van-popup>
+        <!-- 销售组织弹窗结束 -->
+        <!-- 产品品类弹窗开始 -->
+        <van-popup show="{{prfcVisible}}" position="right" overlay="{{ true }}" z-index="200" custom-style="height: 100%;" close-on-click-overlay="{{false}}" class="_eee0a86">
+          <view class="container-drawer _eee0a86">
+            <view class="container-drawer-time _eee0a86">
+              <view class="container-drawer-time-header _eee0a86">
+                <van-icon name="arrow-left" class="container-drawer-time-header-back _eee0a86" bind:click="onTogglePrfc"/>
+                <view class="container-drawer-time-header-title _eee0a86">产品品类</view>
+              </view>
+              <view class="container-drawer-time-content _eee0a86">
+                <block class="_eee0a86" wx:for="{{profitList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                  <view class="container-drawer-time-content-line _eee0a86" bindtap="onSelectPrfc" data-wpyonselectprfc-a="{{item.codeValue}}" data-wpyonselectprfc-b="{{item.codeName}}">
+                    <view class="text {{filterForm.rows.prfcCode === item.codeValue ? 'active' : ''}} _eee0a86">{{item.codeName}}</view>
+                    <van-icon  wx:if="{{filterForm.rows.prfcCode ===  item.codeValue}}" name="success" class="time-selected _eee0a86" size="32rpx"/>
+                  </view>
+                </block>
+              </view>
+            </view>
+          </view>
+        </van-popup>
+        <!-- 产品品类弹窗结束 -->
+        <!-- 筛选项弹窗开始 -->
+        <van-popup show="{{visible}}" position="right" overlay="{{ true }}" bind:close="orderfiltering" custom-style="height: 100%;" z-index="130" class="_eee0a86">
+          <view class="container-drawer _eee0a86">
+            <view class="container-drawer-attr _eee0a86">
+              <scroll-view class="container-drawer-attr-scroll _eee0a86" scroll-y>
+                <view class="attr-item _eee0a86">
+                  <view class="projectem _eee0a86">
+                    <view class="project _eee0a86">
+                      <text style="font-size: 28rpx;color: #777777" class="_eee0a86">单据号</text>
+                    </view>
+                    <van-field placeholder="请输入单据号" placeholder-style="font-size: 24rpx;" border="{{ false }}" bind:change="onsheetNoChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;" clearable="clearable" value="{{filterForm.rows.sheetNo}}" class="_eee0a86"/>
+                  </view>
+                  <view class="container-data _eee0a86">
+                    <view class="project _eee0a86">
+                      <text style="font-size: 28rpx;color: #777777" class="_eee0a86">销售组织</text>
+                      <view class="text _eee0a86" style="font-size: 24rpx;color: #AAAAAA" bindtap="onToggleOrg">{{fibookName||"请选择"}} ></view>
+                    </view>
+                  </view>
+                  <view class="container-data _eee0a86">
+                    <view class="project _eee0a86">
+                      <text style="font-size: 28rpx;color: #777777" class="_eee0a86">产品品类</text>
+                      <view class="text _eee0a86" style="font-size: 24rpx;color: #AAAAAA" bindtap="onTogglePrfc">{{prfcName||"请选择"}} ></view>
+                    </view>
+                  </view>
+                  <view class="container-data _eee0a86">
+                    <view class="project _eee0a86">
+                      <text style="font-size: 28rpx;color: #777777" class="_eee0a86">对账时间</text>
+                      <text wx:if="{{!filterForm.rows.queryType}}" class="text _eee0a86" bindtap="onToggleTimeFrame">全部日期 ></text>
+                      <text wx:if="{{filterForm.rows.queryType === '1'}}" class="text _eee0a86" bindtap="onToggleTimeFrame">最近一个月 ></text>
+                      <text wx:if="{{filterForm.rows.queryType === '2'}}" class="text _eee0a86" bindtap="onToggleTimeFrame">最近三个月 ></text>
+                      <text wx:if="{{filterForm.rows.queryType === '3'}}" class="text _eee0a86" bindtap="onToggleTimeFrame">最近一年 ></text>
+                    </view>
+                    <view class="container-data-input _eee0a86">
+                      <view class="container-data-input-one _eee0a86" data-name="periodStartDate" data-type="sapDate" bindtap="openCalendar">
+                        {{filterForm.rows.periodStartDate || '开始日期'}}
+                        <van-icon wx:if="{{filterForm.rows.periodStartDate}}" class="close-icon _eee0a86" name="clear" bindtap="clearCalendar" data-wpyclearcalendar-a="periodStartDate"/>
+                      </view>
+                      <view class="container-data-input-line _eee0a86">-</view>
+                      <view class="container-data-input-one _eee0a86" data-name="periodEndDate" data-type="sapDate" bindtap="openCalendar">
+                        {{filterForm.rows.periodEndDate|| '结束日期'}}
+                        <van-icon wx:if="{{filterForm.rows.periodEndDate}}" class="close-icon _eee0a86" name="clear" bindtap="clearCalendar" data-wpyclearcalendar-a="periodEndDate"/>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </scroll-view>
+              <!-- 底部按钮 -->
+              <view class="container-drawer-attr-footer _eee0a86">
+                <view bindtap="onResetFilterForm" class="container-drawer-attr-footer-btn reset _eee0a86" hover-class="container-drawer-attr-footer-btn-hover">重置</view>
+                <view bindtap="onSubmitFilterForm" class="container-drawer-attr-footer-btn confirm _eee0a86" hover-class="container-drawer-attr-footer-btn-hover">确定</view>
+              </view>
+            </view>
+          </view>
+        </van-popup>
+       <!-- 筛选项弹窗结束 -->
+       <!-- 头部筛选 -->
+      
+  <view class="header-tab _eee0a86">
+    <view class="left-btn">
+      <block  wx:for="{{ $headerTab$tabListNew }}">
+        <view class="btn-item {{ item.selectValue ? 'active' : '' }}" bindtap="$headerTab$changeTab" data-wpychangetab-a="{{item}}">
+          <text>{{ item.name }}</text>
+          <i wx:if="{{ $headerTab$showArrowIcon }}" class="b-icon iconxialajiantou"/>
+        </view>
+      </block>
+    </view>
+    <view class="right-btn"  wx:if="{{ $headerTab$showRightBtn }}" bindtap="$headerTab$onSideFilter">
+      <view class="line-shadow" wx:if="{{ $headerTab$showRightBtnLine }}"/>
+      <view class="side-filter-btn">
+        <text>筛选</text>
+        <i class="b-icon shaixuan"/>
+      </view>
+    </view>
+  </view>
+
+      <scroll-view wx:if="{{policyeleList.totalPage !== 0}}" bindscrolltolower="loadNextPage" scroll-y="true" class="item-scroll _eee0a86">
+            <block class="_eee0a86" wx:for="{{policyeleList.rows}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="item  _eee0a86">
+                  <view class="header van-hairline--bottom _eee0a86">
+                    <view class="code _eee0a86" bindtap="gotodetail" data-wpygotodetail-a="{{item.rowId}}">{{item.sheetNo}}</view>
+                    <view class="b-icon h-icon icon-more _eee0a86"/>
+                    <view class="status _eee0a86">
+                      <text wx:if="{{item.statusFlag==1}}" class="_eee0a86">新增</text>
+                      <text wx:if="{{item.statusFlag==2}}" class="_eee0a86">待确认</text>
+                      <text wx:if="{{item.statusFlag==3}}" class="_eee0a86">已确认</text>
+                         <text wx:if="{{item.statusFlag==4}}" class="_eee0a86">人工确认中</text>
+                      <text wx:if="{{item.statusFlag==5}}" class="_eee0a86">已作废</text>
+                      <text wx:if="{{item.statusFlag=='C'}}" class="_eee0a86">关闭</text>
+                      <text wx:if="{{item.statusFlag=='A'}}" class="_eee0a86">对账完成</text>
+                    </view>
+                  </view>
+                  <view class="content  _eee0a86">
+                    <view class="name van-ellipsis _eee0a86">销售组织：{{item.rsUnitName}}</view>
+                    <view class="name _eee0a86">客户名称：{{item.customerName}}</view>
+                    <view class="name _eee0a86">产品品类：{{item.prfcName}}</view>
+                    <view class="name _eee0a86">年度/月度：{{item.rsYear}}/{{item.periodIdx}}</view>
+                    <view class="money _eee0a86">期末余额：{{item.rbBalance}}</view>
+                    <view class="btn _eee0a86">
+                      <van-button plain size="small" type="default" bind:click="viewSignature" class="_eee0a86" data-wpyviewsignature-a="{{item.rowId}}" data-wpyviewsignature-b="{{item.statusFlag}}" data-wpyviewsignature-c="{{item.ssqBind}}">查看</van-button>
+                    </view>
+                  </view>
+              </view>
+            </block>
+        </scroll-view>
+      
+  <view class="empty-data _eee0a86" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <van-toast id="van-toast" class="_eee0a86"/>
+    </view>

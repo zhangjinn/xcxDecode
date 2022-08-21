@@ -1,0 +1,485 @@
+<wxs src="../../../wxs/utils.wxs" module="utils" class="_128e666"/>
+
+  <view class="order _128e666">
+    <view class="order-scroll _128e666">
+      
+  <view class="order-common _0d0e648 _128e666">
+    <van-cell-group class="_0d0e648">
+      <van-cell  bind:click="$order$openBill" title-class="order-title-class" title="开票户头" is-link="true" class="_0d0e648">
+        <view class="order-common-value _0d0e648">{{$order$common.bill.drawerName}}</view>
+      </van-cell>
+      <van-cell  bind:click="$order$openAddress" title-class="order-title-class" title="{{$order$addressTitle}}" is-link="true" class="_0d0e648">
+        <view class="order-common-value _0d0e648">
+          <text class="order-common-value-text _0d0e648">{{$order$common.receiver.name}}</text>
+        </view>
+      </van-cell>
+      <van-cell  bind:click="$order$openDelivery" title-class="order-title-class" title="配送方式" is-link="true" class="_0d0e648">
+        <view class="order-common-tag van-hairline--surround _0d0e648"><text class="_0d0e648">{{$order$common.delivery.propertyName}}</text></view>
+      </van-cell>
+      <view hidden="{{ $order$common.delivery.id != 502004 }}" class="_0d0e648">
+        <van-cell bind:click="$order$openTopAddress" title-class="order-title-class" title="直送地址" is-link="true" class="_0d0e648">
+          <view class="order-common-value _0d0e648">{{$order$common.toAddress.name}}</view>
+        </van-cell>
+        <view class="address-detail-cell _0d0e648">
+          
+  <view class="goods-toper _cb2c9ee _0d0e648">
+    <view class="mask _cb2c9ee" bindtap="$order$addressDetail$popHide"  wx:if="{{$order$addressDetail$popShow && $order$addressDetail$addressOptions && $order$addressDetail$addressOptions.length>0}}"/>
+    <view class="item-row _cb2c9ee">
+      <view class="item-row-left _cb2c9ee">
+        <text class="_cb2c9ee">详细地址</text>
+        <text class="redXing _cb2c9ee"  wx:if="{{$order$addressDetail$isRequired}}">*</text>
+      </view>
+      <view class="item-row-right _cb2c9ee">
+        <view class="item-row-right-note _cb2c9ee">
+          <van-field type="textarea" autosize="autosize" value="{{ $order$addressDetail$formData.addressName }}" placeholder="请填写详细地址" border="{{ $order$addressDetail$false }}" clearable="clearable" custom-style="font-size: 28rpx;" class="dms-order-note _cb2c9ee" input-align="right"  bind:change="$order$addressDetail$onAddressChange" bind:focus="$order$addressDetail$onFocus"/>
+        </view>
+      </view>
+    </view>
+    <view class="prod-scroll-view _cb2c9ee"  wx:if="{{$order$addressDetail$popShow && $order$addressDetail$addressOptions && $order$addressDetail$addressOptions.length>0}}">
+      <scroll-view class="prod-scroll-view-inner _cb2c9ee" scroll-y bindscroll="$order$addressDetail$onScroll">
+        <block class="_cb2c9ee" wx:for="{{$order$addressDetail$addressOptions}}" wx:for-index="$order$addressDetail$index" wx:for-item="$order$addressDetail$item" wx:key="$order$addressDetail$key">
+          <view class="order-operation _cb2c9ee">
+            <view class="operation-text {{$order$addressDetail$index < $order$addressDetail$addressOptions.length-1 ? 'van-hairline--bottom' : ''}} _cb2c9ee" bindtap="$order$addressDetail$onAddressSelect" data-wpyonaddressselect-a="{{$order$addressDetail$item}}">
+              <view class="operation-status _cb2c9ee">{{$order$addressDetail$item.name}}</view>
+            </view>
+          </view>
+        </block>
+      </scroll-view>
+    </view>
+  </view>
+        </view>
+      </view>
+      <view hidden="{{ $order$common.delivery.id != 502005 }}" class="_0d0e648">
+        <van-cell  bind:click="$order$openCustMarket" title-class="order-title-class" title="分销商" is-link="true" class="_0d0e648">
+          <view class="order-common-value line-height-34 _0d0e648">{{$order$common.custMarket.name}}</view>
+        </van-cell>
+        <van-cell bind:click="$order$openCustMarketAddress" title-class="order-title-class" title="分销商地址" is-link="true" class="_0d0e648">
+          <view class="order-common-value line-height-34 _0d0e648">{{$order$common.custMarketAddress.name}}</view>
+        </van-cell>
+      </view>
+      <!--
+        1、启用共享仓后联系人、联系方式不可修改
+        2、直配到用户(502004)，联系人/联系方式可修改
+      -->
+      <van-field placeholder="请输入联系人" value="{{$order$marketReceiver.contactPerson ||$order$common.receiver.contactPerson}}" input-align="right" bind:change="$order$changeText" placeholder-style="color:#aaa;font-size:26rpx;" disabled="{{$order$common.delivery.id !== 502004 && $order$common.shareFlag && $order$common.shareFlag === 'Y'}}" class="_0d0e648" data-wpychangetext-a="contact">
+        <view slot="label" class="order-common-label _0d0e648">联系人</view>
+      </van-field>
+      <van-field placeholder="请输入联系方式" value="{{$order$marketReceiver.contactPersonTel || $order$common.receiver.contactPersonTel}}" type="number" input-align="right" bind:change="$order$changeText" placeholder-style="color:#aaa;font-size:26rpx;" disabled="{{$order$common.delivery.id !== 502004 && $order$common.shareFlag && $order$common.shareFlag === 'Y'}}" class="_0d0e648" data-wpychangetext-a="mobile">
+        <view slot="label" class="order-common-label _0d0e648">联系方式</view>
+      </van-field>
+       <!--销售所属门店：模糊下拉搜索，直配到用户显示 为共享仓显示-->
+      <van-cell bind:click="$order$openSaleShop"  wx:if="{{$order$common.delivery.id == 502004}}" title-class="order-title-class" title="销量所属门店" is-link="true" class="_0d0e648">
+        <view class="order-common-value _0d0e648">
+          <text class="order-common-value-text _0d0e648">{{$order$shopLists.name}}</text>
+        </view>
+      </van-cell>
+      <!--   工程专区下单，代理商选择分销商门店增加商家名称提示   -->
+      <view  wx:if="{{$order$pageType && $order$pageType == 'engineeringArea' && $order$shopLists.ifDistributorShop && $order$shopLists.ifDistributorShop == '1'}}" class="distributorShop _0d0e648">{{$order$shopLists.customerInfoName}}</view>
+       <!--服务方式：下拉搜索，直配到用户显示-->
+      <van-cell bind:click="$order$openService"  wx:if="{{$order$common.delivery.id == 502004}}" title-class="order-title-class" title="服务方式" is-link="true" class="_0d0e648">
+        <view class="order-common-value _0d0e648">{{$order$serviceCheckedName ? $order$serviceCheckedName: ""}}</view>
+      </van-cell>
+      <!--销售类型：下拉搜索，工程专区下单-直配到用户显示-->
+      <van-cell bind:click="$order$openSalesType" wx:if="{{$order$pageType && $order$pageType == 'engineeringArea' && $order$common.delivery.id == 502004}}" title-class="order-title-class" title="销售类型" is-link="true" class="_0d0e648">
+        <view class="order-common-value _0d0e648">{{$order$salesTypeItem.name ? $order$salesTypeItem.name: ""}}</view>
+      </van-cell>
+      <van-field placeholder="请输入客户采购单号" value="{{$order$common.takeCode == 'null' ? '无': $order$common.takeCode}}" input-align="right" bind:change="$order$changeText" placeholder-style="color:#aaa;font-size:26rpx;" class="_0d0e648" data-wpychangetext-a="orderCode">
+        <view slot="label" class="order-common-label _0d0e648">客户采购单号</view>
+      </van-field>
+      <view hidden="{{!$order$purchaseType}}" class="_0d0e648">
+        <van-cell bind:click="$order$openWeek" title-class="order-title-class" title="要求到货周" is-link="true" class="_0d0e648">
+          <view class="order-common-value _0d0e648">{{$order$week.name}}</view>
+        </van-cell>
+      </view>
+      <!-- 订单为常规订单式显示 是否允许提前发货  purchaseType = 2 为常规订单 -->
+      <van-cell wx:if="{{$order$purchaseType == '2'}}" title-class="order-title-class" title="允许提前发货" class="_0d0e648">
+        <!-- <view class="order-common-value">{{aheadSend == '0'?'不允许':'允许'}}</view> -->
+        <view class="order-common-value order-common-valueReserve _0d0e648"><van-checkbox shape="square" checked-color="#00AAA6" value="{{ $order$aheadSend }}" bindchange="$order$chooseAheadSend" class="_0d0e648"/></view>
+      </van-cell>
+      <!--bind:click="openCalendar"  不允许修改有效期-->
+      <van-cell title-class="order-title-class" title="有效期截至" is-link="true" class="_0d0e648">
+        <view class="order-common-value gray _0d0e648">{{$order$day || $order$common.deadMaxDate || '请选择截至有效期'}}</view>
+      </van-cell>
+    </van-cell-group>
+    <van-popup show="{{$order$billShow}}" position="bottom" bind:close="$order$closeBill" class="_0d0e648">
+      <view class="t-popup _0d0e648">
+        <view bindtap="$order$closeBill" hover-class="hover" class="t-popup-close _0d0e648">
+          <van-icon name="cross" color="#262626" class="_0d0e648"/>
+        </view>
+        <view class="t-popup-header van-hairline--bottom _0d0e648">开票户头</view>
+        <view class="t-popup-body _0d0e648">
+          <block class="_0d0e648" wx:for="{{$order$common.bills}}" wx:for-index="$order$index" wx:for-item="$order$item" wx:key="$order${{$order$id}}">
+            <view bindtap="$order$chooseBill" hover-class="hover" class="t-popup-body-item _0d0e648" data-wpychoosebill-a="{{$order$item}}">
+              <text class="t-popup-body-item-text {{ $order$item.id === $order$common.bill.id ? 'active' : ''}} _0d0e648">{{$order$item.drawerName}}</text>
+              <view hidden="{{$order$item.id !== $order$common.bill.id}}" class="_0d0e648">
+                <van-icon name="success" color="#00AAA6" class="_0d0e648"/>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{$order$deliveryShow}}" position="bottom" bind:close="$order$closeDelivery" class="_0d0e648">
+      <view class="t-popup _0d0e648">
+        <view bindtap="$order$closeDelivery" hover-class="hover" class="t-popup-close _0d0e648">
+          <van-icon name="cross" color="#262626" class="_0d0e648"/>
+        </view>
+        <view class="t-popup-header van-hairline--bottom _0d0e648">配送方式</view>
+        <view class="t-popup-body _0d0e648">
+          <block class="_0d0e648" wx:for="{{$order$common.deliveries}}" wx:for-index="$order$index" wx:for-item="$order$item" wx:key="$order${{$order$id}}">
+            <view bindtap="$order$chooseDelivery" hover-class="hover" class="t-popup-body-item _0d0e648" data-wpychoosedelivery-a="{{$order$item}}">
+              <text class="t-popup-body-item-text {{ $order$item.id === $order$common.delivery.id ? 'active' : ''}} _0d0e648">{{$order$item.propertyName}}</text>
+              <view hidden="{{$order$item.id !== $order$common.delivery.id}}" class="_0d0e648">
+                <van-icon name="success" color="#00AAA6" class="_0d0e648"/>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </van-popup>
+    <!--  销售类型  -->
+    <van-popup show="{{$order$salesTypeShow}}" position="bottom" bind:close="$order$closeSalesType" class="_0d0e648">
+      <view class="t-popup _0d0e648">
+        <view bindtap="$order$closeSalesType" hover-class="hover" class="t-popup-close _0d0e648">
+          <van-icon name="cross" color="#262626" class="_0d0e648"/>
+        </view>
+        <view class="t-popup-header van-hairline--bottom _0d0e648">销售类型</view>
+        <view class="t-popup-body _0d0e648">
+          <block class="_0d0e648" wx:for="{{$order$salesTypeList}}" wx:for-index="$order$index" wx:for-item="$order$item" wx:key="$order${{$order$id}}">
+            <view bindtap="$order$chooseSalesType" hover-class="hover" class="t-popup-body-item _0d0e648" data-wpychoosesalestype-a="{{$order$item}}">
+              <text class="t-popup-body-item-text {{ $order$item.id === $order$salesTypeItem.id ? 'active' : ''}} _0d0e648">{{$order$item.name}}</text>
+              <view hidden="{{$order$item.id !== $order$salesTypeItem.id}}" class="_0d0e648">
+                <van-icon name="success" color="#00AAA6" class="_0d0e648"/>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </van-popup>
+    <!-- 服务方式 -->
+    <van-popup show="{{$order$serviceShow}}" position="bottom" bind:close="$order$closeService" class="_0d0e648">
+      <view class="t-popup _0d0e648">
+        <view bindtap="$order$closeService" hover-class="hover" class="t-popup-close _0d0e648">
+          <van-icon name="cross" color="#262626" class="_0d0e648"/>
+        </view>
+        <view class="t-popup-header van-hairline--bottom _0d0e648">服务方式</view>
+        <view class="t-popup-body _0d0e648">
+          <block class="_0d0e648" wx:for="{{$order$serviceList}}" wx:for-index="$order$index" wx:for-item="$order$item" wx:key="$order${{$order$serviceTypeCode}}">
+            <view bindtap="$order$chooseService" hover-class="hover" class="t-popup-body-item _0d0e648" data-wpychooseservice-a="{{$order$item}}">
+              <text class="t-popup-body-item-text {{ $order$item.selected ? 'active' : ''}} _0d0e648">{{$order$item.serviceTypeName}}</text>
+              <view hidden="{{!$order$item.selected}}" class="_0d0e648">
+                <van-icon name="success" color="#00AAA6" class="_0d0e648"/>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{$order$calendarShow}}" position="bottom" bind:close="$order$closeCalendar" class="_0d0e648">
+      <calendar calendarConfig="{{$order$calendarConfig}}" bind:afterTapDay="$order$chooseDay" class="_0d0e648"/>
+    </van-popup>
+
+    <!--要求到货周-->
+    <van-popup show="{{$order$weekShow}}" position="bottom" bind:close="$order$closeWeek" class="_0d0e648">
+      <view class="t-popup _0d0e648">
+        <view bindtap="$order$closeWeek" hover-class="hover" class="t-popup-close _0d0e648">
+          <van-icon name="cross" color="#262626" class="_0d0e648"/>
+        </view>
+        <view class="t-popup-header van-hairline--bottom _0d0e648">要求到货周</view>
+        <view class="t-popup-body _0d0e648">
+          <block class="_0d0e648" wx:for="{{$order$weekList}}" wx:for-index="$order$index" wx:for-item="$order$item" wx:key="$order${{$order$id}}">
+            <view bindtap="$order$chooseWeek" hover-class="hover" class="t-popup-body-item _0d0e648" data-wpychooseweek-a="{{$order$item}}">
+              <text class="t-popup-body-item-text {{ $order$item.code === $order$week.code ? 'active' : ''}}  _0d0e648">{{$order$item.name}}</text>
+              <view hidden="{{$order$item.code !== $order$week.code}}" class="_0d0e648">
+                <van-icon name="success" color="#00AAA6" class="_0d0e648"/>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </van-popup>
+
+    <!--允许提前发货-->
+    <van-popup show="{{$order$aheadSendShow}}" position="bottom" bind:close="$order$closeAheadSend" class="_0d0e648">
+      <view class="t-popup _0d0e648">
+        <view bindtap="$order$closeAheadSend" hover-class="hover" class="t-popup-close _0d0e648">
+          <van-icon name="cross" color="#262626" class="_0d0e648"/>
+        </view>
+        <view class="t-popup-header van-hairline--bottom _0d0e648">允许提前发货</view>
+        <view class="t-popup-body _0d0e648">
+          <view bindtap="$order$chooseAheadSend" hover-class="hover" class="t-popup-body-item _0d0e648" data-wpychooseaheadsend-a="0">
+            <text class="t-popup-body-item-text {{ $order$aheadSend == '0' ? 'active' : ''}}  _0d0e648">不允许</text>
+            <view wx:if="{{$order$aheadSend == '0'}}" class="_0d0e648">
+              <van-icon name="success" color="#00AAA6" class="_0d0e648"/>
+            </view>
+          </view>
+          <view bindtap="$order$chooseAheadSend" hover-class="hover" class="t-popup-body-item _0d0e648" data-wpychooseaheadsend-a="1">
+            <text class="t-popup-body-item-text {{ $order$aheadSend == '1' ? 'active' : ''}}  _0d0e648">允许</text>
+            <view wx:if="{{$order$aheadSend == '1'}}" class="_0d0e648">
+              <van-icon name="success" color="#00AAA6" class="_0d0e648"/>
+            </view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    <!--海信办事处：原来隐藏，改为显示，模糊下拉搜索，-->
+    <van-cell bind:click="$order$openOffice" wx:if="{{$order$common.shareFlag && $order$common.shareFlag === 'Y'}}" title-class="order-title-class" title="海信办事处" is-link="true" class="_0d0e648">
+      <view class="order-common-value _0d0e648">
+        <text class="order-common-value-text _0d0e648">{{$order$common.office.name}}</text>
+      </view>
+    </van-cell>
+
+    
+  <van-popup show="{{$order$search$show}}" position="bottom"  bind:close="$order$search$closeSearch" class="_fa5e86a _0d0e648">
+    <view class="s-popup _fa5e86a">
+      <view bindtap="$order$search$closeSearch" hover-class="hover" class="s-popup-close _fa5e86a">
+        <van-icon name="cross" color="#262626" class="_fa5e86a"/>
+      </view>
+      <view class="s-popup-header van-hairline--bottom _fa5e86a">{{$order$search$title}}</view>
+      <view class="s-popup-body _fa5e86a">
+        <van-search bind:change="$order$search$onSearchChange" custom-class="items-search" shape="round" placeholder="请输入搜索关键词" class="_fa5e86a"/>
+        <block  wx:if="{{$order$search$items.length > 0}}" class="_fa5e86a">
+          <block class="_fa5e86a" wx:for="{{$order$search$items}}" wx:for-index="$order$search$index" wx:for-item="$order$search$item" wx:key="$order$search${{$order$search$id || $order$search$code}}">
+            <view bindtap="$order$search$chooseItem" hover-class="hover" class="s-popup-body-item van-hairline--bottom _fa5e86a" data-wpychooseitem-a="{{$order$search$item}}">
+              <view class="store-type _fa5e86a">
+                <!--    只有销量所属门店才显示门店类型    -->
+                <block wx:if="{{ $order$search$type && $order$search$type === 'saleShop' }}" class="_fa5e86a">
+                  <text wx:if="{{$order$search$item.isExclusiveShop === '1'}}" class="storePaizi specialShopBgColor _fa5e86a">专卖</text>
+                  <text wx:if="{{$order$search$item.isSinkShop === '1'}}" class="storePaizi sinkChannelBgColor _fa5e86a">下沉</text>
+                  <text wx:if="{{$order$search$item.isExclusiveShop !== '1' && $order$search$item.isSinkShop !== '1'}}" class="storePaizi _fa5e86a">门店</text>
+                </block>
+                <block wx:if="{{ $order$search$type && ($order$search$type === 'common'||$order$search$type === 'agin') }}" class="_fa5e86a">
+                  <text wx:if="{{$order$search$item.defaultType === 'SHOP' }}" class="storePaizi _fa5e86a">门店</text>
+                  <text wx:else class="storePaizi sinkChannelBgColor _fa5e86a">仓库</text>
+                </block>
+                <view class="s-popup-body-item-text {{ $order$search$item.id == $order$search$id ||  $order$search$item.code == $order$search$code ? 'active' : ''}} _fa5e86a">{{$order$search$item.name}}</view>
+              </view>
+              <view wx:if="{{$order$search$item.id == $order$search$id || $order$search$item.code == $order$search$code}}" class="_fa5e86a">
+                <van-icon name="success" color="#00AAA6" class="_fa5e86a"/>
+              </view>
+            </view>
+          </block>
+        </block>
+        <block  wx:else class="_fa5e86a">
+          <view class="s-popup-body-item center _fa5e86a">
+            <view class="s-popup-body-item-text _fa5e86a">暂无数据</view>
+          </view>
+        </block>
+
+      </view>
+    </view>
+  </van-popup>
+    
+  <van-popup show="{{$order$customMarket$show}}" position="bottom"  bind:close="$order$customMarket$closeSearch" class="_fa5e86a _0d0e648">
+    <view class="s-popup _fa5e86a">
+      <view bindtap="$order$customMarket$closeSearch" hover-class="hover" class="s-popup-close _fa5e86a">
+        <van-icon name="cross" color="#262626" class="_fa5e86a"/>
+      </view>
+      <view class="s-popup-header van-hairline--bottom _fa5e86a">{{$order$customMarket$title}}</view>
+      <view class="s-popup-body _fa5e86a">
+        <van-search bind:change="$order$customMarket$onSearchChange" custom-class="items-search" shape="round" placeholder="请输入搜索关键词" class="_fa5e86a"/>
+        <block  wx:if="{{$order$customMarket$items.length > 0}}" class="_fa5e86a">
+          <block class="_fa5e86a" wx:for="{{$order$customMarket$items}}" wx:for-index="$order$customMarket$index" wx:for-item="$order$customMarket$item" wx:key="$order$customMarket${{$order$customMarket$id || $order$customMarket$code}}">
+            <view bindtap="$order$customMarket$chooseItem" hover-class="hover" class="s-popup-body-item van-hairline--bottom _fa5e86a" data-wpychooseitem-a="{{$order$customMarket$item}}">
+              <view class="store-type _fa5e86a">
+                <!--    只有销量所属门店才显示门店类型    -->
+                <block wx:if="{{ $order$customMarket$type && $order$customMarket$type === 'saleShop' }}" class="_fa5e86a">
+                  <text wx:if="{{$order$customMarket$item.isExclusiveShop === '1'}}" class="storePaizi specialShopBgColor _fa5e86a">专卖</text>
+                  <text wx:if="{{$order$customMarket$item.isSinkShop === '1'}}" class="storePaizi sinkChannelBgColor _fa5e86a">下沉</text>
+                  <text wx:if="{{$order$customMarket$item.isExclusiveShop !== '1' && $order$customMarket$item.isSinkShop !== '1'}}" class="storePaizi _fa5e86a">门店</text>
+                </block>
+                <block wx:if="{{ $order$customMarket$type && ($order$customMarket$type === 'common'||$order$customMarket$type === 'agin') }}" class="_fa5e86a">
+                  <text wx:if="{{$order$customMarket$item.defaultType === 'SHOP' }}" class="storePaizi _fa5e86a">门店</text>
+                  <text wx:else class="storePaizi sinkChannelBgColor _fa5e86a">仓库</text>
+                </block>
+                <view class="s-popup-body-item-text {{ $order$customMarket$item.id == $order$customMarket$id ||  $order$customMarket$item.code == $order$customMarket$code ? 'active' : ''}} _fa5e86a">{{$order$customMarket$item.name}}</view>
+              </view>
+              <view wx:if="{{$order$customMarket$item.id == $order$customMarket$id || $order$customMarket$item.code == $order$customMarket$code}}" class="_fa5e86a">
+                <van-icon name="success" color="#00AAA6" class="_fa5e86a"/>
+              </view>
+            </view>
+          </block>
+        </block>
+        <block  wx:else class="_fa5e86a">
+          <view class="s-popup-body-item center _fa5e86a">
+            <view class="s-popup-body-item-text _fa5e86a">暂无数据</view>
+          </view>
+        </block>
+
+      </view>
+    </view>
+  </van-popup>
+    
+  <van-popup show="{{$order$customMarketAddress$show}}" position="bottom"  bind:close="$order$customMarketAddress$closeSearch" class="_fa5e86a _0d0e648">
+    <view class="s-popup _fa5e86a">
+      <view bindtap="$order$customMarketAddress$closeSearch" hover-class="hover" class="s-popup-close _fa5e86a">
+        <van-icon name="cross" color="#262626" class="_fa5e86a"/>
+      </view>
+      <view class="s-popup-header van-hairline--bottom _fa5e86a">{{$order$customMarketAddress$title}}</view>
+      <view class="s-popup-body _fa5e86a">
+        <van-search bind:change="$order$customMarketAddress$onSearchChange" custom-class="items-search" shape="round" placeholder="请输入搜索关键词" class="_fa5e86a"/>
+        <block  wx:if="{{$order$customMarketAddress$items.length > 0}}" class="_fa5e86a">
+          <block class="_fa5e86a" wx:for="{{$order$customMarketAddress$items}}" wx:for-index="$order$customMarketAddress$index" wx:for-item="$order$customMarketAddress$item" wx:key="$order$customMarketAddress${{$order$customMarketAddress$id || $order$customMarketAddress$code}}">
+            <view bindtap="$order$customMarketAddress$chooseItem" hover-class="hover" class="s-popup-body-item van-hairline--bottom _fa5e86a" data-wpychooseitem-a="{{$order$customMarketAddress$item}}">
+              <view class="store-type _fa5e86a">
+                <!--    只有销量所属门店才显示门店类型    -->
+                <block wx:if="{{ $order$customMarketAddress$type && $order$customMarketAddress$type === 'saleShop' }}" class="_fa5e86a">
+                  <text wx:if="{{$order$customMarketAddress$item.isExclusiveShop === '1'}}" class="storePaizi specialShopBgColor _fa5e86a">专卖</text>
+                  <text wx:if="{{$order$customMarketAddress$item.isSinkShop === '1'}}" class="storePaizi sinkChannelBgColor _fa5e86a">下沉</text>
+                  <text wx:if="{{$order$customMarketAddress$item.isExclusiveShop !== '1' && $order$customMarketAddress$item.isSinkShop !== '1'}}" class="storePaizi _fa5e86a">门店</text>
+                </block>
+                <block wx:if="{{ $order$customMarketAddress$type && ($order$customMarketAddress$type === 'common'||$order$customMarketAddress$type === 'agin') }}" class="_fa5e86a">
+                  <text wx:if="{{$order$customMarketAddress$item.defaultType === 'SHOP' }}" class="storePaizi _fa5e86a">门店</text>
+                  <text wx:else class="storePaizi sinkChannelBgColor _fa5e86a">仓库</text>
+                </block>
+                <view class="s-popup-body-item-text {{ $order$customMarketAddress$item.id == $order$customMarketAddress$id ||  $order$customMarketAddress$item.code == $order$customMarketAddress$code ? 'active' : ''}} _fa5e86a">{{$order$customMarketAddress$item.name}}</view>
+              </view>
+              <view wx:if="{{$order$customMarketAddress$item.id == $order$customMarketAddress$id || $order$customMarketAddress$item.code == $order$customMarketAddress$code}}" class="_fa5e86a">
+                <van-icon name="success" color="#00AAA6" class="_fa5e86a"/>
+              </view>
+            </view>
+          </block>
+        </block>
+        <block  wx:else class="_fa5e86a">
+          <view class="s-popup-body-item center _fa5e86a">
+            <view class="s-popup-body-item-text _fa5e86a">暂无数据</view>
+          </view>
+        </block>
+
+      </view>
+    </view>
+  </van-popup>
+    
+  <van-popup show="{{ $order$address$addressVisible }}" position="bottom"  bind:close="$order$address$closeAddressPopup" class="_a5a3fc2 _0d0e648">
+    <view class="area _a5a3fc2">
+      <view class="area-header _a5a3fc2">
+        <view class="area-header-content _a5a3fc2">
+          <view class="area-header-content-title _a5a3fc2">{{ $order$address$title }}</view>
+        </view>
+        <view bindtap="$order$address$closeAddressPopup" class="area-header-close _a5a3fc2">
+          <icon class="h-icon icon-ic-close _a5a3fc2"/>
+        </view>
+      </view>
+
+      <view class="area-tab _a5a3fc2">
+        <view bindtap="$order$address$chooseAddressTap" class="area-tab-item _a5a3fc2" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="province">
+          <view class="area-tab-item-title _a5a3fc2">
+            <text class="{{ $order$address$areaCurrentTab === 'province' ? 'active' : '' }} _a5a3fc2">{{ $order$address$province.name }}</text>
+            <view hidden="{{ !($order$address$areaCurrentTab === 'province') }}" class="area-tab-item-title-bar _a5a3fc2"/>
+          </view>
+        </view>
+
+        <view bindtap="$order$address$chooseAddressTap" class="area-tab-item _a5a3fc2" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="city">
+          <view class="area-tab-item-title _a5a3fc2" hidden="{{ $order$address$city.items.length === 0 }}">
+            <text class="{{ $order$address$areaCurrentTab === 'city' ? 'active' : '' }} _a5a3fc2">{{ $order$address$city.name }}</text>
+            <view hidden="{{ !($order$address$areaCurrentTab === 'city') }}" class="area-tab-item-title-bar _a5a3fc2"/>
+          </view>
+        </view>
+
+        <view bindtap="$order$address$chooseAddressTap" class="area-tab-item _a5a3fc2" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="area">
+          <view class="area-tab-item-title _a5a3fc2" hidden="{{ $order$address$area.items.length === 0 }}">
+            <text class="{{ $order$address$areaCurrentTab === 'area' ? 'active' : '' }} _a5a3fc2">{{ $order$address$area.name }}</text>
+            <view hidden="{{ !($order$address$areaCurrentTab === 'area') }}" class="area-tab-item-title-bar _a5a3fc2"/>
+          </view>
+        </view>
+
+        <view bindtap="$order$address$chooseAddressTap" class="area-tab-item _a5a3fc2" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="town">
+          <view class="area-tab-item-title _a5a3fc2" hidden="{{ $order$address$town.items.length === 0 }}">
+            <text class="{{ $order$address$areaCurrentTab === 'town' ? 'active' : '' }} _a5a3fc2">{{ $order$address$town.name }}</text>
+            <view hidden="{{ !($order$address$areaCurrentTab === 'town') }}" class="area-tab-item-title-bar _a5a3fc2"/>
+          </view>
+        </view>
+
+      </view>
+      <view class="area-body _a5a3fc2">
+        <view hidden="{{!$order$address$loading}}" class="area-body-loading _a5a3fc2">
+          <i-spin fix="fix" class="_a5a3fc2"/>
+        </view>
+        <scroll-view class="area-body-content _a5a3fc2" scroll-y>
+          <block class="_a5a3fc2" wx:for="{{$order$address$addressItems}}" wx:for-index="$order$address$index" wx:for-item="$order$address$item" wx:key="$order$address$id">
+            <view bindtap="$order$address$chooseAddress" class="area-body-content-item _a5a3fc2" hover-class="area-body-content-item-hover" data-wpychooseaddress-a="{{ $order$address$item }}">
+              <text class="area-body-content-item-label {{ $order$address$item.code === $order$address$addressTempId ? 'active' : '' }} _a5a3fc2">{{ $order$address$item.name }}</text>
+              <view hidden="{{$order$address$item.code !== $order$address$addressTempId}}" class="_a5a3fc2">
+                <van-icon name="success" color="#00AAA6" class="_a5a3fc2"/>
+              </view>
+            </view>
+          </block>
+        </scroll-view>
+      </view>
+    </view>
+  </van-popup>
+    <van-toast id="van-toast" class="_0d0e648"/>
+  </view>
+      <van-cell-group class="_128e666">
+        <van-cell  bind:click="chooseItems" title-class="order-title-class" title="选购商品" is-link="true" class="_128e666">
+          <view class="order-common-extra _128e666">查看商品</view>
+        </van-cell>
+        <view hidden="{{order.items.length === 0}}" class="order-items _128e666">
+          <block class="_128e666" wx:for="{{order.items}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <view class="order-items-item _128e666">
+              <view class="order-items-item-label _128e666">{{item.productName}}</view>
+              <view class="order-items-item-value _128e666">
+                <text class="black _128e666">¥{{utils.formatPrice(item.singlePrice)}}</text>
+                <text class="gray _128e666">x{{item.amount}}</text>
+              </view>
+            </view>
+          </block>
+        </view>
+      </van-cell-group>
+      <van-submit-bar disabled="{{order.totalNum === 0}}" button-text="提交订单"  bind:submit="confirmSaveOrder" button-class-container="order-btn" button-class="order-confirm" class="_128e666">
+        <view class="order-footer-header van-hairline--top-bottom _128e666" slot="top">
+          <view class="order-footer-header-item _128e666">
+            <view class="label _128e666">
+              <view class="label-text _128e666">账号余额</view>
+              <view class="label-value _128e666">¥{{utils.formatPrice(order.balanceAccount)}}</view>
+            </view>
+            <view class="label _128e666">
+              <view class="label-text _128e666">待审核订单金额</view>
+              <view class="label-value _128e666">¥{{utils.formatPrice(order.waitMoney)}}</view>
+            </view>
+          </view>
+          <view class="order-footer-header-item _128e666" bindtap="onBateChange">
+            <view class="label _128e666">
+              <van-checkbox value="{{rebateCheckBox}}" checked-color="#00AAA6" custom-class="order-checkbox" class="_128e666">
+                <view class="label-checkbox _128e666">预计使用返利金额¥ {{utils.formatPrice(rebateCheckBox ? order.totalRebate || order.rebate : 0)}}</view>
+              </van-checkbox>
+            </view>
+            <view class="label _128e666">
+              <view class="label-text _128e666">实际使用返利金额以最终发票金额为准</view>
+            </view>
+          </view>
+        </view>
+        <view class="order-footer-body _128e666">
+          <view class="order-footer-body-item _128e666">
+            <view class="item-label _128e666">体积:{{utils.formatPrice(order.loadVolumeAll)}}m³</view>
+            <view class="item-label _128e666">共{{order.totalNum}}套</view>
+            <view class="item-label _128e666">合计</view>
+            <view class="item-value _128e666">¥{{utils.formatPrice(order.totalPrice)}}</view>
+          </view>
+          <view class="order-footer-body-item _128e666">
+            <view class="item-unit _128e666">账户可用余额</view>
+            <view class="item-price _128e666">¥{{utils.formatPrice(order.canUseMoney)}}</view>
+          </view>
+        </view>
+      </van-submit-bar>
+    </view>
+
+    <van-toast id="van-toast" class="_128e666"/>
+    
+  <van-popup show="{{$payconfrim$show}}" custom-style="border-radius: 12rpx;overflow:hidden;" class="_9d7a5ae _128e666">
+    <view class="pay-confirm _9d7a5ae">
+      <view bindtap="$payconfrim$close" hover-class="hover" class="pay-confirm-close _9d7a5ae">
+        <van-icon name="cross" color="#AAAAAA" class="_9d7a5ae"/>
+      </view>
+      <view class="pay-confirm-header _9d7a5ae">请输入账号密码</view>
+      <view class="pay-confirm-body _9d7a5ae">¥{{$payconfrim$price}}</view>
+      <view class="pay-confirm-input _9d7a5ae">
+        <view class="pay-confirm-input-border van-hairline--surround _9d7a5ae">
+          <van-field focus clearable="clearable" password="{{!$payconfrim$passwordVisible}}" value="{{$payconfrim$password}}" size="small" border="{{$payconfrim$false}}" placeholder="请输入密码"  bind:change="$payconfrim$onChange" bind:click-icon="$payconfrim$togglePwd" right-icon="{{ $payconfrim$passwordVisible ? 'eye-o' : 'closed-eye' }}" class="_9d7a5ae"/>
+        </view>
+      </view>
+      <van-button  bind:click="$payconfrim$validatePwd" block="block" color="#00AAA6" disabled="{{!$payconfrim$password }}" class="_9d7a5ae">确认提交</van-button>
+    </view>
+  </van-popup>
+  </view>

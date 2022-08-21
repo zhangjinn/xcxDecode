@@ -1,0 +1,19 @@
+<template>
+  <view class="notice-list-card-container" @tap="onSwitch({{item}})">
+    <view class="card-img-box">
+      <image wx:if="{{ item.iconUrl }}" class="card-img" src="{{ item.iconUrl }}"/>
+    </view>
+    <view class="card-info-box">
+      <view class="info-title">
+        <text class="name">{{ item.typeName || '' }}</text>
+        <text class="date">{{ item.createDateStr || '' }}</text>
+      </view>
+      <view class="info-desc">
+        <text class="content van-ellipsis">{{ item.content || '' }}</text>
+        <text wx:if="{{ item.amount }}" class="count">{{ item.amount > 99 ? '99+' : item.amount  }}</text>
+      </view>
+    </view>
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

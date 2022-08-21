@@ -1,0 +1,21 @@
+<template>
+  <view class="distributor">
+    <view class="distributor-wrapper" wx:if="{{ marketingActivityDistributorList.length && marketingActivityDistributorList.length > 0}}">
+      <repeat for="{{ marketingActivityDistributorList }}" item="item">
+        <view class="distributor-list">
+          <view class="name">{{item.custInfoName}}</view>
+          <view class="desc">
+            <text>渠道范围：</text>
+            <text>{{item.channelName}}</text>
+          </view>
+        </view>
+      </repeat>
+    </view>
+    <emptyDataType wx:else/>
+
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

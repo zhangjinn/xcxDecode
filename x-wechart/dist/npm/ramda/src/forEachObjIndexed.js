@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),keys=require("./keys.js"),forEachObjIndexed=_curry2(function(r,e){for(var n=keys(e),u=0;u<n.length;){var a=n[u];r(e[a],a,e),u+=1}return e});module.exports=forEachObjIndexed;

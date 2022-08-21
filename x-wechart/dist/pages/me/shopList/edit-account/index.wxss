@@ -1,0 +1,218 @@
+.ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+.me-account-edit {
+  width: 100%;
+  height: 100%;
+  padding: 16rpx 0 200rpx 0;
+}
+.me-account-edit .me-account-edit-scroll {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  height: 100%;
+}
+.me-account-edit.admin-form {
+  padding-bottom: 108rpx;
+}
+.me-account-edit .account-form {
+  width: 100%;
+}
+.me-account-edit .account-form .form-button-area {
+  padding: 60rpx 40rpx;
+}
+.me-account-edit .account-form .form-button-area button:after {
+  border: none;
+}
+.me-account-edit .account-form .form-button-area .form-submit {
+  background: #00AAAA;
+  color: #FFF;
+  border: none;
+}
+.me-account-edit .account-form .form-button-area .add-other {
+  background: #FFF;
+  color: #00AAAA;
+  border-radius: 0;
+  border: none;
+}
+.me-account-edit .account-form .account-other-info .account-other-info-item {
+  margin-top: 16rpx;
+  background: #FFF;
+}
+.me-account-edit .account-form .account-other-info .account-other-info-item .account-other-info-header .account-other-info-line {
+  padding: 26rpx 0;
+  border-bottom: 2rpx solid #EEEEEE;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+.me-account-edit .account-form .account-other-info .account-other-info-item .account-other-info-header .account-other-info-line:last-child {
+  border: none;
+}
+.me-account-edit .account-form .account-other-info .account-other-info-item .account-other-info-header .account-other-info-line .label {
+  font-size: 26rpx;
+  color: #777777;
+}
+.me-account-edit .account-form .account-other-info .account-other-info-item .account-other-info-header .account-other-info-line .content-group {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+          justify-content: flex-end;
+}
+.me-account-edit .account-form .account-other-info .account-other-info-item .account-other-info-footer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+          justify-content: flex-end;
+  border-top: 2rpx solid #EEEEEE;
+  font-size: 32rpx;
+  padding: 24rpx;
+}
+.me-account-edit .account-form .account-other-info .account-other-info-item .account-other-info-footer i {
+  font-size: 32rpx;
+  color: #777777;
+}
+.popup-picker {
+  background: #FFF;
+}
+.popup-picker .picker-header {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  position: relative;
+  padding: 22rpx;
+  border: 2rpx solid #EEEEEE;
+}
+.popup-picker .picker-header .picker-header-text {
+  font-size: 32rpx;
+}
+.popup-picker .picker-header i {
+  position: absolute;
+  top: 22rpx;
+  right: 22rpx;
+  font-size: 32rpx;
+}
+.popup-picker .picker-content .item-line {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding: 22rpx;
+}
+.popup-picker .picker-content .item-line .label,
+.popup-picker .picker-content .item-line i {
+  font-size: 26rpx;
+}
+.popup-picker .picker-content .item-line .label.active,
+.popup-picker .picker-content .item-line i.active {
+  color: #00AAAA;
+}
+.base-maktl-popup-picker {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  background: #FFF;
+  height: 65%;
+}
+.base-maktl-popup-picker .picker-header {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  position: relative;
+  padding: 22rpx;
+  border: 2rpx solid #EEEEEE;
+}
+.base-maktl-popup-picker .picker-header .picker-header-text {
+  font-size: 32rpx;
+}
+.base-maktl-popup-picker .picker-header i {
+  position: absolute;
+  top: 22rpx;
+  right: 22rpx;
+  font-size: 32rpx;
+}
+.base-maktl-popup-picker .picker-search-box {
+  width: calc(100% - 32rpx);
+  height: 80rpx;
+  background-color: #efefef;
+  padding: 0 24rpx;
+  margin: 0  auto;
+  border-radius: 35rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.base-maktl-popup-picker .picker-search-box .placeholderStyle {
+  color: #aaa;
+}
+.base-maktl-popup-picker .picker-search-box .icon-search {
+  color: #aaa;
+  font-size: 28rpx;
+}
+.base-maktl-popup-picker .picker-search-box .inputStyle {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  padding-left: 12rpx;
+  font-size: 28rpx;
+}
+.base-maktl-popup-picker .picker-content {
+  height: 100%;
+  padding-bottom: 100rpx;
+  overflow-y: hidden;
+}
+.base-maktl-popup-picker .picker-content .item-line {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding: 22rpx;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.base-maktl-popup-picker .picker-content .item-line .label,
+.base-maktl-popup-picker .picker-content .item-line i {
+  margin-right: 16rpx;
+  font-size: 26rpx;
+}
+.base-maktl-popup-picker .picker-content .item-line i {
+  color: #00AAAA;
+}
+.base-maktl-popup-picker .picker-content .item-line .in-active {
+  margin-right: 16rpx;
+  height: 32rpx;
+  width: 32rpx;
+  border-radius: 50%;
+  border: 2rpx solid #EEEEEE;
+}
+.base-maktl-popup-picker .picker-footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}

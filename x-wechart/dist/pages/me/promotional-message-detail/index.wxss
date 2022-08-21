@@ -1,0 +1,58 @@
+@import "./../../../components/empty-data-type/index.wxss";
+.container._49371b6 {
+  height: 100%;
+}
+.container .container-wrapper._49371b6 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+}
+.container .container-wrapper .wrapper-header._49371b6 {
+  background: #FFFFFF;
+  padding: 24rpx;
+  font-size: 28rpx;
+  color: #262626;
+  line-height: 44rpx;
+}
+.container-scroll._49371b6 {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  padding: 16rpx;
+  overflow-y: auto;
+}
+.container-scroll .item._49371b6 {
+  background: #ffffff;
+  padding: 18rpx 28rpx;
+  margin-bottom: 16rpx;
+  border-radius: 16rpx;
+  border-left: 4rpx solid #00AAA6;
+}
+.container-scroll .item .title._49371b6 {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #262626;
+}
+.container-scroll .item .desc._49371b6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  font-size: 26rpx;
+  color: #777777;
+  margin-top: 10rpx;
+}
+.container-scroll .item .amount._49371b6 {
+  margin-left: 48rpx;
+}
+.container-scroll .item .amount .amount-num._49371b6 {
+  color: #262626;
+}

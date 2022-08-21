@@ -1,0 +1,206 @@
+.ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+.booking {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  height: 112rpx;
+  padding: 12rpx 24rpx;
+}
+.booking-tag {
+  display: inline-block;
+  border-radius: 16rpx;
+  background-color: rgba(217, 22, 28, 0.1);
+  font-size: 20rpx;
+  color: #D9161C;
+  font-weight: 400;
+  padding: 4rpx 18rpx;
+  margin: 24rpx 0 24rpx 24rpx;
+}
+.booking-btn {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 100rpx;
+  font-size: 32rpx;
+  font-weight: 400;
+  color: #ffffff;
+}
+.booking-btn.active {
+  background-color: #D9161C;
+}
+.booking-btn.disabled {
+  background-color: #CCCCCC;
+}
+.booking-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+  width: 100%;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.booking-footer-action {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 100rpx;
+  font-size: 32rpx;
+  font-weight: 400;
+  color: #ffffff;
+}
+.booking-footer-action.active {
+  background-color: #D9161C;
+}
+.booking-footer-action.disabled {
+  background-color: #CCCCCC;
+}
+.booking-left-price {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: end;
+  -webkit-align-items: flex-end;
+          align-items: flex-end;
+}
+.booking-left-price-origin {
+  font-size: 32rpx;
+  font-weight: 600;
+  line-height: 32rpx;
+  color: #ffffff;
+}
+.booking-left-price-current {
+  font-size: 24rpx;
+  line-height: 24rpx;
+  font-weight: 300;
+  color: #ffffff;
+  margin-left: 8rpx;
+  text-decoration: line-through;
+}
+.booking-left-desc {
+  font-size: 24rpx;
+  color: #ffffff;
+  font-weight: 300;
+  margin-top: 6rpx;
+}
+.booking-right-next {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #FFE28F;
+  text-align: right;
+  margin-bottom: 8rpx;
+}
+.booking-right-progress {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-bottom: 14rpx;
+}
+.booking-right-progress-content {
+  width: 180rpx;
+}
+.booking-right-progress-desc {
+  font-size: 20rpx;
+  font-weight: 500;
+  color: #FFE28F;
+  margin-left: 8rpx;
+}
+.booking-right-timer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.booking-right-timer-desc {
+  font-size: 24rpx;
+  font-weight: 400;
+  color: #ffffff;
+  margin-right: 16rpx;
+}
+.booking-right-timer .timer-item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.booking-right-timer .timer-item-day {
+  font-size: 22rpx;
+  font-weight: 400;
+  color: #ffffff;
+  margin-right: 4rpx;
+}
+.booking-right-timer .timer-item-divider {
+  font-size: 22rpx;
+  font-weight: 400;
+  color: #ffffff;
+}
+.booking-right-timer .timer-item-hours,
+.booking-right-timer .timer-item-minutes,
+.booking-right-timer .timer-item-seconds {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  width: 36rpx;
+  height: 36rpx;
+  background-color: #ffffff;
+  border-radius: 4rpx;
+  font-size: 23rpx;
+  font-weight: 500;
+  color: #D9161C;
+  margin: 0 8rpx;
+}
+.booking-right-tip {
+  font-size: 22rpx;
+  color: #ffffff;
+  font-weight: 400;
+  text-align: right;
+}
+.booking-right-tip.margin-bottom-8 {
+  margin-bottom: 6rpx;
+}
+.booking.active {
+  background-color: #D9161C;
+}
+.booking.disabled {
+  background-color: #AAAAAA;
+}

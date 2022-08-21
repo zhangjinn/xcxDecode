@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),reduceRight=_curry3(function(r,e,u){for(var t=u.length-1;t>=0;)e=r(u[t],e),t-=1;return e});module.exports=reduceRight;

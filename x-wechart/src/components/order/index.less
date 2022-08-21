@@ -1,0 +1,99 @@
+@import '../../components/vant/common/style/hairline.less';
+
+.order-common {
+  margin: 16rpx 0;
+  background-color: #ffffff;
+  .distributorShop{
+    font-size: 24rpx;
+    color: #777777;
+    padding: 12rpx 30rpx;
+  }
+  &-label {
+    font-size: 26rpx;
+    color: #262626;
+    font-weight: 400;
+  }
+  &-value {
+    font-size: 26rpx;
+    color: #262626;
+    font-weight: 400;
+    &.line-height-34 {
+      line-height: 34rpx;
+    }
+    &-text {
+      display: inline-block;
+      line-height: 36rpx;
+    }
+    &.gray {
+      color: #AAAAAA;
+    }
+  }
+  &-valueReserve {
+    display: flex;
+    justify-content: end;
+    flex-direction: row-reverse;
+    padding-right: 47rpx;
+  }
+  &-tag {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 4rpx 8rpx;
+    font-size: 24rpx;
+    font-weight: 300;
+    line-height: 28rpx;
+    color: #00AAA6;
+    &::after {
+      border-radius: 4rpx;
+      border-color: #00AAA6;
+    }
+  }
+  .address-detail-cell{
+    padding: 0 15px;
+    font-size: 26rpx;
+  }
+}
+
+.t-popup {
+  position: relative;
+  padding: 0 40rpx;
+  &-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 88rpx;
+    font-size: 32rpx;
+    color: #262626;
+    font-weight: 400;
+  }
+  &-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 88rpx;
+    width: 88rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+  }
+  &-body {
+    max-height: 650rpx;
+    min-height: 450rpx;
+    overflow-y: auto;
+    &-item {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      height: 80rpx;
+      &-text {
+        color: #262626;
+        font-size: 26rpx;
+        &.active {
+          color: #00AAA6;
+        }
+      }
+    }
+  }
+}
+

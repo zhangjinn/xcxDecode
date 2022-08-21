@@ -1,0 +1,78 @@
+<wxs src="../../../../wxs/utils.wxs" module="utils" class="_7342a4c"/>
+
+  <view class="purchase _7342a4c">
+    <!-- 时效日期说明，数据更新至当天的前一天日期 -->
+    <view class="expiry-date _7342a4c">数据更新至{{ previousDayDate }}</view>
+    <!-- 顶部筛选 -->
+    
+  <view class="header-tab _7342a4c">
+    <view class="left-btn">
+      <block  wx:for="{{ $headerTab$tabListNew }}">
+        <view class="btn-item {{ item.selectValue ? 'active' : '' }}" bindtap="$headerTab$changeTab" data-wpychangetab-a="{{item}}">
+          <text>{{ item.name }}</text>
+          <i wx:if="{{ $headerTab$showArrowIcon }}" class="b-icon iconxialajiantou"/>
+        </view>
+      </block>
+    </view>
+    <view class="right-btn"  wx:if="{{ $headerTab$showRightBtn }}" bindtap="$headerTab$onSideFilter">
+      <view class="line-shadow" wx:if="{{ $headerTab$showRightBtnLine }}"/>
+      <view class="side-filter-btn">
+        <text>筛选</text>
+        <i class="b-icon shaixuan"/>
+      </view>
+    </view>
+  </view>
+
+    <!-- 筛选弹出框 -->
+    <van-popup show="{{ purchaseVisable }}" position="top" custom-class="purchase-top"  bind:close="touchFilter"  wx:if="{{CurrentFilterName==='material'}}" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;" class="_7342a4c">
+      <!-- 选择物料组 -->
+      <view wx:if="{{CurrentFilterName==='material'}}" class="order-s-filter-container _7342a4c">
+        <scroll-view scroll-y class="purchase-inv-scroll _7342a4c">
+          <view wx:for="{{  matklList }}" wx:key="{{ item.id}}" item="item" class="purchase-inv-scroll-row _7342a4c" data-key="{{item.id}}" data-index="{{ index }}" bindtap="onMaterial" data-wpyonmaterial-a="{{item.code}}">
+            <view class="pose-inv-scroll-row-desc {{ item.code === materialItem.code ? 'checked' : ''}} _7342a4c">{{ item.name}}</view>
+            <block wx:if="{{ item.code === materialItem.code }}" class="_7342a4c">
+              <view class="b-icon icon-check pose-inv-scroll-row-checked checked _7342a4c"/>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ purchaseVisable }}" position="top" custom-class="purchase-top"  bind:close="touchFilter"  wx:if="{{CurrentFilterName==='supplier'}}" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;" class="_7342a4c">
+     <!-- 选择供应商 -->
+      <view wx:if="{{CurrentFilterName==='supplier'}}" class="_7342a4c">
+        <scroll-view scroll-y class="purchase-inv-scroll _7342a4c">
+          <view wx:for="{{ supplierList }}" wx:key="{{ item.id}}" item="item" class="purchase-inv-scroll-row _7342a4c" data-key="{{item.id}}" data-index="{{ index }}" bindtap="onChooseMa" data-wpyonchoosema-a="{{item.code}}">
+            <view class="pose-inv-scroll-row-desc {{ item.code === supplierItem.code ? 'checked' : ''}} _7342a4c">{{ item.name}}</view>
+            <block wx:if="{{ item.code === supplierItem.code }}" class="_7342a4c">
+              <view class="b-icon icon-check pose-inv-scroll-row-checked checked _7342a4c"/>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ purchaseVisable }}" position="bottom" custom-class="purchase-top"  bind:close="touchFilter"  wx:if="{{CurrentFilterName==='date'}}" class="_7342a4c">
+      <!-- 选择时间 -->
+      <view class="_7342a4c">
+        <van-datetime-picker type="year-month" value="{{ currentDate }}" min-date="{{ minDate }}" max-date="{{maxDate}}" bind:input="onInput" bind:confirm="onConfirm" bind:change="getValues" bind:cancel="onCancel" class="_7342a4c"/>
+      </view>
+    </van-popup>
+    <scroll-view class="container-list-scroll _7342a4c" scroll-x>
+      <view class="dongxioalv-inner _7342a4c">
+        <view class="t-header _7342a4c">
+          <view class="t-td td_1 _7342a4c">品类</view>
+          <view class="t-td td_2 _7342a4c">当月市场覆盖率</view>
+          <view class="t-td td_3 _7342a4c">当月环比</view>
+        </view>
+        <view class="t-body _7342a4c">
+          <block class="_7342a4c" wx:for="{{dataArr}}" wx:for-index="index" wx:for-item="i" wx:key="key">
+            <view class="tr _7342a4c">
+              <view class="t-td td_1 _7342a4c">{{i.category }}</view>
+              <view class="t-td td_2 _7342a4c">{{ i.pickUpVolume }}</view>
+              <view class="t-td td_3 _7342a4c">{{ i.proportion }}</view>
+            </view>
+          </block>
+          <view class="no-data _7342a4c" wx:if="{{!dataArr.length}}">暂无数据！</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>

@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),_dispatchable=require("./internal/_dispatchable.js"),_xdrop=require("./internal/_xdrop.js"),slice=require("./slice.js"),drop=_curry2(_dispatchable(["drop"],_xdrop,function(r,e){return slice(Math.max(0,r),1/0,e)}));module.exports=drop;

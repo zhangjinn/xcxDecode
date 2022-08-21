@@ -1,0 +1,55 @@
+
+  <view class="order _3c209f6">
+    
+  <view class="custom-class filter-header _3c209f6">
+    <view  wx:if="{{ $filter$showTab && $filter$tabList && $filter$tabList.length > 0 }}" class="tabs">
+      <view class="tab" wx:for="{{ $filter$tabList }}" bindtap="$filter$changeTab" data-wpychangetab-a="{{index}}">
+        <view class="tab-title {{ $filter$tabActive == index ? 'active' : ''}}">
+          <view class="title-text">{{ item.name }}</view>
+          <view class="title-line" style="width: {{$filter$activeLineStyle.width ? $filter$activeLineStyle.width : '32rpx'}}; height: {{$filter$activeLineStyle.height ? $filter$activeLineStyle.height : '8rpx'}}; borderRadius: {{$filter$activeLineStyle.borderRadius ? $filter$activeLineStyle.borderRadius : '4rpx'}}"/>
+          <text wx:if="{{ item.count }}" class="reddot {{ item.count > 99 ? 'moreAmount' : '' }}">{{ item.count > 99 ? '99+' :  item.count }}</text>
+        </view>
+      </view>
+    </view>
+    <view  wx:if="{{ $filter$showSearch }}" class="search">
+      <van-search custom-class="header-search" value="{{ $filter$searchKey }}" shape="round" use-left-icon-slot="{{ $filter$true }}" leftSearchIconSow="{{ $filter$false }}" placeholder="请输入关键字" placeholder-style="color: #AAAAAA; font-size: 28rpx;"  bind:change="$filter$onChange" bind:clear="$filter$onCancel">
+        <view slot="label" class="search-left-icon">
+          <i bindtap="$filter$onSearch" class="b-icon shouyesousuo" data-wpyonsearch-a=""/>
+        </view>
+      </van-search>
+    </view>
+  </view>
+
+    <view class="scroll-wrapper _3c209f6">
+      <scroll-view  wx:if="{{ msgList && msgList.length }}" class="card-scroll _3c209f6" scroll-y enable-back-to-top="enable-back-to-top" scroll-top="{{ scrollTop }}" bindscroll="onScroll" bindscrolltolower="onGetOrderListNext">
+        <block class="_3c209f6" wx:for="{{ msgList }}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          
+  <view class="notice-list-card-container _28c2b54 _3c209f6" bindtap="$noticeListItem$onSwitch" data-com-index="{{index}}" data-wpyonswitch-a="{{item}}">
+    <view class="card-img-box _28c2b54">
+      <image  wx:if="{{ item.iconUrl }}" class="card-img _28c2b54" src="{{ item.iconUrl }}"/>
+    </view>
+    <view class="card-info-box _28c2b54">
+      <view class="info-title _28c2b54">
+        <text class="name _28c2b54">{{ item.typeName || '' }}</text>
+        <text class="date _28c2b54">{{ item.createDateStr || '' }}</text>
+      </view>
+      <view class="info-desc _28c2b54">
+        <text class="content van-ellipsis _28c2b54">{{ item.content || '' }}</text>
+        <text  wx:if="{{ item.amount }}" class="count _28c2b54">{{ item.amount > 99 ? '99+' : item.amount  }}</text>
+      </view>
+    </view>
+  </view>
+        </block>
+      </scroll-view>
+      
+  <view class="empty-data _3c209f6" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+    </view>
+    <van-toast id="van-toast" class="_3c209f6"/>
+    <van-dialog id="van-dialog" class="_3c209f6"/>
+  </view>

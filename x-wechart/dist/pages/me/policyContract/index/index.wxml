@@ -1,0 +1,169 @@
+<wxs src="../../../../wxs/utils.wxs" module="utils" class="_3b09754"/>
+
+  <view class="order _3b09754">
+    <van-popup show="{{calendarShow}}" position="bottom"  bind:close="closeCalendar" z-index="200" class="_3b09754">
+      <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay" class="_3b09754"/>
+    </van-popup>
+
+    <van-popup show="{{visible}}" position="right" overlay="{{ true }}"  bind:close="orderfiltering" custom-style="height: 100%;" z-index="130" class="_3b09754">
+      <view class="order-drawer _3b09754">
+        <view class="order-drawer-attr _3b09754">
+          <scroll-view class="order-drawer-attr-scroll _3b09754" scroll-y>
+            <view class="attr-item _3b09754">
+              <view class="projectem _3b09754">
+                <view class="project _3b09754">
+                  <text style="font-size: 13px;color: #777777" class="_3b09754">合同类型</text>
+                </view>
+                <van-field placeholder="请输入合同类型" placeholder-style="font-size: 24rpx;" border="{{ false }}" bind:change="contractTypeChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;margin-top:16rpx;" clearable="clearable" value="{{filterForm.contractType}}" class="_3b09754"/>
+              </view>
+              <view class="projectem _3b09754">
+                <view class="project _3b09754">
+                  <text style="font-size: 13px;color: #777777" class="_3b09754">合同编码</text>
+                </view>
+                <van-field placeholder="请输入合同编码" placeholder-style="font-size: 24rpx;" border="{{ false }}" bind:change="contractNoChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;margin-top:16rpx;" clearable="clearable" value="{{filterForm.contractNo}}" class="_3b09754"/>
+              </view>
+              <view class="projectem _3b09754">
+                <view class="project _3b09754">
+                  <text style="font-size: 13px;color: #777777" class="_3b09754">合同名称</text>
+                </view>
+                <van-field placeholder="请输入合同名称" placeholder-style="font-size: 24rpx;" border="{{ false }}" bind:change="ontractNameChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;margin-top:16rpx;" clearable="clearable" value="{{filterForm.contractName}}" class="_3b09754"/>
+              </view>
+              <view class="projectem _3b09754">
+                <view class="project _3b09754">
+                  <text style="font-size: 13px;color: #777777" class="_3b09754">代理商</text>
+                </view>
+                <van-field placeholder="请输入代理商" placeholder-style="font-size: 24rpx;" border="{{ false }}" bind:change="merchantNameChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;margin-top:16rpx;" clearable="clearable" value="{{filterForm.merchantName}}" class="_3b09754"/>
+              </view>
+              <view class="order-data _3b09754">
+                <view class="project _3b09754">
+                  <text style="font-size: 28rpx;color: #777777" class="_3b09754">创建时间</text>
+                </view>
+                <view class="order-data-input _3b09754">
+                  <view class="order-data-input-one _3b09754" data-name="createdDateS" data-type="sapDate" bindtap="openCalendar">
+                    {{filterForm.createdDateS || '开始日期'}}
+                    <van-icon  wx:if="{{filterForm.createdDateS}}" class="close-icon _3b09754" name="clear" catchtap="clearCalendar" data-wpyclearcalendar-a="createdDateS"/>
+                  </view>
+                  <view class="order-data-input-line _3b09754">-</view>
+                  <view class="order-data-input-one _3b09754" data-name="createdDateE" data-type="sapDate" bindtap="openCalendar">
+                    {{filterForm.createdDateE|| '结束日期'}}
+                    <van-icon  wx:if="{{filterForm.createdDateE}}" class="close-icon _3b09754" name="clear" catchtap="clearCalendar" data-wpyclearcalendar-a="createdDateE"/>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </scroll-view>
+          <!-- 底部按钮 -->
+          <view class="order-drawer-attr-footer _3b09754">
+            <view bindtap="onResetFilterForm" class="order-drawer-attr-footer-btn reset _3b09754" hover-class="order-drawer-attr-footer-btn-hover">重置</view>
+            <view bindtap="onSubmitFilterForm" class="order-drawer-attr-footer-btn confirm _3b09754" hover-class="order-drawer-attr-footer-btn-hover">确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+   
+    
+  <view class="header-tab _3b09754">
+    <view class="left-btn">
+      <block  wx:for="{{ $headerTab$tabListNew }}">
+        <view class="btn-item {{ item.selectValue ? 'active' : '' }}" bindtap="$headerTab$changeTab" data-wpychangetab-a="{{item}}">
+          <text>{{ item.name }}</text>
+          <i wx:if="{{ $headerTab$showArrowIcon }}" class="b-icon iconxialajiantou"/>
+        </view>
+      </block>
+    </view>
+    <view class="right-btn"  wx:if="{{ $headerTab$showRightBtn }}" bindtap="$headerTab$onSideFilter">
+      <view class="line-shadow" wx:if="{{ $headerTab$showRightBtnLine }}"/>
+      <view class="side-filter-btn">
+        <text>筛选</text>
+        <i class="b-icon shaixuan"/>
+      </view>
+    </view>
+  </view>
+
+    <scroll-view wx:if="{{orderList.list != 0}}" scroll-y="true" class="order-scroll _3b09754" enable-flex="enable-flex" scroll-top="{{ scrollTop }}" bindscroll="onScroll" bindscrolltolower="onGetOrderListNext">
+      <block class="_3b09754" wx:for="{{orderList.list}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <!-- <view class="order-container">
+          <view class="order-goods van-hairline--bottom">
+            <view class="order-options">
+              <view class="item">
+                <span>合同名称: {{item.contractName || ''}}</span>
+              </view>
+            </view>
+            <view class="order-options">
+              <view class="item">
+                <span>合同编码: {{item.contractNo || ''}}</span>
+              </view>
+            </view>
+            <view class="order-options">
+              <view class="item">
+                <span>合同类型: {{item.contractType || ''}}</span>
+              </view>
+            </view>
+            <view class="order-options">
+              <view class="item">
+                <span>合同状态: {{item.status || ''}}</span>
+              </view>
+            </view>
+            <view class="order-options">
+              <view class="item">
+                <span>销售组织: {{item.orgNames || ''}}</span>
+              </view>
+            </view>
+            <view class="order-options">
+              <view class="item">
+                <span>代理商: {{item.merchantName || ''}}</span>
+              </view>
+            </view>
+            <view class="order-options">
+              <view class="item">
+                <span>分销商: {{item.distributorsName || ''}}</span>
+              </view>
+            </view>
+            <view class="order-options">
+              <view class="item">
+                <span>创建时间: {{item.createdDateStr || ''}}</span>
+              </view>
+            </view>
+          </view>
+          <view class="order-operation">
+            <view class="order-operation-the">
+              <van-button plain size="small" type="default" bind:click="viewDetail({{item.url}})">查看</van-button>
+            </view>
+          </view>
+        </view> -->
+        <view class="order-container _3b09754" data-url="{{item.url}}" bindtap="viewDetail">
+          <view class="card-header _3b09754">
+            <view class="card-title _3b09754">
+              <view class="card-coding _3b09754">
+                <text class="_3b09754">{{ item.contractName || '' }}</text>
+              </view>
+              <!-- <view class="card-status">
+                <text class="reported">{{ item.contractType || '' }}</text>
+              </view> -->
+            </view>
+            <view class="card-desc _3b09754">
+              <text class="gap _3b09754">合同编码：{{ item.contractNo || '' }}</text>
+            </view>
+            <view style="margin-top: 10rpx;" class="_3b09754">
+              <text class="gap _3b09754">{{ item.createdDateStr || ''}}</text>
+            </view>
+          </view>
+
+          <!-- <view class="card-footer">
+            <view class="card-footer-handle" data-url='{{item.url}}' bindtap="viewDetail">查看详情</view>
+          </view> -->
+        </view>
+      </block>
+    </scroll-view>
+    
+  <view class="empty-data _3b09754" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <van-toast id="van-toast" class="_3b09754"/>
+    <van-dialog id="van-dialog" class="_3b09754"/>
+  </view>

@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),sum=require("./sum.js"),mean=_curry1(function(r){return sum(r)/r.length});module.exports=mean;

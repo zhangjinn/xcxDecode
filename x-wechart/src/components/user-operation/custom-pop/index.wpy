@@ -1,0 +1,19 @@
+<template>
+  <van-popup
+    show="{{ popShow }}"
+    custom-style="width:80%; border-radius: 24rpx"
+    bind:close="onCancel"
+  >
+    <view class="dialog-item-row">
+      <view class="dialog-item-wrapper">
+        <slot></slot>
+      </view>
+      <view class="dialog-item-footer">
+        <view class="handle-btn cancel" catchtap="onCancel">{{ cancelText }}</view>
+        <view class="handle-btn sure" catchtap="onConfirm">{{ confirmText }}</view>
+      </view>
+    </view>
+  </van-popup>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

@@ -1,0 +1,171 @@
+
+  <view class="order _6e2605a">
+    <view class="scroll-wrapper _6e2605a">
+      <scroll-view class="card-scroll _6e2605a" scroll-y>
+      <view class="scroll-wrapper-inner _6e2605a">
+        <view class="return-goods-header-card _6e2605a">
+          <view class="return-goods-header-info _6e2605a">
+            <view class="return-goods-header-info-inner _6e2605a">
+              <view class="return-info _6e2605a">
+                <view class="name-box _6e2605a">
+                  <view class="tip _6e2605a">退货信息</view>
+                </view>
+                <view class="return-back _6e2605a" bindtap="returnBack">更改 <van-icon name="arrow" class="location _6e2605a"/></view>
+              </view>
+              <view class="desc _6e2605a">{{ orderdetail.supplierName }}</view>
+              <view class="desc _6e2605a">地址：{{ orderdetail.address }}</view>
+            </view>
+          </view>
+          <view class="document-info _6e2605a">
+            <view class="document-info-inner _6e2605a">
+              <!--     退货发起     -->
+              <block  wx:if="{{ pageType === 'initiate' }}" class="_6e2605a">
+                <view class="document-desc _6e2605a">
+                  <view class="_6e2605a"><text class="label _6e2605a">采购单号：</text>{{ orderdetail.documentNum }}</view>
+                  <view class="status _6e2605a">分销发起</view>
+                </view>
+                <view class="document-desc _6e2605a">
+                  <view class="_6e2605a"><text class="label _6e2605a">入库仓库：</text>{{ orderdetail.warehouseName }}</view>
+                </view>
+              </block>
+              <!--     退货出库     -->
+              <block  wx:if="{{ pageType === 'outStock' }}" class="_6e2605a">
+                <view class="document-desc _6e2605a">
+                  <view class="_6e2605a"><text class="label _6e2605a">销售单号：</text>{{ orderdetail.documentNum }}</view>
+                  <view wx:if="{{ orderdetail.isDistributorReturns == 1 }}" class="status _6e2605a">分销发起</view>
+                  <view wx:if="{{ orderdetail.isDistributorReturns == 0 }}" class="status _6e2605a">代理发起</view>
+                </view>
+                <view class="document-desc _6e2605a">
+                  <view class="_6e2605a"><text class="label _6e2605a">出库仓库：</text>{{ orderdetail.warehouseName }}</view>
+                </view>
+              </block>
+
+              <view class="document-desc _6e2605a">
+                <view class="_6e2605a"><text class="label _6e2605a">单据日期：</text>{{ orderdetail.documentDate }}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="form-info _6e2605a">
+<!--          <view class="msgItem" data-title="业务员" data-key="salesman" bindtap="onPopShow">-->
+<!--            <view>-->
+<!--              <text class="label">业务员</text>-->
+<!--            </view>-->
+<!--            <view class="grayFont">-->
+<!--              <view wx:if="{{formData.salesman.name}}" class="currVal">-->
+<!--                <text>{{formData.salesman.name}}</text>-->
+<!--                <van-icon name="arrow" class="location" />-->
+<!--              </view>-->
+<!--              <view wx:else class="holder">-->
+<!--                <text>请选择</text>-->
+<!--                <van-icon name="arrow" class="location" />-->
+<!--              </view>-->
+<!--            </view>-->
+<!--          </view>-->
+          <view  wx:if="{{ pageType === 'initiate' }}" class="msgItem-filed _6e2605a">
+            <text class="label _6e2605a">备注</text>
+            <view class="training-filed-item _6e2605a">
+              <van-field value="{{ formData.remark }}" data-key="remark" placeholder="请输入" input-align="right" cell-class="field-cell"  bind:change="onRemarkChange" class="_6e2605a" data-wpyonremarkchange-a="{{$event}}"/>
+            </view>
+          </view>
+        </view>
+        <view class="details-title _6e2605a">明细信息</view>
+        <block class="_6e2605a" wx:for="{{orderdetail.returnOrderItemList}}" wx:for-index="itemIndex" wx:for-item="item" wx:key="key">
+          <view class="details-wrapper _6e2605a">
+            <view class="details-info _6e2605a">
+              <view class="product-name _6e2605a">{{ item.model }}</view>
+              <view wx:if="{{ pageType === 'initiate' }}" class="product-num _6e2605a">
+                <text class="_6e2605a">采购入库数量：{{ item.inboundQty }}</text>
+                <text class="_6e2605a">未退货数量：{{ item.maxReturnNum}}</text>
+              </view>
+              <view wx:if="{{ pageType === 'outStock' }}" class="product-num _6e2605a">
+                <text class="_6e2605a">退货数量：{{ item.borderedQty }}</text>
+                <text class="_6e2605a">未出库数量：{{ item.maxReturnNum }}</text>
+              </view>
+            </view>
+
+            <block class="_6e2605a" wx:for="{{item.outItems}}" wx:for-index="outIndex" wx:for-item="outItem" wx:key="order_detail_item_{{itemIndex}}_out_{{outIndex}}">
+              <view class="details-list _6e2605a">
+                <view class="order-detail-item-inner-info _6e2605a">
+                  <view class="detail-item-title _6e2605a">
+                    <view class="_6e2605a">{{ outItem.model }}<text wx:if="{{ outItem.colour }}" class="_6e2605a">/{{ outItem.colour }}</text></view>
+                    <view class="detail-item-status _6e2605a">{{ outItem.invStatus }}{{ outItem.invStatusTypeName }}</view>
+                  </view>
+                  <view class="detail-item-desc _6e2605a">
+                    <text class="desc _6e2605a">物料编码：{{ outItem.materialCode }}</text>
+                    <text class="desc _6e2605a">可用：{{ outItem.bavailQty }}</text>
+                  </view>
+                  <view class="detail-item-desc _6e2605a">
+                    <text class="desc _6e2605a">仓库：{{ outItem.warehouseName }}</text>
+                  </view>
+                  <view class="detail-item-desc _6e2605a">
+                    <text class="desc _6e2605a">入库时间：{{ outItem.inInvDate }}</text>
+                  </view>
+                  <view class="detail-item-num _6e2605a">
+                    <view class="item-info-line-out-quantity _6e2605a">出库数量</view>
+                    <view class="item-info-line-out-quantity-input _6e2605a">
+                      <van-stepper integer="integer" value="{{outItem.bactualQty}}" min="0" max="{{item.maxReturnNum}}" custom-class="order-wrapper-stepper" input-class="cart-input-class" plus-class="cart-action-class" minus-class="cart-action-class" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}"  bind:change="onShippedBqtyChg" bind:plus="onShippedBqtyChg" bind:minus="onShippedBqtyChg" disabled="{{outItem.barCodes && outItem.barCodes.length > 0}}" class="_6e2605a"/>
+                    </view>
+                  </view>
+                  <view class="order-detail-item-out-info-footer _6e2605a">
+                    <view class="footer-handle-item _6e2605a" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}" data-type="edit" bindtap="jumpClick">
+                      <i class="b-icon xiugai footer-remove _6e2605a"/>
+                      <text class="_6e2605a">修改</text>
+                    </view>
+                    <view class="footer-handle-item _6e2605a" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}" bindtap="onRemoveOutItem">
+                      <i class="b-icon shanchu footer-remove _6e2605a"/>
+                      <text class="_6e2605a">删除</text>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </block>
+          </view>
+          <view class="order-detail-item-out-add _6e2605a" data-item-index="{{itemIndex}}" data-type="add" bindtap="jumpClick">
+            <i class="b-icon icon-add out-add _6e2605a"/>
+            <text class="out-add-text _6e2605a">添加出库信息</text>
+          </view>
+        </block>
+      </view>
+      </scroll-view>
+    </view>
+    <view class="handle-footer _6e2605a" wx:if="{{ pageType === 'initiate' }}" bindtap="onInitSubmit">提交并出库</view>
+    <view class="handle-footer _6e2605a" wx:if="{{ pageType === 'outStock' }}" bindtap="onOutSubmit">提交并出库</view>
+    <!-- 选择列表弹框 -->
+    <wxs src="../../../../wxs/utils.wxs" module="utils" class="_25d639b"/>
+
+  <van-popup show="{{ $popupCustomize$show }}" closeable="closeable" position="bottom" custom-style="height: 720rpx" zIndex="400"  bind:click-overlay="$popupCustomize$onClose" class="_25d639b _6e2605a">
+    <view class="item-inv _25d639b">
+      <view class="item-inv-head _25d639b">
+        <view class="item-inv-head-context _25d639b">
+          <view class="item-inv-head-context-title _25d639b">{{ $popupCustomize$title }}</view>
+          <i class="b-icon iconyiquxiao item-inv-head-context-close _25d639b" bindtap="$popupCustomize$onClose"/>
+        </view>
+      </view>
+      <view class="item-inv-search _25d639b"  wx:if="{{ $popupCustomize$isSearch }}">
+        <van-search custom-class="header-search" shape="round" use-action-slot="use-action-slot" use-left-icon-slot="{{ $popupCustomize$true }}" leftSearchIconSow="{{ $popupCustomize$false }}" placeholder="请输入搜索关键字" placeholder-style="color: #AAAAAA; font-size: 28rpx;" bind:change="$popupCustomize$onChange" class="_25d639b">
+          <view slot="label" class="search-left-icon _25d639b">
+            <i class="b-icon shouyesousuo _25d639b"/>
+          </view>
+        </van-search>
+      </view>
+      <scroll-view scroll-y class="item-inv-scroll _25d639b">
+        <block  wx:if="{{$popupCustomize$options && $popupCustomize$options.length>0}}" class="_25d639b">
+          <view wx:for="{{ $popupCustomize$options }}" wx:key="{{ item.id }}" wx:for-item="item" class="item-inv-scroll-row _25d639b" data-item="{{item}}" bindtap="$popupCustomize$chooseOption">
+            <block wx:if="{{$popupCustomize$multiple}}" class="_25d639b">
+              <view class="item-inv-scroll-row-desc  {{ utils.includes(item.id, $popupCustomize$selectedOption.id) ? 'checked' : '' }} _25d639b">{{ item.name }}</view>
+              <view wx:if="{{ utils.includes(item.id, $popupCustomize$selectedOption.id) }}" class="b-icon icon-check item-inv-scroll-row-checked checked _25d639b"/>
+            </block>
+            <block wx:else class="_25d639b">
+              <view class="item-inv-scroll-row-desc {{ item.id == $popupCustomize$selectedOption.id ? 'checked' : ''}} _25d639b">{{ item.name }}</view>
+              <view wx:if="{{ item.id == $popupCustomize$selectedOption.id }}" class="b-icon icon-check item-inv-scroll-row-checked checked _25d639b"/>
+            </block>
+          </view>
+        </block>
+        <view  wx:else class="no-data _25d639b">暂无数据</view>
+      </scroll-view>
+    </view>
+  </van-popup>
+    <van-toast id="van-toast" class="_6e2605a"/>
+    <van-dialog id="van-dialog" class="_6e2605a"/>
+  </view>

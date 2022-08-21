@@ -1,0 +1,14 @@
+.ellipsis._77c1948 {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+ec-canvas._77c1948,
+.ec-canvas._77c1948 {
+  width: 100%;
+  height: 100%;
+  display: block!important;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}

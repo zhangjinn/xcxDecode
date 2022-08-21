@@ -1,0 +1,105 @@
+@font-face {
+  font-family: 'iconfont';  /* project id 2037285 */
+  src: url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.eot');
+  src: url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.woff') format('woff'),
+  url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_2037285_ojaou11xd4o.svg#iconfont') format('svg');
+}
+.iconfont{
+  font-style: normal;
+  font-size: 16px;
+  font-family: 'iconfont' !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+page{
+  background-color: #fff;
+}
+.storeBox{
+  display: flex;
+  padding:20rpx 20rpx 0 20rpx;
+  color: #00aaa7;
+  position: relative;
+}
+.searchaa{
+  font-size: 30rpx;
+  margin-left: 20rpx;
+  color: #00aaa7;
+}
+.selectBoxItem{
+  /*padding:0 20rpx 20rpx 20rpx;*/
+}
+.search-box{
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+}
+.search-item{
+  flex: 1;
+}
+.add-store{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 32rpx;
+  font-size: 28rpx;
+  color: #00AAA6;
+}
+.history{
+  display: flex;
+  justify-content: space-between;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #262626;
+  margin: 40rpx 0 24rpx;
+  padding-left: 30rpx;
+}
+.sulinBlock{
+  background-color: #fff;
+  padding: 10rpx 20rpx;
+  font-size: 20rpx;
+  margin: 10rpx -20rpx;
+}
+.sulinItem{
+  background-color: #f8f8f8;
+  padding: 10rpx;
+  display: inline-block;
+  border-radius: 5rpx;
+  margin-right: 15rpx;
+}
+.storeItemBox{
+  position: relative;
+  font-size: 25rpx;
+  display: flex;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 26rpx 30rpx;
+}
+.storeItemBox:after{
+  position: absolute;
+  content: '';
+  height: 2rpx;
+  bottom: 0;
+  left: 30rpx;
+  right: 0;
+  background: #EEEEEE;
+}
+.swiper{
+  width: 100vw;
+  margin: 0 -20rpx;
+}
+.swiperItem{
+  width: 100%;
+}
+.storeRiht{
+  display: flex;
+}
+.treeDaoliu{
+  background-color: #fff;
+  color: #00aaa7;
+  text-align: center;
+  font-size: 25rpx;
+  padding-bottom: 10rpx;
+}

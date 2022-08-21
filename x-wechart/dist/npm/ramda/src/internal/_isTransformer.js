@@ -1,0 +1,1 @@
+function _isTransformer(r){return null!=r&&"function"==typeof r["@@transducer/step"]}module.exports=_isTransformer;

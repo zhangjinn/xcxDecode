@@ -1,0 +1,116 @@
+
+  <view class="order _8951296">
+
+    <!-- 仅看自己 -->
+    <van-popup show="{{ agentPopup }}" position="right" overlay="{{ true }}" z-index="200" custom-style="height: 100%;" close-on-click-overlay="{{false}}" class="_8951296">
+
+      <view  wx:if="{{popupTitle == '仅看自己'}}" class="order-drawer _8951296">
+        <view class="order-drawer-time _8951296">
+          <view class="order-drawer-time-header _8951296">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back _8951296"  bind:click="selectagentPopup"/>
+            <view class="order-drawer-time-header-title _8951296">{{popupTitle}}</view>
+          </view>
+          <scroll-view class="order-drawer-time-content _8951296" scroll-y>
+            <block class="_8951296" wx:for="{{lookSelfOption}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="order-drawer-time-content-line _8951296" bindtap="onSelectMethodChange" data-wpyonselectmethodchange-a="{{item}}">
+                <view class="text {{filterForm.terms.isSelf === item.key ? 'active' : ''}} _8951296">{{item.value}}</view>
+                <van-icon wx:if="{{filterForm.terms.isSelf === item.key }}" name="success" class="time-selected _8951296" size="32rpx"/>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+      </view>
+    </van-popup>
+
+    <!-- 筛选侧边弹框 -->
+    <van-popup show="{{visible}}" position="right" overlay="{{ true }}"  bind:close="orderfiltering" custom-style="height: 100%;" z-index="130" class="_8951296">
+      <view class="order-drawer _8951296">
+        <view class="order-drawer-attr _8951296">
+          <scroll-view class="order-drawer-attr-scroll _8951296" scroll-y>
+            <view class="attr-item _8951296">
+
+              <view class="projectem _8951296">
+                <view class="project _8951296">
+                  <text class="project-label _8951296" style="">主题/类别</text>
+                </view>
+                <van-field placeholder="请输入" border="{{ false }}" placeholder-style="font-size: 24rpx;" bind:change="onNameChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;" clearable="clearable" value="{{filterForm.terms.name}}" class="_8951296"/>
+              </view>
+
+              <view class="parent-agent _8951296">
+                <view class="agent-name _8951296">是否仅看自己</view>
+                <view  wx:if="{{filterFormExtra.isSelfName != ''}}" catchtap="selectagentPopup" class="agent-select _8951296" data-wpyselectagentpopup-a="isSelf">{{filterFormExtra.isSelfName}}
+                  <view class="b-icon icon-more icons _8951296"/>
+                </view>
+                <view  wx:else catchtap="selectagentPopup" class="agent-select _8951296" data-wpyselectagentpopup-a="isSelf">请选择
+                  <view class="b-icon icon-more icons _8951296"/>
+                </view>
+              </view>
+
+            </view>
+          </scroll-view>
+          <!-- 底部按钮 -->
+          <view class="order-drawer-attr-footer _8951296">
+            <view bindtap="onResetFilterForm" class="order-drawer-attr-footer-btn reset _8951296" hover-class="order-drawer-attr-footer-btn-hover">重置</view>
+            <view bindtap="onSubmitFilterForm" class="order-drawer-attr-footer-btn confirm _8951296" hover-class="order-drawer-attr-footer-btn-hover">确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    <!-- 快捷筛选顶部弹框月份 -->
+    <van-popup show="{{OrderSFilterVisible}}" position="top" overlay="{{ true }}" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"  bind:close="touchOrderSFilter" class="_8951296">
+      <view wx:if="{{CurrentOrderSFilterName === 'orderDate'}}" class="order-s-filter-container _8951296">
+        <view class="order-operation _8951296" wx:for="{{dateOption}}">
+          <view class="operation-text van-hairline--bottom _8951296" bindtap="onSelectDate" data-wpyonselectdate-a="{{ item.month }}">
+            <view class="operation-status {{ filterForm.terms.date === item.month ? 'active' : '' }} _8951296">{{item.monthName}}</view>
+            <view wx:if="{{ filterForm.terms.date ===  item.month }}" class="b-icon icon-check operation-icon _8951296"/>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    
+  <view class="header-tab _8951296">
+    <view class="left-btn">
+      <block  wx:for="{{ $headerTab$tabListNew }}">
+        <view class="btn-item {{ item.selectValue ? 'active' : '' }}" bindtap="$headerTab$changeTab" data-wpychangetab-a="{{item}}">
+          <text>{{ item.name }}</text>
+          <i wx:if="{{ $headerTab$showArrowIcon }}" class="b-icon iconxialajiantou"/>
+        </view>
+      </block>
+    </view>
+    <view class="right-btn"  wx:if="{{ $headerTab$showRightBtn }}" bindtap="$headerTab$onSideFilter">
+      <view class="line-shadow" wx:if="{{ $headerTab$showRightBtnLine }}"/>
+      <view class="side-filter-btn">
+        <text>筛选</text>
+        <i class="b-icon shaixuan"/>
+      </view>
+    </view>
+  </view>
+
+    <scroll-view wx:if="{{ trainingRecordList && trainingRecordList.length > 0}}" scroll-y="true" class="order-scroll _8951296" enable-flex="enable-flex" bindscroll="onScroll" scroll-top="{{ scrollTop }}" bindscrolltolower="onGetOrderListNext">
+      <block class="_8951296" wx:for="{{ trainingRecordList }}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="training-item _8951296" bindtap="viewDetail" data-wpyviewdetail-a="{{item.id}}">
+          <view class="training-item-header _8951296">
+            <text class="theme _8951296">{{ item.title }}</text>
+            <text class="date _8951296">{{ item.trainingDate }}</text>
+          </view>
+          <view class="training-item-address _8951296">
+            <text class="address-label _8951296">培训地址：</text>
+            <text class="address-info _8951296">{{ item.submitAddress }}</text>
+          </view>
+        </view>
+      </block>
+      <view wx:if="{{trainingRecordList.length == filterForm.page.totalCount}}" class="no-loading-data _8951296">我是有底线的~</view>
+    </scroll-view>
+    
+  <view class="empty-data _8951296" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+    <van-toast id="van-toast" class="_8951296"/>
+    <van-dialog id="van-dialog" class="_8951296"/>
+  </view>

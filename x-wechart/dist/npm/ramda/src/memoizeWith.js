@@ -1,0 +1,1 @@
+var _arity=require("./internal/_arity.js"),_curry2=require("./internal/_curry2.js"),_has=require("./internal/_has.js"),memoizeWith=_curry2(function(r,e){var i={};return _arity(e.length,function(){var t=r.apply(this,arguments);return _has(t,i)||(i[t]=e.apply(this,arguments)),i[t]})});module.exports=memoizeWith;

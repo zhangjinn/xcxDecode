@@ -1,0 +1,106 @@
+<template>
+  <view class="order">
+    <van-popup
+      show="{{visible}}"
+      position="right"
+      overlay="{{ true }}"
+      bind:close="orderfiltering"
+      custom-style="height: 100%;"
+      z-index="130"
+    >
+      <sideFilter
+        :drawerTopHeight="drawerTopHeight"
+        :sideFilterForm.sync="sideFilterForm"
+        @handleConfirm.user="handleConfirm"
+      />
+    </van-popup>
+
+    <!-- 快捷筛选顶部弹框 状态 -->
+    <van-popup
+      show="{{OrderSFilterVisible}}"
+      position="top"
+      overlay="{{ true }}"
+      custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"
+      bind:close="touchOrderSFilter"
+    >
+      <view wx:if="{{CurrentOrderSFilterName === 'status'}}" class="order-s-filter-container">
+        <view class="order-operation">
+          <view class="operation-text van-hairline--bottom" data-name="status" data-id="" @tap="onSelectStatus">
+            <view class="operation-status {{ filterForm.terms.status === '' ? 'active' : '' }}">全部</view>
+            <view wx:if="{{ filterForm.terms.status === '' }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+        <view class="order-operation" wx:for={{statusOptions}}>
+          <view class="operation-text van-hairline--bottom" data-name="status" data-id="{{ item.id }}" @tap="onSelectStatus">
+            <view class="operation-status {{ filterForm.terms.status === item.id ? 'active' : '' }}">{{item.value}}</view>
+            <view wx:if="{{ filterForm.terms.status ===  item.id }}" class="b-icon icon-check operation-icon"></view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    <headerFilter
+      :activeLineStyle="activeLineStyle"
+      :tabList.sync="tabList"
+      :tabActive.sync="tabActive"
+      :showSearch.sync="showSearch"
+      @tabChange.user="tabChange"
+    />
+
+    <headerTab
+      :tabList.sync="headerTabList"
+      @onTabChange.user="touchOrderSFilter"
+      @onSideFilter.user="orderfiltering"
+    />
+    <scroll-view
+      wx:if="{{ activityList && activityList.length }}"
+      scroll-y="true"
+      class="order-scroll"
+      enable-flex
+      scroll-top="{{ scrollTop }}"
+      bindscroll="onScroll"
+      bindscrolltolower="onGetOrderListNext">
+      <repeat for="{{activityList}}" item="item">
+        <view class="order-container">
+          <view class="card-header">
+            <view class="card-title">
+              <view class="card-coding">
+                <text>{{ item.activityTheme }}</text>
+              </view>
+              <view class="card-status">
+                <text class="reported" wx:if="{{ item.status === '已开展' }}">{{ item.status }}</text>
+                <text class="reporting" wx:else>{{ item.status }}</text>
+              </view>
+            </view>
+            <view class="card-desc">
+              <text class="gap">{{ item.fullName }}<text wx:if="{{ item.cisCode }}">-{{ item.cisCode }}</text></text>
+            </view>
+            <view class="card-desc">
+              <text class="gap" wx:if="{{ item.orgName }}">{{ item.orgName }}</text>
+              <text class="gap" wx:if="{{ item.xZLabel }}">{{ item.xZLabel }}</text>
+            </view>
+            <view class="card-desc">
+              <text class="gap">修改次数：{{ item.modifyCount }}</text>
+            </view>
+            <view class="card-desc">
+              <text class="gap">活动开始时间：{{ item.startTime }}</text>
+            </view>
+          </view>
+
+          <view class="card-footer">
+            <!--   item.dataSource=1是信天翁; 0cis  -->
+            <view class="card-footer-handle" data-type="detail" data-id="{{item.id}}" data-source="{{item.dataSource}}" @tap="viewDetail">查看</view>
+            <view class="card-footer-handle" wx:if="{{ item.isCanEditAttachments == 1 && item.status != '申请未审核' }}" data-type="edit" data-id="{{item.id}}" data-source="{{item.dataSource}}" @tap="viewDetail">编辑</view>
+          </view>
+        </view>
+      </repeat>
+    </scroll-view>
+    <emptyDataType wx:else/>
+    <view class="order-footer" data-type="add" data-id="" @tap="viewDetail">新增</view>
+
+    <van-toast id="van-toast" />
+    <van-dialog id="van-dialog" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

@@ -1,0 +1,142 @@
+<template>
+  <view class="order">
+    <view class="order-scroll">
+      <view class="basic-info-wrapper">
+        <view class="basic-info-container">
+          <view class="order-scroll-info">
+            <view class="item-row">
+              <view class="item-row-left">
+                <text>小区名称</text>
+              </view>
+              <view class="item-row-right">
+                <view class="item-row-right-note">
+                  <van-field
+                    value="{{ baseFormData.communityName }}"
+                    placeholder="请输入"
+                    border="{{ false }}"
+                    input-align="right"
+                    data-key="communityName"
+                    bind:change="onBaseFieldChange"
+                    class="dms-order-note"
+                  />
+                </view>
+              </view>
+            </view>
+            <view class="item-row" data-name="户型" data-key="houseType" data-options="houseTypeOption">
+              <view class="mask" wx:if="{{maskShow && houseTypeOption && houseTypeOption.length>0}}" data-index="{{index}}" @tap="popHide" ></view>
+              <view class="item-row-info">
+                <view class="item-row-left">
+                  <text>户型</text>
+                </view>
+                <view class="item-row-right">
+                  <view class="item-row-right-note">
+                    <van-field
+                      value="{{ baseFormData.houseType }}"
+                      placeholder="请输入"
+                      border="{{ false }}"
+                      input-align="right"
+                      data-key="houseType"
+                      bind:change="onBaseFieldChange"
+                      class="dms-order-note"
+                    />
+                  </view>
+                </view>
+              </view>
+              <!--    产品模糊搜索列表   -->
+              <view class='prod-scroll-view' wx:if="{{maskShow && houseTypeOption && houseTypeOption.length>0}}">
+                <scroll-view class='prod-scroll-view-inner' scroll-y bindscroll='onScroll'>
+                  <repeat for="{{houseTypeOption}}" item="productItem">
+                    <view class="order-operation">
+                      <view class="operation-text {{index < houseTypeOption.length-1 ? 'van-hairline--bottom' : ''}}" @tap="onProductSelect({{productItem}})">
+                        <view class="operation-status">{{productItem.name}}</view>
+                      </view>
+                    </view>
+                  </repeat>
+                </scroll-view>
+              </view>
+
+            </view>
+            <view
+              class="item-row"
+              @tap="openTopAddress"
+            >
+              <view class="item-row-left">
+                <text>用户所在地区</text>
+                <text class="redXing">*</text>
+              </view>
+              <view class="item-row-right">
+                <view class="item-row-right-inventory {{ baseFormData.chooseProvinceInfo.id ? '' : 'placeholder' }}">
+                  {{ baseFormData.addressTip }}
+                </view>
+                <van-icon
+                  name="arrow"
+                  custom-class="dms-item-row-right-arrow"
+                />
+              </view>
+            </view>
+            <addressDetail
+              class="address-detail-row"
+              :chooseRegionId.sync="chooseRegionId"
+              :isRequired.sync="addressDetailRequired"
+              :defaultAddressName.sync="defaultAddressName"
+            />
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{details.hourseProductDtoList && details.hourseProductDtoList.length>0}}" class="basic-info-wrapper">
+        <view class="basic-info-container">
+          <view class="house-card">
+            <view class="title">家电信息</view>
+            <view class="house-group">
+              <view class="house-item" wx:for="{{details.hourseProductDtoList}}">
+                <view class="name">{{ item.spartName }}</view>
+                <view class="desc">
+                  <view class="date"><text wx:if="{{item.productAge}}">{{item.productAge}}年</text></view>
+                  <view class="image-tip">
+                      <image src="{{item.categoryPicture}}" class="bg"></image>
+                  </view>
+                </view>
+                <view class="del-tip" data-index="{{index}}" @tap="delProduct">
+                  <i class="b-icon a-shanchu" style="color: #cccccc"></i>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <homeAppliances />
+    </view>
+
+    <view class="order-footer" data-type="add" data-id="" @tap="submit">
+      <view class="btn">确认提交</view>
+    </view>
+
+    <!-- 选择列表弹框 -->
+    <popupCustomize
+      :options.sync="currentOptions"
+      :selectedOption.sync="popSelectedOption"
+      :title.sync="popTitle"
+      :isSearch.sync="isSearch"
+      @onSelect.user="chooseOption"
+    />
+    <!--  地址选择框  -->
+    <address title="用户所在地区"/>
+    <van-dialog id="van-dialog" />
+    <van-toast id="van-toast" />
+  </view>
+
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<style lang="less">
+  .popup-wrapper{
+    .van-cell{
+      background: #F7F7F7;
+      border-radius: 20rpx;
+      padding: 10px 15px;
+    }
+  }
+  .address-detail-row{
+    border-bottom: none !important;
+  }
+</style>
+<script lang="typescript" src="./index.ts"></script>

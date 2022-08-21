@@ -1,0 +1,224 @@
+
+  <view class="order _8ecea86">
+    <!-- 弹出框 -->
+    <van-popup show="{{ distributorsPopup }}" position="right" overlay="{{ true }}" z-index="200" custom-style="height: 100%;"  bind:click-overlay="selectagentPopup" class="_8ecea86">
+      <view class="order-drawer _8ecea86">
+        <view  wx:if="{{popupName == '办事处'}}" class="order-drawer-time _8ecea86">
+          <view class="order-drawer-time-header _8ecea86">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back _8ecea86" bind:click="selectagentPopup"/>
+            <view class="order-drawer-time-header-title _8ecea86">{{popupName}}</view>
+          </view>
+          <scroll-view class="order-drawer-time-content _8ecea86" scroll-y>
+            <block class="_8ecea86" wx:for="{{filter.itemFxmap}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="order-drawer-time-content-line _8ecea86" bindtap="onSelectDistributors" data-tag="hifi_agency" data-wpyonselectdistributors-a="{{item.key}}">
+                <view class="text {{filterForm.fxId === item.key ? 'active' : ''}} _8ecea86">{{item.value}}</view>
+                <van-icon wx:if="{{filterForm.fxId === item.key }}" name="success" class="time-selected _8ecea86" size="32rpx"/>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+        <view  wx:if="{{popupName == '物料组'}}" class="order-drawer-time _8ecea86">
+          <view class="order-drawer-time-header _8ecea86">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back _8ecea86" bind:click="selectagentPopup"/>
+            <view class="order-drawer-time-header-title _8ecea86">{{popupName}}</view>
+          </view>
+          <scroll-view class="order-drawer-time-content _8ecea86" scroll-y>
+            <block class="_8ecea86" wx:for="{{filter.suppliers}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="order-drawer-time-content-line _8ecea86" bindtap="onSelectOrg" data-tag="hifi_e_product" data-wpyonselectorg-a="{{item.key}}">
+                <view class="text {{filterForm.orgId === item.key ? 'active' : ''}} _8ecea86">{{item.value}}</view>
+                <van-icon wx:if="{{filterForm.orgId === item.key }}" name="success" class="time-selected _8ecea86" size="32rpx"/>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+        <view  wx:if="{{popupName == '信贷范围'}}" class="order-drawer-time _8ecea86">
+          <view class="order-drawer-time-header _8ecea86">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back _8ecea86" bind:click="selectagentPopup"/>
+            <view class="order-drawer-time-header-title _8ecea86">{{popupName}}</view>
+          </view>
+          <scroll-view class="order-drawer-time-content _8ecea86" scroll-y>
+            <block class="_8ecea86" wx:for="{{filter.bussines}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="order-drawer-time-content-line _8ecea86" bindtap="selectDelivery" data-tag="hifi_debeitrange" data-wpyselectdelivery-a="{{item.key}}">
+                <view class="text {{filterForm.trans === item.key ? 'active' : ''}} _8ecea86">{{item.value}}</view>
+                <van-icon wx:if="{{filterForm.trans === item.key }}" name="success" class="time-selected _8ecea86" size="32rpx"/>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+        <view wx:if="{{popupName == '业务员'}}" class="order-drawer-time _8ecea86">
+          <view class="order-drawer-time-header _8ecea86">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back _8ecea86" bind:click="selectagentPopup"/>
+            <view class="order-drawer-time-header-title _8ecea86">{{popupName}}</view>
+          </view>
+          <scroll-view class="order-drawer-time-content _8ecea86" scroll-y>
+            <block class="_8ecea86" wx:for="{{filter.business_manager}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="order-drawer-time-content-line _8ecea86" bindtap="onSelectManager" data-tag="e_saleman" data-wpyonselectmanager-a="{{item.key}}">
+                <view class="text {{filterForm.managerId === item.key ? 'active' : ''}} _8ecea86">{{item.value}}</view>
+                <van-icon wx:if="{{filterForm.managerId === item.key }}" name="success" class="time-selected _8ecea86" size="32rpx"/>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+      </view>
+    </van-popup>
+    <!-- 滚动区域列表 -->
+    <!-- <scroll-view wx:if="{{orderList.totalPages !== 0}}" scroll-y="true" class="order-scroll" enable-flex > -->
+    <scroll-view wx:if="{{handle_show}}" scroll-y="true" class="order-scroll _8ecea86" enable-flex="enable-flex">
+      <view class="order-container _8ecea86">
+        <!-- <view class="order-container-box"> -->
+        <view class="order-title _8ecea86">
+          <text class="order-id _8ecea86">
+            <text class="_8ecea86">{{detailList.billno}}</text>
+            <text wx:if="{{detailList.hifi_flowstatus=='account'||detailList.hifi_flowstatus=='pos'}}" class="order-type _8ecea86">收款
+            </text>
+            <text wx:else class="order-type _8ecea86">收票</text>
+          </text>
+
+          <text wx:if="{{detailList.claimstatus==2}}" class="order-status _8ecea86" style="color:#777777;">已认领</text>
+          <text wx:elif="{{detailList.claimstatus==1}}" class="order-status _8ecea86" style="color:#D9161C;">部分认领</text>
+          <text wx:elif="{{detailList.claimstatus==0}}" class="order-status _8ecea86" style="color:#00AAA6;">待认领</text>
+          <text wx:elif="{{detailList.claimstatus==3}}" class="order-status _8ecea86" style="color:#00AAA6;">已确认</text>
+          <text wx:elif="{{detailList.claimstatus==4}}" class="order-status _8ecea86" style="color:#00AAA6;">申诉中</text>
+          <text wx:elif="{{detailList.claimstatus==5}}" class="order-status _8ecea86" style="color:#00AAA6;">变更中</text>
+
+        </view>
+        <view class="order-hr _8ecea86" style="border-top:1rpx solid #eee;height:1rpx;width:100%;"/>
+        <view class="order-content _8ecea86">
+          <view class="order-content-money _8ecea86">
+            <view class="order-content-money-item _8ecea86">
+              <text class="order-money-zi _8ecea86">收款金额</text>
+              <text class="order-money-num _8ecea86">￥{{detailList.reamount}}</text>
+            </view>
+            <view class="order-content-money-item _8ecea86">
+              <text class="order-money-zi _8ecea86">待认领金额</text>
+              <text class="order-money-num _8ecea86">￥{{detailList.unclaimamount}}</text>
+            </view>
+          </view>
+          <view wx:if="{{detailList.hifi_flowstatus=='account'||detailList.hifi_flowstatus=='pos'}}" class="order-content-info _8ecea86">
+            <text class="order-content-info-text _8ecea86">收款账户：{{detailList.accountbank.bankaccountnumber}}</text>
+            <text class="order-content-info-text _8ecea86">打款账户：{{detailList.oppbanknumber?detailList.oppbanknumber:'测试户名'}}
+            </text>
+            <text class="order-content-info-text _8ecea86">打款户名：{{detailList.oppunit}}</text>
+            <text class="order-content-info-text _8ecea86">交易日期：{{detailList.tradetime}}</text>
+            <text class="order-content-info-text _8ecea86">备注：收{{detailList.oppunit}}货款</text>
+          </view>
+          <view wx:else class="order-content-info _8ecea86">
+            <text class="order-content-info-text _8ecea86">票据类型：{{detailList.hifi_draftbilltype}}</text>
+            <text class="order-content-info-text _8ecea86">票据号：{{detailList.tradedetailno}}</text>
+            <text class="order-content-info-text _8ecea86">交票人：{{detailList.oppunit}}</text>
+            <text class="order-content-info-text _8ecea86">票据到期日期：{{detailList.hifi_draftbillexpiredate}}</text>
+            <text class="order-content-info-text _8ecea86">出票人名称：{{detailList.hifi_drawername}}</text>
+            <text class="order-content-info-text _8ecea86">承兑人名称：{{detailList.hifi_acceptername}}</text>
+            <text class="order-content-info-text _8ecea86">备注：收{{detailList.oppunit}}货款</text>
+          </view>
+          <view class="order-content-info _8ecea86">
+            <text class="order-content-info-text _8ecea86">附件：</text>
+            <view class="pose-issue-content finace-upload _8ecea86">
+              <van-uploader accept="image" file-list="{{ fileList }}"  bind:before-read="beforeRead" bind:after-read="afterRead" bind:delete="delImg" class="_8ecea86"/>
+            </view>
+          </view>
+          </view>
+        <!-- 按钮 -->
+        <!-- <view class="order-operation">
+          <view class="order-operation-the">
+            <van-button
+              borderIs="true"
+              color="#262626"
+              plain
+              hairline
+              size="small"
+              type="primary"
+              bind:click="viewDetail({{item.id}})"
+            >认领</van-button>
+          </view>
+          <view class="order-operation-the">
+            <van-button
+              borderIs="true"
+              color="#262626"
+              plain
+              hairline
+              size="small"
+              type="primary"
+              bind:click="viewDetail({{item.id}})"
+            >认领</van-button>
+            <van-button style="margin-left:16rpx;"
+              borderIs="true"
+              color="#262626"
+              plain
+              hairline
+              size="small"
+              type="primary"
+              bind:click="viewDetail({{item.id}})"
+            >查看</van-button>
+          </view>
+          <view class="order-operation-the">
+            <van-button
+              borderIs="true"
+              color="#262626"
+              plain
+              hairline
+              size="small"
+              type="primary"
+              bind:click="viewDetail({{item.id}})"
+              >查看认领明细</van-button>
+            </view>
+          </view> -->
+        <!-- </view> -->
+      </view>
+      <block class="_8ecea86" wx:for="{{info}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="fund-handle-group _8ecea86">
+          <view class="parent-agent _8ecea86">
+            <view class="agent-name _8ecea86">办事处</view>
+            <view bindtap="selectPopup" class="agent-select _8ecea86" data-tag="hifi_agency" data-index="{{index}}" data-wpyselectpopup-a="suppliers">
+              {{item.hifi_agency?item.hifi_agency:'请选择办事处'}}
+              <view class="b-icon icon-more icons _8ecea86"/>
+            </view>
+          </view>
+          <view class="parent-agent _8ecea86">
+            <view class="agent-name _8ecea86">物料组</view>
+            <view bindtap="selectPopup" class="agent-select _8ecea86" data-tag="hifi_e_product" data-index="{{index}}" data-wpyselectpopup-a="distributors">{{item.hifi_e_product?item.hifi_e_product:'请选择物料组'}}
+              <view class="b-icon icon-more icons _8ecea86"/>
+            </view>
+          </view>
+          <view class="parent-agent _8ecea86">
+            <view class="agent-name _8ecea86">信贷范围</view>
+            <view bindtap="selectPopup" class="agent-select _8ecea86" data-tag="hifi_debeitrange" data-index="{{index}}" data-wpyselectpopup-a="delivery">{{item.hifi_debeitrange?item.hifi_debeitrange:'请选择信贷范围'}}
+              <view class="b-icon icon-more icons _8ecea86"/>
+            </view>
+          </view>
+          <!-- 认领金额 -->
+          <view class="projectem _8ecea86">
+            <van-field type="digit" placeholder="请输入认领金额" placeholder-style="font-size: 26rpx;color:#aaa" custom-style="font-size: 26rpx;color:#262626;padding-left:0rpx;" input-align="right" label="认领金额" border="{{ false }}"  bind:change="setInputValue" value="{{item.e_receivableamt}}" data-index="{{index}}" data-tag="e_receivableamt" class="_8ecea86"/>
+          </view>
+          <!-- 业务员 -->
+          <view class="parent-agent _8ecea86">
+            <view class="agent-name _8ecea86">业务员</view>
+            <view bindtap="selectPopup" class="agent-select _8ecea86" data-tag="e_saleman" data-index="{{index}}" data-wpyselectpopup-a="business_manager">{{item.e_saleman?item.e_saleman:'请选择业务员'}}
+              <view class="b-icon icon-more icons _8ecea86"/>
+            </view>
+          </view>
+          <!-- 删除按钮 -->
+          <view class="fund-handle-del _8ecea86">
+            <!-- <view></view> -->
+            <view class="fund-handle-del-icon-view _8ecea86" bindtap="handleDel">
+              <i class="b-icon icon-remove fund-handle-del-icon _8ecea86" data-index="{{index}}"/>
+            </view>
+            <view bindtap="handleDel" class="fund-handle-del-zi _8ecea86" data-index="{{index}}">删除</view>
+          </view>
+        </view>
+      </block>
+      <view class="fund-handle-add _8ecea86">
+        <i class="b-icon icon-add-full fund-handle-add-icon _8ecea86"/>
+        <view bindtap="handleAdd" class="fund-handle-add-zi _8ecea86">添加</view>
+      </view>
+    </scroll-view>
+    <view wx:if="{{handle_show}}" class="order-fund-bottom _8ecea86">
+      <van-button color="#00AAA6" block="block" size="normal" type="primary" bind:click="postHandleData" disabled="{{ subflag }}" class="_8ecea86" data-wpyposthandledata-a="">提交
+      </van-button>
+    </view>
+    <!-- <view wx:if="{{handle_show
+    }}" style="height:10rpx;background:#000;width:268rpx;margin-left:240rpx;margin-bottom:16rpx;"></view> -->
+
+    <van-toast id="van-toast" class="_8ecea86"/>
+    <van-dialog id="van-dialog" class="_8ecea86"/>
+  </view>

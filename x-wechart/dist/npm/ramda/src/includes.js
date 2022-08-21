@@ -1,0 +1,1 @@
+var _includes=require("./internal/_includes.js"),_curry2=require("./internal/_curry2.js"),includes=_curry2(_includes);module.exports=includes;

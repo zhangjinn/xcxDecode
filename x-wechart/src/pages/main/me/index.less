@@ -1,0 +1,269 @@
+@import '../../../styles/iconfont';
+
+@font-size-10: 10rpx;
+@font-size-12: 12rpx;
+@font-size-14: 14rpx;
+@font-size-16: 16rpx;
+@font-size-18: 18rpx;
+@font-size-20: 20rpx;
+@font-size-22: 22rpx;
+@font-size-24: 24rpx;
+@font-size-26: 26rpx;
+@font-size-28: 28rpx;
+@font-size-30: 30rpx;
+@font-size-32: 32rpx;
+@font-size-34: 34rpx;
+@font-size-36: 36rpx;
+
+.me {
+  height: 100%;
+  background: #F5F5F5;
+  .me-wrapper{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-y: auto;
+  }
+  .me-status {
+    width: 100%;
+    height: 510rpx;
+    position: relative;
+
+    .personal-bg{
+      width: 100%;
+      height: 100%;
+      background: -webkit-linear-gradient(145deg, #634DAC 33%, rgba(0, 0, 0, 0) 33%), -webkit-linear-gradient(106deg, #378D97 56%, #CC8957 56%);
+      opacity: 0.2;
+      filter: blur(43px);
+      .mg-bg{
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .personal-content{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 168rpx 30rpx 100rpx;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left:0;
+      top:0;
+      .personal-info{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .account-info{
+          flex: 1;
+          display: flex;
+          align-items: center;
+          font-weight: 500;
+          .avatar-box{
+            width: 110rpx;
+            height: 110rpx;
+            margin-right: 24rpx;
+            box-shadow: 0 4rpx 8rpx 0 rgba(0, 0, 0, 0.14);
+            border-radius: 50%;
+            border: 4rpx solid #FFFFFF;
+            overflow: hidden;
+            .trademark-logo{
+              width: 100%;
+              height: 100%;
+            }
+          }
+          .name{
+            font-size: 34rpx;
+          }
+          .code{
+            font-size: 26rpx;
+            color: #262626;
+          }
+        }
+        .me-status-options {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          .me-link {
+            margin-left: 20rpx;
+            font-size: 44rpx;
+          }
+        }
+      }
+      .personal-center{
+        width: 100%;
+        display: flex;
+        padding-top: 24rpx;
+        .personal-center-item{
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          color: #000000;
+          i{
+            font-size: 48rpx;
+            margin-bottom: 8rpx;
+            position: relative;
+          }
+          p{
+            font-size: 26rpx;
+          }
+          .reddot{
+            position: absolute;
+            bottom: 32rpx;
+            left: 32rpx;
+            font-size: 20rpx;
+            text-align: center;
+            color: #FFFFFF;
+            background: #E10F0F;
+            border-radius: 200rpx 200rpx 200rpx 0rpx;
+            border: 2rpx solid #FFFFFF;
+            padding: 3rpx 8rpx;
+          }
+        }
+      }
+    }
+  }
+  .me-content {
+    padding: 0rpx 20rpx 40rpx;
+    color: #262626;
+    margin-top: -64rpx;
+    z-index: 10;
+    .me-content-block-out{
+      &:first-child{
+        .me-content-block{
+          box-shadow: 0rpx -4rpx 8rpx rgba(0,0,0,.05);
+        }
+      }
+    }
+    &-block {
+      margin-bottom: 28rpx;
+      padding: 36rpx 24rpx;
+      background: #FFFFFF;
+      border-radius: 20rpx;
+      .block-header {
+        font-weight: 500;
+        font-size: 30rpx;
+      }
+      .block-content {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        position: relative;
+        &-item {
+          width: 25%;
+          font-size: @font-size-24;
+          margin-top: 30rpx;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          .icon-box{
+            width: 56rpx;
+            height: 56rpx;
+            text-align: center;
+            .icon-img{
+              width: 100%;
+              height: 100%;
+            }
+            .b-icon {
+              font-size: 60rpx;
+            }
+          }
+          .block-content-item-label {
+            font-size: @font-size-24;
+            height:34rpx;
+            line-height: 34rpx;
+            margin-top: 12rpx;
+          }
+          .label-mark0 {
+            background: #D9161C;
+            height: 32rpx;
+            width: 32rpx;
+            font-size: 20rpx;
+            border-radius: 16rpx;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            position: absolute;
+            margin-top: -115rpx;
+            margin-left: 96rpx;
+            color: #FFFFFF;
+          }
+          .label-mark99 {
+            background: #D9161C;
+            height: 32rpx;
+            width: 50rpx;
+            font-size: 20rpx;
+            border-radius: 16rpx;
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            position: absolute;
+            margin-top: -115rpx;
+            margin-left: 96rpx;
+            color: #FFFFFF;
+          }
+        }
+      }
+    }
+  }
+}
+.home-MerchantEntranceModel {
+  padding-left: 40rpx;
+  padding-right: 40rpx;
+  height: 148rpx;
+  margin-bottom: 16rpx;
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .leftBox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .leftBoxOne{
+      width: 96rpx;
+      height: 96rpx;
+      border-radius: 8rpx;
+      background: #ECF8F8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 28rpx;
+      i{
+        font-size: 60rpx;
+        color: #00AAA6;
+      }
+    }
+    .leftBoxTwo{
+      p{
+        font-size: 32rpx;
+        color: #262626;
+      }
+    }
+  }
+  .rightBox{
+    width: 132rpx;
+    height: 44rpx;
+    border-radius: 4px;
+    border: 1px solid #00AAA6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    p{
+      color: #00AAA6;
+      font-size: 24rpx;
+    }
+  }
+}
+.no-permission-wrapper{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .no-permission-box{
+    flex: 1;
+  }
+}

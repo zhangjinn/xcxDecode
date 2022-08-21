@@ -1,0 +1,271 @@
+
+  <view class="order _c01d40c">
+    <!-- 日历弹框 -->
+    <van-popup show="{{calendarShow}}" position="bottom"  bind:close="closeCalendar" z-index="200" class="_c01d40c">
+      <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay" class="_c01d40c"/>
+    </van-popup>
+
+    <!-- 活动来源、促销方式 -->
+    <van-popup show="{{ agentPopup }}" position="right" overlay="{{ true }}" z-index="200" custom-style="height: 100%;" close-on-click-overlay="{{false}}" class="_c01d40c">
+
+      <view  wx:if="{{popupTitle == '促销方式'}}" class="order-drawer _c01d40c">
+        <view class="order-drawer-time _c01d40c">
+          <view class="order-drawer-time-header _c01d40c">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back _c01d40c"  bind:click="selectagentPopup"/>
+            <view class="order-drawer-time-header-title _c01d40c">{{popupTitle}}</view>
+          </view>
+          <scroll-view class="order-drawer-time-content _c01d40c" scroll-y>
+            <block class="_c01d40c" wx:for="{{marketingActivityFilter.methods}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="order-drawer-time-content-line _c01d40c" bindtap="onSelectMethodChange" data-wpyonselectmethodchange-a="{{item}}">
+                <view class="text {{filterForm.terms.method === item.key ? 'active' : ''}} _c01d40c">{{item.value}}</view>
+                <van-icon wx:if="{{filterForm.terms.method === item.key }}" name="success" class="time-selected _c01d40c" size="32rpx"/>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+      </view>
+    </van-popup>
+
+    <!-- 筛选侧边弹框 -->
+    <van-popup show="{{visible}}" position="right" overlay="{{ true }}"  bind:close="orderfiltering" custom-style="height: 100%;" z-index="130" class="_c01d40c">
+      <view class="order-drawer _c01d40c">
+        <view class="order-drawer-attr _c01d40c">
+          <scroll-view class="order-drawer-attr-scroll _c01d40c" scroll-y>
+            <view class="attr-item _c01d40c">
+
+              <view class="projectem _c01d40c">
+                <view class="project _c01d40c">
+                  <text class="project-label _c01d40c" style="">活动编码</text>
+                </view>
+                <van-field placeholder="请输入" border="{{ false }}" placeholder-style="font-size: 24rpx;" bind:change="onCodeChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;" clearable="clearable" value="{{filterForm.terms.code}}" class="_c01d40c"/>
+              </view>
+
+              <view class="projectem _c01d40c">
+                <view class="project _c01d40c">
+                  <text class="project-label _c01d40c" style="">活动名称</text>
+                </view>
+                <van-field placeholder="请输入" border="{{ false }}" placeholder-style="font-size: 24rpx;" bind:change="onNameChange" custom-style="background-color: #f7f7f7;height: 64rpx;padding: 5px 12px;" clearable="clearable" value="{{filterForm.terms.name}}" class="_c01d40c"/>
+              </view>
+
+<!--              <view class="parent-agent">-->
+<!--                <view class="agent-name">活动来源</view>-->
+<!--                <view wx:if="{{filterFormExtra.sourceName != ''}}" catchtap="selectagentPopup('source')" class="agent-select">{{filterFormExtra.sourceName}}-->
+<!--                  <view class="b-icon icon-more icons"></view>-->
+<!--                </view>-->
+<!--                <view wx:else catchtap="selectagentPopup('source')" class="agent-select">请选择-->
+<!--                  <view class="b-icon icon-more icons"></view>-->
+<!--                </view>-->
+<!--              </view>-->
+
+              <view class="parent-agent _c01d40c">
+                <view class="agent-name _c01d40c">促销方式</view>
+                <view  wx:if="{{filterFormExtra.methodName != ''}}" catchtap="selectagentPopup" class="agent-select _c01d40c" data-wpyselectagentpopup-a="method">{{filterFormExtra.methodName}}
+                  <view class="b-icon icon-more icons _c01d40c"/>
+                </view>
+                <view  wx:else catchtap="selectagentPopup" class="agent-select _c01d40c" data-wpyselectagentpopup-a="method">请选择
+                  <view class="b-icon icon-more icons _c01d40c"/>
+                </view>
+              </view>
+
+              <view class="order-data _c01d40c">
+                <view class="project _c01d40c">
+                  <text style="font-size: 28rpx;color: #777777" class="_c01d40c">活动时间</text>
+                </view>
+                <view class="order-data-input _c01d40c">
+                  <view class="order-data-input-one _c01d40c" data-name="startDate" data-type="sapDate" bindtap="openCalendar">
+                    {{filterForm.terms.startDate || '开始日期'}}
+                    <van-icon wx:if="{{filterForm.terms.startDate}}" class="close-icon _c01d40c" name="clear" bindtap="clearCalendar" data-wpyclearcalendar-a="startDate"/>
+                  </view>
+                  <view class="order-data-input-line _c01d40c">-</view>
+                  <view class="order-data-input-one _c01d40c" data-name="endDate" data-type="sapDate" bindtap="openCalendar">
+                    {{filterForm.terms.endDate|| '结束日期'}}
+                    <van-icon wx:if="{{filterForm.terms.endDate}}" class="close-icon _c01d40c" name="clear" bindtap="clearCalendar" data-wpyclearcalendar-a="endDate"/>
+                  </view>
+                </view>
+              </view>
+
+            </view>
+          </scroll-view>
+          <!-- 底部按钮 -->
+          <view class="order-drawer-attr-footer _c01d40c">
+            <view bindtap="onResetFilterForm" class="order-drawer-attr-footer-btn reset _c01d40c" hover-class="order-drawer-attr-footer-btn-hover">重置</view>
+            <view bindtap="onSubmitFilterForm" class="order-drawer-attr-footer-btn confirm _c01d40c" hover-class="order-drawer-attr-footer-btn-hover">确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <!-- 快捷筛选顶部弹框 活动状态 -->
+    <van-popup show="{{OrderSFilterVisible}}" position="top" overlay="{{ true }}" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;" bind:close="touchOrderSFilter" class="_c01d40c">
+      <view wx:if="{{CurrentOrderSFilterName === 'orderStatus'}}" class="order-s-filter-container _c01d40c">
+        <view class="order-operation _c01d40c">
+          <view class="operation-text van-hairline--bottom _c01d40c" bindtap="onSelectStatus" data-wpyonselectstatus-a="">
+            <view class="operation-status {{ filterForm.terms.status === '' ? 'active' : '' }} _c01d40c">全部</view>
+            <view wx:if="{{ filterForm.terms.status === '' }}" class="b-icon icon-check operation-icon _c01d40c"/>
+          </view>
+        </view>
+        <view class="order-operation _c01d40c" wx:for="{{saleFilterList}}">
+          <view class="operation-text van-hairline--bottom _c01d40c" bindtap="onSelectStatus" data-wpyonselectstatus-a="{{ item.id}}">
+            <view class="operation-status {{ filterForm.terms.status === item.id ? 'active' : '' }} _c01d40c">{{item.value}}</view>
+            <view wx:if="{{ filterForm.terms.status ===  item.id }}" class="b-icon icon-check operation-icon _c01d40c"/>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    
+  <view class="header-tab _c01d40c">
+    <view class="left-btn">
+      <block  wx:for="{{ $headerTab$tabListNew }}">
+        <view class="btn-item {{ item.selectValue ? 'active' : '' }}" bindtap="$headerTab$changeTab" data-wpychangetab-a="{{item}}">
+          <text>{{ item.name }}</text>
+          <i wx:if="{{ $headerTab$showArrowIcon }}" class="b-icon iconxialajiantou"/>
+        </view>
+      </block>
+    </view>
+    <view class="right-btn"  wx:if="{{ $headerTab$showRightBtn }}" bindtap="$headerTab$onSideFilter">
+      <view class="line-shadow" wx:if="{{ $headerTab$showRightBtnLine }}"/>
+      <view class="side-filter-btn">
+        <text>筛选</text>
+        <i class="b-icon shaixuan"/>
+      </view>
+    </view>
+  </view>
+
+    <scroll-view wx:if="{{ marketingActivityTotalPages !== 0 }}" scroll-y="true" class="order-scroll _c01d40c" enable-flex="enable-flex" bindscroll="onScroll" scroll-top="{{ scrollTop }}" bindscrolltolower="onGetOrderListNext">
+      <block class="_c01d40c" wx:for="{{ marketingActivityList }}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="order-container _c01d40c">
+          <view class="order-top _c01d40c">
+            <view class="order-title _c01d40c">
+              <view class="order-share _c01d40c">
+                {{ item.activityCode }}
+              </view>
+              <text class="order-status _c01d40c">{{ item.statusDesc }}</text>
+            </view>
+            <view class="order-detail _c01d40c">
+              <view class="active-type {{item.discountTypeId == '90605'?'combinationPurchaseLabel':'normalLabel'}} _c01d40c">{{ item.discountTypeName }}</view>
+              <view class="active-name _c01d40c">{{ item.activityName }}</view>
+            </view>
+            <view class="order-time _c01d40c">
+              <view class="_c01d40c">活动时间：{{ item.startDate }} ~ {{ item.endDate }}</view>
+            </view>
+          </view>
+
+          <!-- 组合购 -->
+          <block wx:if="{{item.discountTypeId=='90605'}}" class="_c01d40c">
+            <view class="set-purchase-wrapper _c01d40c">
+              <view wx:for="{{item.setPurchaseNumber}}" wx:for-item="itemTwo" wx:key="index" class="set-purchase-item _c01d40c">
+                <view class="combination-code _c01d40c">组合编码：{{ itemTwo }}</view>
+                <view wx:for="{{ item.setPurchaseList[itemTwo] }}" wx:for-item="modelList" wx:for-index="idx" wx:key="idx" class="set-purchase-item-inner _c01d40c">
+                  <view class="modelSeriesHeader _c01d40c">
+                    <view class="_c01d40c">{{ modelList.productGroupRemark }}</view>
+                    <view class="condition _c01d40c">x{{ modelList.packageNum }}</view>
+                  </view>
+                  <block class="_c01d40c" wx:for="{{modelList.child}}" wx:for-index="index" wx:for-item="goods" wx:key="key">
+                    <view class="order-goods _c01d40c">
+                      <navigator class="order-goods-img _c01d40c" url="">
+                        <img class="goodimg _c01d40c" src="{{ goods.img }}" errSrc="{{ goods.errImg }}"/>
+                      </navigator>
+                      <view class="order-goods-detail _c01d40c">
+                        <view class="order-goods-detail-name _c01d40c">
+                          <text class="detail-text _c01d40c">{{goods.productName}}</text>
+                        </view>
+                        <view wx:if="{{goods.productSubtitle}}" class="order-goods-detail-desc _c01d40c">
+                          <text class="detail-text _c01d40c">{{ goods.productSubtitle }}</text>
+                        </view>
+                        <view class="order-goods-detail-number _c01d40c">
+                          <view class="detail-billPrice _c01d40c">
+                            <text class="symbol _c01d40c">￥</text>
+                            <text class="curr-billPrice _c01d40c">{{goods.billPrice}}</text>
+                            <text class="old-billPrice _c01d40c">{{goods.standardPrice}}</text>
+                          </view>
+                          <text class="detail-qty _c01d40c">×{{goods.qty}}</text>
+                        </view>
+                      </view>
+                    </view>
+                  </block>
+                </view>
+              </view>
+            </view>
+          </block>
+
+          <!-- 套购 -->
+          <block wx:elif="{{item.discountTypeId=='90603'}}" class="_c01d40c">
+            <view class="set-purchase-wrapper _c01d40c">
+              <view wx:for="{{item.setPurchaseNumber}}" wx:for-item="itemTwo" wx:key="index" class="set-purchase-item _c01d40c">
+                <view class="combination-code _c01d40c">组合编码：{{ itemTwo }}</view>
+                <view wx:for="{{ item.setPurchaseList[itemTwo] }}" wx:for-item="goods" wx:for-index="idx" wx:key="idx" class="set-purchase-item-inner _c01d40c">
+                  <view class="order-goods _c01d40c">
+                    <navigator class="order-goods-img _c01d40c" url="">
+                      <img class="goodimg _c01d40c" src="{{ goods.img }}" errSrc="{{ goods.errImg }}"/>
+                    </navigator>
+                    <view class="order-goods-detail _c01d40c">
+                      <view class="order-goods-detail-name _c01d40c">
+                        <text class="detail-text _c01d40c">{{goods.productName}}</text>
+                        <text wx:if="{{item.discountTypeId=='90603'}}" class="detail-nums _c01d40c">x{{goods.packageNum}}</text>
+                      </view>
+                      <view wx:if="{{goods.productSubtitle}}" class="order-goods-detail-desc _c01d40c">
+                        <text class="detail-text _c01d40c">{{ goods.productSubtitle }}</text>
+                      </view>
+                      <view class="order-goods-detail-number _c01d40c">
+                        <view class="detail-billPrice _c01d40c">
+                          <text class="symbol _c01d40c">￥</text>
+                          <text class="curr-billPrice _c01d40c">{{goods.billPrice}}</text>
+                          <text class="old-billPrice _c01d40c">{{goods.standardPrice}}</text>
+                        </view>
+                        <text class="detail-qty _c01d40c">×{{goods.qty}}</text>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </block>
+
+          <!-- 直降、后返 -->
+          <block wx:else class="_c01d40c">
+            <view class="order-info _c01d40c">
+              <block class="_c01d40c" wx:for="{{item.productDtoList}}" wx:for-index="index" wx:for-item="goods" wx:key="key">
+                <view class="order-goods _c01d40c">
+                  <navigator class="order-goods-img _c01d40c" url="">
+                    <img class="goodimg _c01d40c" src="{{ goods.img }}" errSrc="{{ goods.errImg }}"/>
+                  </navigator>
+                  <view class="order-goods-detail _c01d40c">
+                    <view class="order-goods-detail-name _c01d40c">
+                      <text class="detail-text _c01d40c">{{goods.productName}}</text>
+                      <text wx:if="{{item.discountTypeId=='90603'}}" class="detail-nums _c01d40c">x{{goods.packageNum}}</text>
+                    </view>
+                    <view wx:if="{{goods.productSubtitle}}" class="order-goods-detail-desc _c01d40c">
+                      <text class="detail-text _c01d40c">{{ goods.productSubtitle }}</text>
+                    </view>
+                    <view class="order-goods-detail-number _c01d40c">
+                      <view class="detail-billPrice _c01d40c">
+                        <text class="symbol _c01d40c">￥</text>
+                        <text class="curr-billPrice _c01d40c">{{goods.billPrice}}</text>
+                        <text class="old-billPrice _c01d40c">{{goods.standardPrice}}</text>
+                      </view>
+                      <text class="detail-qty _c01d40c">×{{goods.qty}}</text>
+                    </view>
+                  </view>
+                </view>
+              </block>
+            </view>
+          </block>
+
+          <view class="order-handle _c01d40c">
+            <view class="btn-detail _c01d40c" bindtap="viewDetail" data-wpyviewdetail-a="{{item.id}}">查看详情</view>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+    
+  <view class="empty-data _c01d40c" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <van-toast id="van-toast" class="_c01d40c"/>
+    <van-dialog id="van-dialog" class="_c01d40c"/>
+  </view>

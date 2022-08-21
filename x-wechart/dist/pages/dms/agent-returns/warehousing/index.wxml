@@ -1,0 +1,156 @@
+
+  <view class="order _c885fbf">
+    <view class="scroll-wrapper _c885fbf">
+      <scroll-view class="card-scroll _c885fbf" scroll-y>
+      <view class="scroll-wrapper-inner _c885fbf">
+        <view class="return-goods-header-card _c885fbf">
+          <view class="return-goods-header-info _c885fbf">
+            <view class="return-goods-header-info-inner _c885fbf">
+              <view class="return-info _c885fbf">
+                <view class="name-box _c885fbf">
+                  <view class="tip _c885fbf">退货信息</view>
+                </view>
+                <view class="return-back _c885fbf" bindtap="returnBack">更改 <van-icon name="arrow" class="location _c885fbf"/></view>
+              </view>
+              <view class="desc _c885fbf">{{ orderdetail.customerName }}</view>
+              <view class="desc _c885fbf">地址：{{ orderdetail.addressDesc }}</view>
+            </view>
+          </view>
+          <view class="document-info _c885fbf">
+            <view class="document-info-inner _c885fbf">
+              <view class="document-desc _c885fbf">
+                <view class="_c885fbf"><text class="label _c885fbf">销售单号：</text>{{ orderdetail.refNum }}</view>
+              <!-- documentType="retail"->零售订单；documentType='normal'->代理发起-->
+                <view  wx:if="{{orderdetail.documentType === 'normal'}}" class="status _c885fbf">代理发起</view>
+              </view>
+              <view class="document-desc _c885fbf">
+                <view class="_c885fbf"><text class="label _c885fbf">出库仓库：</text>{{ orderdetail.outWarehouseList }}</view>
+              </view>
+              <view class="document-desc _c885fbf">
+                <!--  非零售单时为空  -->
+                <view class="_c885fbf"><text class="label _c885fbf">所属门店：</text>{{ orderdetail.storeName }}</view>
+              </view>
+              <view class="document-desc _c885fbf">
+                <view class="_c885fbf"><text class="label _c885fbf">单据日期：</text>{{ orderdetail.documentDate }}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="form-info _c885fbf">
+          <view class="msgItem-filed _c885fbf">
+            <text class="label _c885fbf">备注</text>
+            <view class="training-filed-item _c885fbf">
+              <van-field value="{{ formData.remark }}" disabled data-key="remark" placeholder="请输入" input-align="right" cell-class="field-cell"  bind:change="onRemarkChange" class="_c885fbf" data-wpyonremarkchange-a="{{$event}}"/>
+            </view>
+          </view>
+        </view>
+        <view class="details-title _c885fbf">明细信息</view>
+        <block class="_c885fbf" wx:for="{{orderdetail.itemList}}" wx:for-index="itemIndex" wx:for-item="item" wx:key="key">
+          <view class="details-wrapper _c885fbf">
+            <view class="details-info _c885fbf">
+              <view class="product-name _c885fbf">{{ item.model }}</view>
+              <view class="product-num _c885fbf">
+                <text class="_c885fbf">退货数量：{{ item.borderedQty }}</text>
+                <text class="_c885fbf">已入库数量：{{ item.shippedBqty }}</text>
+              </view>
+            </view>
+            <block class="_c885fbf" wx:for="{{item.outItems}}" wx:for-index="outIndex" wx:for-item="outItem" wx:key="order_detail_item_{{itemIndex}}_out_{{outIndex}}">
+              <view class="details-list _c885fbf">
+                <view class="order-detail-item-inner-info _c885fbf">
+                  <view class="msgItem _c885fbf" data-title="仓库" data-key="warehouse" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}">
+                    <view class="_c885fbf">
+                      <text class="label _c885fbf">仓库</text>
+                    </view>
+                    <view class="grayFont _c885fbf">
+                      <view  wx:if="{{outItem.warehouse.name}}" class="currVal _c885fbf">
+                        <text class="_c885fbf">{{outItem.warehouse.name}}</text>
+<!--                        <van-icon name="arrow" class="location" />-->
+                      </view>
+<!--                      <view wx:else class="holder">-->
+<!--                        <text>请选择</text>-->
+<!--                        <van-icon name="arrow" class="location" />-->
+<!--                      </view>-->
+                    </view>
+                  </view>
+                  <view class="detail-item-num _c885fbf">
+                    <view class="item-info-line-out-quantity _c885fbf">正品退货数量</view>
+                    <view class="item-info-line-out-quantity-input _c885fbf">
+                      <van-stepper integer="integer" value="{{outItem.bactualQty}}" min="0" max="{{item.maxQty}}" custom-class="order-wrapper-stepper" input-class="cart-input-class" plus-class="cart-action-class" minus-class="cart-action-class" data-key="bactualQty" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}"  bind:change="onShippedBqtyChg" bind:plus="onShippedBqtyChg" bind:minus="onShippedBqtyChg" class="_c885fbf"/>
+                    </view>
+                  </view>
+                  <view class="detail-item-num _c885fbf">
+                    <view class="item-info-line-out-quantity _c885fbf">残次退货数量</view>
+                    <view class="item-info-line-out-quantity-input _c885fbf">
+                      <van-stepper integer="integer" value="{{outItem.defectiveQty}}" min="0" max="{{item.maxQty}}" custom-class="order-wrapper-stepper" input-class="cart-input-class" plus-class="cart-action-class" minus-class="cart-action-class" data-key="defectiveQty" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}"  bind:change="onShippedBqtyChg" bind:plus="onShippedBqtyChg" bind:minus="onShippedBqtyChg" class="_c885fbf"/>
+                    </view>
+                  </view>
+                  <view class="msgItem-filed return-price _c885fbf">
+                    <text class="label _c885fbf">退货价格(元)</text>
+                    <view class="training-filed-item _c885fbf">
+                      <van-field value="{{outItem.bprice}}" disabled placeholder="请输入" input-align="right" cell-class="field-cell" class="_c885fbf"/>
+                    </view>
+                  </view>
+                  <view class="order-detail-item-out-info-footer _c885fbf">
+                    <view class="footer-handle-item subtotal _c885fbf">
+                      <text class="_c885fbf">小计：¥{{ outItem.subtotal }}</text>
+                    </view>
+                    <view class="footer-handle-item remove _c885fbf" data-item-index="{{itemIndex}}" data-out-index="{{outIndex}}" bindtap="onRemoveOutItem">
+                      <i class="b-icon shanchu footer-remove _c885fbf"/>
+                      <text class="_c885fbf">删除</text>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </block>
+            <view  wx:if="{{ item.outItems.length === 0 }}" class="order-detail-item-out-add _c885fbf" data-item-index="{{itemIndex}}" data-type="add" bindtap="jumpClick">
+              <i class="b-icon icon-add out-add _c885fbf"/>
+              <text class="out-add-text _c885fbf">添加仓库信息</text>
+            </view>
+          </view>
+        </block>
+      </view>
+      </scroll-view>
+    </view>
+    <view class="footer-wrapper _c885fbf">
+    <!--  零售单不显示驳回按钮    -->
+      <view wx:if="{{orderdetail.documentType!=='retail'}}" class="handle-footer turn-down _c885fbf" bindtap="onTurnDown">驳回</view>
+      <view class="handle-footer _c885fbf" bindtap="onInitSubmit">确认入库</view>
+    </view>
+    <!-- 选择列表弹框 -->
+    <wxs src="../../../../wxs/utils.wxs" module="utils" class="_25d639b"/>
+
+  <van-popup show="{{ $popupCustomize$show }}" closeable="closeable" position="bottom" custom-style="height: 720rpx" zIndex="400"  bind:click-overlay="$popupCustomize$onClose" class="_25d639b _c885fbf">
+    <view class="item-inv _25d639b">
+      <view class="item-inv-head _25d639b">
+        <view class="item-inv-head-context _25d639b">
+          <view class="item-inv-head-context-title _25d639b">{{ $popupCustomize$title }}</view>
+          <i class="b-icon iconyiquxiao item-inv-head-context-close _25d639b" bindtap="$popupCustomize$onClose"/>
+        </view>
+      </view>
+      <view class="item-inv-search _25d639b"  wx:if="{{ $popupCustomize$isSearch }}">
+        <van-search custom-class="header-search" shape="round" use-action-slot="use-action-slot" use-left-icon-slot="{{ $popupCustomize$true }}" leftSearchIconSow="{{ $popupCustomize$false }}" placeholder="请输入搜索关键字" placeholder-style="color: #AAAAAA; font-size: 28rpx;" bind:change="$popupCustomize$onChange" class="_25d639b">
+          <view slot="label" class="search-left-icon _25d639b">
+            <i class="b-icon shouyesousuo _25d639b"/>
+          </view>
+        </van-search>
+      </view>
+      <scroll-view scroll-y class="item-inv-scroll _25d639b">
+        <block  wx:if="{{$popupCustomize$options && $popupCustomize$options.length>0}}" class="_25d639b">
+          <view wx:for="{{ $popupCustomize$options }}" wx:key="{{ item.id }}" wx:for-item="item" class="item-inv-scroll-row _25d639b" data-item="{{item}}" bindtap="$popupCustomize$chooseOption">
+            <block wx:if="{{$popupCustomize$multiple}}" class="_25d639b">
+              <view class="item-inv-scroll-row-desc  {{ utils.includes(item.id, $popupCustomize$selectedOption.id) ? 'checked' : '' }} _25d639b">{{ item.name }}</view>
+              <view wx:if="{{ utils.includes(item.id, $popupCustomize$selectedOption.id) }}" class="b-icon icon-check item-inv-scroll-row-checked checked _25d639b"/>
+            </block>
+            <block wx:else class="_25d639b">
+              <view class="item-inv-scroll-row-desc {{ item.id == $popupCustomize$selectedOption.id ? 'checked' : ''}} _25d639b">{{ item.name }}</view>
+              <view wx:if="{{ item.id == $popupCustomize$selectedOption.id }}" class="b-icon icon-check item-inv-scroll-row-checked checked _25d639b"/>
+            </block>
+          </view>
+        </block>
+        <view  wx:else class="no-data _25d639b">暂无数据</view>
+      </scroll-view>
+    </view>
+  </van-popup>
+    <van-toast id="van-toast" class="_c885fbf"/>
+    <van-dialog id="van-dialog" class="_c885fbf"/>
+  </view>

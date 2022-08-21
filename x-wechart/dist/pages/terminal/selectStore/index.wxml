@@ -1,0 +1,62 @@
+
+  <view class="_222f0e4">
+<!--    <view class="storeBox">-->
+<!--      <van-cell-group>-->
+<!--        <van-field-->
+<!--          value="{{ shopFullName }}"-->
+<!--          maxlength="20"-->
+<!--          placeholder="请输入关键字/编码"-->
+<!--          border="{{ false }}"-->
+<!--          custom-style="width:98vw;border-radio:20rpx;border-radius:10rpx;padding-left:50rpx"-->
+<!--          bind:change="onsearch"-->
+<!--        />-->
+<!--        <van-icon name="search" size="40rpx"   color="#00aaa7" custom-style="margin-left:20rpx;line-height:80rpx;position: absolute;left:10rpx;top:50%;transform: translateY(-50%)" />-->
+<!--    </view>-->
+<!--    <view class="search">-->
+
+      <view class="search-box _222f0e4">
+        <view class="search-item _222f0e4">
+          <van-search custom-class="store-search" placeholder="请输入门店名称" value="{{ shopFullName }}"  bind:change="onchange" bindsearch="onsearch" class="_222f0e4">
+            <!--        <view slot="action" bind:tap="onSearch()">搜索</view>-->
+          </van-search>
+        </view>
+
+        <view  wx:if="{{addStorePermissions}}" class="add-store _222f0e4" bindtap="addStore">新增</view>
+      </view>
+
+    <view class="selectBoxItem _222f0e4">
+<!--      <view>-->
+<!--        <view class="history">-->
+<!--          <view>历史记录</view>-->
+<!--          <van-icon name="delete" bindtap="delHistory" color="#ccc" />-->
+<!--        </view>-->
+<!--        <view class="sulinBlock" wx:if="{{history.length>0}}">-->
+<!--          <view class="sulinItem" wx:for="{{history}}" wx:key='index'>{{item}}</view>-->
+<!--        </view>-->
+<!--      </view>-->
+
+      <view class="history _222f0e4">我的门店</view>
+<!--      <swiper class="swiper" indicator-dots="{{false}}" autoplay="{{false}}" >-->
+<!--          <swiper-item class="swiperItem">-->
+          <view style="text-align: center;margin-bottom: 20rpx"  wx:if="{{loading==true}}" class="_222f0e4">
+            <van-loading type="spinner" class="_222f0e4"/>
+          </view>
+
+            <scroll-view scroll-y bindscrolltolower="toLowerFun" bindscrolltoupper="upper" style="height: 86vh" class="_222f0e4">
+              <view class="storeItemBox _222f0e4"  wx:for="{{storeList}}" wx:key="index" bindtap="selStore" data-index="{{index}}">
+                <view class="_222f0e4">
+                  <text wx:if="{{item.isSpecialShop === '1'}}" class="storePaizi specialShopBgColor _222f0e4">专卖</text>
+                  <text wx:if="{{item.isSinkChannel === '1'}}" class="storePaizi sinkChannelBgColor _222f0e4">下沉</text>
+                  <text wx:if="{{item.isSinkChannel !== '1' && item.isSpecialShop !== '1'}}" class="storePaizi _222f0e4">门店</text>
+                  <text class="_222f0e4">{{item.shopFullName}}</text>
+                </view>
+                <view class="storeRiht _222f0e4">
+                  <block wx:if="{{item.distance!='null' && item.distance!='NaN'}}" class="_222f0e4">
+                    <text class="_222f0e4">{{item.distance}}km</text>
+                  </block>
+                </view>
+              </view>
+            </scroll-view>
+    </view>
+
+  </view>

@@ -1,0 +1,119 @@
+.ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+.item {
+  width: 354rpx;
+  height: 520rpx;
+  background-color: #FFF;
+  margin-bottom: 10rpx;
+}
+.item-main {
+  height: 354rpx;
+  position: relative;
+}
+.item-main-img {
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+}
+.item-main-org {
+  top: 16rpx;
+  left: 16rpx;
+  position: absolute;
+  padding: 0 16rpx;
+  border: 1rpx solid #00AAA6;
+  color: #00AAA6;
+  font-size: 22rpx;
+  line-height: 32rpx;
+}
+.item-main-bottom {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  position: absolute;
+  bottom: 16rpx;
+  left: 16rpx;
+  right: 16rpx;
+}
+.item-main-bottom-inventory {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  font-size: 20rpx;
+  padding: 0 8rpx;
+  background: rgba(0, 0, 0, 0.29);
+  color: #FFF;
+  line-height: 28rpx;
+}
+.item-main-bottom-inventory-tip,
+.item-main-bottom-inventory-count {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  opacity: 0.8;
+}
+.item-main-bottom-inventory-tip {
+  padding-right: 4rpx;
+}
+.item-main-bottom-collection {
+  height: 36rpx;
+  z-index: 10;
+}
+.item-main-bottom-collection-icon {
+  font-size: 32rpx;
+  color: #D9161C;
+}
+.item-info {
+  padding: 16rpx;
+}
+.item-info-name {
+  font-size: 26rpx;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+.item-info-import {
+  padding-top: 8rpx;
+  font-size: 22rpx;
+  color: #AAAAAA;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+.item-info-null {
+  height: 36rpx;
+}
+.item-info-bottom {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding-top: 8rpx;
+}
+.item-info-bottom-price {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  font-size: 32rpx;
+  color: #D9161C;
+}
+.item-info-bottom-cart {
+  background-color: #00AAA6;
+  font-size: 20rpx;
+  color: #FFF;
+  padding: 8rpx 12rpx;
+  z-index: 10;
+}

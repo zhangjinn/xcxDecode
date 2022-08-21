@@ -1,0 +1,35 @@
+//获取门店销售明细
+export const QUERY_ALLSTORE_SALESDETAILXTW = "QUERY_ALLSTORE_SALESDETAILXTW";
+
+// 获取门店all信息
+export const QUERY_STORE_ALLINFO = "QUERY_STORE_ALLINFO";
+
+//获取门店全部物料组
+export const QUERY_ALLMATKL = "QUERY_ALLMATKL";
+
+//获取门店销售数据
+export const QUERY_ALLSTORE_SALESXTW = "QUERY_ALLSTORE_SALESXTW";
+
+// 竞争力排名
+export const CUSTMODEL_SHOPINFO_RANK = "CUSTMODEL_SHOPINFO_RANK";
+
+//根据门店和物料组获取门店信息
+export const GET_STOREDETAIL_BYMAT = "GET_STOREDETAIL_BYMAT";
+
+//门店人员信息
+export const GET_STORE_PERSON = "GET_STORE_PERSON";
+
+//门店档案列表
+export const GET_STORE_RECORDLIST = "GET_STORE_RECORDLIST";
+
+//门店详情获取物料组
+export const GET_MATERIALGROUP_TOXTW = "GET_MATERIALGROUP_TOXTW";
+
+//门店综合评价趋势图 GET_STORE_INSPECTION
+export const STORE_EVALUATION_CHART = "STORE_EVALUATION_CHART";
+
+//巡店记录列表 
+export const GET_STORE_INSPECTION = "GET_STORE_INSPECTION";
+
+//获得竞品排名
+export const GET_COMPETITOR_LIST = "GET_COMPETITOR_LIST";

@@ -1,0 +1,399 @@
+<template>
+  <view class="order-distributors">
+    <!-- 提示部分内容 -->
+    <van-popup show="{{ isNoticePopupShow }}" closeable position="bottom" bind:close="noticePopupClose">
+      <view class="noticeCon">
+        <view class="noticeCon-title van-hairline--bottom">
+          物流费用规则
+          <i @tap="noticePopupClose" class="b-icon iconyiquxiao"></i>
+        </view>
+        <scroll-view scroll-y="true" class="noticeCon-scroll">
+          <view class="noticeCon-scroll-con">
+            <text>{{expressFee}}</text>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+
+    <van-popup show="{{calendarShow}}" position="bottom" bind:close="closeCalendar" z-index="200">
+      <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay" />
+    </van-popup>
+    <van-toast id="van-toast" />
+    <view class="order-header">
+      <view class="order-suppliers van-hairline--bottom">
+        <view class="order-suppliers-text">供应商</view>
+        <view class="order-suppliers-selected van-ellipsis">{{cartGoodInfo.supplierIdName}}</view>
+      </view>
+      <view
+        wx:if="{{shareFlag != 'Y'}}"
+        @tap="openChoose('inWarehouseList','inWarehouseList','入库仓库')"
+        class="order-warehouse van-hairline--bottom"
+      >
+        <view class="order-warehouse-text">入库仓库</view>
+        <view class="order-warehouse-selected">
+          <view
+            class="order-warehouse-selected-{{filterForm.inWarehouseList.value == '请选择' ? 'named' : 'name'}} van-ellipsis"
+          >{{filterForm.inWarehouseList.value}}</view>
+          <view class="b-icon icon-more order-warehouse-selected-icon"></view>
+        </view>
+      </view>
+
+      <view
+        @tap="openChoose('shippingAddress','shippingAddress','收货地址')"
+        wx:if="{{listShow}}"
+        class="order-settlement-units van-hairline--bottom"
+      >
+        <view class="order-settlement-units-text">收货地址</view>
+        <view class="order-settlement-units-selected">
+          <view
+            class="order-settlement-units-selected-name-{{filterForm.shippingAddress.value =='请选择' ? 'active': ''}} van-ellipsis"
+          >{{filterForm.shippingAddress.value}}</view>
+          <view class="b-icon icon-more order-settlement-units-selected-icon"></view>
+        </view>
+      </view>
+      <view
+        @tap="openChoose('deliveryTypeList','deliveryTypeList','配送方式')"
+        class="order-warehouse van-hairline--bottom"
+      >
+          <view class="order-warehouse-text">配送方式</view>
+          <view class="order-warehouse-selected">
+            <view
+              class="order-warehouse-selected-{{filterForm.deliveryTypeList.value == '请选择' ? 'named' : 'name'}} van-ellipsis"
+            >{{filterForm.deliveryTypeList.value}}</view>
+            <view class="b-icon icon-more order-warehouse-selected-icon"></view>
+          </view>
+      </view>
+
+<!--      <view wx:if="{{listShow}}" class="order-document-date van-hairline&#45;&#45;bottom">-->
+<!--        <view class="order-document-date-text">单据日期</view>-->
+<!--        <view class="order-document-date-selected van-ellipsis">{{ filterForm.documentdata }}</view>-->
+<!--      </view>-->
+
+<!--      <view-->
+<!--        @tap="openChoose('settlementUnits','settlementUnits','结算单位')"-->
+<!--        wx:if="{{listShow}}"-->
+<!--        class="order-settlement-units van-hairline&#45;&#45;bottom"-->
+<!--      >-->
+<!--        <view class="order-settlement-units-text">结算单位</view>-->
+<!--        <view class="order-settlement-units-selected">-->
+<!--          <view-->
+<!--            class="order-settlement-units-selected-name van-ellipsis"-->
+<!--          >{{filterForm.settlementUnits.value}}</view>-->
+<!--          <view class="b-icon icon-more order-settlement-units-selected-icon"></view>-->
+<!--        </view>-->
+<!--      </view>-->
+
+      <view wx:if="{{listShow}}" class="van-hairline--bottom" style="padding-right: 15rpx;">
+        <!-- <van-field
+          value="{{ filterForm.contact }}"
+          label="联系人"
+          bind:change="onDistributorscontact"
+          style="width: 100%;"
+          input-align="right"
+          custom-style="padding-left: 0rpx; fonst-size: 26rpx;"
+        /> -->  
+        <selectContact
+          :prop.sync="filterForm"
+        />   
+      </view>
+      <view wx:if="{{listShow}}" class="van-hairline--bottom" style="padding-right: 15rpx;">
+        <!-- <van-field
+          value="{{ filterForm.contactInfo }}"
+          label="联系方式"
+          bind:change="onDistributorscontactInfo"
+          style="width: 100%;"
+          input-align="right"
+          custom-style="padding-left: 0rpx; fonst-size: 26rpx;"
+        /> -->
+        <selectPhone  
+          :prop.sync="filterForm" 
+        /> 
+
+      </view>
+      <view
+        @tap="openChooseDayPopup"
+        wx:if="{{listShow}}"
+        class="order-expected-arrival-date van-hairline--bottom"
+      >
+        <view class="order-expected-arrival-date-text">期望到货日期</view>
+        <view class="order-expected-arrival-date-selected">
+          <view
+            class="order-expected-arrival-date-selected-name-{{filterForm.expectDocumentdata =='请选择' ? 'active': ''}} van-ellipsis"
+          >{{filterForm.expectDocumentdata}}</view>
+          <view class="b-icon icon-more order-expected-arrival-date-selected-icon"></view>
+        </view>
+      </view>
+      <view wx:if="{{listShow}}" class="van-hairline--bottom" style="padding-right: 15rpx;">
+        <van-field
+          value="{{ inputValue }}"
+          label="备注"
+          bind:change="onDistributorsMessage"
+          style="width: 100%;"
+          input-align="right"
+          custom-style="padding-left: 0rpx; fonst-size: 26rpx;"
+        />
+      </view>
+      <view class="order-put-away">
+        <view wx:if="{{listShow}}" catchtap="onListShow('down')" class="put-away">
+          <view class="put-away-text">收起</view>
+          <view class="b-icon iconliebiaoshaixuanjiantou-up put-away-icon"></view>
+        </view>
+        <view wx:if="{{!listShow}}" catchtap="onListShow('up')" class="put-away">
+          <view class="put-away-text">展开完整信息</view>
+          <view class="b-icon iconliebiaoshaixuanjiantou-down put-away-icon"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 直降、后返、购物车 -->
+    <view class="order-items" wx:if="{{cartGoodInfo.purchaseOrderItem && (cartGoodInfo.purchaseOrderItem[0].discountTypeId != '90603' && cartGoodInfo.purchaseOrderItem[0].discountTypeId != '90605')}}">
+      <scroll-view scroll-y class="order-middle-scroll">
+        <view class="series-label" wx:if="{{cartGoodInfo.purchaseOrderItem[0].discountTypeName || cartGoodInfo.purchaseOrderItem[0].fwOrgName}}">
+          <view class="org">
+            <view class="item-body-content-title-Type normalLabel">
+              {{ cartGoodInfo.purchaseOrderItem[0].discountTypeName }}
+            </view>
+            <view class="item-body-content-title-org">
+              {{ cartGoodInfo.purchaseOrderItem[0].fwOrgName }}
+            </view>
+          </view>
+        </view>
+        <repeat for="{{cartGoodInfo.purchaseOrderItem}}" item="item">
+          <distributors-order-items item="{{item}}" userActId="{{userActId}}" custId="{{custId}}" bind:selectStockStats="selectStockStats" bind:onShippedBqtyChg="onShippedBqtyChg" />
+        </repeat>
+      </scroll-view>
+    </view>
+
+    <!-- 套购 -->
+    <view class="order-items tg" wx:if="{{cartGoodInfo.purchaseOrderItem && cartGoodInfo.purchaseOrderItem[0].discountTypeId == '90603'}}">
+      <scroll-view scroll-y class="order-middle-scroll">
+        <view class="series-label">
+          <view class="org">
+            <view class="item-body-content-title-Type normalLabel">
+              {{ cartGoodInfo.purchaseOrderItem[0].discountTypeName }}
+            </view>
+            <view class="item-body-content-title-org">
+              {{ cartGoodInfo.purchaseOrderItem[0].fwOrgName }}
+            </view>
+          </view>
+        </view>
+        <repeat for="{{cartGoodInfo.purchaseOrderItem}}" key="{{id}}">
+          <view class="order-items-item van-hairline--bottom">
+            <img class="img" src="{{item.img}}" errSrc="{{item.errImg}}" />
+            <view class="content">
+              <view class="content-title">{{item.model}}</view>
+              <view class="content-price">
+                <view class="price-item">
+                  <text class="price-symbol">¥</text>
+                  <text class="price-num">{{utils.formatPrice(item.price)}}</text>
+                  <text class="price-color" wx:if="{{item.color}}">({{item.color}})</text>
+                </view>
+                <view class="content-count">x{{item.packageNum}}</view>
+              </view>
+              <view class="content-desc">
+                <text wx:if="{{item.priceGroupName}}">{{item.priceGroupName}}</text>
+                <text class="desc" wx:if="{{item.retainer!=null && item.retainer!=''}}">定金￥{{ item.retainer }}</text>
+                <text class="desc" wx:if="{{item.rebateMoney!=null && item.rebateMoney!=''}}">返利￥{{ item.rebateMoney }}</text>
+              </view>
+
+            </view>
+          </view>
+        </repeat>
+        <view class="step-box">
+          <van-stepper
+            class="tg-step"
+            disabled=""
+            integer="{{true}}"
+            disable-input="{{userActId && !custId ? true : false}}"
+            value="{{cartGoodInfo.purchaseOrderItem[0].defaultNum}}"
+            min="0"
+            max="{{custId ? 100 : cartGoodInfo.purchaseOrderItem[0].buyNum/cartGoodInfo.purchaseOrderItem[0].packageNum}}"
+            bind:change="onStepTg"
+            custom-class="order-stepper"
+            input-class="cart-input-class"
+            plus-class="cart-action-class"
+            minus-class="cart-action-class"
+          />
+        </view>
+        </scroll-view>
+      </view>
+
+    <!-- 组合购 -->
+    <view wx:if="{{ cartGoodInfo.purchaseOrderItem && cartGoodInfo.purchaseOrderItem[0].discountTypeId == '90605'}}" class="order-items order-items-purchase">
+      <repeat for="{{ cartGoodInfo.purchaseOrderItem }}" key="id" index="index">
+
+        <view class="modelSeriesHeader">
+          <view>{{ item.productGroupRemark }}</view>
+          <view class="series-label">
+            <view class="org" wx:if="{{index==0}}">
+              <view class="item-body-content-title-Type combinationPurchaseLabel">
+                {{item.discountTypeName}}
+              </view>
+              <view class="item-body-content-title-org">
+                {{ item.fwOrgName }}
+              </view>
+            </view>
+            <view class="condition">x{{ item.packageNum }}</view>
+          </view>
+        </view>
+        <view class="{{index === order.items.length-1?'order-items-item':'order-items-item van-hairline--bottom'}}">
+          <view class="img-box">
+            <navigator url="/pages/goods/item/index?code={{item.productId}}&orgId={{item.orgId}}&orgCode={{item.orgCode}}">
+              <img class="img" src="{{item.src}}" errSrc="{{item.errImg}}" />
+            </navigator>
+          </view>
+
+          <view class="content">
+            <view class="content-title">{{item.model}}</view>
+            <view class="content-price">
+              <view class="price-item">
+                <text class="price-symbol">¥</text>
+                <text class="price-num">{{utils.formatPrice(item.price)}}</text>
+                <text class="price-color" wx:if="{{item.color}}">({{item.color}})</text>
+              </view>
+            </view>
+            <view class="content-desc">
+              <text wx:if="{{item.priceGroupName}}">{{item.priceGroupName}}</text>
+              <text class="desc" wx:if="{{item.retainer!=null && item.retainer!=''}}">定金￥{{ item.retainer }}</text>
+              <text class="desc" wx:if="{{item.rebateMoney!=null && item.rebateMoney!=''}}">返利￥{{ item.rebateMoney }}</text>
+            </view>
+
+            <view class="content-tip">
+              <view>请选择</view>
+              <block wx:if="{{item.child.length>3}}">
+                <view wx:if="{{item.isFold}}" @tap="productFold({{index}})" class="fold">
+                  <text>展开</text>
+                  <van-icon name="arrow-down" />
+                </view>
+                <view wx:else @tap="productFold({{index}})" class="fold">
+                  <text>收起</text>
+                  <van-icon name="arrow-up" />
+                </view>
+              </block>
+            </view>
+
+            <view class="content-wrapper">
+              <view wx:for="{{item.child}}" wx:for-item="childItem" wx:for-index="itemIndex" class="wrapper-item {{ item.isFold && itemIndex>2?  'hide' : ''}}">
+                <view  class="modelOptionItem {{ childItem.isActive?'active':''}}" catchtap="changeModel" data-seriesindex="{{ index }}" data-itemindex="{{ itemIndex }}">
+                  <view class="prdmodel van-ellipsis">{{ childItem.productInfoZzprdmodel }}</view>
+                  <view>¥ {{ childItem.price }}</view>
+                </view>
+                <van-stepper
+                  disabled=""
+                  integer="{{true}}"
+                  disable-input="{{userActId && !custId ? true : false}}"
+                  value="{{childItem.quantity}}"
+                  min="0"
+                  max="{{custId ? 100 : childItem.buyQty}}"
+                  data-seriesindex="{{ index }}"
+                  data-itemindex="{{ itemIndex }}"
+                  bind:change="onCombinationPurchaseNumChange"
+                  custom-class="order-wrapper-stepper"
+                  input-class="cart-input-class"
+                  plus-class="cart-action-class"
+                  minus-class="cart-action-class"
+                />
+              </view>
+            </view>
+            <view class="content-selected">
+              已选择{{ item.productGroupRemark }}组产品  共{{ item.totleBuyNum || 0 }}台
+            </view>
+          </view>
+        </view>
+      </repeat>
+    </view>
+
+    <view style="margin-bottom: 170rpx"></view>
+    <view class="order-footer van-hairline--top">
+      <view class="order-footer-bar">
+        <view class="order-footer-bar-content">
+          <view class="check-all">
+            <view class="radio-text">￥{{cartGoodInfo.number}}</view>
+            <view class="radio-total-label">合计</view>
+            <i class="b-icon iconwenti" @tap="noticePopupOpen"></i>
+<!--            <view class="radio-name">{{cartGoodInfo.totalVolume?cartGoodInfo.totalVolume+'m³':''}}</view>-->
+            <view class="radio-number">共{{cartGoodInfo.account}}件,</view>
+          </view>
+        </view>
+        <view
+          @tap="confirmSaveOrder"
+          class="order-footer-bar-btn {{cartGoodInfo.purchaseOrderItem.length == 0 || (cartGoodInfo.purchaseOrderItem[0].discountTypeId == '90603' && cartGoodInfo.purchaseOrderItem[0].defaultNum == 0) || !cartGoodInfo.isPurchaseStandard ? 'disabled': ''}}"
+          hover-class="hover"
+        >提交订单</view>
+      </view>
+    </view>
+    <van-popup
+      show="{{ popVisible }}"
+      closeable
+      position="bottom"
+      custom-style="height: 570rpx"
+      bind:click-overlay="onClose"
+    >
+      <view class="order-inv">
+        <view class="order-inv-head">
+          <view class="order-inv-head-context">
+            <view class="order-inv-head-context-title">{{ popTitle }}</view>
+            <van-icon name="cross" class="order-inv-head-context-close" bindtap="onClose" />
+          </view>
+        </view>
+        <scroll-view scroll-y class="order-inv-scroll">
+          <view
+            wx:for="{{ popList }}"
+            wx:key="{{ item.id }}"
+            item="item"
+            class="order-inv-scroll-row"
+            data-key="{{ item.id }}"
+            data-index="{{ index }}"
+            bindtap="onChoose"
+          >
+            <view
+              class="order-inv-scroll-row-desc {{ item.key === compareInfo.key ? 'checked' : ''}}"
+            >{{ item.value }}</view>
+
+            <block wx:if="{{ item.key === compareInfo.key }}">
+              <view class="b-icon icon-check order-inv-scroll-row-checked checked"></view>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-popup
+      show="{{ dmspopVisible }}"
+      closeable
+      position="bottom"
+      custom-style="height: 570rpx"
+      bind:click-overlay="onClose"
+    >
+      <view class="order-inv">
+        <view class="order-inv-head">
+          <view class="order-inv-head-context">
+            <view class="order-inv-head-context-title">{{ popTitle }}</view>
+            <van-icon name="cross" class="order-inv-head-context-close" bindtap="onClose" />
+          </view>
+        </view>
+        <scroll-view scroll-y class="order-inv-scroll">
+          <view
+            wx:for="{{ popList }}"
+            wx:key="{{ item.id }}"
+            item="item"
+            class="order-inv-scroll-row"
+            data-key="{{ item.id }}"
+            data-index="{{ index }}"
+            bindtap="dmsonChoose"
+          >
+            <view
+              class="order-inv-scroll-row-desc {{ item.key === compareInfo.key ? 'checked' : ''}}"
+            >{{ item.value }}</view>
+            <block wx:if="{{ item.key === compareInfo.key }}">
+              <view class="b-icon icon-check order-inv-scroll-row-checked checked"></view>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-toast id="van-toast" />
+    <payconfrim />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

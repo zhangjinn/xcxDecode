@@ -1,0 +1,44 @@
+<template>
+  <view class="page-wrap">
+    <view class="top-wrap">
+      <view>
+        <van-field
+          value="{{ name }}"
+          center
+          clearable
+          bind:change="onDescriptionChange"
+          placeholder="请输入责任人编码/名称"
+          border="{{ true }}"
+          use-button-slot
+        >
+          <van-button slot="button" size="small" type="primary" @tap="searchPeople">
+            搜索
+          </van-button>
+        </van-field>
+        <van-cell use-label-slot="{{true}}">
+          <view slot="title">
+            <van-checkbox bind:change="onChange"  checked-color="#00AAA6"
+                          class="check-box" value="{{notFoundCheck}}">
+              <text class="van-cell-text">未搜索到责任人，请在这里确认输入责任人</text>
+            </van-checkbox>
+          </view>
+          <view slot="right-icon">
+            <van-button size="small" type="primary" @tap="submit">
+              确认
+            </van-button>
+          </view>
+        </van-cell>
+      </view>
+    </view>
+    <view class="bottom-wrap">
+      <repeat for="{{storyPersons}}" item="item">
+        <view class="item" @tap="selPeople({{item}})">
+          <text class="{{item.account==selCode?'check':''}}">{{ item.userName }}</text>
+          <view wx:if="{{item.account==selCode}}" class="b-icon check-btn"/>
+        </view>
+      </repeat>
+    </view>
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

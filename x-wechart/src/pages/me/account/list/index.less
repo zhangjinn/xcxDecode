@@ -1,0 +1,136 @@
+@import '../../../../styles/utils.less';
+
+@padding-normal: 16rpx;
+@border-color: #EEEEEE;
+
+@font-size-10: 10rpx;
+@font-size-12: 12rpx;
+@font-size-14: 14rpx;
+@font-size-16: 16rpx;
+@font-size-18: 18rpx;
+@font-size-20: 20rpx;
+@font-size-22: 22rpx;
+@font-size-24: 24rpx;
+@font-size-26: 26rpx;
+@font-size-28: 28rpx;
+@font-size-30: 30rpx;
+@font-size-32: 32rpx;
+@font-size-34: 34rpx;
+@font-size-36: 36rpx;
+
+.me-account-list {
+  height: 100%;
+  .order-scroll{
+    height: 100%;
+  }
+  .me-account-admin {
+    margin-top: 16rpx;
+    border-bottom: 2rpx solid @border-color;
+  }
+  .account-item {
+    padding: 24rpx;
+    background: #FFF;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    .account-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16rpx;
+      .account-type {
+        font-size: @font-size-26;
+        color: #262626;
+        line-height: 36rpx;
+        height: 36rpx;
+        .businessFlagName {
+          font-size: 24rpx;
+          margin-left: 12rpx;
+          color: #00AAA6;
+          background-color: #ECF8F8;
+        }
+      }
+      .account-status {
+        background: #00AAA6;
+        color: #FFF;
+        font-size: @font-size-20;
+        line-height: 36rpx;
+        height: 36rpx;
+        border-radius: 18rpx;
+        padding: 2rpx 16rpx;
+        &.disable {
+          background: #D9161C;
+        }
+      }
+    }
+  }
+  .account-item-options {
+    display: flex;
+    justify-content: flex-end;
+    background: #FFF;
+    padding: 24rpx;
+    border-top: 2rpx solid @border-color;
+    margin-bottom: 16rpx;
+    van-button {
+      margin-left: 16rpx;
+    }
+  }
+  .account-auth-system-list {
+    display: flex;
+    margin-bottom: 16rpx;
+    .account-auth-system-item {
+      background: #ECF8F8;
+      color: #00AAA6;
+      font-size: @font-size-20;
+      padding: 2rpx 8rpx;
+      margin-right: 8rpx;
+    }
+  }
+  .account-info-line {
+    display: flex;
+    margin-bottom: 12rpx;
+    font-size: @font-size-24;
+    line-height: 32rpx;
+    .info-label {
+      color: #777777;
+      height: 32rpx;
+    }
+    .info-content {
+
+    }
+
+
+  }
+
+}
+
+.tip-popup {
+  .tip-modal {
+    width: 604rpx;
+    .tip-label {
+      display: flex;
+      align-items: center;
+      font-size: @font-size-36;
+      // padding: 72rpx 212rpx;
+      min-height: 300rpx;
+      padding: 24rpx;
+    }
+    .tip-options {
+      font-size: @font-size-32;
+      color: #00AAA6;
+      padding: 32rpx 270rpx;
+      border-top: 2rpx solid @border-color;
+      background-color: #EEEEEE;
+    }
+  }
+}
+
+
+.update-password-popup {
+  width: 100%;
+  height: 100%;
+  .form-footer {
+    margin-top: 20rpx;
+    padding: 40rpx;
+  }
+
+}

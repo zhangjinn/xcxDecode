@@ -1,0 +1,160 @@
+
+  <view class="dakaBox _95782be">
+    <view class="smallBox _95782be">
+      <view class="title _95782be">门店信息</view>
+      <view class="itemBox _95782be">
+        <view class="mendianTitle _95782be">门店:</view>
+        <view class="neirong _95782be">{{detailData.storeName}}</view>
+      </view>
+      <view class="itemBox _95782be">
+        <view class="mendianTitle _95782be">门店地址:</view>
+        <view class="neirong _95782be">{{detailData.storeAddress}}</view>
+      </view>
+      <view class="itemBox _95782be">
+        <view class="mendianTitle _95782be">巡店地址:</view>
+        <view class="neirong _95782be">{{detailData.submiterAddress}}</view>
+      </view>
+      <view class="itemBox _95782be">
+        <view class="mendianTitle _95782be">巡店时间:</view>
+        <view class="neirong _95782be">{{detailData.addTime}}</view>
+      </view>
+      <view class="itemBox _95782be">
+        <view class="mendianTitle _95782be">巡店人员:</view>
+        <view class="neirong _95782be">{{detailData.userName}}</view>
+      </view>
+      <view class="itemBox _95782be">
+        <view class="mendianTitle _95782be">巡检信息:</view>
+        <view class="neirong _95782be">{{checkIndetail.checkResult=='T'?'合格':checkIndetail.checkResult=='F'?'不合格':''}}</view>
+      </view>
+      <view class="itemBox _95782be">
+        <view class="mendianTitle _95782be">巡检时间:</view>
+        <view class="neirong _95782be">{{checkIndetail.checkTime}}</view>
+      </view>
+      <view class="imageItem _95782be">
+        <view class="mendianTitle _95782be">门头状态:</view>
+        <block  wx:if="{{detailData.doorImg1}}" class="_95782be">
+          <image src="{{detailData.doorImg1}}" catchtap="browseImg" data-current="{{detailData.doorImg1}}" data-arr="doorImg" class="imageItemStyle _95782be"/>
+        </block>
+        <block  wx:if="{{detailData.doorImg2}}" class="_95782be">
+          <image src="{{detailData.doorImg2}}" catchtap="browseImg" data-current="{{detailData.doorImg2}}" data-arr="doorImg" class="imageItemStyle _95782be"/>
+        </block>
+        <block  wx:if="{{detailData.doorImg3}}" class="_95782be">
+          <image src="{{detailData.doorImg3}}" catchtap="browseImg" data-current="{{detailData.doorImg3}}" data-arr="doorImg" class="imageItemStyle _95782be"/>
+        </block>
+      </view>
+      <view class="imageItem _95782be">
+        <view class="mendianTitle _95782be">展台状态:</view>
+        <block wx:if="{{detailData.boothImg1}}" class="_95782be">
+          <image src="{{detailData.boothImg1}}" catchtap="browseImg" data-current="{{detailData.boothImg1}}" data-arr="boothImg" class="imageItemStyle _95782be"/>
+        </block>
+        <block wx:if="{{detailData.boothImg2}}" class="_95782be">
+          <image src="{{detailData.boothImg2}}" catchtap="browseImg" data-current="{{detailData.boothImg2}}" data-arr="boothImg" class="imageItemStyle _95782be"/>
+        </block>
+        <block wx:if="{{detailData.boothImg3}}" class="_95782be">
+          <image src="{{detailData.boothImg3}}" catchtap="browseImg" data-current="{{detailData.boothImg3}}" data-arr="boothImg" class="imageItemStyle _95782be"/>
+        </block>
+      </view>
+      <view class="imageItem _95782be">
+        <view class="mendianTitle _95782be">样机状态:</view>
+        <block wx:if="{{detailData.sampleImg1}}" class="_95782be">
+          <image src="{{detailData.sampleImg1}}" catchtap="browseImg" data-current="{{detailData.sampleImg1}}" data-arr="sampleImg" class="imageItemStyle _95782be"/>
+        </block>
+        <block wx:if="{{detailData.sampleImg2}}" class="_95782be">
+          <image src="{{detailData.sampleImg2}}" catchtap="browseImg" data-current="{{detailData.sampleImg2}}" data-arr="sampleImg" class="imageItemStyle _95782be"/>
+        </block>
+        <block wx:if="{{detailData.sampleImg3}}" class="_95782be">
+          <image src="{{detailData.sampleImg3}}" catchtap="browseImg" data-current="{{detailData.sampleImg3}}" data-arr="sampleImg" class="imageItemStyle _95782be"/>
+        </block>
+      </view>
+      <view class="imageItem _95782be" wx:if="{{detailData.healthImg1}}">
+        <view class="mendianTitle _95782be">门店状态:</view>
+        <block wx:if="{{detailData.healthImg1}}" class="_95782be">
+          <image src="{{detailData.healthImg1 }}" catchtap="browseImg" data-current="{{detailData.healthImg1}}" data-arr="healthImg" class="imageItemStyle _95782be"/>
+        </block>
+        <block wx:if="{{detailData.healthImg2 }}" class="_95782be">
+          <image src="{{detailData.healthImg2 }}" catchtap="browseImg" data-current="{{detailData.healthImg2}}" data-arr="healthImg" class="imageItemStyle _95782be"/>
+        </block>
+        <block wx:if="{{detailData.healthImg3 }}" class="_95782be">
+          <image src="{{detailData.healthImg3}}" catchtap="browseImg" data-current="{{detailData.healthImg3}}" data-arr="healthImg" class="imageItemStyle _95782be"/>
+        </block>
+      </view>
+      <view class="imageItem _95782be" wx:if="{{detailData.staffImg1}}">
+        <view class="mendianTitle _95782be">员工状态:</view>
+        <block wx:if="{{detailData.staffImg1}}" class="_95782be">
+          <image src="{{detailData.staffImg1 }}" catchtap="browseImg" data-current="{{detailData.staffImg1}}" data-arr="staffImg" class="imageItemStyle _95782be"/>
+        </block>
+        <block wx:if="{{detailData.staffImg2 }}" class="_95782be">
+          <image src="{{detailData.staffImg2 }}" catchtap="browseImg" data-current="{{detailData.staffImg2}}" data-arr="staffImg" class="imageItemStyle _95782be"/>
+        </block>
+        <block wx:if="{{detailData.staffImg3 }}" class="_95782be">
+          <image src="{{detailData.staffImg3}}" catchtap="browseImg" data-current="{{detailData.staffImg3}}" data-arr="staffImg" class="imageItemStyle _95782be"/>
+        </block>
+      </view>
+    </view>
+    <view class="smallBox botm-box _95782be">
+      <view class="title _95782be">检查结果明细</view>
+      <view wx:if="{{checkIndetail.listStandard}}" class="_95782be">
+        <block class="_95782be" wx:for="{{checkIndetail.listStandard}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="itemBox _95782be">
+            <view class="b-icon {{item.ispass==='T'?'zhengque':'cuowu'}} _95782be"/>
+            <view class="neirong _95782be">{{index+1}}. {{ item.contentRead }}</view>
+          </view>
+        </block>
+      </view>
+      <view wx:else class="no-data _95782be">
+        暂无数据！
+      </view>
+    </view>
+    <view class="smallBox botm-box _95782be">
+      <view class="title _95782be">问题转办</view>
+      <view wx:if="{{checkIndetail.storeProComplaintModel}}" class="_95782be">
+        <view class="itemBox _95782be">
+          <view class="mendianTitle _95782be">问题分类:</view>
+          <view class="neirong _95782be">{{checkIndetail.storeProComplaintModel.proType||''}}</view>
+        </view>
+        <view class="itemBox _95782be">
+          <view class="mendianTitle _95782be">问题描述:</view>
+          <view class="neirong _95782be">{{checkIndetail.storeProComplaintModel.proContent}}</view>
+        </view>
+        <view class="itemBox _95782be">
+          <view class="mendianTitle _95782be">创建人:</view>
+          <view class="neirong _95782be">{{checkIndetail.storeProComplaintModel.creatorName}}</view>
+        </view>
+        <view class="itemBox _95782be">
+          <view class="mendianTitle _95782be">责任人:</view>
+          <view class="neirong _95782be">{{checkIndetail.storeProComplaintModel.dutyUserName}}</view>
+        </view>
+      </view>
+      <view wx:else class="no-data _95782be">
+        暂无数据！
+      </view>
+    </view>
+    <view class="smallBox botm-box _95782be">
+      <view class="title _95782be">解决方案</view>
+      <view wx:if="{{checkIndetail.storeProPlanModel}}" class="_95782be">
+        <view class="imageItem _95782be">
+          <view class="mendianTitle _95782be">上传图片:</view>
+          <block class="_95782be" wx:for="{{checkIndetail.storeProPlanModel.imgList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+            <block wx:if="{{item.imgName}}" class="_95782be">
+              <image src="{{item.imgName}}" catchtap="browseImg" data-current="{{item.imgName}}" data-arr="checkIndetail.storeProPlanModel.imgList" class="imageItemStyle _95782be"/>
+            </block>
+          </block>
+        </view>
+        <view class="itemBox _95782be">
+          <view class="mendianTitle _95782be">创建人:</view>
+          <view class="neirong _95782be">{{checkIndetail.storeProPlanModel.creatorName}}</view>
+        </view>
+        <view class="itemBox _95782be">
+          <view class="mendianTitle _95782be">创建时间:</view>
+          <view class="neirong _95782be">{{checkIndetail.storeProPlanModel.createDate}}</view>
+        </view>
+        <view class="itemBox _95782be">
+          <view class="mendianTitle _95782be">备注:</view>
+          <view class="neirong _95782be">{{checkIndetail.storeProPlanModel.planConent}}</view>
+        </view>
+      </view>
+      <view wx:else class="no-data _95782be">
+        暂无数据！
+      </view>
+    </view>
+  </view>

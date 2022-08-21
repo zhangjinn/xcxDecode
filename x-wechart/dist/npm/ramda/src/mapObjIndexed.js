@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),_reduce=require("./internal/_reduce.js"),keys=require("./keys.js"),mapObjIndexed=_curry2(function(e,r){return _reduce(function(u,n){return u[n]=e(r[n],n,r),u},{},keys(r))});module.exports=mapObjIndexed;

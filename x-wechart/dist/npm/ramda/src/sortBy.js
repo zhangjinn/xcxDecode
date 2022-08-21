@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),sortBy=_curry2(function(r,t){return Array.prototype.slice.call(t,0).sort(function(t,e){var o=r(t),u=r(e);return o<u?-1:o>u?1:0})});module.exports=sortBy;

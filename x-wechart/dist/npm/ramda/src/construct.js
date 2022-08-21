@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),constructN=require("./constructN.js"),construct=_curry1(function(r){return constructN(r.length,r)});module.exports=construct;

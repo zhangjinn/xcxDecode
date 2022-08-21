@@ -1,0 +1,464 @@
+.ellipsis {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  overflow: hidden;
+}
+.van-hairline,
+.van-hairline--top,
+.van-hairline--left,
+.van-hairline--right,
+.van-hairline--bottom,
+.van-hairline--top-bottom,
+.van-hairline--surround {
+  position: relative;
+}
+.van-hairline::after,
+.van-hairline--top::after,
+.van-hairline--left::after,
+.van-hairline--right::after,
+.van-hairline--bottom::after,
+.van-hairline--top-bottom::after,
+.van-hairline--surround::after {
+  content: ' ';
+  position: absolute;
+  pointer-events: none;
+  box-sizing: border-box;
+  transform-origin: center;
+  /* cover wechat button:after default transforn-origin */
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  transform: scale(0.5);
+  border: 0 solid #eee;
+}
+.van-hairline--top::after {
+  border-top-width: 1px;
+}
+.van-hairline--left::after {
+  border-left-width: 1px;
+}
+.van-hairline--right::after {
+  border-right-width: 1px;
+}
+.van-hairline--bottom::after {
+  border-bottom-width: 1px;
+}
+.van-hairline--top-bottom::after {
+  border-width: 1px 0;
+}
+.van-hairline--surround::after {
+  border-width: 1px;
+}
+.van-ellipsis {
+  overflow-wrap: break-word;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.van-multi-ellipsis--l2 {
+  white-space: initial;
+  word-break: break-all;
+  /* autoprefixer: ignore next */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+}
+.van-multi-ellipsis--l3 {
+  white-space: initial;
+  word-break: break-all;
+  /* autoprefixer: ignore next */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+}
+.van-tabs__nav .tabs-bored,
+.van-tabs__nav .tabs-bored-ed {
+  background-color: #fff !important;
+}
+.head {
+  background: #fff;
+}
+.head-content {
+  width: 88vw;
+  border-radius: 20rpx;
+  box-shadow: 0 0 8rpx #ccc;
+  background: #fff;
+  margin: -240rpx 0 0 6vw;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10;
+}
+.head-content-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 50rpx 30rpx 20rpx;
+  font-size: 28rpx;
+}
+.head-content-nav-type {
+  color: #333;
+}
+.head-content-nav-btn {
+  color: #00a6aa;
+}
+.head-content-title {
+  padding: 0 30rpx 20rpx;
+}
+.head-content-title-phone {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+.head-content-title-desc {
+  font-size: 28rpx;
+  color: #ccc;
+}
+.head-content-wheel {
+  padding: 20rpx 30rpx;
+  background: #F2FBFB;
+  font-size: 32rpx;
+}
+.head-content-wheel-loca {
+  color: #3e3e3e;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+.head-content-wheel-man {
+  color: #838383;
+}
+.head-content-company {
+  padding: 20rpx 30rpx;
+  color: #888888;
+  font-size: 32rpx;
+}
+.store {
+  background: #fff;
+  padding: 20rpx 0;
+  border-bottom: 10rpx solid #F6F7F8;
+}
+.store-nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 30rpx 0 40rpx;
+}
+.store-nav-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  position: relative;
+}
+.store-nav-title::before {
+  content: "";
+  position: absolute;
+  width: 20rpx;
+  height: 8rpx;
+  background: #00a6aa;
+  left: -40rpx;
+  top: 20rpx;
+}
+.store-nav-btn {
+  font-size: 24rpx;
+  color: #00a6aa;
+}
+.store-con .scroll-warp {
+  white-space: nowrap;
+  width: 100%;
+  overflow: hidden;
+}
+.store-con .scroll-warp .scroll-img {
+  display: inline-block;
+  width: 380rpx;
+  height: 240rpx;
+  margin: 20rpx 20rpx 0 0;
+}
+.store-con .scroll-warp .scroll-img:first-child {
+  margin-left: 40rpx;
+}
+.store-con .scroll-warp .scroll-img image {
+  width: 100%;
+  height: 100%;
+}
+.store-con .store-desc {
+  padding: 50rpx 40rpx 0;
+}
+.store-con .store-desc-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+.store-con .store-desc-con {
+  display: flex;
+}
+.store-con .store-desc-con-item {
+  width: 50%;
+}
+.store-con .store-desc-con-item .store-desc-con-list {
+  margin-top: 10rpx;
+  font-size: 28rpx;
+  color: #838383;
+}
+.store .dataFrom {
+  width: 670rpx;
+  margin-left: 40rpx;
+  padding-top: 20rpx;
+  color: #838383;
+  font-size: 28rpx;
+}
+.store .dataFrom-borderTop {
+  border-top: 1rpx solid #f2f2f2;
+  margin-top: 30rpx;
+}
+.store .paddingb20 {
+  padding-bottom: 20rpx;
+}
+.store .store-table-box {
+  box-sizing: border-box;
+  border: 2rpx solid #f2f2f2;
+  margin: 0 40rpx;
+  width: 3050rpx;
+}
+.store .store-table-box .store-table-header {
+  background: #F2FBFB;
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+}
+.store .store-table-box .store-table-header .store-table-th {
+  border-right: 2rpx solid #f2f2f2;
+  border-bottom: 2rpx solid #f2f2f2;
+  word-break: break-all;
+  box-sizing: border-box;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+.store .store-table-box .store-table-header .store-table-border-bottom {
+  border-bottom: 2rpx solid #f2f2f2;
+}
+.store .store-table-box .store-table-header .store-table-tr {
+  width: 100%;
+  display: flex;
+  box-sizing: border-box;
+}
+.store .store-table-box .store-table-header .store-table-tr .store-table-td {
+  flex: 1;
+  box-sizing: border-box;
+  border-right: 2rpx solid #f2f2f2;
+}
+.store .store-table-box .store-table-header .store-table-tr .store-table-td:last-child {
+  border: none;
+}
+.store .store-table-box .column2 {
+  width: 150rpx;
+  height: 150rpx;
+}
+.store .store-table-box .column1 {
+  height: 75rpx;
+}
+.store .store-table-box .row2 {
+  width: 600rpx;
+}
+.store .store-table-box .row4 {
+  width: 1400rpx;
+}
+.store .store-table-box .text-align {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.store .store-table-box .store-table-con {
+  width: 100%;
+}
+.store .store-table-box .store-table-con .store-table-tr {
+  display: flex;
+  box-sizing: border-box;
+  border-bottom: 2rpx solid #f2f2f2;
+}
+.store .store-table-box .store-table-con .store-table-tr .store-table-td {
+  border-right: 2rpx solid #f2f2f2;
+  box-sizing: border-box;
+  font-size: 28rpx;
+}
+.store .store-table-box .store-table-con .store-table-tr .wid150 {
+  width: 150rpx;
+}
+.store .store-table-box .store-table-con .store-table-tr .wid300 {
+  width: 300rpx;
+}
+.store .store-table-box .store-table-con .store-table-tr .wid350 {
+  width: 350rpx;
+}
+.store .table-text-align {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.store .tabs-head {
+  display: flex;
+  width: 670rpx;
+  margin-left: 40rpx;
+}
+.store .tabs-head .tabs-head-item {
+  flex: 1;
+  font-size: 32rpx;
+  box-sizing: border-box;
+  padding: 20rpx;
+  background: #F7F7F7;
+}
+.store .tabs-head .tabs-head-item-active {
+  background: #EBF9FB;
+  color: #00a6aa;
+}
+.store .storeRank-table {
+  border: 2rpx solid #f2f2f2;
+  width: 670rpx;
+  margin-left: 40rpx;
+}
+.store .storeRank-table .storeRank-table-header {
+  display: flex;
+  background: #F2FBFB;
+}
+.store .storeRank-table .storeRank-table-header .storeRank-table-th {
+  flex: 1;
+  border-bottom: 2rpx solid #f2f2f2;
+  border-right: 2rpx solid #f2f2f2;
+  font-size: 32rpx;
+  font-weight: bold;
+  height: 100%;
+}
+.store .storeRank-table .storeRank-table-header .storeRank-table-th:last-child {
+  border: none;
+}
+.store .storeRank-table .column2 {
+  width: 150rpx;
+  height: 150rpx;
+}
+.store .storeRank-table .column1 {
+  height: 75rpx;
+}
+.store .storeRank-table .storeRank-table-con {
+  display: flex;
+}
+.store .storeRank-table .storeRank-table-con .storeRank-table-tr {
+  flex: 1;
+  border-right: 2rpx solid #f2f2f2;
+  font-size: 32rpx;
+}
+.store .storeRank-table .storeRank-table-con .storeRank-table-tr:last-child {
+  border: none;
+}
+.store .storeRank-table .storeRank-table-con .storeRank-table-tr .storeRank-table-td {
+  border-bottom: 2rpx solid #f2f2f2;
+}
+.store .storeRank-table .storeRank-table-con .storeRank-table-tr .storeRank-table-td:last-child {
+  border: none;
+}
+.store .order-saleData {
+  display: flex;
+  flex-wrap: wrap;
+  width: 670rpx;
+  margin-left: 40rpx;
+}
+.store .order-saleData-items {
+  width: 50%;
+  border-right: 1rpx solid #f2f2f2;
+  border-bottom: 1rpx solid #f2f2f2;
+}
+.store .order-saleData-items:nth-child(2n) {
+  border-right: none;
+}
+.store .order-saleData-items-top {
+  padding: 20rpx 0;
+}
+.store .order-saleData-items-top-title {
+  text-align: center;
+  font-size: 32rpx;
+  color: #333;
+}
+.store .order-saleData-items-top-con {
+  text-align: center;
+  font-size: 36rpx;
+  font-weight: bold;
+}
+.store .order-saleData-items-bottom {
+  padding: 0 0 20rpx 0;
+  display: flex;
+}
+.store .order-saleData-items-bottom-items {
+  width: 50%;
+  text-align: center;
+}
+.store .order-saleData-items-bottom-items-title {
+  font-size: 28rpx;
+  color: #BCBCBC;
+}
+.store .order-saleData-items-bottom-items-con {
+  font-size: 28rpx;
+}
+.store .order-saleData .border-bNone {
+  border-bottom: 0;
+}
+.store .order-data-input {
+  margin-top: 15rpx;
+  width: 670rpx;
+  margin-left: 40rpx;
+  display: flex;
+}
+.store .order-data-input .order-data-input-line {
+  width: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.store .order-data-input .order-data-input-one {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45%;
+  height: 64rpx;
+  padding: 5px 12px;
+  background-color: #f7f7f7;
+  font-size: 24rpx;
+  position: relative;
+  color: #aaaaaa;
+}
+.store .order-data-input .order-data-input-one .close-icon {
+  position: absolute;
+  right: 25rpx;
+  font-size: 24rpx;
+  color: #AAAAAA;
+}
+.store .roundShop {
+  padding: 0 40rpx;
+}
+.store .roundShop-items {
+  border-bottom: 1rpx solid #f2f2f2;
+  padding: 20rpx 0;
+}
+.store .roundShop-items .roundShop-top {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 12rpx;
+}
+.store .roundShop-items .roundShop-top-title {
+  width: 350rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 28rpx;
+}
+.store .roundShop-items .roundShop-top-phone {
+  font-size: 28rpx;
+  color: #333;
+}
+.store .roundShop-items .roundShop-bottom {
+  font-size: 28rpx;
+  color: #8e8e8e;
+}

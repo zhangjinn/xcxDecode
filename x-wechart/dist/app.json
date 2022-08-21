@@ -1,0 +1,338 @@
+{
+  "pages": [
+    "pages/main/home/index",
+    "pages/main/take/index",
+    "pages/main/activity/index",
+    "pages/main/cart/index",
+    "pages/main/me/index"
+  ],
+  "subPackages": [
+    {
+      "root": "pages/auth",
+      "name": "auth",
+      "pages": [
+        "wechat/index",
+        "account/index",
+        "mobile/index",
+        "protocol/index",
+        "confirm/index",
+        "forget/index",
+        "reset/index"
+      ]
+    },
+    {
+      "root": "pages/activity",
+      "name": "activity",
+      "pages": [
+        "activity-area/index",
+        "marketing-activities/index",
+        "marketing-activities-detail/index",
+        "marketing-activities-distributor/index",
+        "specialty-activity/list/index",
+        "specialty-activity/add/index",
+        "agency-activity/list/index",
+        "agency-activity/add/index",
+        "agency-activity/detail/index",
+        "agency-activity/off/index"
+      ]
+    },
+    {
+      "root": "pages/terminal",
+      "name": "terminal",
+      "pages": [
+        "addrecord/index",
+        "selectStore/index",
+        "punchList/index",
+        "punchdetails/index",
+        "punchMsg/index",
+        "overallMerit/index",
+        "dataDetails/index",
+        "map/index",
+        "point/index",
+        "people/index",
+        "problemTrans/index",
+        "fixNotify/index",
+        "report/operatePlanData/index",
+        "report/turnoverRateData/index",
+        "report/coverageData/index",
+        "report/salesStructureData/index",
+        "report/profitData/index",
+        "report/o2oData/index",
+        "webview/index",
+        "threeProductsReport/index",
+        "threeProductsReportDetail/index",
+        "sanpinReceipt/index",
+        "sanpinReceiptDetail/index",
+        "trainingClock/index",
+        "trainingRecord/index",
+        "trainingDetails/index",
+        "addStore/index",
+        "myNewStore/index",
+        "booth-report/list/index",
+        "booth-report/add/index",
+        "report/netIncrease/index"
+      ]
+    },
+    {
+      "root": "pages/goods",
+      "name": "goods",
+      "pages": [
+        "item/index",
+        "order/index",
+        "filter/index",
+        "search/index",
+        "collection/index",
+        "project/index",
+        "project-items/index",
+        "buy-out/index",
+        "buy-out-items/index",
+        "preference/index",
+        "preference-items/index",
+        "order-result/index",
+        "purchase-shop/index",
+        "inventory-queries/index",
+        "inventory-overtime/index",
+        "inventory-age/index",
+        "inventory-share-record/index",
+        "inventory-share-record/detail/index",
+        "inventory-overtime/apply/index",
+        "inventory-process/index",
+        "inventory-process-new/index",
+        "inventory-process-summary/index",
+        "allot-add/index",
+        "allot-list/index",
+        "inventory-trim/index",
+        "inventory-trim-query/index",
+        "allot-list/detail/index",
+        "distributor-inventory-inquiry/index",
+        "distributors-order/index",
+        "activity-order/index",
+        "market-activity-order/index",
+        "sales-order/index",
+        "custom/index",
+        "warehouse-returnGoods/index",
+        "open-reservation/index",
+        "prototypeManagement/list/index",
+        "prototypeManagement/loadingWithdrawal/index"
+      ],
+      "plugins": {
+        "live-player-plugin": {
+          "version": "1.3.0",
+          "provider": "wx2b03c6e691cd7370"
+        }
+      }
+    },
+    {
+      "root": "pages/me",
+      "name": "me",
+      "pages": [
+        "webview/index",
+        "setting/index",
+        "defaultaccount/index",
+        "bind-account/account/index",
+        "bind-account/mobile/index",
+        "order/index",
+        "order-detail/index",
+        "audit-order/index",
+        "audit-order-detail/index",
+        "todo/index",
+        "comment/index",
+        "service-comment/index",
+        "service-comment-detail/index",
+        "returned/list/index",
+        "returned/detail/index",
+        "account/list/index",
+        "account/edit-password/index",
+        "account/edit-account/index",
+        "account/add-account/index",
+        "return/base/index",
+        "return/add-product/index",
+        "notice/list/index",
+        "notice/detail/index",
+        "account-center/address/index",
+        "account-center/balance/index",
+        "distributor-snapped/index",
+        "my-snapped/index",
+        "message/detail/index",
+        "common-problem/list/index",
+        "common-problem/detail/index",
+        "my-consultation/list/index",
+        "my-consultation/detail/index",
+        "my-pose/index",
+        "distribution-order/index",
+        "distribution-order-detail/index",
+        "my-complaints/index",
+        "financial-todo/index",
+        "order-cancel/index",
+        "consult-todo/index",
+        "consult-todo-detail/index",
+        "routine-order/index",
+        "cts/store-list/index",
+        "cts/store-detail/index",
+        "cts/store-map/index",
+        "shopList/list/index",
+        "shopList/edit-account/index",
+        "shop-todo/index",
+        "shopfix-todo/index",
+        "shop-todo-detail/index",
+        "assessment-notice-todo/index",
+        "survey/index",
+        "switch-account/index",
+        "questionnaireEditorPreview/index",
+        "answerNoLogin/index",
+        "policyContract/index/index",
+        "account-cancellation/cancellation-application/index",
+        "promotional-message-detail/index"
+      ]
+    },
+    {
+      "root": "pages/operation",
+      "name": "operation",
+      "pages": [
+        "intended-users-order/index",
+        "list/index",
+        "detail/index",
+        "edit-sales-opportunity/index",
+        "edit-base-info/index",
+        "edit-house-appliances/index",
+        "add-house-appliances/index"
+      ]
+    },
+    {
+      "root": "pages/dms",
+      "name": "dms",
+      "pages": [
+        "channel-order/index",
+        "channel-order-new/index",
+        "retail-order/index",
+        "retail-order-new/index",
+        "retail-order-revision/index",
+        "order-item-choose/index",
+        "order-item-choose-new/index",
+        "order-customer-choose/index",
+        "purchase-detail/index",
+        "order-return-stock/index",
+        "sales-order/index",
+        "sales-order-detail/index",
+        "channel-order-detail/index",
+        "retail-order-detail/index",
+        "channel-purchase-order/index/index",
+        "channel-purchase-order/detail/index",
+        "out-warehouse/list/index",
+        "out-warehouse/detail/index",
+        "sales-distributors/index",
+        "sales-distributors-detail/index",
+        "order-return-before/index",
+        "order-return-choose/index",
+        "order-return-entry/index",
+        "order-direct-into/index",
+        "channel-order-return-before/index",
+        "channel-order-return/index",
+        "intentionMerchants/index",
+        "intentionh5/index",
+        "inventory-trim-in-choose/index",
+        "inventory-trim-out-choose/index",
+        "distributor-returns/list/index",
+        "distributor-returns/edit/index",
+        "agent-returns/list/index",
+        "agent-returns/initiate/index",
+        "agent-returns/warehousing/index"
+      ]
+    },
+    {
+      "root": "pages/finance",
+      "name": "finance",
+      "pages": [
+        "policy-check/list/index",
+        "policy-check/detail/index",
+        "policy-check/signature/index",
+        "invoice/index",
+        "policy-electronic/list/index",
+        "policy-electronic/signature/index",
+        "policy-electronic/detail/index",
+        "fund-electronic/list/index",
+        "fund-electronic/detail/index",
+        "fund-electronic/signature/index",
+        "fund-claim/list/index",
+        "fund-claim/detail/index",
+        "fund-claim/handle/index",
+        "assessment-notice/list/index",
+        "assessment-notice/detail/index",
+        "assessment-notice/detail-new/index",
+        "capital-flow/index"
+      ]
+    },
+    {
+      "root": "pages/chart",
+      "name": "chart",
+      "pages": [
+        "purchase/index",
+        "sales-report/index",
+        "stock/index",
+        "channel-report/index",
+        "experience-report/index"
+      ]
+    },
+    {
+      "root": "pages/message",
+      "name": "message",
+      "pages": [
+        "announcement/list/index",
+        "upcoming/list/index",
+        "notice/list/index"
+      ]
+    }
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序地址信息查看"
+    }
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#AAAAAA",
+    "selectedColor": "#00AAA6",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/main/home/index",
+        "text": "首页",
+        "iconPath": "images/tab/home.png",
+        "selectedIconPath": "images/tab/homed.png"
+      },
+      {
+        "pagePath": "pages/main/take/index",
+        "text": "产品采购",
+        "iconPath": "images/tab/take.png",
+        "selectedIconPath": "images/tab/taked.png"
+      },
+      {
+        "pagePath": "pages/main/activity/index",
+        "text": "活动中心",
+        "iconPath": "images/tab/logo.png",
+        "selectedIconPath": "images/tab/logo.png"
+      },
+      {
+        "pagePath": "pages/main/cart/index",
+        "text": "购物车",
+        "iconPath": "images/tab/cart.png",
+        "selectedIconPath": "images/tab/carted.png"
+      },
+      {
+        "pagePath": "pages/main/me/index",
+        "text": "我的",
+        "iconPath": "images/tab/me.png",
+        "selectedIconPath": "images/tab/med.png"
+      }
+    ]
+  },
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,54 @@
+.goods-toper {
+  background-color: #ffffff;
+  &-divider {
+    min-height: 40rpx;
+  }
+  &-content {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    &-center {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      justify-content: center;
+      .goods-title {
+        font-size: 32rpx;
+        color: #262626;
+        font-weight:400;
+      }
+      .tab {
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        padding: 0 60rpx 0 60rpx;
+        &-item {
+          display: flex;
+          flex: 1;
+          justify-content: center;
+          align-items: center;
+          &-text {
+            font-size: 32rpx;
+            color: #777777;
+            font-weight: 400;
+            &.active {
+              color: #00AAA6;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+    }
+    &-item {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      padding-left: 18rpx;
+      van-icon {
+        display: flex;
+      }
+    }
+  }
+}

@@ -1,0 +1,183 @@
+<template>
+  <view class="order">
+    <van-popup show="{{ beSure }}" overlay="{{ true }}">
+      <view class="orderpopup">
+        <view class="text">确认是否{{inType}}</view>
+        <view class="operation">
+          <view catchtap="OnseleWarehouse" class="operation-one">取消</view>
+          <view catchtap="beStorage" class="operation-two">确定</view>
+        </view>
+      </view>
+    </van-popup>
+    <view class="order-scroll">
+      <view class="order-scroll-head">
+        <view class="item-customer-container">
+          <view url="../order-return-before/index" class="item-customer">
+            <view wx:if="{{!returnInfo.legalPerson}}" class="item-customer-title">
+              <view class="item-customer-title-left">
+                <view class="item-customer-title-left-tag">退货信息</view>
+                <view class="item-customer-title-left-name">{{returnInfo.customerName}}</view>
+                <view class="item-customer-title-left-name">({{returnInfo.customerCode}})</view>
+              </view>
+              <view class="item-customer-title-right">
+                <view @tap="goBack" class="item-customer-title-right-update">更改</view>
+                <van-icon
+                  name="arrow"
+                  class="item-customer-title-right-icon"
+                  customer-class="item-customer-title-right-content"
+                />
+              </view>
+            </view>
+            <view wx:else class="item-customer-title">
+              <view class="item-customer-title-left">
+                <view class="item-customer-title-left-tag">退货信息</view>
+                <view class="item-customer-title-left-name">{{returnInfo.legalPerson}}</view>
+              </view>
+              <view @tap="goBack" class="item-customer-title-right">
+                <view class="item-customer-title-right-update">更改</view>
+                <van-icon
+                  name="arrow"
+                  class="item-customer-title-right-icon"
+                  customer-class="item-customer-title-right-content"
+                />
+              </view>
+            </view>
+            <view
+              wx:if="{{returnInfo.legalPerson}}"
+              style="padding-bottom: 8rpx;"
+              class="item-customer-address"
+              >{{ returnInfo.customerName }}</view>
+            <view class="item-customer-address">地址: {{ returnInfo.address }}</view>
+          </view>
+        </view>
+      </view>
+      <view class="order-middle van-hairline--top van-hairline--bottom">
+        <view class="info">
+          <view class="info-no">
+            <view class="name">{{orderName}}:</view>
+            <view class="selected van-ellipsis">{{returnInfo.documentNum}}</view>
+          </view>
+          <block wx:if="{{returnInfo.returnBy === 'bySales'}}">
+            <view class="info-status">代理发起</view>
+          </block>
+          <block wx:elif="{{returnInfo.returnBy === 'byPurchase'}}">
+            <view class="info-status">分销发起</view>
+          </block>
+        </view>
+        <view class="info-crumb">
+          <view class="name">入库仓库:</view>
+          <view class="selected van-ellipsis">{{returnInfo.warehouseName}}</view>
+        </view>
+        <view class="info-crumb">
+          <view class="name">所属门店:</view>
+          <view class="selected van-ellipsis">{{returnInfo.storeName}}</view>
+        </view>
+        <view class="info-crumb">
+          <view class="name">单据日期:</view>
+          <view class="selected van-ellipsis">{{returnInfo.documentDate}}</view>
+        </view>
+      </view>
+      <!-- 业务员 -->
+      <view class="salesman van-hairline--bottom" @tap="openChoose">
+        <view class="salesman-name">业务员</view>
+        <view class="salesman-field" hover-class="hover-btn">
+          <text>{{ywyName}}</text>
+          <view class="b-icon icon-more icon"></view>
+        </view>
+      </view>
+      <!-- 备注 -->
+      <view class="remark">
+        <view class="name">备注:</view>
+        <view class="remark-field">
+          <van-field
+            custom-style="padding: 0rpx;font-size: 26rpx;"
+            input-align="right"
+            value="{{remark}}"
+            bind:change="onChangeRemark"
+            placeholder="填写备注"
+            border="{{false}}"
+          />
+        </view>
+      </view>
+
+      <view class="goods-info">
+        <view class="goods-text">明细信息</view>
+        <repeat for="{{returnInfo.salesOrderItem}}" item=item>
+          <order-return-entry-item goodsinfo="{{item}}" 
+            bind:returnInfo="returnInfo" 
+            bind:choose="choose"
+            bind:handle="handle"
+          />
+        </repeat>
+        <view style="height: 100rpx"></view>
+      </view>
+      <view class="order-footer van-hairline--top">
+        <view class="order-footer-bar">
+          <view
+            @tap="OnseleWarehouse"
+            class="order-footer-bar-btn {{!inStatus ? 'disabled': ''}}"
+            hover-class="hover"
+            >{{inType}}</view>
+        </view>
+      </view>
+      <van-popup show="{{warehouseVisible}}" position="bottom" bind:close="onWarehouseCancel" z-index="300">
+        <van-picker
+          id="out-warehouse-detail-warehouse-picker"
+          show-toolbar
+          title="出库仓库"
+          value-key="value"
+          columns="{{warehouseList}}"
+          bind:cancel="onWarehouseCancel"
+          bind:confirm="onWarehouseConfirm"
+        />
+      </van-popup>
+      <van-popup show="{{invBatchVisible}}" position="bottom" bind:close="onCloseInvBatch" z-index="300">
+        <van-picker
+          id="out-warehouse-detail-batch-picker"
+          show-toolbar
+          title="批次"
+          value-key="value"
+          columns="{{currentInvBatchList}}"
+          bind:cancel="onCloseInvBatch"
+          bind:confirm="onInvBatchConfirm"
+        />
+      </van-popup>
+      <!-- 业务员 -->
+      <van-popup show="{{popVisible}}" position="bottom" bind:close="closePolicy">
+        <view class="policy">
+          <view @tap="closePolicy" class="policy-close" hover-class="hover">
+            <van-icon color="#262626" name="cross" />
+          </view>
+          <view class="policy-header van-hairline--bottom">业务员</view>
+          <scroll-view
+            scroll-y
+            enable-flex
+            enable-back-to-top="true"
+            scroll-with-animation="true"
+            class="policy-scroll"
+          >
+            <repeat
+              for="{{ywyList}}"
+              index="in"
+              item="item"
+            >
+              <view class="warehouse-list-container">
+                <view
+                  @tap="chooseYwy({{item.name}},{{item.id}})"
+                  class="warehouse-list-{{ ywyId == item.id ? 'name': 'named' }}"
+                >{{item.name}}</view>
+                <view
+                  class="b-icon {{ywyId == item.id ? 'icon-check': '' }} warehouse-list-icon"
+                ></view>
+              </view>
+            </repeat>
+          </scroll-view>
+        </view>
+      </van-popup>
+      <van-dialog id="van-dialog" />
+      <van-toast id="van-toast" />
+    </view>
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

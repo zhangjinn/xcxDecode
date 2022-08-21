@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),assoc=_curry3(function(r,u,a){var c={};for(var e in a)c[e]=a[e];return c[r]=u,c});module.exports=assoc;

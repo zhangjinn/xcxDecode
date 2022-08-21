@@ -1,0 +1,106 @@
+
+  <view class="order _140048f">
+    <view class="order-header _140048f">
+      <view class="top _140048f">
+        <view class="name _140048f">{{detail.applyNo}}</view>
+        <view class="status _140048f">{{detail.statusName}}</view>
+      </view>
+      <view class="info-line _140048f">
+        <text class="lab _140048f">流程名称：</text>
+        <text class="val _140048f">超期库存共享申请</text>
+      </view>
+      <view class="info-line _140048f">
+        <text class="lab _140048f">流程主题：</text>
+        <text class="val _140048f">{{detail.theme}}</text>
+      </view>
+      <view class="info-line _140048f">
+        <text class="lab _140048f">申请人：</text>
+        <text class="val _140048f">{{detail.creator}}</text>
+      </view>
+      <view class="info-line _140048f">
+        <text class="lab _140048f">申请时间：</text>
+        <text class="val _140048f">{{detail.createdDate}}</text>
+      </view>
+      <view class="info-line _140048f"  wx:if="{{detail.modifier}}">
+        <text class="lab _140048f">最后审批人：</text>
+        <text class="val _140048f">{{detail.modifier||'--'}}</text>
+      </view>
+      <view class="info-line _140048f"  wx:if="{{detail.modifiedDate}}">
+        <text class="lab _140048f">审批结束时间：</text>
+        <text class="val _140048f">{{detail.modifiedDate||'--'}}</text>
+      </view>
+    </view>
+    <view class="order-scroll _140048f">
+      <view class="title _140048f">
+        明细信息
+      </view>
+      <block class="_140048f" wx:for="{{list}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="order-container _140048f">
+          <view class="order-top _140048f">
+            <view class="order-name _140048f">
+              <view class="order-rel-name _140048f">
+                <view class="order-name-left _140048f">{{item.zzprdmodel}}</view>
+              </view>
+              <view class="order-number _140048f">{{item.qualitylv}}/{{item.invstatusName}}</view>
+            </view>
+          </view>
+          <view class="order-content _140048f">
+            <view class="order-content-laster order-content-laster1 _140048f">
+              <span class="lab-mg-10 _140048f">仓库: </span>
+              {{item.warehouseInfoLgortName}}</view>
+            <view class="order-content-status _140048f">{{item.statusName}}</view>
+          </view>
+          <view class="order-content _140048f">
+            <view class="order-content-laster _140048f">
+              <span class="lab-mg-10 _140048f">入库时间: </span>
+              {{item.ininvdate || '无'}}</view>
+          </view>
+          <view class="order-options order-option-four _140048f">
+            <view class="item _140048f">
+              <span class="_140048f">可用</span>
+              ({{item.avaqty || '0'}})
+            </view>
+            <view class="item _140048f">
+              <span class="_140048f">已共享</span>
+              ({{item.alreadyshareqty || '0'}})
+            </view>
+            <view class="item _140048f" style="margin-right: 0">
+              <span class="_140048f">可共享</span>
+              ({{item.avbshareqty}})
+            </view>
+          </view>
+          <view class="order-options order-option-four _140048f">
+            <view class="item _140048f">
+              <span class="_140048f">申请共享</span>
+              ({{item.planqty || '0'}})
+            </view>
+            <view class="item _140048f">
+              <span class="_140048f">允许共享</span>
+              ({{item.updateqty || '0'}})
+            </view>
+            <view class="item _140048f" style="margin-right: 0">
+              <span class="_140048f">实际共享</span>
+              ({{item.realqty}})
+            </view>
+          </view>
+          <view class="order-content _140048f" style="height: unset;"  wx:if="{{item.checkRemark}}">
+            <view class="order-content-laster _140048f" style="overflow: hidden">
+              <span class="lab-mg-10 _140048f" style="float: left">变更说明: </span>
+              <span class="wrap-val _140048f">{{item.checkRemark}}</span>
+            </view>
+          </view>
+          <view class="order-content _140048f" wx:if="{{item.auditMsg}}">
+            <view class="order-content-laster _140048f">
+              <span class="lab-mg-10 _140048f">审批意见:</span>
+              {{item.auditMsg}}</view>
+          </view>
+        </view>
+      </block>
+    </view>
+    <view class="order-footer _140048f">
+      <view class="title _140048f">审批记录</view>
+      <view class="order-audit-logistics-information-steps-rec _140048f">
+        <van-steps steps="{{ steps }}" active="{{ active }}" direction="vertical" active-color="#00aaa6" class="_140048f"/>
+      </view>
+    </view>
+  </view>

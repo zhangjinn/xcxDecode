@@ -1,0 +1,1 @@
+function _complement(e){return function(){return!e.apply(this,arguments)}}module.exports=_complement;

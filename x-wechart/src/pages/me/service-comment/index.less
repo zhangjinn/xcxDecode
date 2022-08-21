@@ -1,0 +1,36 @@
+@import '../../../styles/utils.less';
+@import '../../../components/vant/common/style/hairline.less';
+@import '../../../components/vant/common/style/ellipsis.less';
+.van-cell__value {
+    text-align: left;
+    .order-common-value{
+        display: flex;
+        align-items: center;
+        height: 100%;
+        &-con {
+            color: #333333;
+            margin-right: 10rpx;
+            max-width: 550rpx;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        &-label {
+            box-sizing: border-box;
+            font-size: 24rpx;
+            color: #fff;
+            background: #F26522;
+            padding: 2rpx 10rpx;
+            height: 40rpx;
+            line-height: 40rpx;
+            border-radius: 6rpx;
+        }
+    }
+}
+.van-cell__title, .van-cell__value {
+    flex: auto;
+    flex-wrap: nowrap;
+}
+.comment-border {
+  border-top: 16rpx solid rgb(247, 247, 247);
+}

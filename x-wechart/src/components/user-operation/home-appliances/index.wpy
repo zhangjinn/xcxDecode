@@ -1,0 +1,188 @@
+<template>
+  <view class="purchase-intention-wrapper">
+    <view class="basic-info-wrapper">
+      <view class="order-entry-title">
+        <text class="title-text">家电信息</text>
+      </view>
+      <view class="basic-info-container">
+        <view class="order-scroll-info" wx:for="{{purchaseIntention}}">
+          <view
+            class="item-row"
+            data-title="品类"
+            data-index="{{index}}"
+            data-key="intendedCategory"
+            data-options="intendedCategoryOption"
+            @tap="openChoose"
+          >
+            <view class="item-row-left">
+              <text>品类</text>
+              <text class="redXing">*</text>
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-inventory {{ item.intendedCategory.id ? '' : 'placeholder' }}">
+                {{ item.intendedCategory.name || '请选择'}}
+              </view>
+              <van-icon
+                name="arrow"
+                custom-class="dms-item-row-right-arrow"
+              />
+            </view>
+          </view>
+          <view class="item-row">
+            <view class="item-row-left">
+              品牌
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-note">
+                <van-field
+                  value="{{ item.brand }}"
+                  placeholder="请输入"
+                  border="{{ false }}"
+                  input-align="right"
+                  data-index="{{index}}"
+                  data-key="brand"
+                  bind:change="onBaseFieldChange"
+                  class="dms-order-note"
+                />
+              </view>
+            </view>
+          </view>
+          <view class="item-row">
+            <view class="mask" wx:if="{{item.popShow && intendedProductOption && intendedProductOption.length>0}}" data-index="{{index}}" @tap="popHide" ></view>
+            <view class="item-row-info">
+              <view class="item-row-left">
+                产品
+              </view>
+              <view class="item-row-right">
+                <view class="item-row-right-note">
+                  <van-field
+                    value="{{ item.intendedProduct }}"
+                    placeholder="请输入"
+                    border="{{ false }}"
+                    input-align="right"
+                    data-index="{{index}}"
+                    data-key="intendedProduct"
+                    bind:change="onBaseFieldChange"
+                    class="dms-order-note"
+                  />
+                </view>
+              </view>
+            </view>
+            <!--    产品模糊搜索列表   -->
+            <view class='prod-scroll-view' wx:if="{{item.popShow &&intendedProductOption && intendedProductOption.length>0}}">
+              <scroll-view class='prod-scroll-view-inner' scroll-y bindscroll='onScroll'>
+                <repeat for="{{intendedProductOption}}" item="productItem">
+                  <view class="order-operation">
+                    <view class="operation-text {{index < intendedProductOption.length-1 ? 'van-hairline--bottom' : ''}}" @tap="onProductSelect({{productItem}})">
+                      <view class="operation-status">{{productItem.name}}</view>
+                    </view>
+                  </view>
+                </repeat>
+              </scroll-view>
+            </view>
+
+          </view>
+          <view class="item-row">
+            <view class="item-row-left">
+              年限
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-note">
+                <van-field
+                  type="digit"
+                  value="{{ item.years }}"
+                  placeholder="请输入数字"
+                  border="{{ false }}"
+                  input-align="right"
+                  data-index="{{index}}"
+                  data-key="years"
+                  bind:change="onBaseFieldChange"
+                  class="dms-order-note"
+                />
+              </view>
+            </view>
+          </view>
+          <view class="item-row">
+            <view class="item-row-left">
+              备注
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-note">
+                <van-field
+                  value="{{ item.remark }}"
+                  placeholder="请填写备注(不超过10个字)"
+                  border="{{ false }}"
+                  input-align="right"
+                  data-index="{{index}}"
+                  data-key="remark"
+                  maxlength="10"
+                  bind:change="onBaseFieldChange"
+                  class="dms-order-note"
+                />
+              </view>
+            </view>
+          </view>
+          <view class="sales-info-item-footer">
+            <view class="handle-btn" data-index="{{index}}" @tap="onDelete">
+              <i class="b-icon shanchu"></i>
+              <text>删除</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="basic-info-wrapper">
+      <view class="add-sales" @tap="onAdd"><i class="b-icon icon-add"></i>继续添加</view>
+    </view>
+
+    <van-popup
+      show="{{ popVisible }}"
+      closeable
+      position="bottom"
+      custom-style="height: 570rpx"
+      bind:click-overlay="onClose"
+    >
+      <view class="order-inv">
+        <view class="order-inv-head">
+          <view class="order-inv-head-context">
+            <view class="order-inv-head-context-title">{{ popTitle }}</view>
+            <van-icon
+              name="cross"
+              class="order-inv-head-context-close"
+              bindtap="onClose"
+            />
+          </view>
+        </view>
+        <scroll-view
+          scroll-y
+          class="order-inv-scroll"
+        >
+          <view
+            wx:for="{{ popList }}"
+            wx:key="{{ item.id }}"
+            item="item"
+            class="order-inv-scroll-row"
+            data-key="{{ item.id }}"
+            data-index="{{ index }}"
+            bindtap="onChoose"
+          >
+            <view class="order-inv-scroll-row-desc {{ item.id === compareInfo.id ? 'checked' : ''}}">
+              {{ item.name }}
+            </view>
+            <block wx:if="{{ item.id === compareInfo.id }}">
+              <view class="b-icon icon-check order-inv-scroll-row-checked checked">
+              </view>
+            </block>
+          </view>
+
+        </scroll-view>
+      </view>
+    </van-popup>
+
+    <van-toast id="van-toast" />
+  </view>
+
+</template>
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts" ></script>

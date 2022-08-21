@@ -1,0 +1,77 @@
+<template>
+  <view wx:if="{{loginStatus}}" class="me" style="padding-bottom: {{ customTabBarAllHeight }}px">
+    <view class="me-wrapper">
+      <view class="me-status">
+        <view class="personal-bg">
+<!--          <image class="mg-bg" wx:if="{{imgObj.myBg}}" src="{{imgObj.myBg}}"/>-->
+        </view>
+        <view class="personal-content">
+          <view class="personal-info">
+            <view wx:if="{{ loginStatus }}" class="account-info" @tap="goSwitchAccount">
+              <view class="avatar-box">
+                <image class="trademark-logo" src="{{imgObj.myAvatar}}"/>
+              </view>
+              <view>
+                <view class="name">{{currentAccount.name || mixinCurrentUser.userName || ''}}</view>
+                <view class="code">{{ currentAccount.account || mixinCurrentUser.account || ''}}</view>
+              </view>
+            </view>
+            <view wx:else class="account-info" @tap="onLogin">
+              <view class="avatar-box">
+                <image class="trademark-logo" src="{{imgObj.myAvatar}}"/>
+              </view>
+              <view>点击登录</view>
+            </view>
+            <view class="me-status-options">
+              <i class="me-link b-icon b-icon2 icon-setting" @tap="navigateTo('/pages/me/setting/index')"></i>
+            </view>
+          </view>
+          <view class="personal-center">
+            <block wx:for="{{notificationList}}" >
+              <view wx:if="{{item.isShow}}" class="personal-center-item" @tap="goMessageCenter({{item}})">
+                <i class="b-icon {{item.icon}}">
+                  <view wx:if="{{ item.unReadNumber && item.unReadNumber != 0 }}" class="reddot">{{ item.unReadNumber }}</view>
+                </i>
+                <p>{{ item.name }}</p>
+              </view>
+            </block>
+          </view>
+        </view>
+      </view>
+      <view class="me-content">
+        <!--    //TODO：权限测试-->
+        <view wx:for="{{permissionList}}" wx:if="{{!utils.isInCurrentList('首页', item.sourceName) && !utils.isInCurrentList('产品采购', item.sourceName)}}" class="me-content-block-out">
+          <block wx:if="{{ item.subMenuList && item.subMenuList.length > 0 }}">
+            <view class="me-content-block">
+              <view class="block-header">{{item.sourceName}}</view>
+              <view class="block-content">
+                <block wx:for="{{item.subMenuList}}" wx:for-index="idx" wx:for-item="subItem">
+                  <block wx:if="{{subItem.sourceName!='搜索框' &&subItem.sourceName!='购物车'}}">
+                    <view @tap="goPage({{subItem}})" hover-class="hover" class="block-content-item">
+                      <view class="icon-box">
+                        <image wx:if="{{subItem.iconUrl}}" class="icon-img" src="{{subItem.iconUrl}}"/>
+                        <i wx:else class="b-icon {{subItem.menuCode}}"></i>
+                      </view>
+                      <view class="block-content-item-label">{{ subItem.sourceName }}</view>
+                    </view>
+                  </block>
+                </block>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+    <van-toast id="van-toast" />
+  </view>
+  <block wx:else>
+    <view class="no-permission-wrapper">
+      <view class="header-divider" style="height: {{sys.statusBarHeight + 44 }}px; background-color: #ffffff" />
+      <view class="no-permission-box">
+        <no-permission />
+      </view>
+    </view>
+  </block>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts" ></script>

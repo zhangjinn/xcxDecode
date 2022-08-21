@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),remove=_curry3(function(r,e,c){var o=Array.prototype.slice.call(c,0);return o.splice(r,e),o});module.exports=remove;

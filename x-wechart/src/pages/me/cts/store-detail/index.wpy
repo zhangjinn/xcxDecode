@@ -1,0 +1,566 @@
+<template>
+  <view class="me-default-account">
+    <!-- 门店销售数据切换物料组 -->
+    <van-popup show="{{ isOpenSaleMatkl }}" closeable position="bottom" bind:close="closeSaleMatkl" z-index="200">
+      <view class="phoneDirectorybox">
+        <scroll-view scroll-y="true" class="phoneDirectory">
+          <view class="phoneDirectory-box">
+            <!-- <repeat for="{{ queryAllMatkl }}" item="items" index="index">
+                <view class="phoneDirectory-box-item {{ items.active?'phoneDirectory-box-item-active':'' }}" @tap="toChooseMatkl({{items}})">{{items.materialName}}</view>
+            </repeat> -->
+            <repeat for="{{ queryAllMatkl }}" item="items">
+                <view class="phoneDirectory-box-item {{items.materialCode == filterForm.terms.materialCode ? 'phoneDirectory-box-item-active':''}}" @tap="toChooseMatkl({{items}})">{{items.materialName}}</view>
+            </repeat>
+          </view>
+          <view class="phoneDirectory-box-item-center">
+            <view class="phoneDirectory-box-item {{items.materialCode == filterForm.terms.materialCode?'phoneDirectory-box-item-active':''}}" @tap="toChooseMatklTrue">完成</view>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <!-- 门店竞争力排名切换物料组 -->
+    <van-popup show="{{ isOpenRankMatkl }}" closeable position="bottom" bind:close="closeRankMatkl" z-index="200">
+      <view class="phoneDirectorybox">
+        <scroll-view scroll-y="true" class="phoneDirectory">
+          <view class="phoneDirectory-box">
+            <repeat for="{{ queryAllMatkl }}" item="items">
+                <view class="phoneDirectory-box-item {{items.materialCode == filterForm.terms.materialCodeRank?'phoneDirectory-box-item-active':''}}" @tap="toChooseRankMatkl({{items}})">{{items.materialName}}</view>
+            </repeat>
+          </view>
+          <view class="phoneDirectory-box-item-center">
+            <view class="phoneDirectory-box-item {{items.materialCode == filterForm.terms.materialCodeRank?'phoneDirectory-box-item-active':''}}" @tap="toChooseRankMatklTrue">完成</view>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <!-- 电话列表 begin -->
+    <van-popup show="{{ isUserMakeCall }}" closeable position="bottom" bind:close="closeMakeCall" z-index="200">
+      <view class="phoneDirectorybox">
+        <i class="b-icon iconyiquxiao path-icon" @tap="closeMakeCall"></i>
+        <scroll-view scroll-y="true" class="phoneDirectory phoneDirectoryTel">
+          <repeat for="{{ getStoryPersonsList }}" item="items">
+            <view class="phoneDirectory-list" @tap="toStoreMakeCall({{items}})">
+              <view class="phoneDirectory-list-left">
+                <view class="phoneDirectory-list-left-title">{{ items.positionName }}</view>
+                <view class="phoneDirectory-list-left-phone">{{ items.name + ' ' + utils.formatTel(items.tel) }}</view>
+              </view>
+              <view class="phoneDirectory-list-right">
+                <view class="phoneDirectory-list-right-icon"><i class="b-icon icon-mendian-phone path-icon"></i></view>
+              </view>
+            </view>
+          </repeat>
+        </scroll-view>
+      </view>
+    </van-popup>
+    <!-- 电话列表 end -->
+    <!-- 头部店铺信息 -->
+    <view class="head">
+      <view class="head-banner">
+        <image src="{{imgSrc}}" alt="" />
+      </view>
+      <view class="head-content">
+        <view class="head-content-nav">
+          <view class="head-content-nav-flex">
+            <view class="head-content-nav-flex-type" wx:if="{{filterForm.terms.isSpecialShop == '0'||filterForm.terms.isBrandGarden == '0'||filterForm.terms.isSmartShop == '0'||filterForm.terms.isSinkChannel == '0'}}">
+              <i class="b-icon icon-putongdian path-icon" style="color:#2ACD98;"></i>
+              普通店
+            </view>
+            <view class="head-content-nav-flex-type" wx:if="{{filterForm.terms.isSpecialShop == '1'}}">
+              <i class="b-icon icon-zhuanmaidian path-icon" style="color:#576DE2;"></i>
+              专卖店
+            </view>
+            <view class="head-content-nav-flex-type" wx:if="{{filterForm.terms.isBrandGarden == '1'}}">
+              <i class="b-icon icon-pinpaiguan path-icon" style="color:#05A9A6;"></i>
+              品牌园
+            </view>
+            <view class="head-content-nav-flex-type" wx:if="{{filterForm.terms.isSinkChannel == '1'}}">
+              <i class="b-icon icon-xiachenqudao path-icon" style="color:#FD4349;"></i>
+              下沉渠道
+            </view>
+            <view class="head-content-nav-flex-type" wx:if="{{filterForm.terms.isSmartShop == '1'}}">
+              <i class="b-icon icon-zhihuishenghuo path-icon" style="color:#43C4D8;"></i>
+              智慧生活馆
+            </view>
+          </view>
+          <view class="head-content-nav-flex">
+            <view class="head-content-nav-flex-btn"></view>
+          </view>
+        </view>
+        <view class="head-content-title">
+          <view class="head-content-title-phone" @tap="openMakeCall">{{queryStoreAllInfo.store.storeName}} <i class="b-icon icon-mendian-phone path-icon"></i></view>
+          <view class="head-content-title-desc">{{queryStoreAllInfo.store.streetAddr}}</view>
+        </view>
+        <view class="head-content-wheel" wx:if="{{vanTabsActive != '0'}}" @tap="makeCall" data-number="{{getStoreDetailByMat.managerTel}}">
+          <view class="head-content-wheel-loca"><text>{{getStoreDetailByMat.officeName}}</text> <i class="b-icon icon-mendian-phone path-icon"></i></view>
+          <view class="head-content-wheel-man">经理:{{getStoreDetailByMat.managerName}}</view>
+        </view>
+        <view class="head-content-company">
+          <view class="head-content-company-loca">商家：{{filterForm.terms.shopName}} <span class="head-content-company-loca-level">{{filterForm.terms.level}}</span></view>
+        </view>
+      </view>
+    </view>
+    <!-- tab店铺内容分类 -->
+      <van-tabs active="{{vanTabsActive}}" ellipsis sticky @click="bindTabsClick" color="#00a6aa" background="#fff" title-active-color="#333333" title-inactive-color="#cccccc">
+        <repeat for="{{queryAllMatkl}}" item="items">
+        <van-tab title="{{items.materialName}}"></van-tab>
+        </repeat>
+      </van-tabs>
+      <view class="van-tabs-bg">
+        <!-- 门店照片 -->
+        <view class="store" wx:if="{{vanTabsActive != '0'}}">
+          <view class="store-nav">
+            <view class="store-nav-title">门店照片</view>
+            <view class="store-nav-btn">我要上传</view>
+          </view>
+          <view class="store-con">
+            <scroll-view scroll-x="true" class="scroll-warp">
+              <view class="scroll-img">
+                <image src="{{ getStoreDetailByMat.storePhoto.headImg&&getStoreDetailByMat.storePhoto.headImg.length>0?getStoreDetailByMat.storePhoto.headImg:imgSrc }}"></image>
+                <view class="scroll-img-desc">门头照片</view>
+              </view>
+              <view class="scroll-img">
+                <image src="{{ getStoreDetailByMat.storePhoto.mainBooth&&getStoreDetailByMat.storePhoto.mainBooth.length>0?getStoreDetailByMat.storePhoto.mainBooth:imgSrc }}"></image>
+                <view class="scroll-img-desc">主推位</view>
+              </view>
+              <view class="scroll-img">
+                <image src="{{ getStoreDetailByMat.storePhoto.leftImg&&getStoreDetailByMat.storePhoto.leftImg.length>0?getStoreDetailByMat.storePhoto.leftImg:imgSrc }}"></image>
+                <view class="scroll-img-desc">左侧</view>
+              </view>
+              <view class="scroll-img">
+                <image src="{{ getStoreDetailByMat.storePhoto.rightImg&&getStoreDetailByMat.storePhoto.rightImg.length>0?getStoreDetailByMat.storePhoto.rightImg:imgSrc }}"></image>
+                <view class="scroll-img-desc">右侧</view>
+              </view>
+            </scroll-view>
+          </view>
+        </view>
+        <!-- 门店简介 -->
+        <view class="store" wx:if="{{vanTabsActive != '0'}}">
+          <view class="store-nav">
+            <view class="store-nav-title">门店简介</view>
+            <view class="store-nav-btn">我要更新</view>
+          </view>
+          <view class="store-con">
+            <view class="storeDesc">
+              <!-- 基本信息 -->
+              <view class="storeDescBox">
+                <view class="storeDescBox-leftTit">
+                  <view>基本</view>
+                  <view>信息</view>
+                </view>
+                <view class="storeDescBox-rBox">
+                  <scroll-view scroll-x="true" class="scroll-warp">
+                    <view class="storeNewDescBox-rBox-warp">
+                      <view class="storeNewDescBox-rBox">
+                        <view class="storeNewDescBox-rBox-head-item">展台</view>
+                        <view class="storeNewDescBox-rBox-con-item">
+                          <view class="storeNewDescBox-rBox-con-item-box">
+                            <view class="storeNewDescBox-rBox-con-item-box-text">楼层</view>
+                            <view class="storeNewDescBox-rBox-con-item-box-text">{{getStoreDetailByMat.storeDate.shopFloor}}层</view>
+                          </view>
+                          <view class="storeNewDescBox-rBox-con-item-box">
+                            <view class="storeNewDescBox-rBox-con-item-box-text">面积</view>
+                            <view class="storeNewDescBox-rBox-con-item-box-text">{{getStoreDetailByMat.storeDate.shopArea}}平</view>
+                          </view>
+                        </view>
+                      </view>
+                      <view class="storeNewDescBox-rBox">
+                        <view class="storeNewDescBox-rBox-head-item">样机</view>
+                        <view class="storeNewDescBox-rBox-con-item">
+                          <view class="storeNewDescBox-rBox-con-item-box">
+                            <view class="storeNewDescBox-rBox-con-item-box-text">铺借样机</view>
+                            <view class="storeNewDescBox-rBox-con-item-box-text">{{getStoreDetailByMat.storeDate.sample}}台</view>
+                          </view>
+                          <view class="storeNewDescBox-rBox-con-item-box">
+                            <view class="storeNewDescBox-rBox-con-item-box-text">高端样机</view>
+                            <view class="storeNewDescBox-rBox-con-item-box-text">{{getStoreDetailByMat.storeDate.highSample}}台</view>
+                          </view>
+                        </view>
+                      </view>
+                      <view class="storeNewDescBox-rBox">
+                        <view class="storeNewDescBox-rBox-head-item" style="width:100%;">可视品类</view>
+                        <view class="storeNewDescBox-rBox-con-item">
+                          <repeat for="{{queryStoreAllInfo.canSee}}" item="items" index="index">
+                            <view wx:if="{{(index + 1)%2 == 1}}" class="storeNewDescBox-rBox-con-item-box">
+                              <view class="storeNewDescBox-rBox-con-item-box-text">{{items.materialName}}</view>
+                              <view class="storeNewDescBox-rBox-con-item-box-text">{{items.distance}}米</view>
+                            </view>
+                          </repeat>
+                          <repeat for="{{queryStoreAllInfo.canSee}}" item="items" index="index">
+                            <view wx:if="{{(index + 1)%2 == 0}}" class="storeNewDescBox-rBox-con-item-box">
+                              <view class="storeNewDescBox-rBox-con-item-box-text">{{items.materialName}}</view>
+                              <view class="storeNewDescBox-rBox-con-item-box-text">{{items.distance}}米</view>
+                            </view>
+                          </repeat>
+                        </view>
+                      </view>
+                    </view>
+                  </scroll-view>
+                </view>
+              </view>
+              <!-- 竞品信息 -->
+              <view class="storeDescBox">
+                <view class="storeDescBox-leftTit">
+                  <view>竞品</view>
+                  <view>信息</view>
+                </view>
+                <view class="storeDescBox-rBox">
+                  <view class="storeDescBox-rBoxTwo">
+                    <view class="storeDescBox-rBoxTwo-item">排名</view>
+                    <view class="storeDescBox-rBoxTwo-item">品牌</view>
+                    <view class="storeDescBox-rBoxTwo-item">规模</view>
+                    <view class="storeDescBox-rBoxTwo-item">占有率(%)</view>
+                  </view>
+                  <repeat for="{{queryStoreAllInfo.storeCompetitor}}" item="items" index="index">
+                    <view class="storeDescBox-rBoxTwo">
+                      <view class="storeDescBox-rBoxTwo-item">{{index + 1}}</view>
+                      <view class="storeDescBox-rBoxTwo-item">{{items.brandCode}}</view>
+                      <view class="storeDescBox-rBoxTwo-item">{{items.scale}}</view>
+                      <view class="storeDescBox-rBoxTwo-item">{{items.marketShare}}%</view>
+                    </view>
+                  </repeat>
+                </view>
+              </view>
+              <!-- 人员信息 -->
+              <view class="storeDescBox">
+                <view class="storeDescBox-leftTit">
+                  <view>人员</view>
+                  <view>信息</view>
+                </view>
+                <view class="storeDescBox-rBox storeDescBox-rBoxTwoItem">
+                  <view class="storeDescBox-rBoxTwo">
+                    <view class="storeDescBox-rBoxTwo-item">业务员</view>
+                    <view class="storeDescBox-rBoxTwo-item">{{getStoreDetailByMat.storeDate.promotion}}人</view>
+                  </view>
+                  <view class="storeDescBox-rBoxTwo">
+                    <view class="storeDescBox-rBoxTwo-item">促销员</view>
+                    <view class="storeDescBox-rBoxTwo-item">{{getStoreDetailByMat.storeDate.salesman}}人</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <!-- 门店综合评价 -->
+        <!-- <view class="store" wx:if="{{vanTabsActive != '0'}}"> -->
+        <view class="store" hidden="{{vanTabsActive == '0'}}">
+          <view class="store-nav">
+            <view class="store-nav-title">门店综合评价</view>
+            <navigator hover-class="none" url="/pages/terminal/overallMerit/index?storeCode={{filterForm.terms.cisCode}}&materialCode={{filterForm.terms.materialCode}}&shopName={{filterForm.terms.shopName}}" class="store-nav-btn">查看详情</navigator>
+          </view>
+          <view class="store-con">
+            <chart :option.sync="option1" id="myChart" canvasId="myChart" height="300px"></chart>
+            <!-- <ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ ec }}" height="300px"></ec-canvas> -->
+          </view>
+        </view>
+        <!-- 门店档案 -->
+        <view class="store" wx:if="{{vanTabsActive == '0'}}">
+          <view class="store-nav paddingb20">
+            <view class="store-nav-title">门店档案</view>
+            <view class="store-nav-btn"></view>
+          </view>
+          <view class="store-con">
+            <!-- 门店档案table表格 -->
+            <scroll-view scroll-x="true" class="scroll-warp">
+              <view class="store-table-box">
+                <!-- 表格 header -->
+                <view class="store-table-header">
+                  <view class="store-table-th column2 text-align">物料组</view>
+                  <view class="store-table-th column2 text-align">级别</view>
+                  <view class="store-table-th column2 text-align">
+                    <text> 面积\n(平米)</text>
+                  </view>
+                  <view class="store-table-th row2">
+                    <view class="store-table-td text-align column1 store-table-border-bottom">样机</view>
+                    <view class="store-table-tr column1">
+                      <view class="store-table-td  text-align">
+                        铺借样机（台）
+                      </view>
+                      <view class="store-table-td  text-align">
+                        高端样机（占比）
+                      </view>
+                    </view>
+                  </view>
+                  <view class="store-table-th row2">
+                    <view class="store-table-td column1 text-align store-table-border-bottom">年累销量</view>
+                    <view class="store-table-tr column1">
+                      <view class="store-table-td text-align">
+                        高端销售占比
+                      </view>
+                      <view class="store-table-td text-align">
+                        销量（台）
+                      </view>
+                    </view>
+                  </view>
+                  <view class="store-table-th row4">
+                    <view class="store-table-td text-align column1 store-table-border-bottom">门店费用</view>
+                    <view class="store-table-tr column1">
+                      <view class="store-table-td text-align">
+                        上次重装场地费
+                      </view>
+                      <view class="store-table-td text-align">
+                        上次重装场地日期
+                      </view>
+                      <view class="store-table-td text-align">
+                        上次重装展台费
+                      </view>
+                      <view class="store-table-td text-align">
+                        上次重装展台日期
+                      </view>
+                    </view>
+                  </view>
+                </view>
+                <view class="store-table-con">
+                  <repeat for="{{storeRecordList}}" item="items">
+                    <view class="store-table-tr column1">
+                      <view class="store-table-td wid150 text-align">{{items.materialGroupName}}</view>
+                      <view class="store-table-td wid150 text-align">{{items.shopLevelName}}</view>
+                      <view class="store-table-td wid150 text-align">{{items.shopArea}}</view>
+                      <view class="store-table-td wid300 text-align">{{items.sample}}</view>
+                      <view class="store-table-td wid300 text-align">{{items.highSample}}</view>
+                      <view class="store-table-td wid300 text-align">{{items.highProportion}}</view>
+                      <view class="store-table-td wid300 text-align">{{items.yearSum}}</view>
+                      <view class="store-table-td wid350 text-align">{{items.lastPlaceCost}}</view>
+                      <view class="store-table-td wid350 text-align">{{items.lastPlaceTime}}</view>
+                      <view class="store-table-td wid350 text-align">{{items.lastStationCost}}</view>
+                      <view class="store-table-td wid350 text-align">{{items.lastStationTime}}</view>
+                    </view>
+                  </repeat>
+                </view>
+              </view>
+            </scroll-view>
+          </view>
+        </view>
+        <!-- 门店销售数据 -->
+        <view class="store">
+          <van-popup show="{{calendarShow}}" position="bottom" bind:close="closeCalendar" z-index="200">
+            <calendar
+              calendarConfig="{{calendarConfig}}"
+              bind:afterTapDay="chooseDay"
+            />
+          </van-popup>
+          <view class="store-nav paddingb20">
+            <view class="store-nav-title">门店销售数据</view>
+            <view class="store-nav-btn" >
+              <!-- <text @tap="openSaleMatkl">{{filterForm.terms.materialCodeSaleName.length == 0?'全部':filterForm.terms.materialCodeSaleName}}</text> -->
+              <text @tap="openSaleMatkl">{{filterForm.terms.materialCodeSaleName}}</text>
+              <navigator hover-class="none" url="/pages/terminal/dataDetails/index?storeCode={{filterForm.terms.cisCode}}" style="display: inline-block;margin-left: 10rpx">查看详情</navigator>
+            </view>
+          </view>
+          <view class="store-con">
+            <view class="tabs-head paddingb20">
+              <view class="tabs-head-item table-text-align {{saleTab == '0'?'tabs-head-item-active':''}}" @tap="saleTab('0')">当月累计</view>
+              <view class="tabs-head-item table-text-align {{saleTab == '1'?'tabs-head-item-active':''}}" @tap="saleTab('1')">当年累计</view>
+              <view class="tabs-head-item table-text-align {{saleTab == '2'?'tabs-head-item-active':''}}" @tap="saleTab('2')">去年全年</view>
+            </view>
+            <!-- 日期选择 -->
+            <view class="order-data-input paddingb20">
+              <view   class="order-data-input-one" data-name="startDocumentDate" data-type="sapDate" @tap="openCalendar">
+                {{filterForm.terms.startDocumentDate || '开始日期'}}
+              </view>
+              <view class="order-data-input-line">-</view>
+              <view class="order-data-input-one" data-name="endDocumentDate" data-type="sapDate" @tap="openCalendar">
+                {{filterForm.terms.endDocumentDate|| '结束日期'}}
+              </view>
+            </view>
+            <view class="order-saleData">
+              <view class="order-saleData-items">
+                <view class="order-saleData-items-top">
+                  <view class="order-saleData-items-top-title">
+                    销量
+                  </view>
+                  <view class="order-saleData-items-top-con">
+                    {{queryAllStoreSalesXtw.sumSales}}
+                  </view>
+                </view>
+                <view class="order-saleData-items-bottom">
+                  <view class="order-saleData-items-bottom-items">
+                    <view class="order-saleData-items-bottom-items-title">
+                      去年同期
+                    </view>
+                    <view class="order-saleData-items-bottom-items-con">
+                      {{queryAllStoreSalesXtw.lastMonthSumSales}}
+                    </view>
+                  </view>
+                  <view class="order-saleData-items-bottom-items">
+                    <view class="order-saleData-items-bottom-items-title">
+                      去年同比
+                    </view>
+                    <view class="order-saleData-items-bottom-items-con">
+                      {{queryAllStoreSalesXtw.salesYOY}}%
+                    </view>
+                  </view>
+                </view>
+              </view>
+              <view class="order-saleData-items">
+                <view class="order-saleData-items-top">
+                  <view class="order-saleData-items-top-title">
+                    销售额(万元)
+                  </view>
+                  <view class="order-saleData-items-top-con">
+                    {{queryAllStoreSalesXtw.sumPrice}}
+                  </view>
+                </view>
+                <view class="order-saleData-items-bottom">
+                  <view class="order-saleData-items-bottom-items">
+                    <view class="order-saleData-items-bottom-items-title">
+                      去年同期
+                    </view>
+                    <view class="order-saleData-items-bottom-items-con">
+                      {{queryAllStoreSalesXtw.lastSameTimePrice}}
+                    </view>
+                  </view>
+                  <view class="order-saleData-items-bottom-items">
+                    <view class="order-saleData-items-bottom-items-title">
+                      去年同比
+                    </view>
+                    <view class="order-saleData-items-bottom-items-con">
+                      {{queryAllStoreSalesXtw.priceYOY}}%
+                    </view>
+                  </view>
+                </view>
+              </view>
+              <view class="order-saleData-items border-bNone">
+                <view class="order-saleData-items-top">
+                  <view class="order-saleData-items-top-title">
+                    年累销量(台)
+                  </view>
+                  <view class="order-saleData-items-top-con">
+                    {{queryAllStoreSalesXtw.yearSumSales}}
+                  </view>
+                </view>
+                <view class="order-saleData-items-bottom">
+                  <view class="order-saleData-items-bottom-items">
+                    <view class="order-saleData-items-bottom-items-title">
+                      去年同期
+                    </view>
+                    <view class="order-saleData-items-bottom-items-con">
+                      {{queryAllStoreSalesXtw.lastMonthSumSales}}
+                    </view>
+                  </view>
+                  <view class="order-saleData-items-bottom-items">
+                    <view class="order-saleData-items-bottom-items-title">
+                      去年同比
+                    </view>
+                    <view class="order-saleData-items-bottom-items-con">
+                      {{queryAllStoreSalesXtw.yearSalesYOY}}%
+                    </view>
+                  </view>
+                </view>
+              </view>
+              <view class="order-saleData-items border-bNone">
+                <view class="order-saleData-items-top">
+                  <view class="order-saleData-items-top-title">
+                    年累销售额(万元)
+                  </view>
+                  <view class="order-saleData-items-top-con">
+                    {{queryAllStoreSalesXtw.yearSumPrice}}
+                  </view>
+                </view>
+                <view class="order-saleData-items-bottom">
+                  <view class="order-saleData-items-bottom-items">
+                    <view class="order-saleData-items-bottom-items-title">
+                      去年同期
+                    </view>
+                    <view class="order-saleData-items-bottom-items-con">
+                      {{queryAllStoreSalesXtw.lastYearSumPrice}}
+                    </view>
+                  </view>
+                  <view class="order-saleData-items-bottom-items">
+                    <view class="order-saleData-items-bottom-items-title">
+                      去年同比
+                    </view>
+                    <view class="order-saleData-items-bottom-items-con">
+                      {{queryAllStoreSalesXtw.yearSalesYOY}}%
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+            <view class="dataFrom dataFrom-borderTop">*数据源：全门店口径销售</view>
+          </view>
+        </view>
+        <!-- 竞争力排名 -->
+        <view class="store" wx:if="{{vanTabsActive != '0'}}">
+          <view class="store-nav paddingb20">
+            <view class="store-nav-title">竞争力排名</view>
+            <view class="store-nav-btn" @tap="openRankMatkl">{{filterForm.terms.materialCodeRankName}}</view>
+          </view>
+          <view class="store-con">
+            <view class="tabs-head paddingb20">
+              <view class="tabs-head-item table-text-align {{rankTab == 'week'?'tabs-head-item-active':''}}" @tap="rankTab('week')">周</view>
+              <view class="tabs-head-item table-text-align {{rankTab == 'month'?'tabs-head-item-active':''}}" @tap="rankTab('month')">月</view>
+              <view class="tabs-head-item table-text-align {{rankTab == 'year'?'tabs-head-item-active':''}}" @tap="rankTab('year')">年</view>
+            </view>
+            <view class="tabs-con">
+              <view class="storeRank-table">
+                <view class="storeRank-table-header column1">
+                  <view class="storeRank-table-th table-text-align">指标</view>
+                  <view class="storeRank-table-th table-text-align">范围</view>
+                  <view class="storeRank-table-th table-text-align">当前排名</view>
+                  <view class="storeRank-table-th table-text-align">环比</view>
+                </view>
+                <view class="storeRank-table-con">
+                  <view class="storeRank-table-tr column2 table-text-align">销售额</view>
+                  <view class="storeRank-table-tr">
+                    <view class="storeRank-table-td column1 table-text-align">分公司</view>
+                    <view class="storeRank-table-td column1 table-text-align">办事处</view>
+                  </view>
+                  <view class="storeRank-table-tr">
+                    <view class="storeRank-table-td column1 table-text-align">{{ custModelShopInfoRank.branchForm.rankSqeAmt ? custModelShopInfoRank.branchForm.rankSqeAmt:'/' }}</view>
+                    <view class="storeRank-table-td column1 table-text-align">{{ custModelShopInfoRank.agency.rankSqeAmt ? custModelShopInfoRank.agency.rankSqeAmt:'/' }}</view>
+                  </view>
+                  <view class="storeRank-table-tr">
+                    <view class="storeRank-table-td column1 table-text-align">{{ custModelShopInfoRank.branchForm.increaseAmtRank ? custModelShopInfoRank.branchForm.increaseAmtRank:'-' }}</view>
+                    <view class="storeRank-table-td column1 table-text-align">{{ custModelShopInfoRank.agency.increaseAmtRank ? custModelShopInfoRank.agency.increaseAmtRank:'-' }}</view>
+                  </view>
+                </view>
+                <view class="storeRank-table-con">
+                  <view class="storeRank-table-tr column2 table-text-align">销售量</view>
+                  <view class="storeRank-table-tr">
+                    <view class="storeRank-table-td column1 table-text-align">分公司</view>
+                    <view class="storeRank-table-td column1 table-text-align">办事处</view>
+                  </view>
+                  <view class="storeRank-table-tr">
+                    <view class="storeRank-table-td column1 table-text-align">{{ custModelShopInfoRank.branchForm.rankSqeQty ? custModelShopInfoRank.branchForm.rankSqeQty:'/' }}</view>
+                    <view class="storeRank-table-td column1 table-text-align">{{ custModelShopInfoRank.agency.rankSqeQty ? custModelShopInfoRank.agency.rankSqeQty:'/' }}</view>
+                  </view>
+                  <view class="storeRank-table-tr">
+                    <view class="storeRank-table-td column1 table-text-align">{{ custModelShopInfoRank.branchForm.increaseQtyRank ? custModelShopInfoRank.branchForm.increaseQtyRank:'-' }}</view>
+                    <view class="storeRank-table-td column1 table-text-align">{{ custModelShopInfoRank.agency.increaseQtyRank ? custModelShopInfoRank.agency.increaseQtyRank:'-' }}</view>
+                  </view>
+                </view>
+              </view>
+              <view class="dataFrom">*数据源：全门店口径销售</view>
+            </view>
+          </view>
+        </view>
+        <!-- 巡店记录 -->
+        <view class="store" wx:if="{{vanTabsActive == '0'}}">
+          <view class="store-nav">
+            <view class="store-nav-title">巡店记录</view>
+            <navigator url="/pages/terminal/punchList/index?storeCode={{filterForm.terms.cisCode}}">
+              <view class="store-nav-btn">更多</view>
+            </navigator>
+          </view>
+          <view class="store-con">
+            <view class="roundShop">
+              <repeat for="{{ getStoreInspectionRecordListForStore.record }}" item="items">
+                  <view class="roundShop-items">
+                    <view class="roundShop-top">
+                      <view class="roundShop-top-title">{{items.userName}}</view>
+                      <view class="roundShop-top-phone">{{items.signTime}}</view>
+                    </view>
+                    <view class="roundShop-bottom">
+                      {{items.dealerName}}
+                    </view>
+                  </view>
+              </repeat>
+            </view>
+          </view>
+        </view>
+        </view>
+    <van-toast id="van-toast"/>
+  </view>
+</template>
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts"></script>

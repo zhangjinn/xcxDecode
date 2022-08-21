@@ -1,0 +1,46 @@
+@import '../../styles/index.less';
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  &-title {
+    width: 100%;
+    font-size: 26rpx;
+    color: #262626;
+    font-weight: 500;
+    padding: 40rpx 0 24rpx 24rpx;
+  }
+  &-add {
+    width: 100%;
+    color: @primary-color;
+    padding: 0 24rpx;
+    font-size: 28rpx;
+    margin-bottom: 270rpx;
+    font-weight: 500;
+    .detail-add-inner{
+      display: flex;
+      justify-content: center;
+      background: #FFFFFF;
+      padding: 24rpx;
+      border-radius: 16rpx;
+    }
+    .icon-add {
+      display: flex;
+      align-items: center;
+      padding-right: 10rpx;
+      font-size: 24rpx;
+    }
+  }
+  &-tip {
+    display: flex;
+    align-items: center;
+    color: #D9161C;
+    font-size: 20rpx;
+    background-color: #FFEFEF;
+    height: 48rpx;
+    width: 718rpx;
+    padding-left: 24rpx;
+
+  }
+}

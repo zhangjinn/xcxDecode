@@ -1,0 +1,7 @@
+
+  <block  wx:if="{{ login }}">
+    <web-view src="{{url}}" bindmessage="getMsg"/>
+  </block>
+  <block  wx:else>
+    <no-permission/>
+  </block>

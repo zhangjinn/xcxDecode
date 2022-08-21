@@ -1,0 +1,86 @@
+<template>
+  <view class="container">
+
+    <!-- 组织列表选择 -->
+    <van-popup
+      show="{{orgListVisible}}"
+      custom-class="pop"
+      position="top"
+      custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"
+      bind:close="toggleOrgListVisible">
+      <scroll-view scroll-y class="org-wrapper">
+        <repeat for="{{ organizationList }}" index="id" key="id" item="item">
+          <view class="org" @tap="chooseOrg({{ item.id }})">
+            <view class="org-name {{ displayName === item.displayName ? 'active' : '' }}">{{ item.displayName }}</view>
+            <icon wx:if="{{ displayName === item.displayName }}" class="b-icon icon-check active" />
+          </view>
+        </repeat>
+      </scroll-view>
+    </van-popup>
+
+    <headerTab
+      :showRightBtn="showRightBtn"
+      :tabList.sync="headerTabList"
+      @onTabChange.user="toggleOrgListVisible"
+    />
+    <scroll-view wx:if="{{ addressList.totalPages !== 0 }}" class="container-list" bindscrolltolower="loadNextPage"  scroll-y enable-back-to-top>
+      <repeat for="{{ addressList.list }}" key="id" id="id" item="item">
+        <view class="address">
+          <view class="address-org">
+            <view class="address-org-info">
+              <view class="address-org-info-type">
+                <view class="address-org-info-type-title">
+                  {{ item.orgTitle }}
+                </view>
+                <view class="address-org-info-type-code">
+                  {{ item.code }}
+                </view>
+              </view>
+              <view class="address-org-info-code">
+                销售组织编码 {{ item.orgCode }}
+              </view>
+              <view clas="readdress-org-info-county">
+                {{ item.province }} {{ item.city }} {{ item.area }}
+              </view>
+            </view>
+            <view class="address-org-matkl">
+              <view class="address-org-matkl-name">
+                {{ item.matklName }}
+              </view>
+              <view class="address-org-matkl-tap">
+                物料组编码
+              </view>
+              <view class="address-org-matkl-code">
+                {{ item.matklCode }}
+              </view>
+            </view>
+          </view>
+          <view class="address-receiver">
+            <icon class="b-icon iconkongbaiyedizhi" />
+            <view class="address-receiver-info">
+              <view class="address-receiver-info-user">
+                <view class="address-receiver-info-user-name">
+                  联系人：{{ item.contactPerson }}
+                </view>
+                <view class="address-receiver-info-user-tel">
+                  {{ item.contactPersonTel }}
+                </view>
+
+              </view>
+              <view class="address-receiver-info-address">
+                收货地址：{{ item.address }}
+              </view>
+            </view>
+          </view>
+        </view>
+      </repeat>
+    </scroll-view>
+    <emptyDataType wx:else description="地址"/>
+
+    <van-toast id="van-toast" />
+
+  </view>
+</template>
+
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts"></script>

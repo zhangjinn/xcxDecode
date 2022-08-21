@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),adjust=require("./adjust.js"),always=require("./always.js"),update=_curry3(function(r,u,a){return adjust(r,always(u),a)});module.exports=update;

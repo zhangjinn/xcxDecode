@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),descend=_curry3(function(r,e,n){var u=r(e),c=r(n);return u>c?-1:u<c?1:0});module.exports=descend;

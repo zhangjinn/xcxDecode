@@ -1,0 +1,153 @@
+<wxs src="../../../../wxs/utils.wxs" module="utils" class="_1a45a1e"/>
+
+  <view class="order _1a45a1e">
+    <!-- 日历弹框 -->
+    <van-popup show="{{calendarShow}}" position="bottom"  bind:close="closeCalendar" z-index="200" class="_1a45a1e">
+      <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay" class="_1a45a1e"/>
+    </van-popup>
+
+    <!-- 筛选侧边弹框 -->
+    <van-popup show="{{visible}}" position="right" overlay="{{ true }}"  bind:close="orderfiltering" custom-style="height: 100%;" z-index="130" class="_1a45a1e">
+      <view class="order-drawer _1a45a1e">
+        <view class="order-drawer-attr _1a45a1e">
+          <scroll-view class="order-drawer-attr-scroll _1a45a1e" scroll-y>
+            <view class="attr-item _1a45a1e">
+              <view class="order-data _1a45a1e">
+                <view class="project _1a45a1e">
+                  <text style="font-size: 28rpx;color: #777777" class="_1a45a1e">时间</text>
+                </view>
+                <view class="order-data-input _1a45a1e">
+                  <view class="order-data-input-one _1a45a1e" data-name="startDate" data-type="sapDate" bindtap="openCalendar">
+                    {{filterForm.terms.startDate || '开始日期'}}
+                    <van-icon  wx:if="{{filterForm.terms.startDate}}" class="close-icon _1a45a1e" name="clear" bindtap="clearCalendar" data-wpyclearcalendar-a="startDate"/>
+                  </view>
+                  <view class="order-data-input-line _1a45a1e">-</view>
+                  <view class="order-data-input-one _1a45a1e" data-name="endDate" data-type="sapDate" bindtap="openCalendar">
+                    {{filterForm.terms.endDate|| '结束日期'}}
+                    <van-icon  wx:if="{{filterForm.terms.endDate}}" class="close-icon _1a45a1e" name="clear" bindtap="clearCalendar" data-wpyclearcalendar-a="endDate"/>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </scroll-view>
+          <!-- 底部按钮 -->
+          <view class="order-drawer-attr-footer _1a45a1e">
+             <view bindtap="onResetFilterForm" class="order-drawer-attr-footer-btn reset _1a45a1e" hover-class="order-drawer-attr-footer-btn-hover">重置</view>
+            <view bindtap="onSubmitFilterForm" class="order-drawer-attr-footer-btn confirm _1a45a1e" hover-class="order-drawer-attr-footer-btn-hover">确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    <!-- 快捷筛选顶部弹框 状态 -->
+    <van-popup show="{{OrderSFilterVisible}}" position="top" overlay="{{ true }}" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"  bind:close="touchOrderSFilter" class="_1a45a1e">
+      <view  wx:if="{{CurrentOrderSFilterName === 'type'}}" class="order-s-filter-container _1a45a1e">
+        <view class="order-operation _1a45a1e">
+          <view class="operation-text van-hairline--bottom _1a45a1e" bindtap="onSelectType" data-wpyonselecttype-a="">
+            <view class="operation-status {{ filterForm.terms.type === '' ? 'active' : '' }} _1a45a1e">全部</view>
+            <view wx:if="{{ filterForm.terms.type === '' }}" class="b-icon icon-check operation-icon _1a45a1e"/>
+          </view>
+        </view>
+        <view class="order-operation _1a45a1e" wx:for="{{assessmentNoticeFilterList.typeList}}">
+          <view class="operation-text van-hairline--bottom _1a45a1e" bindtap="onSelectType" data-wpyonselecttype-a="{{ item.id}}">
+            <view class="operation-status {{ filterForm.terms.type === item.id ? 'active' : '' }} _1a45a1e">{{item.value}}</view>
+            <view wx:if="{{ filterForm.terms.type ===  item.id }}" class="b-icon icon-check operation-icon _1a45a1e"/>
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{CurrentOrderSFilterName === 'status'}}" class="order-s-filter-container _1a45a1e">
+        <view class="order-operation _1a45a1e">
+          <view class="operation-text van-hairline--bottom _1a45a1e" bindtap="onSelectStatus" data-wpyonselectstatus-a="">
+            <view class="operation-status {{ filterForm.terms.status === '' ? 'active' : '' }} _1a45a1e">全部</view>
+            <view wx:if="{{ filterForm.terms.status === '' }}" class="b-icon icon-check operation-icon _1a45a1e"/>
+          </view>
+        </view>
+        <view class="order-operation _1a45a1e" wx:for="{{assessmentNoticeFilterList.statusList}}">
+          <view class="operation-text van-hairline--bottom _1a45a1e" bindtap="onSelectStatus" data-wpyonselectstatus-a="{{ item.id}}">
+            <view class="operation-status {{ filterForm.terms.status === item.id ? 'active' : '' }} _1a45a1e">{{item.value}}</view>
+            <view wx:if="{{ filterForm.terms.status ===  item.id }}" class="b-icon icon-check operation-icon _1a45a1e"/>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    
+  <view class="header-tab _1a45a1e">
+    <view class="left-btn">
+      <block  wx:for="{{ $headerTab$tabListNew }}">
+        <view class="btn-item {{ item.selectValue ? 'active' : '' }}" bindtap="$headerTab$changeTab" data-wpychangetab-a="{{item}}">
+          <text>{{ item.name }}</text>
+          <i wx:if="{{ $headerTab$showArrowIcon }}" class="b-icon iconxialajiantou"/>
+        </view>
+      </block>
+    </view>
+    <view class="right-btn"  wx:if="{{ $headerTab$showRightBtn }}" bindtap="$headerTab$onSideFilter">
+      <view class="line-shadow" wx:if="{{ $headerTab$showRightBtnLine }}"/>
+      <view class="side-filter-btn">
+        <text>筛选</text>
+        <i class="b-icon shaixuan"/>
+      </view>
+    </view>
+  </view>
+
+    <scroll-view wx:if="{{ assessmentNoticeList.totalRows && assessmentNoticeList.totalRows !== 0}}" scroll-y="true" class="order-scroll _1a45a1e" enable-flex="enable-flex" scroll-top="{{ scrollTop }}" bindscroll="onScroll" bindscrolltolower="onGetOrderListNext">
+      <block class="_1a45a1e" wx:for="{{assessmentNoticeList.list}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="order-container _1a45a1e" bindtap="viewDetail" data-wpyviewdetail-a="{{item.id}}" data-wpyviewdetail-b="{{item.noticeType}}">
+          <view class="card-header _1a45a1e">
+            <view class="card-title _1a45a1e">
+              <view class="card-coding _1a45a1e">
+                <text class="_1a45a1e">{{ item.noticeCode }}</text>
+              </view>
+              <view class="card-status _1a45a1e">
+                <text wx:if="{{item.noticeStatus == 'ISSUED' || item.noticeStatus == 'APPEALED'}}" class="to-be-reported _1a45a1e">待确认</text>
+                <text wx:if="{{item.noticeStatus == 'CONFIRMED' || item.noticeStatus == 'APPEALCONFIRMED'}}" class="reported _1a45a1e">已确认</text>
+                <text wx:if="{{item.noticeStatus == 'INAPPEAL'}}" class="to-be-reported _1a45a1e">申诉中</text>
+              </view>
+            </view>
+            <view class="card-desc _1a45a1e">
+              <text class="gap _1a45a1e">缺口：{{ utils.removeIllegalStr(item.differenceCount) }}个</text>
+              <text class="gap _1a45a1e" wx:if="{{ utils.removeIllegalStr(item.assessDecreaseCount) }}">减免缺口：{{ utils.removeIllegalStr(item.assessDecreaseCount) }}个</text>
+              <!--       申诉待确认、申诉已确认、申诉中显示该字段       -->
+              <text wx:if="{{item.noticeStatus == 'APPEALED' || item.noticeStatus == 'APPEALCONFIRMED' || item.noticeStatus == 'INAPPEAL'}}" class="_1a45a1e">考核金额：{{ utils.removeIllegalStr(item.assessMoney) }}元</text>
+            </view>
+            <view class="card-desc _1a45a1e">
+              <!--       申诉待确认、申诉已确认、申诉中显示该字段       -->
+              <text class="gap _1a45a1e" wx:if="{{item.noticeStatus == 'APPEALED' || item.noticeStatus == 'APPEALCONFIRMED' || item.noticeStatus == 'INAPPEAL'}}">申诉减免缺口：{{ utils.removeIllegalStr(item.appealDecreaseCount) }}个</text>
+              <text wx:if="{{(item.noticeStatus == 'APPEALED' || item.noticeStatus == 'APPEALCONFIRMED' || item.noticeStatus == 'INAPPEAL') && item.agreeDecreaseCount != null}}" class="_1a45a1e">同意减免缺口：{{ utils.removeIllegalStr(item.agreeDecreaseCount) }}个</text>
+            </view>
+            <view class="card-desc _1a45a1e">
+              <text class="gap _1a45a1e">实际考核缺口：{{ utils.removeIllegalStr(item.actualAssessCount) }}个</text>
+              <text wx:if="{{item.appealResult==='申诉成功'}}" class="_1a45a1e">实际考核金额：{{ utils.removeIllegalStr(item.finalMoney) }}元</text>
+              <text wx:else class="_1a45a1e">实际考核金额：{{ utils.removeIllegalStr(item.actualAssessMoney) }}元</text>
+            </view>
+            <view class="card-desc _1a45a1e">
+              <text wx:if="{{item.appealCheckContent}}" class="_1a45a1e">审批意见：{{ utils.removeIllegalStr(item.appealCheckContent) }}</text>
+            </view>
+            <view class="card-desc _1a45a1e">
+              <text class="gap _1a45a1e" wx:if="{{item.salesCenterCode || item.salesCenterName}}">{{ item.salesCenterCode }} <text wx:if="{{item.salesCenterName}}" class="_1a45a1e">-</text> {{ item.salesCenterName }}</text>
+            </view>
+            <view class="card-desc _1a45a1e">
+              <text class="gap _1a45a1e">单据日期 {{ item.noticeTime }}</text>
+            </view>
+          </view>
+          <view class="card-footer _1a45a1e">
+            <view class="card-btn _1a45a1e">
+              查看详情
+            </view>
+          </view>
+
+        </view>
+      </block>
+    </scroll-view>
+    
+  <view class="empty-data _1a45a1e" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <van-toast id="van-toast" class="_1a45a1e"/>
+    <van-dialog id="van-dialog" class="_1a45a1e"/>
+  </view>

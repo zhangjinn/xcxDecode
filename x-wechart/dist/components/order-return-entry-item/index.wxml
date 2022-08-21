@@ -1,0 +1,95 @@
+<view class="order-item order-item-field">
+  <view class="item-name">{{goodsinfo.model}}</view>
+  <view class="item-title">颜色：{{goodsinfo.colour}}</view>
+</view>
+
+<view wx:for="{{goodsinfo.stock}}" wx:for-index="index" wx:for-item="item">
+  <view class="order-item van-hairline--bottom">
+    <view class="item-name">退货数量</view>
+    <view class="item-title">
+      <van-stepper
+        integer="{{true}}"
+        min="0"
+        max="{{item.relreturnQty}}"
+        value="{{item.returnQty}}"
+        bind:change="onChangeFieldNumber"
+        custom-class="cart-stepper"
+        input-class="cart-input-class"
+        plus-class="cart-action-class"
+        minus-class="cart-action-class"
+        data-itemId="{{goodsinfo.itemId}}"
+        data-index="{{index}}"
+      />
+    </view>
+  </view>
+
+  <view class="order-item van-hairline--bottom">
+    <view class="item-name">仓库</view>
+    <view class="item-field"
+      bindtap="onToggleWarehouse" 
+      hover-class="hover-btn"
+      data-itemId="{{goodsinfo.itemId}}"
+      data-index="{{index}}"
+    >
+      <text>{{item.warehouse}}</text>
+      <view class="b-icon icon-more icon"></view>
+    </view>
+  </view>
+  <view class="order-item van-hairline--bottom">
+    <view class="item-name">库存状态</view>
+    <view class="item-field">
+      <text>{{item.invStatusName}}</text>
+    </view>
+  </view>
+  <view class="order-item van-hairline--bottom">
+    <view class="item-name">批次</view>
+    <view class="item-field" 
+      bindtap="onToggleBatch" 
+      hover-class="hover-btn"
+      data-itemId="{{goodsinfo.itemId}}"
+      data-index="{{index}}"
+    >
+      <text>{{item.batch}}</text>
+      <view class="b-icon icon-more icon"></view>
+    </view>
+  </view>
+
+  <view class="order-item van-hairline--bottom">
+    <view class="item-name">退货价格(元)</view>
+    <view class="item-field">
+      <van-field
+        readonly
+        custom-style="padding: 0rpx;font-size: 26rpx;"
+        input-align="right"
+        type="digit"
+        value="{{item.bprice}}"
+        bind:change="onChangeFieldPrice"
+        placeholder="请输入价格"
+        border="{{false}}"
+      />
+    </view>
+  </view>
+  <view class="order-amount van-hairline--bottom">
+    <view wx:if="{{item.amount == 'NaN'}}" class="text">小计: </view>
+    <view wx:else class="text">小计: ￥{{item.amount}}</view>
+    <view class="footer"
+      bindtap="onDel"
+      hover-class="hover-btn"
+      data-itemId="{{goodsinfo.itemId}}"
+      data-index="{{goodsinfo.index}}"
+    >
+      <i class="b-icon icon-remove footer-remove"></i>
+      <view class="footer-remove-msg">删除</view>
+    </view>
+  </view>
+</view>
+
+
+<view class="add" 
+  bindtap="onAdd"
+  hover-class="hover-btn"
+  data-itemId="{{goodsinfo.itemId}}"
+>
+  <i class="b-icon icon-add-full out-add"></i>
+  <view class="add-msg">添加</view>
+</view>

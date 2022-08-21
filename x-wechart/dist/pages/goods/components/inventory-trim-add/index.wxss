@@ -1,0 +1,96 @@
+view._c95757f,
+label._c95757f,
+text._c95757f,
+input._c95757f,
+scroll-view._c95757f {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+van-icon._c95757f {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+view[hidden]._c95757f {
+  display: none !important;
+}
+page._c95757f {
+  background-color: #F7F7F7;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+.item-order-confirm._c95757f {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  width: 100%;
+}
+.detail._c95757f {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  background: #f2f2f2;
+}
+.detail-title._c95757f {
+  width: 100%;
+  font-size: 26rpx;
+  color: #262626;
+  padding: 40rpx 0 24rpx 24rpx;
+}
+.detail-add._c95757f {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  color: #00AAA6;
+  padding: 24rpx 0;
+  font-size: 24rpx;
+  margin-bottom: 270rpx;
+}
+.detail-add-icon._c95757f {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding-right: 8rpx;
+}
+.detail-tip._c95757f {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  color: #D9161C;
+  font-size: 20rpx;
+  background-color: #FFEFEF;
+  height: 48rpx;
+  width: 718rpx;
+  padding-left: 24rpx;
+}
+.detail .detail-add._c95757f {
+  width: 702rpx;
+  height: 88rpx;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  color: #00AAA6;
+  margin: 20rpx 24rpx 270rpx;
+  text-align: center;
+}

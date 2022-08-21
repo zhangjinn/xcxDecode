@@ -1,0 +1,26 @@
+<template>
+  <view class="goods-toper">
+    <view class="goods-toper-divider" style="height: {{sys.statusBarHeight}}px" />
+    <view class="goods-toper-content">
+      <navigator open-type="navigateBack" class="goods-toper-content-item" style="width: {{menuWidth}}px">
+        <van-icon color="#262626" size="48rpx" name="arrow-left" />
+      </navigator>
+      <view class="goods-toper-content-center">
+        <view hidden>
+          <text class="goods-title hidden">商品详情</text>
+        </view>
+        <view class="tab">
+          <view class="tab-item" hover-clas="hover">
+            <text class="tab-item-text {{ type === 'info' ? 'active' : '' }}">商品</text>
+          </view>
+          <view class="tab-item" hover-clas="hover">
+            <text class="tab-item-text {{ type === 'detail' ? 'active' : '' }}">详情</text>
+          </view>
+        </view>
+      </view>
+      <view class="goods-toper-content-item" style="width: {{menuWidth}}px" />
+    </view>
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

@@ -1,0 +1,349 @@
+<wxs src="../../../wxs/utils.wxs" module="utils" class="_11be730"/>
+
+  <view class="order _11be730">
+    <van-popup show="{{ cancelOrderPopup }}" overlay="{{ true }}" class="_11be730">
+      <view class="orderpopup _11be730">
+        <view class="text _11be730">您确定取消订单？</view>
+        <view class="operation _11be730">
+          <view bindtap="cancel" class="operation-one _11be730" data-wpycancel-a="">取消</view>
+          <view bindtap="cancleOrder" class="operation-two _11be730" data-wpycancleorder-a="">确定</view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ continuePayPopup }}" overlay="{{ true }}" class="_11be730">
+      <view class="orderpopup _11be730">
+        <view class="text _11be730">您确定继续支付？</view>
+        <view class="operation _11be730">
+          <view bindtap="cancel" class="operation-one _11be730" data-wpycancel-a="">取消</view>
+          <view bindtap="continuePay" class="operation-two _11be730" data-wpycontinuepay-a="">确定</view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{calendarShow}}" position="bottom"  bind:close="closeCalendar" z-index="200" class="_11be730">
+      <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay" class="_11be730"/>
+    </van-popup>
+    <van-popup show="{{timeFrameVisible}}" position="right" overlay="{{ true }}" z-index="200" custom-style="height: 100%;" close-on-click-overlay="{{false}}" class="_11be730">
+      <view class="order-drawer _11be730">
+        <view class="order-drawer-time _11be730">
+          <view class="order-drawer-time-header _11be730">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back _11be730"  bind:click="onToggleTimeFrame"/>
+            <view class="order-drawer-time-header-title _11be730">订单日期</view>
+          </view>
+          <view class="order-drawer-time-content _11be730">
+            <view class="order-drawer-time-content-line _11be730" bindtap="onSelectTimeFrame" data-wpyonselecttimeframe-a="">
+              <view class="text {{filterFormExtra.timeFrame === '' ? 'active' : ''}} _11be730">全部时间</view>
+              <van-icon  wx:if="{{filterFormExtra.timeFrame === ''}}" name="success" class="time-selected _11be730" size="32rpx"/>
+            </view>
+            <view class="order-drawer-time-content-line _11be730" bindtap="onSelectTimeFrame" data-wpyonselecttimeframe-a="7">
+              <view class="text {{filterFormExtra.timeFrame === '7' ? 'active' : ''}} _11be730">最近一周</view>
+              <van-icon  wx:if="{{filterFormExtra.timeFrame === '7'}}" name="success" class="time-selected _11be730" size="32rpx"/>
+            </view>
+            <view class="order-drawer-time-content-line _11be730" bindtap="onSelectTimeFrame" data-wpyonselecttimeframe-a="1">
+              <view class="text {{filterFormExtra.timeFrame === '1' ? 'active' : ''}} _11be730">最近一个月</view>
+              <van-icon  wx:if="{{filterFormExtra.timeFrame === '1'}}" name="success" class="time-selected _11be730" size="32rpx"/>
+            </view>
+            <view class="order-drawer-time-content-line _11be730" bindtap="onSelectTimeFrame" data-wpyonselecttimeframe-a="3">
+              <view class="text {{filterFormExtra.timeFrame === '3' ? 'active' : ''}} _11be730">最近三个月</view>
+              <van-icon wx:if="{{filterFormExtra.timeFrame === '3'}}" name="success" class="time-selected _11be730" size="32rpx"/>
+            </view>
+            <view class="order-drawer-time-content-line _11be730" bindtap="onSelectTimeFrame" data-wpyonselecttimeframe-a="6">
+              <view class="text {{filterFormExtra.timeFrame === '6' ? 'active' : ''}} _11be730">最近六个月</view>
+              <van-icon wx:if="{{filterFormExtra.timeFrame === '6'}}" name="success" class="time-selected _11be730" size="32rpx"/>
+            </view>
+          </view>
+          <view class="order-drawer-attr-footer _11be730">
+            <view bindtap="onToggleTimeFrame" class="order-drawer-attr-footer-btn confirm _11be730" hover-class="order-drawer-attr-footer-btn-hover">确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ agentPopup }}" position="right" overlay="{{ true }}" z-index="200" custom-style="height: 100%;" close-on-click-overlay="{{false}}" class="_11be730">
+      <view wx:if="{{popupTitle == '仓库'}}" class="order-drawer _11be730">
+        <view class="order-drawer-time _11be730">
+          <view class="order-drawer-time-header _11be730">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back _11be730"  bind:click="selectagentPopup"/>
+            <view class="order-drawer-time-header-title _11be730">{{popupTitle}}</view>
+          </view>
+          <scroll-view class="order-drawer-time-content _11be730" scroll-y>
+            <view class="order-drawer-time-content-line _11be730" bindtap="selectChangewarehouse" data-wpyselectchangewarehouse-a="">
+              <view class="text {{filterForm.warehouseId === '' ? 'active' : ''}} _11be730">全部</view>
+              <van-icon wx:if="{{filterForm.warehouseId === '' }}" name="success" class="time-selected _11be730" size="32rpx"/>
+            </view>
+            <block class="_11be730" wx:for="{{warehouseList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="order-drawer-time-content-line _11be730" bindtap="selectChangewarehouse" data-wpyselectchangewarehouse-a="{{item.id}}">
+                <view class="text {{filterForm.warehouseId === item.id ? 'active' : ''}} _11be730">{{item.value}}</view>
+                <van-icon wx:if="{{filterForm.warehouseId === item.id }}" name="success" class="time-selected _11be730" size="32rpx"/>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+      </view>
+      <view wx:if="{{popupTitle == '物料组'}}" class="order-drawer _11be730">
+        <view class="order-drawer-time _11be730">
+          <view class="order-drawer-time-header _11be730">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back _11be730" bind:click="selectagentPopup"/>
+            <view class="order-drawer-time-header-title _11be730">{{popupTitle}}</view>
+          </view>
+          <scroll-view class="order-drawer-time-content _11be730" scroll-y>
+            <block class="_11be730" wx:for="{{materialGroupOptions}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="order-drawer-time-content-line _11be730" data-key="materialGroupId" data-name="materialGroupName" data-item="{{ item }}" bindtap="selectChangeFilterStatus">
+                <view class="text {{filterForm.materialGroupId === item.code ? 'active' : ''}} _11be730">{{item.name}}</view>
+                <van-icon wx:if="{{filterForm.materialGroupId === item.code }}" name="success" class="time-selected _11be730" size="32rpx"/>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+      </view>
+      <view wx:if="{{popupTitle == '库存类型'}}" class="order-drawer _11be730">
+        <view class="order-drawer-time _11be730">
+          <view class="order-drawer-time-header _11be730">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back _11be730" bind:click="selectagentPopup"/>
+            <view class="order-drawer-time-header-title _11be730">{{popupTitle}}</view>
+          </view>
+          <scroll-view class="order-drawer-time-content _11be730" scroll-y>
+            <block class="_11be730" wx:for="{{inventoryTypeOptions}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="order-drawer-time-content-line _11be730" data-key="inventoryTypeId" data-name="inventoryTypeName" data-item="{{ item }}" bindtap="selectChangeFilterStatus">
+                <view class="text {{filterForm.inventoryTypeId === item.code ? 'active' : ''}} _11be730">{{item.name}}</view>
+                <van-icon wx:if="{{filterForm.inventoryTypeId === item.code }}" name="success" class="time-selected _11be730" size="32rpx"/>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+      </view>
+      <view wx:if="{{popupTitle == '库存状态'}}" class="order-drawer _11be730">
+        <view class="order-drawer-time _11be730">
+          <view class="order-drawer-time-header _11be730">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back _11be730" bind:click="selectagentPopup"/>
+            <view class="order-drawer-time-header-title _11be730">{{popupTitle}}</view>
+          </view>
+          <scroll-view class="order-drawer-time-content _11be730" scroll-y>
+            <block class="_11be730" wx:for="{{inventoryStatusOptions}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="order-drawer-time-content-line _11be730" data-key="inventoryStatusId" data-name="inventoryStatusName" data-item="{{ item }}" bindtap="selectChangeFilterStatus">
+                <view class="text {{filterForm.inventoryStatusId === item.code ? 'active' : ''}} _11be730">{{item.name}}</view>
+                <van-icon wx:if="{{filterForm.inventoryStatusId === item.code }}" name="success" class="time-selected _11be730" size="32rpx"/>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+      </view>
+      <view wx:if="{{popupTitle == '质量等级'}}" class="order-drawer _11be730">
+        <view class="order-drawer-time _11be730">
+          <view class="order-drawer-time-header _11be730">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back _11be730" bind:click="selectagentPopup"/>
+            <view class="order-drawer-time-header-title _11be730">{{popupTitle}}</view>
+          </view>
+          <scroll-view class="order-drawer-time-content _11be730" scroll-y>
+            <block class="_11be730" wx:for="{{qualityLevelOptions}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="order-drawer-time-content-line _11be730" data-key="qualityLevelId" data-name="qualityLevelName" data-item="{{ item }}" bindtap="selectChangeFilterStatus">
+                <view class="text {{filterForm.qualityLevelId === item.code ? 'active' : ''}} _11be730">{{item.name}}</view>
+                <van-icon wx:if="{{filterForm.qualityLevelId === item.code }}" name="success" class="time-selected _11be730" size="32rpx"/>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+      </view>
+      <view wx:if="{{popupTitle == '查看账户'}}" class="order-drawer _11be730">
+        <view class="order-drawer-time _11be730">
+          <view class="order-drawer-time-header _11be730">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back _11be730" bind:click="selectagentPopup"/>
+            <view class="order-drawer-time-header-title _11be730">{{popupTitle}}</view>
+          </view>
+          <scroll-view class="order-drawer-time-content _11be730" scroll-y>
+            <block class="_11be730" wx:for="{{viewAccountOptions}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="order-drawer-time-content-line _11be730" data-key="viewAccountId" data-name="viewAccountName" data-item="{{ item }}" data-type="multiple" bindtap="selectChangeFilterStatus">
+                <view class="text {{utils.includesKeyInArr(item.code, filterForm.viewAccountId) ? 'active' : ''}} _11be730">{{item.name}}</view>
+                <van-icon wx:if="{{utils.includesKeyInArr(item.code, filterForm.viewAccountId) }}" name="success" class="time-selected _11be730" size="32rpx"/>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+      </view>
+      <view wx:if="{{popupTitle == '销售组织'}}" class="order-drawer _11be730">
+        <view class="order-drawer-time _11be730">
+          <view class="order-drawer-time-header _11be730">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back _11be730" bind:click="selectagentPopup"/>
+            <view class="order-drawer-time-header-title _11be730">{{popupTitle}}</view>
+          </view>
+          <scroll-view class="order-drawer-time-content _11be730" scroll-y>
+            <block class="_11be730" wx:for="{{orgOptions}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="order-drawer-time-content-line _11be730" data-key="orgId" data-name="orgName" data-item="{{ item }}" bindtap="selectChangeFilterStatus">
+                <view class="text {{filterForm.orgId === item.code ? 'active' : ''}} _11be730">{{item.name}}</view>
+                <van-icon wx:if="{{filterForm.orgId === item.code }}" name="success" class="time-selected _11be730" size="32rpx"/>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{visible}}" position="right" overlay="{{ true }}" bind:close="orderfiltering" custom-style="height: 100%;" z-index="130" class="_11be730">
+      <view class="order-drawer _11be730">
+        <view class="order-drawer-attr _11be730">
+          <scroll-view class="order-drawer-attr-scroll _11be730" scroll-y>
+            <view class="attr-item _11be730">
+              <view class="parent-agent _11be730">
+                <view class="agent-name _11be730">仓库</view>
+                <view catchtap="selectagentPopup" class="agent-select _11be730" data-wpyselectagentpopup-a="ckmc">{{filterFormExtra.warehouseName || '全部'}}
+                  <view class="b-icon icon-more icons _11be730"/>
+                </view>
+              </view>
+              <view class="projectem _11be730">
+                <view class="project _11be730">
+                  <text style="font-size: 13px;color: #777777" class="_11be730">产品型号</text>
+                </view>
+                <van-field placeholder="请输入产品型号" placeholder-style="font-size: 24rpx;" value="{{ filterForm.model }}" border="{{ false }}" bind:change="onOrderCodeChange" custom-style="background-color: #f7f7f7;" clearable="clearable" class="_11be730"/>
+              </view>
+              <view class="order-data _11be730">
+                <view class="project _11be730">
+                  <text style="font-size: 13px;color: #777777" class="_11be730">日期</text>
+<!--                  <text wx:if="{{filterFormExtra.timeFrame === ''}}" class="text" bindtap="onToggleTimeFrame">全部日期 ></text>-->
+<!--                  <text wx:if="{{filterFormExtra.timeFrame === '7'}}" class="text" bindtap="onToggleTimeFrame">最近一周 ></text>-->
+<!--                  <text wx:if="{{filterFormExtra.timeFrame === '1'}}" class="text" bindtap="onToggleTimeFrame">最近一个月 ></text>-->
+<!--                  <text wx:if="{{filterFormExtra.timeFrame === '3'}}" class="text" bindtap="onToggleTimeFrame">最近三个月 ></text>-->
+<!--                  <text wx:if="{{filterFormExtra.timeFrame === '6'}}" class="text" bindtap="onToggleTimeFrame">最近六个月 ></text>-->
+                </view>
+                <view class="order-data-input _11be730">
+                  <view class="order-data-input-one _11be730" data-name="startDate" data-type="date" bindtap="openCalendar">
+                    <text class="_11be730">{{filterForm.startDate}}</text>
+                    <van-icon wx:if="{{filterForm.startDate}}" class="close-icon _11be730" name="clear" bindtap="clearCalendar" data-wpyclearcalendar-a="startDate"/>
+                  </view>
+                  <view class="order-data-input-line _11be730">-</view>
+                  <view class="order-data-input-one _11be730" data-name="endDate" data-type="date" bindtap="openCalendar">
+                    <text class="_11be730">{{filterForm.endDate}}</text>
+                    <van-icon wx:if="{{filterForm.endDate}}" class="close-icon _11be730" name="clear" bindtap="clearCalendar" data-wpyclearcalendar-a="endDate"/>
+                  </view>
+                </view>
+              </view>
+              <view class="parent-agent _11be730">
+                <view class="agent-name _11be730">物料组</view>
+                <view catchtap="selectagentPopup" class="agent-select _11be730" data-wpyselectagentpopup-a="wlz">{{filterFormExtra.materialGroupName || '全部'}}
+                  <view class="b-icon icon-more icons _11be730"/>
+                </view>
+              </view>
+              <view class="parent-agent _11be730">
+                <view class="agent-name _11be730">库存类型</view>
+                <view catchtap="selectagentPopup" class="agent-select _11be730" data-wpyselectagentpopup-a="kclx">{{filterFormExtra.inventoryTypeName || '全部'}}
+                  <view class="b-icon icon-more icons _11be730"/>
+                </view>
+              </view>
+              <view class="projectem _11be730">
+                <view class="project _11be730">
+                  <text style="font-size: 13px;color: #777777" class="_11be730">单据编号</text>
+                </view>
+                <van-field placeholder="请输入单据编号" border="{{ false }}" value="{{ filterForm.stvNum }}" placeholder-style="font-size: 24rpx;" bind:change="onOrderIdChange" custom-style="background-color: #f7f7f7;" clearable="clearable" class="_11be730"/>
+              </view>
+              <view class="parent-agent _11be730">
+                <view class="agent-name _11be730">库存状态</view>
+                <view catchtap="selectagentPopup" class="agent-select _11be730" data-wpyselectagentpopup-a="kczt">{{filterFormExtra.inventoryStatusName || '全部'}}
+                  <view class="b-icon icon-more icons _11be730"/>
+                </view>
+              </view>
+              <view class="parent-agent _11be730">
+                <view class="agent-name _11be730">质量等级</view>
+                <view catchtap="selectagentPopup" class="agent-select _11be730" data-wpyselectagentpopup-a="zldj">{{filterFormExtra.qualityLevelName || '全部'}}
+                  <view class="b-icon icon-more icons _11be730"/>
+                </view>
+              </view>
+              <view class="parent-agent _11be730">
+                <view class="agent-name _11be730">查看账户</view>
+                <view catchtap="selectagentPopup" class="agent-select _11be730" data-wpyselectagentpopup-a="ckzh">
+                  <text wx:if="{{filterFormExtra.viewAccountName.length}}" class="_11be730">{{filterFormExtra.viewAccountName}}</text>
+                  <text wx:else class="_11be730">全部</text>
+                  <view class="b-icon icon-more icons _11be730"/>
+                </view>
+              </view>
+              <view class="parent-agent _11be730">
+                <view class="agent-name _11be730">销售组织</view>
+                <view catchtap="selectagentPopup" class="agent-select _11be730" data-wpyselectagentpopup-a="xszz">{{filterFormExtra.orgName || '全部'}}
+                  <view class="b-icon icon-more icons _11be730"/>
+                </view>
+              </view>
+            </view>
+          </scroll-view>
+          <!-- 底部按钮 -->
+          <view class="order-drawer-attr-footer _11be730">
+            <view bindtap="onResetFilterForm" class="order-drawer-attr-footer-btn reset _11be730" hover-class="order-drawer-attr-footer-btn-hover">重置</view>
+            <view bindtap="onSubmitFilterForm" class="order-drawer-attr-footer-btn confirm _11be730" hover-class="order-drawer-attr-footer-btn-hover">确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <!-- 订单类型，订单状态，订单审核状态 -->
+    <van-popup show="{{OrderSFilterVisible}}" position="top" overlay="{{ true }}" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;" bind:close="touchOrderSFilter" class="_11be730">
+      <!--仓库选择-->
+      <view wx:if="{{CurrentOrderSFilterName === 'warehouseName'}}" class="order-s-filter-container _11be730">
+        <view class="order-operation _11be730">
+          <view class="operation-text van-hairline--bottom _11be730" bindtap="onSelectWarehouseName" data-wpyonselectwarehousename-a="" data-wpyonselectwarehousename-b="">
+            <view class="operation-status {{ filterForm.warehouseId === '' ? 'active' : '' }} _11be730">全部</view>
+            <view wx:if="{{ filterForm.warehouseId === '' }}" class="b-icon icon-check operation-icon _11be730"/>
+          </view>
+        </view>
+        <block class="_11be730" wx:for="{{warehouseList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="order-operation _11be730">
+            <view class="operation-text van-hairline--bottom _11be730" bindtap="onSelectWarehouseName" data-wpyonselectwarehousename-a="{{item.id}}" data-wpyonselectwarehousename-b="{{item.value}}">
+              <view class="operation-status {{ filterForm.warehouseId === item.id ? 'active' : '' }} _11be730">{{item.value}}</view>
+              <view wx:if="{{ filterForm.warehouseId === item.id }}" class="b-icon icon-check operation-icon _11be730"/>
+            </view>
+          </view>
+        </block>
+      </view>
+    </van-popup>
+
+    
+  <view class="header-tab _11be730">
+    <view class="left-btn">
+      <block  wx:for="{{ $headerTab$tabListNew }}">
+        <view class="btn-item {{ item.selectValue ? 'active' : '' }}" bindtap="$headerTab$changeTab" data-wpychangetab-a="{{item}}">
+          <text>{{ item.name }}</text>
+          <i wx:if="{{ $headerTab$showArrowIcon }}" class="b-icon iconxialajiantou"/>
+        </view>
+      </block>
+    </view>
+    <view class="right-btn"  wx:if="{{ $headerTab$showRightBtn }}" bindtap="$headerTab$onSideFilter">
+      <view class="line-shadow" wx:if="{{ $headerTab$showRightBtnLine }}"/>
+      <view class="side-filter-btn">
+        <text>筛选</text>
+        <i class="b-icon shaixuan"/>
+      </view>
+    </view>
+  </view>
+
+    <scroll-view wx:if="{{logList.data.length !== 0}}" scroll-y="true" class="order-scroll _11be730" enable-flex="enable-flex" bindscroll="onScroll" scroll-top="{{ scrollTop }}" bindscrolltolower="onGetOrderListNext">
+      <block class="_11be730" wx:for="{{logList.data}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="stock-container {{item.isShowActive ? 'show' : ''}} _11be730">
+          <view class="btm-info _11be730">
+            <view class="b-icon gxc icongongxiangcang {{ item.gicWarehouseType != '003' ? 'wearhouseType' : '' }} _11be730"/>
+            <h2 class="_11be730">
+              <span class="title _11be730">{{item.materialmodel}}   {{item.color}}-{{item.biztypename}}</span>
+              <span class="count {{ item.baseqty > 0 ? 'entry' : '' }} _11be730">{{item.baseqty}}</span>
+            </h2>
+            <ul class="_11be730">
+              <li class="_11be730">{{item.warehousename}}-{{item.qualitylvName}}-{{item.invtypename}}-{{item.invstatusname}}</li>
+              <li class="_11be730">{{item.biztime}}</li>
+              <li class="_11be730">单据编号：{{item.billno}}</li>
+<!--              <li>金额：￥{{item.price}}</li>-->
+              <li class="_11be730">销售组织：{{item.orgname}}</li>
+            </ul>
+            <view class="xiala-box _11be730" bindtap="isItemShowFun" data-wpyisitemshowfun-a="{{item}}" data-wpyisitemshowfun-b="{{index}}">
+              <view class="b-icon xiala iconkucunliushui-zhankai1 _11be730"/>
+            </view>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+    
+  <view class="empty-data _11be730" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <block class="_11be730">
+      <button class="screened shareBar _11be730" lang="zh_CN" bindtap="goMe">
+        <view class="b-icon icon-me me-icon _11be730"/>
+      </button>
+    </block>
+    <van-toast id="van-toast" class="_11be730"/>
+    <van-dialog id="van-dialog" class="_11be730"/>
+  </view>

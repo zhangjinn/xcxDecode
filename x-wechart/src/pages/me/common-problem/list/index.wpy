@@ -1,0 +1,48 @@
+<template>
+    <view class="container">
+        <van-popup
+        show="{{TimeFilterVisible}}"
+        position="top"
+        overlay="{{ true }}"
+        bind:close="touchTimeFilter"
+        >
+        <view class="filter-container">
+            <repeat for="{{timeList}}" item="item">
+                <view class="order-operation" @tap="onSelectTime('{{item.value}}','{{item.label}}')">
+                <view class="operation-text van-hairline--bottom">
+                    <view class="operation-status {{ time === item.value ? 'active' : '' }}">{{item.label}}</view>
+                    <view wx:if="{{ time === item.value }}"  class="b-icon icon-check operation-icon"></view>
+                </view>
+                </view>
+            </repeat>
+        </view>
+        </van-popup>
+        <view class="head">
+            <view class="input-group">
+                <input class="input" placeholder="输入问题关键字" value="{{title}}" bind:change="onTitleChange"/>
+                <view class="btn" @tap="onSearch">查询</view>
+            </view>
+        </view>
+        <view class="filter-header van-hairline--bottom">
+            <view @tap="touchTimeFilter()" class="filter-header-label" hover-class="hover">
+                <text>{{timelabel}}</text>
+                <van-icon class="icon" name="play" size="20rpx" color="#00AAA6" />
+            </view>
+        </view>
+        <scroll-view bindscrolltolower="loadNextPage" scroll-y="true" class="problem-scroll">
+            <repeat for="{{problemlist.problems}}" item="item">
+            <view class="item " @tap="gotodetail({{item.id}})">
+                <view class="item-content van-hairline--bottom">
+                    <view class="title van-ellipsis">{{item.title}}</view>
+                    <view class="date">{{item.startAt}}</view>
+                    <view class="b-icon h-icon icon-more" />
+                </view>
+            </view>
+            </repeat>
+        </scroll-view>
+      <van-toast id="van-toast" />
+    </view>
+</template>
+
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts"></script>

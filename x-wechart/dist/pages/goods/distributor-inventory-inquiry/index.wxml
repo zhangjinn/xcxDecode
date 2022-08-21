@@ -1,0 +1,68 @@
+
+  <view class="filter _c38ebe2">
+    <view class="filter-drawer _c38ebe2">
+      <view class="filter-drawer-attr _c38ebe2">
+
+        <view class="fil-box _c38ebe2">
+          <view class="info _c38ebe2">
+          <view class="container van-hairline--bottom _c38ebe2">
+            <van-field value="{{ inputValue }}" clearable="clearable" label="产品型号" placeholder="请输入产品型号"  bind:change="onGoodsModel" style="width: 100%;" custom-style="padding-left: 5rpx; border-bottom: 0px solid #eee" class="_c38ebe2"/>
+          </view>
+        </view>
+        <view class="info-item _c38ebe2">
+          <view class="container van-hairline--bottom _c38ebe2">
+            <van-field value="{{ inputValue }}" clearable="clearable" label="产品颜色" placeholder="请输入产品颜色"  bind:change="onGoodsColor" style="width: 100%;" custom-style="padding-left: 5rpx; border-bottom: 0px solid #eee" class="_c38ebe2"/>
+          </view>
+        </view>
+        <view class="info-item _c38ebe2">
+          <view class="container _c38ebe2">
+            <van-field value="{{ filterForm.dealerName }}" clearable="clearable" label="商家名称" placeholder="请输入商家名称"  bind:change="onShopName" bind:focus="onShopFocus" bind:blur="onShopBlur" style="width: 100%;" custom-style="padding-left: 5rpx; border-bottom: 0px solid #eee;" class="_c38ebe2"/>
+          </view>
+          <scroll-view  wx:if="{{ dealerNameOptionShow && dealerNameOptionList.length}}" class="option _c38ebe2" scroll-y>
+            <block class="_c38ebe2" wx:for="{{ dealerNameOptionList }}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="option-item _c38ebe2" bindtap="selectOptionItem" data-wpyselectoptionitem-a="{{item}}">
+                <view class="text {{currentDealerNameId === item.id ? 'active' : ''}} _c38ebe2">{{item.name}}</view>
+<!--                <van-icon wx:if="{{currentDealerNameId === item.id }}" name="success" class="time-selected" size="32rpx"/>-->
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+        </view>
+        <scroll-view class="filter-drawer-attr-scroll _c38ebe2" enable-flex="enable-flex" bindscrolltolower="onGetDistributorNext" scroll-y>
+          <view class="attr-item _c38ebe2">
+            <block  wx:if="{{distributorInventoryList.length > 0}}" class="_c38ebe2">
+              <block class="_c38ebe2" wx:for="{{distributorInventoryList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                <view class="attr-item-content _c38ebe2">
+                  <view class="content-name van-ellipsis _c38ebe2">{{item.dealerName}}</view>
+                  <view class="content-model van-ellipsis _c38ebe2">型号: {{item.model}}</view>
+                  <view class="content-item _c38ebe2">
+                    <view class="content-item-color _c38ebe2">颜色: {{item.colour}}</view>
+                    <view class="content-item-number _c38ebe2">库存数量: {{item.bigQty}}</view>
+                  </view>
+                  <view class="content-warehouse-status _c38ebe2">
+                    <view class="content-warehouse-status-name _c38ebe2">库存状态: {{item.invStatusName}}</view>
+                  </view>
+                </view>
+              </block>
+              <view style="padding-top: 16rpx" class="_c38ebe2"/>
+            </block>
+            <block  wx:else class="_c38ebe2">
+              
+  <view class="empty-data _c38ebe2" wx:if="{{onShow}}">
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+            </block>
+          </view>
+        </scroll-view>
+        <view class="filter-drawer-attr-footer _c38ebe2">
+          <view bindtap="onQueryInventory" class="filter-drawer-attr-footer-btn confirm _c38ebe2" hover-class="filter-drawer-attr-footer-btn-hover">查询</view>
+        </view>
+      </view>
+      <van-toast id="van-toast" class="_c38ebe2"/>
+      <van-dialog id="van-dialog" class="_c38ebe2"/>
+    </view>
+  </view>

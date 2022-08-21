@@ -1,0 +1,127 @@
+.page-wrap{
+  background-color: #f6f6f6;
+  position: relative;
+  height: 100vh;
+  overflow: auto;
+  .top-wrap{
+    height: 240rpx;
+    display: flex;
+    justify-content: space-between;
+    background: #fff;
+    padding: 20rpx 20rpx;
+    .left-wrap{
+      .text{
+        height: 60rpx;
+        line-height: 60rpx;
+        .lab{
+          font-size: 28rpx;
+          color: #777777;
+          margin-right: 20rpx;
+        }
+        .val{
+          font-size: 28rpx;
+          color: #333333;
+        }
+      }
+      .name{
+        font-size: 32rpx;
+        color: #333333;
+        font-weight: 500;
+      }
+    }
+    .right-wrap{
+      .img{
+        width: 240rpx;
+        height: 240rpx;
+      }
+    }
+
+  }
+  .form-wrap{
+    margin-top: 20rpx;
+
+  }
+  .prob-wrap{
+    margin-top: 20rpx;
+    background: #fff;
+    padding: 20rpx;
+    padding-top: 0;
+    padding-bottom: 140rpx;
+    .name{
+      height: 90rpx;
+      line-height: 90rpx;
+      border-bottom: 2rpx solid #eee;
+      font-weight: 500;
+    }
+    .item{
+      min-height: 50rpx;
+      line-height: 50rpx;
+      display: flex;
+      justify-content: flex-start;
+      .num{
+        width: 50rpx;
+      }
+      .cont{
+        width: calc(100% - 90rpx);
+      }
+    }
+  }
+  .bottom-wrap{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 120rpx;
+    display: flex;
+    border-top: 20rpx solid #f6f6f6;
+    .btn{
+      color: #666666;
+      background: #fff;
+      width:50%;
+      height: 100rpx;
+      line-height: 100rpx;
+      text-align: center;
+    }
+    .btn-ok{
+      background: #00AAA6;
+      color: white;
+    }
+  }
+}
+.cell--required::before {
+  position: absolute;
+  left: 8px;
+  color: #ee0a24;
+  font-size: 14px;
+  content: '*';
+}
+.order-s-filter-container {
+  padding-top: 78rpx;
+  .order-operation {
+    display: flex;
+    width: 100%;
+    .operation-text {
+      width: 100%;
+      height: 84rpx;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .operation-status {
+        font-size: 24rpx;
+        font-weight: 400;
+        padding-left: 40rpx;
+        &.active {
+          color: #00aaaa;
+        }
+      }
+      .operation-icon {
+        font-size: 24rpx;
+        color: #00aaa6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-right: 40rpx;
+      }
+    }
+  }
+}

@@ -1,0 +1,1 @@
+var _cloneRegExp=require("./internal/_cloneRegExp.js"),_curry2=require("./internal/_curry2.js"),_isRegExp=require("./internal/_isRegExp.js"),toString=require("./toString.js"),test=_curry2(function(e,r){if(!_isRegExp(e))throw new TypeError("‘test’ requires a value of type RegExp as its first argument; received "+toString(e));return _cloneRegExp(e).test(r)});module.exports=test;

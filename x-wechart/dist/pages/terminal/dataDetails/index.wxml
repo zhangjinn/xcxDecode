@@ -1,0 +1,83 @@
+
+  <view class="_6ab5317">
+    <view style="text-align: center;padding-top: 10rpx;margin-top: 20rpx"  wx:if="{{loading==true}}" class="_6ab5317">
+      <van-loading type="spinner" class="_6ab5317"/>
+    </view>
+    <view scroll-y="true" class="dakaBox _6ab5317" bindscrolltolower="tolower">
+      <view class="dakaTItle _6ab5317">
+        <view bindtap="onOpen1" class="_6ab5317" data-wpyonopen1-a="">
+          <text class="_6ab5317">{{date}}</text>
+          <text class="iconfont _6ab5317" style="color: #ccc;margin-right:10rpx;font-size: 20rpx"></text>
+        </view>
+        <view bindtap="onOpen" class="_6ab5317" data-wpyonopen-a="">
+          <text class="quanbuBox _6ab5317">{{selMaterialName}}</text>
+          <text class="iconfont _6ab5317" style="color: #ccc;margin-left:10rpx;font-size: 20rpx;vertical-align: 6rpx"></text>
+        </view>
+      </view>
+      <view class="mainBox _6ab5317"  wx:if="{{storeDetail.length>0}}">
+        <view class="tableTitle table _6ab5317">
+          <view class="table1 _6ab5317">型号</view>
+          <view class="table2 _6ab5317">数量(台)</view>
+          <view class="table3 _6ab5317">销售额(元)</view>
+          <view class="table4 _6ab5317">物料组</view>
+        </view>
+        <view wx:for="{{storeDetail}}" wx:key="index" class="table _6ab5317">
+          <view class="table1 _6ab5317">{{item.modelCode}}</view>
+          <view class="table2 _6ab5317">{{item.sumSales}}</view>
+          <view class="table3 _6ab5317">{{item.sumPrice}}</view>
+          <view class="table4 _6ab5317">{{item.materialGroupName}}</view>
+        </view>
+      </view>
+      <view  wx:else class="_6ab5317">
+        <view class="nodata _6ab5317">暂无数据</view>
+      </view>
+    </view>
+
+    <van-popup show="{{ show }}" position="top"  bind:close="onClose" class="_6ab5317">
+      <view class="_6ab5317">
+        <view class="TankuanBox _6ab5317">
+          <view class="{{item.sel?'currenClassfy':''}} _6ab5317" data-index="{{index}}" data-name="{{item.materialName}}" bindtap="taggleMaterial" wx:for="{{MaterialGroup}}" wx:key="index">
+            {{item.materialName}}
+<!--            <text class="iconfont jiaobiao" wx:if="{{selMaterial==index}}">&#xe654;</text>-->
+            <text class="iconfont jiaobiao _6ab5317" wx:if="{{item.sel}}"></text>
+          </view>
+        </view>
+        <view class="popupBottomBtn _6ab5317">
+          <view bindtap="resetMaterial" class="_6ab5317">重置</view>
+          <view class="btncomfig _6ab5317" bindtap="onClose">完成</view>
+        </view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ show1 }}" position="top"  bind:close="onClose1" class="_6ab5317">
+      <view class="_6ab5317">
+        <view class="TankuanBox1 _6ab5317">
+          <view class="{{today==1?currenClassfy:''}} _6ab5317" bindtap="taggleQiehuan" data-id="1">
+            今天
+            <text wx:if="{{today==1}}" class="iconfont jiaobiao _6ab5317"></text>
+          </view>
+          <view class="{{today==2?currenClassfy:''}} _6ab5317" bindtap="taggleQiehuan" data-id="2">
+            本周
+            <text wx:if="{{today==2}}" class="iconfont jiaobiao _6ab5317"></text>
+          </view>
+          <view class="{{today==3?currenClassfy:''}} _6ab5317" bindtap="taggleQiehuan" data-id="3">
+            本月
+            <text wx:if="{{today==3}}" class="iconfont jiaobiao _6ab5317"></text>
+          </view>
+        </view>
+        <view class="dateBox _6ab5317">
+          <picker class="rlixuanz _6ab5317" mode="date" value="{{startTime}}" end="{{nowTime}}" bindchange="bindDateChange">
+            <text class="iconfont _6ab5317" style="margin-right: 15rpx;color: #d2d3d8"></text>
+            <text class="_6ab5317">{{startTime}}</text>
+          </picker>
+          <view class="line _6ab5317">-</view>
+          <picker class="rlixuanz _6ab5317" mode="date" value="{{endTime}}" start="{{startTime}}" end="{{nowTime}}" bindchange="bindDateChange1">
+            <text class="iconfont _6ab5317" style="margin-right: 15rpx;color: #d2d3d8"></text>
+            <text class="_6ab5317">{{endTime}}</text>
+          </picker>
+        </view>
+        <view class="popupqueding _6ab5317" bindtap="comfireTime">确定</view>
+      </view>
+    </van-popup>
+
+
+  </view>

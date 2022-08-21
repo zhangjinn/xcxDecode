@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),keys=require("./keys.js"),values=_curry1(function(r){for(var e=keys(r),u=e.length,s=[],n=0;n<u;)s[n]=r[e[n]],n+=1;return s});module.exports=values;

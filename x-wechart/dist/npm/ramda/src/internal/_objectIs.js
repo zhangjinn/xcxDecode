@@ -1,0 +1,1 @@
+function _objectIs(t,e){return t===e?0!==t||1/t==1/e:t!==t&&e!==e}module.exports="function"==typeof Object.is?Object.is:_objectIs;

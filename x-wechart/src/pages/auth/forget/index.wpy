@@ -1,0 +1,101 @@
+<template>
+  <view class="account">
+    <view class="account-tab">
+      <view @tap="toggleType('YES')" hover-class="hover" class="account-tab-item {{ canUse === 'YES' ? 'active':'' }}">
+        <view class="account-tab-item-text">原手机可用</view>
+        <view class="account-tab-item-line" />
+      </view>
+      <view @tap="toggleType('NO')" hover-class="hover" class="account-tab-item {{ canUse === 'NO' ? 'active':'' }}">
+        <view class="account-tab-item-text">原手机不可用</view>
+        <view class="account-tab-item-line" />
+      </view>
+    </view>
+    <view hidden="{{canUse !== 'YES'}}">
+      <van-cell-group>
+        <van-field
+          placeholder="请输入登录账号"
+          clearable="{{true}}"
+          value="{{name}}"
+          type="idcard"
+          cell-class="login-input"
+          placeholder-style="color: #aaa;font-size: 28rpx;"
+          bind:change="onNameChange"
+          bind:clear="clearName"
+        />
+        <van-field
+          placeholder="请输入手机号"
+          clearable="{{true}}"
+          value="{{mobile}}"
+          type="idcard"
+          cell-class="login-input"
+          placeholder-style="color: #aaa;font-size: 28rpx;"
+          bind:change="onMobileChange"
+          bind:clear="clearMobile"
+        />
+        <van-field
+          placeholder="短信验证码"
+          value="{{code}}"
+          clearable="{{true}}"
+          cell-class="login-input"
+          placeholder-style="color: #aaa;font-size: 28rpx;"
+          bind:change="onCodeChange"
+          bind:clear="clearCode"
+        >
+          <view @tap="getSmsCode" class="login-input-sms {{ timer === 60 ? 'success':'disabled' }}" hover-class="hover" slot="button">
+            <block wx:if="{{timer === 60}}">发送验证码</block><block wx:else>({{timer}}s)重新获取</block>
+          </view>
+        </van-field>
+      </van-cell-group>
+      <van-button
+        bind:click="submitTel"
+        custom-class="login-vant-btn"
+        color="#00AAA6"
+        square="{{true}}"
+        block="{{true}}"
+        disabled="{{ !mobile || !mobile || !code }}"
+      >下一步</van-button>
+    </view>
+    <view hidden="{{canUse !== 'NO'}}">
+      <van-cell-group>
+        <van-field
+          placeholder="请输入商家登录账号"
+          clearable="{{true}}"
+          value="{{shopName}}"
+          cell-class="login-input"
+          placeholder-style="color: #aaa;font-size: 28rpx;"
+          bind:change="onShopAccountChange"
+          bind:clear="clearShopAccount"
+        />
+        <van-field
+          placeholder="请输入商家全称"
+          clearable="{{true}}"
+          value="{{shopFull}}"
+          cell-class="login-input"
+          placeholder-style="color: #aaa;font-size: 28rpx;"
+          bind:change="onShopFullChange"
+          bind:clear="clearShopFull"
+        />
+        <van-field
+          placeholder="请输入商家法人姓名"
+          clearable="{{true}}"
+          value="{{shopContact}}"
+          cell-class="login-input"
+          placeholder-style="color: #aaa;font-size: 28rpx;"
+          bind:change="onShopContactChange"
+          bind:clear="clearShopContact"
+        />
+      </van-cell-group>
+      <van-button
+        bind:click="submitAccount"
+        custom-class="login-vant-btn"
+        color="#00AAA6"
+        square="{{true}}"
+        block="{{true}}"
+        disabled="{{ !shopName || !shopFull || !shopContact }}"
+      >下一步</van-button>
+    </view>
+    <van-toast id="van-toast" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

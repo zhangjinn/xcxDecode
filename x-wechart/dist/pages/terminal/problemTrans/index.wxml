@@ -1,0 +1,67 @@
+
+  <view class="page-wrap _58acfd8">
+    <view class="top-wrap _58acfd8">
+      <view class="left-wrap _58acfd8">
+        <view class="text name _58acfd8">{{ detail.storeName }}</view>
+        <view class="text _58acfd8">
+          <text class="lab _58acfd8">巡查日期</text>
+          <text class="val _58acfd8">{{ detail.checkTime }}</text>
+        </view>
+        <view class="text _58acfd8">
+          <text class="lab _58acfd8">巡查人员</text>
+          <text class="val _58acfd8">{{ detail.checkUserName }}</text>
+        </view>
+      </view>
+      <view class="right-wrap _58acfd8">
+        <image class="img _58acfd8" src="{{detail.checkResult=='T' ? imgObj.pointPass : imgObj.pointUnpass}}"/>
+      </view>
+
+    </view>
+    <view class="form-wrap _58acfd8">
+      <van-cell is-link="is-link" value="{{proType||'请选择问题分类'}}" bindtap="openTypeList" class="_58acfd8">
+        <view slot="title" class="_58acfd8">
+          <view class="van-cell-text cell--required _58acfd8">问题分类</view>
+        </view>
+      </van-cell>
+      <van-field label="问题描述" placeholder="请输入问题描述" input-align="right" value="{{proContent}}"  bind:change="onDescriptionChange" class="_58acfd8"/>
+      <van-cell is-link="is-link" value="{{duty.dutyUserName}}" bindtap="gotoPeople" class="_58acfd8">
+        <view slot="title" class="_58acfd8">
+          <view class="van-cell-text cell--required _58acfd8">责任人</view>
+        </view>
+      </van-cell>
+    </view>
+    <view class="prob-wrap _58acfd8">
+      <view class="name van-hairline--bottom _58acfd8">不合格项</view>
+      <block class="_58acfd8" wx:for="{{detail.listStandard}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="item _58acfd8">
+          <view class="num _58acfd8">
+            {{ index+1 }}.
+          </view>
+          <view class="cont _58acfd8">
+            {{ item.contentRead }}
+          </view>
+        </view>
+      </block>
+    </view>
+    <view class="bottom-wrap _58acfd8">
+      <view class="btn _58acfd8" bindtap="back">
+        返回
+      </view>
+      <view class="btn btn-ok _58acfd8" bindtap="submit">
+        提交
+      </view>
+    </view>
+    <!--底部类型弹框-->
+    <van-popup show="{{problemTypeListVisible}}" position="bottom" closeable="closeable"  bind:close="onCloseTypeList" close-on-click-overlay="close-on-click-overlay" custom-style="min-height: 400rpx;max-height: 600rpx;" class="_58acfd8">
+      <view class="order-s-filter-container _58acfd8">
+        <block class="_58acfd8" wx:for="{{problemTypeList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="order-operation _58acfd8">
+            <view class="operation-text van-hairline--bottom _58acfd8" bindtap="onSelProblemType" data-wpyonselproblemtype-a="{{item}}">
+              <view class="operation-status {{ proType==item.value? 'active' : '' }} _58acfd8">{{ item.text }}</view>
+              <view  wx:if="{{ proType==item.value }}" class="b-icon icon-check operation-icon _58acfd8"/>
+            </view>
+          </view>
+        </block>
+      </view>
+    </van-popup>
+  </view>

@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),map=require("./map.js"),sequence=require("./sequence.js"),traverse=_curry3(function(e,r,a){return"function"==typeof a["fantasy-land/traverse"]?a["fantasy-land/traverse"](r,e):sequence(e,map(r,a))});module.exports=traverse;

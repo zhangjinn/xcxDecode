@@ -1,0 +1,968 @@
+<template>
+  <block wx:if="{{ !notLogin}}">
+    <emptyDataAuth wx:if="{{ !isTab && !isPermission}}" description="权限"/>
+    <block wx:elif="{{isTab && !isPermission}}">
+      <view class="filter" style="padding-bottom: {{ customTabBarAllHeight }}px">
+        <view class="top">
+          <view class="header-divider" style="height: {{sys.statusBarHeight+45}}px" />
+          <view>
+            <van-tabs
+              tab-active-class="mintable"
+              active="{{ categoryIndex }}"
+              bind:change="onminiSelecte2"
+              line-width="0px"
+            >
+              <repeat for="{{vans}}" item="item">
+                <van-tab data-id="{{item.label}}" title="{{item.label}}"></van-tab>
+              </repeat>
+            </van-tabs>
+          </view>
+        </view>
+        <view class="free-shipping-tip">{{ freeShippingTip }}</view>
+        <scroll-view
+          class="scroll-grid scroll-grid2"
+          bindscrolltolower="onPullBottom"
+          bindscroll="onScroll"
+          scroll-top="{{ scrollTop }}"
+          scroll-y
+          enable-back-to-top
+        >
+          <!-- 普通专区 -->
+          <block>
+            <block wx:if="{{showProduct.length > 0}}">
+              <view class="grid-context">
+                <repeat for="{{ showProduct }}" item="item">
+                  <view class="context">
+                    <item
+                      item="{{ item }}"
+                      type="noLogin"
+                      lazyLoad="true"
+                    />
+                  </view>
+                </repeat>
+              </view>
+            </block>
+            <emptyDataType wx:else description="产品"/>
+          </block>
+        </scroll-view>
+        <!-- 回到上方 -->
+        <button
+          hidden="{{!visibelTop}}"
+          @tap="scrollToTop"
+          class="screen shareBar {{ category ? 'screen-float-top' : '' }}"
+          lang="zh_CN"
+        >
+          <view class="b-icon icon-top" />
+        </button>
+        <van-toast id="van-toast" />
+      </view>
+    </block>
+    <block wx:else>
+
+      <!-- 14168810880 下单系统  14168810879 进销存系统 -->
+      <block wx:if="{{ user.info.id && (utils.includes('14168810880', user.info.loginSystem) || utils.includes('14168810879', user.info.loginSystem))}}">
+        <view class="filter" style="padding-bottom: {{ customTabBarAllHeight }}px">
+          <van-popup
+            show="{{visible}}"
+            position="right"
+            overlay="{{ true }}"
+            bind:close="onClose"
+            custom-class="popup"
+            overlay-style="overlay"
+          >
+            <view class="filter-drawer">
+              <view class="filter-drawer-attr" style="padding-bottom: {{ customTabBarAllHeight }}px" >
+                <!-- 供应商是单独拿出来的 -->
+                <view class="header-divider" style="height: {{sys.statusBarHeight}}px" />
+                <scroll-view class="filter-drawer-attr-scroll" scroll-y>
+                  <view wx:if="{{!category && specialfilters.fwOrgsGroupMap.length > 0}}" class="attr-item">
+                    <view class="attr-item-header" hover-class="hover">
+                      <view class="title">供应商</view>
+                      <view class="right">
+                        <view class="text">
+                          <text>{{classificationpopup}}</text>
+                        </view>
+                        <view
+                          @tap="Suppliers"
+                          class="b-icon h-icon iconliebiaoshaixuanjiantou-{{ Suppliersextend ? 'up' : 'down' }}"
+                        />
+                      </view>
+                    </view>
+                    <view
+                      wx:if="{{selectItemNumber == 0}}"
+                      class="attr-item-content {{Suppliersextend ? 'open' : ''}}"
+                    >
+                      <repeat for="{{specialfilters.fwOrgsGroupMap}}" item="item">
+                        <view
+                          hidden="{{item.classificationOnsee}}"
+                          catchtap="classificationpopup({{item.key}})"
+                          class="attr {{item.classificationstatus ? 'active' : ''}}"
+                          hover-class="hover"
+                        >{{item.value}}</view>
+                      </repeat>
+                    </view>
+                    <view
+                      wx:if="{{selectItemNumber == 1}}"
+                      class="attr-item-content {{Suppliersextend ? 'open' : ''}}"
+                    >
+                      <repeat for="{{dmsOrgList}}" item="item">
+                        <view
+                          catchtap="dmsclassification({{item.key}})"
+                          class="attr {{item.classificationstatus ? 'active' : ''}}"
+                          hover-class="hover"
+                        >{{item.value}}</view>
+                      </repeat>
+                    </view>
+                  </view>
+                  <!-- dms 物料组 -->
+                  <view wx:if="{{!category && selectItemNumber == 1 && dmsmatklList.length > 0}}" class="attr-item">
+                    <view class="attr-item-header" hover-class="hover">
+                      <view class="title">物料组</view>
+                      <view class="right">
+                        <view class="text">
+                          <text>{{dmsmatklListPopup}}</text>
+                        </view>
+                        <view
+                          @tap="Itemgroup"
+                          class="b-icon h-icon iconliebiaoshaixuanjiantou-{{ Itemgroupextend ? 'up' : 'down' }}"
+                        />
+                      </view>
+                    </view>
+                    <view class="attr-item-content {{Itemgroupextend ? 'open' : ''}}">
+                      <repeat for="{{dmsmatklList}}" item="item">
+                        <view
+                          catchtap="dmsmatkl({{item.key}})"
+                          class="attr {{item.classificationstatus ? 'active' : ''}}"
+                          hover-class="hover"
+                        >{{item.value}}</view>
+                      </repeat>
+                    </view>
+                  </view>
+                  <!-- 除供应商为的条件循环 -->
+                  <repeat for="{{filters}}" index="index" item="item">
+                    <block>
+                      <view wx:if="{{!category}}" class="attr-item">
+                        <view
+                          @tap="toggleExtend({{item.key}})"
+                          class="attr-item-header"
+                          hover-class="hover"
+                        >
+                          <view class="title">{{item.key}}</view>
+                          <view class="right">
+                            <view class="text">
+                              <repeat for="{{item.filter}}" item="select">
+                                <text>{{select}}</text>
+                              </repeat>
+                            </view>
+                            <view
+                              class="b-icon h-icon iconliebiaoshaixuanjiantou-{{ item.extend ? 'up' : 'down' }}"
+                            />
+                          </view>
+                        </view>
+                        <view class="attr-item-content {{item.extend ? 'open' : ''}}">
+                          <repeat for="{{item.value}}" key="{{attr.key}}" item="attr">
+                            <view
+                              @tap="chooseAttr({{item.key}}, {{attr.value}})"
+                              class="attr {{attr.active ? 'active' : ''}}"
+                              hover-class="hover"
+                            >{{attr.value}}</view>
+                          </repeat>
+                        </view>
+                      </view>
+                    </block>
+                  </repeat>
+                  <!-- 采购类型start -->
+                  <block wx:if="{{ !(user.fxPartInfo.length > 0 && utils.includes('14168810879', user.info.loginSystem)) }}">
+                    <view wx:if="{{!category && specialfilters.fwOrgsGroupMap.length > 0}}" class="attr-item">
+                      <view class="attr-item-header" hover-class="hover">
+                        <view class="title">采购类型</view>
+                        <view class="right">
+                          <view class="text">
+                            <text>{{purchaseTypePopup}}</text>
+                          </view>
+                          <view
+                            @tap="Suppliers"
+                            class="b-icon h-icon iconliebiaoshaixuanjiantou-{{ Suppliersextend ? 'up' : 'down' }}"
+                          />
+                        </view>
+                      </view>
+                      <view class="attr-item-content {{Suppliersextend ? 'open' : ''}}">
+                        <repeat for="{{purchaseTypeOptions}}" item="item">
+                          <view
+                            catchtap="selectedPurchaseType({{item.key}})"
+                            class="attr {{item.status ? 'active' : ''}}"
+                            hover-class="hover"
+                          >{{item.value}}</view>
+                        </repeat>
+                      </view>
+                    </view>
+                  </block>
+                  <!-- 采购类型end -->
+                  <!-- 特惠其他筛选条件 -->
+                  <view wx:if="{{!specialZone && utils.includesKeyInArr('特惠专区',zoneButtonShowArr)}}" class="attr-item">
+                    <view>
+                      <text style="font-size: 13px;color: #777777">订单类型</text>
+                    </view>
+                    <view @tap="specialselect(1)" class="engineer van-hairline--bottom">
+                      <text class="engtext">未开始</text>
+                      <view
+                        class="b-icon {{ specialprojectstatus == 1 ? 'icon-check' : ''}} engicon"
+                      />
+                    </view>
+                    <view @tap="specialselect(2)" class="engineer van-hairline--bottom">
+                      <text class="engtext">进行中</text>
+                      <view
+                        class="b-icon {{ specialprojectstatus == 2 ? 'icon-check' : ''}} engicon"
+                      />
+                    </view>
+                    <view @tap="specialselect(3)" class="engineer van-hairline--bottom">
+                      <text class="engtext">已结束</text>
+                      <view
+                        class="b-icon {{ specialprojectstatus == 3 ? 'icon-check' : ''}} engicon"
+                      />
+                    </view>
+                    <view class="projectem">
+                      <view class="project">
+                        <text style="font-size: 13px;color: #777777">特惠编码</text>
+                      </view>
+                      <van-field
+                        placeholder="请输入特惠编码"
+                        value="{{ onspecialProjectcodeChange }}"
+                        border="{{ false }}"
+                        bind:change="onspecialProjectcodeChange"
+                        input-class="inputitem"
+                        custom-style="ceshi"
+                        clearable
+                      />
+                    </view>
+                    <view class="projectem">
+                      <view class="project">
+                        <text style="font-size: 13px;color: #777777">商品型号</text>
+                      </view>
+                      <van-field
+                        placeholder="请输入商品型号"
+                        border="{{ false }}"
+                        bind:change="onspecialProjectnameChange"
+                        input-class="inputitem"
+                        clearable
+                      />
+                    </view>
+                    <view class="projectem">
+                      <view class="project">
+                        <text style="font-size: 13px;color: #777777">商品批次</text>
+                      </view>
+                      <van-field
+                        placeholder="请输入商品批次"
+                        border="{{ false }}"
+                        bind:change="onspecialProjectChange"
+                        input-class="inputitem"
+                        custom-style="ceshi"
+                        clearable
+                      />
+                    </view>
+                  </view>
+                  <!-- 工程专区筛选条件 -->
+                  <view wx:if="{{!engineeringZone}}" class="attr-item">
+                    <view>
+                      <text style="font-size: 13px;color: #777777">订单类型</text>
+                    </view>
+                    <view @tap="select" data-name="0" class="engineer van-hairline--bottom">
+                      <text class="engtext">未开始</text>
+                      <view class="b-icon {{ projectstatus == 0 ? 'icon-check' : ''}} engicon" />
+                    </view>
+                    <view @tap="select" data-name="1" class="engineer van-hairline--bottom">
+                      <text class="engtext">进行中</text>
+                      <view class="b-icon {{ projectstatus == 1 ? 'icon-check' : ''}} engicon" />
+                    </view>
+                    <view @tap="select" data-name="2" class="engineer van-hairline--bottom">
+                      <text class="engtext">已结束</text>
+                      <view class="b-icon {{ projectstatus == 2 ? 'icon-check' : ''}} engicon" />
+                    </view>
+                    <view class="projectem">
+                      <view class="project">
+                        <text style="font-size: 13px;color: #777777">项目编码</text>
+                      </view>
+                      <van-field
+                        placeholder="请输入项目编码"
+                        border="{{ false }}"
+                        value="{{ projectcode }}"
+                        bind:change="onProjectcodeChange"
+                        input-class="inputitem"
+                        custom-style="ceshi"
+                        clearable
+                      />
+                    </view>
+                    <view class="projectem">
+                      <view class="project">
+                        <text style="font-size: 13px;color: #777777">项目名称</text>
+                      </view>
+                      <van-field
+                        placeholder="请输入项目名称"
+                        border="{{ false }}"
+                        bind:change="onProjectnameChange"
+                        input-class="inputitem"
+                        clearable
+                      />
+                    </view>
+                  </view>
+                  <!-- 套购区筛选条件 -->
+                  <view wx:if="{{!buyoutZone}}" class="attr-item">
+                    <view>
+                      <text style="font-size: 13px;color: #777777">订单类型</text>
+                    </view>
+                    <view @tap="buyoutselect('init')" class="engineer van-hairline--bottom">
+                      <text class="engtext">未开始</text>
+                      <view class="b-icon {{ buyoutstatus == 'init' ? 'icon-check' : ''}} engicon" />
+                    </view>
+                    <view @tap="buyoutselect('begin')" class="engineer van-hairline--bottom">
+                      <text class="engtext">进行中</text>
+                      <view class="b-icon {{ buyoutstatus == 'begin' ? 'icon-check' : ''}} engicon" />
+                    </view>
+                    <view @tap="buyoutselect('end')" class="engineer van-hairline--bottom">
+                      <text class="engtext">已结束</text>
+                      <view class="b-icon {{ buyoutstatus == 'end' ? 'icon-check' : ''}} engicon" />
+                    </view>
+                    <view class="projectem">
+                      <view class="project">
+                        <text style="font-size: 13px;color: #777777">项目编码</text>
+                      </view>
+                      <van-field
+                        placeholder="请输入项目编码"
+                        border="{{ false }}"
+                        value="{{ onBuyoutProjectcodeChange }}"
+                        bind:change="onBuyoutProjectcodeChange"
+                        input-class="inputitem"
+                        custom-style="ceshi"
+                        clearable
+                      />
+                    </view>
+                    <view class="projectem">
+                      <view class="project">
+                        <text style="font-size: 13px;color: #777777">项目名称</text>
+                      </view>
+                      <van-field
+                        placeholder="请输入项目名称"
+                        border="{{ false }}"
+                        bind:change="onBuyoutProjectnameChange"
+                        input-class="inputitem"
+                        clearable
+                      />
+                    </view>
+                  </view>
+                </scroll-view>
+                <!-- 底部按钮 -->
+                <view wx:if="{{!buyoutZone}}" class="filter-drawer-attr-footer">
+                  <view
+                    @tap="confirmbuyout"
+                    class="filter-drawer-attr-footer-btn confirm"
+                    hover-class="filter-drawer-attr-footer-btn-hover"
+                  >确定</view>
+                </view>
+                <view wx:if="{{!engineeringZone}}" class="filter-drawer-attr-footer">
+                  <view
+                    @tap="confirmEngineer"
+                    class="filter-drawer-attr-footer-btn confirm"
+                    hover-class="filter-drawer-attr-footer-btn-hover"
+                  >确定</view>
+                </view>
+                <view wx:if="{{!specialZone}}" class="filter-drawer-attr-footer">
+                  <view
+                    @tap="confirmSpecial(changestatus,'')"
+                    class="filter-drawer-attr-footer-btn confirm"
+                    hover-class="filter-drawer-attr-footer-btn-hover"
+                  >确定</view>
+                </view>
+                <view wx:if="{{!category}}" class="filter-drawer-attr-footer">
+                  <!-- 显示已维护价格产品 -->
+                  <view @tap="onCheckMainPrice" class="filter-drawer-attr-footer-check">
+                    <view class="filter-drawer-attr-footer-check-cont">
+                      仅显示已维护价格的商品
+                    </view>
+                    <view
+                      class="radio-content"
+                      hover-class="hover"
+                    >
+                      <view
+                        class="radio-content-el {{checkMainPrice ? 'checked' : ''}}"
+                      >
+                        <view class="b-icon icon-check" />
+                      </view>
+                    </view>
+                  </view>
+                  <!-- 重置和确认按钮 -->
+                  <view class="filter-drawer-attr-footer-bot">
+                    <view
+                      @tap="resetSearch"
+                      class="filter-drawer-attr-footer-btn reset"
+                      hover-class="filter-drawer-attr-footer-btn-hover"
+                    >重置</view>
+                    <view
+                      @tap="confirmSearch"
+                      class="filter-drawer-attr-footer-btn confirm"
+                      hover-class="filter-drawer-attr-footer-btn-hover"
+                    >确认</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </van-popup>
+          <van-popup
+            show="{{!servicesVisible}}"
+            position="top"
+            overlay="{{ true }}"
+            bind:close="toggleServicesVisible"
+            overlay-style="overlay"
+            custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"
+          >
+            <view class="top pop-top">
+              <view class="header-divider" style="height: {{sys.statusBarHeight}}px" />
+              <view class="header-content">
+                <view class="search">
+                  <navigator url="/pages/goods/search/index" class="header-input">
+                    <view class="b-icon search-icon shouyesousuo"/>
+                    <text class="search-text">搜索商品</text>
+                  </navigator>
+                </view>
+              </view>
+              <view class="tabs-select">
+                <view wx:if="{{utils.includes('14168810880', user.info.loginSystem) && user.zyPartInfo.length > 0}}" class="item">
+                  <view class="text">海信采购</view>
+                </view>
+                <view wx:if="{{user.fxPartInfo.length > 0 && utils.includes('14168810879', user.info.loginSystem)}}" class="item">
+                  <view class="text">渠道采购</view>
+                </view>
+                <view wx:if="{{(utils.includes('14168810880', user.info.loginSystem) && user.zyPartInfo.length > 0 ) || (user.fxPartInfo.length > 0 && utils.includes('14168810879', user.info.loginSystem))}}" class="item">
+                  <view class="text-active">{{onPopupItemName}}</view>
+                  <view class="b-icon iconxialajiantou icon-select"></view>
+                </view>
+              </view>
+              <view class="shop">
+                <view class="shop-header">
+                  <view @tap="toggleServicesVisible" class="shop-header-label" hover-class="hover">
+                    <text>供应商选择</text>
+                    <view class="b-icon icon-shangshengjiantou icon"></view>
+                  </view>
+                  <view class="shop-header-value">当前为： {{specialfilters.firstorg}}</view>
+                </view>
+                <scroll-view scroll-y class="services-list van-hairline--top">
+                  <van-row>
+                    <repeat for="{{specialfilters.orgMatkl}}" item="item">
+                      <view
+                        @tap="chooseSpecialServices({{item.value}},{{item.key}})"
+                        class="services-list-item van-hairline--bottom"
+                        hover-class="hover"
+                      >
+                        <view class="services-list-item-radio {{item.active ? 'checked' : '' }}">
+                          <view class="b-icon icon-check" />
+                        </view>
+                        <view class="services-list-item-text">{{item.value}}</view>
+                      </view>
+                    </repeat>
+                  </van-row>
+                </scroll-view>
+              </view>
+            </view>
+          </van-popup>
+          <!-- 专区选择 -->
+          <van-popup
+            show="{{ specialProcurement }}"
+            position="top"
+            overlay="{{ true }}"
+            bind:close="specialPopup"
+            custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;"
+            overlay-style="overlay"
+          >
+            <view class="top pop-top">
+              <view class="header-divider" style="height: {{sys.statusBarHeight}}px" />
+              <view class="header-content">
+                <view class="search">
+                  <navigator url="/pages/goods/search/index" class="header-input">
+                    <view class="b-icon search-icon shouyesousuo"/>
+                    <text class="search-text">搜索商品</text>
+                  </navigator>
+                </view>
+              </view>
+              <view class="tabs-select">
+                <view wx:if="{{ user.zyPartInfo.length > 0 && utils.includes('14168810880', user.info.loginSystem)}}" class="item">
+                  <view class="text">海信采购</view>
+                </view>
+                <view wx:if="{{ user.fxPartInfo.length > 0 && utils.includes('14168810879', user.info.loginSystem)}}" class="item">
+                  <view class="text">渠道采购</view>
+                </view>
+                <view wx:if="{{(utils.includes('14168810880', user.info.loginSystem) && user.zyPartInfo.length > 0 ) || (user.fxPartInfo.length > 0 && utils.includes('14168810879', user.info.loginSystem))}}" class="item">
+                  <view class="text-active">{{onPopupItemName}}</view>
+                  <view class="b-icon icon-shangshengjiantou icon-select"></view>
+                </view>
+              </view>
+              <view class="special-area-procurement">
+                <view wx:if="{{!user.info.allFenXiao && utils.includesKeyInArr('工程专区',zoneButtonShowArr)}}" catchtap="onPopupList(1)" class="item van-hairline--bottom">
+                  <view
+                    style="padding-left:22rpx;"
+                    class="name-{{onPopupItemNomber == 1 ? 'active': 'normal'}}"
+                  >工程专区</view>
+                  <view wx:if="{{onPopupItemNomber == 1}}" class="b-icon icon-check icon"></view>
+                </view>
+                <view wx:if="{{utils.includesKeyInArr('特惠专区',zoneButtonShowArr)}}" catchtap="onPopupList(2)" class="item van-hairline--bottom">
+                  <view
+                    style="padding-left:22rpx;"
+                    class="name-{{onPopupItemNomber == 2 ? 'active': 'normal'}}"
+                  >特惠专区</view>
+                  <view wx:if="{{onPopupItemNomber == 2}}" class="b-icon icon-check icon"></view>
+                </view>
+                <view wx:if="{{utils.includesKeyInArr('套购专区',zoneButtonShowArr)}}" catchtap="onPopupList(3)" class="item van-hairline--bottom">
+                  <view
+                    style="padding-left:22rpx;"
+                    class="name-{{onPopupItemNomber == 3 ? 'active': 'normal'}}"
+                  >套购专区</view>
+                  <view wx:if="{{onPopupItemNomber == 3}}" class="b-icon icon-check icon"></view>
+                </view>
+              </view>
+            </view>
+          </van-popup>
+          <view class="top">
+            <view class="header-divider" style="height: {{sys.statusBarHeight}}px" />
+            <view class="header-content">
+              <view class="search">
+                <navigator url="/pages/goods/search/index" class="header-input">
+                  <view class="b-icon search-icon shouyesousuo"/>
+                  <text class="search-text">搜索商品</text>
+                </navigator>
+              </view>
+            </view>
+            <view class="tabs-select">
+              <view
+                wx:if="{{user.zyPartInfo.length > 0 && utils.includes('14168810880', user.info.loginSystem)}}"
+                catchtap="onSelecte(0)"
+                class="item"
+              >
+                <view class="text-{{selectItemNumber == 0 ? 'active' : 'normal'}}">海信采购</view>
+              </view>
+              <view
+                wx:if="{{user.fxPartInfo.length > 0 && utils.includes('14168810879', user.info.loginSystem)}}"
+                catchtap="onSelecte(1)"
+                class="item"
+              >
+                <view class="text-{{selectItemNumber == 1 ? 'active' : 'normal'}}">渠道采购</view>
+              </view>
+              <view wx:if="{{(utils.includes('14168810880', user.info.loginSystem) && user.zyPartInfo.length > 0 ) || (user.fxPartInfo.length > 0 && utils.includes('14168810879', user.info.loginSystem))}}" catchtap="onSelecte(2)" class="item">
+                <view class="text-{{selectItemNumber == 2 ? 'active' :'normal' }}">{{onPopupItemName}}</view>
+                <view
+                  class="b-icon iconxialajiantou {{selectItemNumber == 2 ? 'icon-select' :'icon-unselect' }}"
+                ></view>
+              </view>
+            </view>
+            <view class="take-tabs-box">
+            <view class="left-btn">
+            <view wx:if="{{selectItemNumber == 0 && generalZonePermissions}}">
+              <van-tabs
+                tab-active-class="mintable"
+                active="{{ categoryIndex }}"
+                bind:change="onminiSelecte"
+                line-width="0px"
+              >
+                <repeat for="{{user.zyPartInfo}}" item="item">
+                  <van-tab data-id="{{item.id}}" title="{{item.name}}"></van-tab>
+                </repeat>
+              </van-tabs>
+            </view>
+            <view wx:if="{{selectItemNumber == 1 && generalZonePermissions}}">
+              <van-tabs
+                tab-active-class="mintable"
+                active="{{ dmscategoryIndex }}"
+                bind:change="onminiDmsSelecte"
+                line-width="0px"
+              >
+                <repeat for="{{user.fxPartInfo}}" item="item">
+                  <van-tab data-id="{{item.id}}" title="{{item.name}}"></van-tab>
+                </repeat>
+              </van-tabs>
+            </view>
+            <view wx:if="{{onPopupItemName == '特惠专区' && utils.includesKeyInArr('特惠专区',zoneButtonShowArr)}}" class="cart">
+              <view class="cart-header">
+                <view @tap="toggleServicesVisible" class="cart-header-label" hover-class="hover">
+                  <text>供应商选择</text>
+                  <view class="b-icon iconxialajiantou icon"></view>
+                </view>
+                <view class="cart-header-value">当前为：{{specialfilters.firstorg}}</view>
+              </view>
+            </view>
+            </view>
+            <view wx:if="{{conditonShow}}" class="right-btn" @tap="openDrawer">
+              <view class="line-shadow"></view>
+              <view class="side-filter-btn">
+                <text class="side-filter-text">筛选</text>
+                <i class="b-icon shaixuan"></i>
+              </view>
+            </view>
+            </view>
+          </view>
+          <view class="free-shipping-tip">{{ freeShippingTip }}</view>
+          <scroll-view
+            class="scroll-grid"
+            bindscrolltolower="onPullBottom"
+            bindscroll="onScroll"
+            scroll-top="{{ scrollTop }}"
+            scroll-y
+            enable-back-to-top
+          >
+            <!-- 普通专区 -->
+            <block wx:if="{{ !category }}">
+              <block wx:if="{{generalZonePermissions}}">
+                <block wx:if="{{classification.length > 0}}">
+                  <view class="grid-context">
+                    <repeat for="{{ classification }}" item="item">
+                      <view class="context">
+                        <item
+                          item="{{ item }}"
+                          lazyLoad="true"
+                          bind:toggle-collection="toggleCollection"
+                          bind:img-lose="imgLose"
+                        />
+                      </view>
+                    </repeat>
+                  </view>
+                </block>
+                <emptyDataType wx:else description="产品"/>
+              </block>
+              <emptyDataAuth wx:else description="权限"/>
+            </block>
+            <!-- 工程专区 -->
+            <block wx:elif="{{ !engineeringZone }}">
+              <block wx:if="{{utils.includesKeyInArr('工程专区',zoneButtonShowArr)}}">
+                <block wx:if="{{ engineerList.length > 0 }}">
+                  <repeat for="{{engineerList}}" item="item">
+                    <navigator url="/pages/goods/project/index?id={{item.id}}" class="order-container">
+                      <view class="order-title">
+                        <view class="order-id">
+                          <text class="order-firstitems">项目编码:</text>
+                          <text class="order-{{item.status == 2 ? 'named':'name'}}">{{item.projectCode}}</text>
+                        </view>
+                        <view wx:if="{{utils.isFreeShipping(item.productLabel)}}" class="free-shipping-tag">免运费</view>
+                        <text hidden="{{ item.status == 1 ? false : true }}" class="order-statusing">进行中</text>
+                        <text
+                          hidden="{{ item.status == 0 ? false : true }}"
+                          class="order-willstatus"
+                        >未开始</text>
+                        <text hidden="{{ item.status == 2 ? false : true }}" class="order-statused">已结束</text>
+                      </view>
+                      <view class="order-title">
+                        <view class="order-id">
+                          <text class="order-items">供应商:</text>
+                          <text class="order-{{item.status == 2 ? 'named':'name'}}">{{item.orgId_name}}</text>
+                        </view>
+                      </view>
+                      <view class="order-title">
+                        <view class="order-id">
+                          <text class="order-items">招标单位:</text>
+                          <text
+                            class="order-{{item.status == 2 ? 'named':'name'}}"
+                          >{{item.contractOrg_name}}</text>
+                        </view>
+                      </view>
+                      <view class="order-title">
+                        <view class="order-id">
+                          <text class="order-items">联系人:</text>
+                          <text
+                            class="order-{{item.status == 2 ? 'named':'name'}}"
+                          >{{item.customerContact}}</text>
+                        </view>
+                      </view>
+                      <view class="order-title">
+                        <view class="order-id">
+                          <text class="order-items">联系电话:</text>
+                          <text class="order-{{item.status == 2 ? 'named':'name'}}">{{item.customerTel}}</text>
+                        </view>
+                      </view>
+                      <view class="order-title">
+                        <view class="order-id">
+                          <text class="order-items">经办人:</text>
+                          <text class="order-{{item.status == 2 ? 'named':'name'}}">{{item.agent}}</text>
+                        </view>
+                      </view>
+                      <view class="order-title">
+                        <view class="order-id">
+                          <text class="order-items">工作地址:</text>
+                          <text
+                            class="order-{{item.status == 2 ? 'named':'name'}}"
+                          >{{item.customerAddr}}</text>
+                        </view>
+                      </view>
+                      <view class="order-title">
+                        <view class="order-id">
+                          <text class="order-items">有效期:</text>
+                          <text
+                            class="order-{{item.status == 2 ? 'named':'name'}}"
+                          >{{item.beginDate}} 至 {{item.endDate}}</text>
+                        </view>
+                      </view>
+                    </navigator>
+                  </repeat>
+                </block>
+                <emptyDataType wx:else description="产品"/>
+              </block>
+              <emptyDataAuth wx:else description="权限"/>
+            </block>
+            <block wx:elif="{{!specialZone }}">
+              <!-- 特惠专区 -->
+              <block wx:if="{{utils.includesKeyInArr('特惠专区',zoneButtonShowArr)}}">
+                <block wx:if="{{preferential.length > 0}}">
+                  <repeat for="{{preferential}}" item="item">
+                    <view wx:if="{{!item.relSelect}}" class="order-specialcontainer">
+                      <view @tap="preferentialSelect({{item.id}},false)" class="order-title">
+                        <view class="order-id">
+                          <view class="order-extend">
+                            <view wx:if="{{utils.isFreeShipping(item.productLabel)}}" class="free-shipping-tag">免运费</view>
+                            <view
+                              class="order-{{item.statusName === '已结束' ? 'sharesed':'shares' }}"
+                            >{{item.matklName}}</view>
+                            <text
+                              class="order-{{item.statusName === '已结束' ? 'spnamed':'spname' }}"
+                            >{{ item.productModel }}</text>
+                          </view>
+                          <view wx:if="{{item.select}}" class="order-select">已选择</view>
+                        </view>
+                      </view>
+                      <view class="order-second">
+                        <view class="order-id">
+                          <text
+                            class="order-{{item.statusName === '已结束' ? 'sharesd':'shares' }}"
+                          >{{item.fwOrgName}}</text>
+                          <text class="order-{{item.statusName === '已结束' ? 'batched':'batch' }}">批次</text>
+                          <text
+                            class="order-{{item.statusName === '已结束' ? 'spided':'spid' }}"
+                          >{{item.batch}}</text>
+                        </view>
+                      </view>
+                      <view class="order-second">
+                        <view class="order-id">
+                          <text
+                            class="order-{{item.statusName === '已结束' ? 'agreementioned':'agreement' }}"
+                          >协议数量</text>
+                          <text
+                            class="order-{{item.statusName === '已结束' ? 'numbereded':'number' }}"
+                          >({{item.count}})</text>
+                          <text
+                            class="order-{{item.statusName === '已结束' ? 'agreementeded':'agreemented' }}"
+                          >已下单</text>
+                          <text
+                            class="order-{{item.statusName === '已结束' ? 'ednumbered':'numbered' }}"
+                          >({{item.buyCount}})</text>
+                        </view>
+                      </view>
+                      <view class="order-third van-hairline--bottom">
+                        <view
+                          class="order-{{item.statusName === '已结束' ? 'spriceed':'sprice' }}"
+                        >￥{{ item.billPrice }}</view>
+                        <view class="order-spnumber">
+                          <van-stepper
+                            integer
+                            disabled="{{item.statusName === '已结束'|| item.relcount < 0 || item.relcount == 0 || item.statusName === '未开始'}}"
+                            value="{{ onNumber }}"
+                            custom-class="order-spnumber"
+                            input-width="30px"
+                            min="0"
+                            max="{{item.relcount}}"
+                            step="1"
+                            bind:change="onSelectNumber({{item.id}})"
+                          />
+                        </view>
+                      </view>
+                      <view class="order-fourth">
+                        <view class="order-sprice">
+                          <view class="order-time">
+                            <text
+                              class="order-{{item.statusName === '已结束' ? 'releasetimed':'releasetime' }}"
+                            >发布时间</text>
+                            <text
+                              class="order-{{item.statusName === '已结束' ? 'numberd':'number' }}"
+                            >{{item.modifiedDate}}</text>
+                          </view>
+                          <view class="order-time-two">
+                            <text
+                              class="order-{{item.statusName === '已结束' ? 'releasetimed':'releasetime' }}"
+                            >有效日期</text>
+                            <text
+                              class="order-{{item.statusName === '已结束' ? 'numberd':'number' }}"
+                            >{{item.startDate}} 至 {{item.endDate}}</text>
+                          </view>
+                        </view>
+                        <view
+                          data-url="../../goods/preference/index?mainId={{item.preferentialId}}"
+                          @tap="goNext"
+                          class="order-active"
+                        >
+                          <view class="order-code van-ellipsis">
+                            {{item.reportCode}}
+                            <van-icon
+                              name="arrow"
+                              custom-style="padding-left: 12rpx;padding-right: 12rpx;"
+                              color="#D9161C"
+                              size="14rpx"
+                            />
+                          </view>
+                        </view>
+                      </view>
+                    </view>
+                  </repeat>
+                  <view wx:if="{{fill}}" class="fill-edited-area"></view>
+                  <view wx:if="{{isCheckAll}}" class="fill-edited-area"></view>
+                </block>
+                <emptyDataType wx:else description="产品"/>
+              </block>
+              <emptyDataAuth wx:else description="权限"/>
+            </block>
+            <block wx:elif="{{!buyoutZone}}">
+              <!-- 套购专区 -->
+              <block wx:if="{{utils.includesKeyInArr('套购专区',zoneButtonShowArr)}}">
+                <block wx:if="{{buyoutList.length > 0}}">
+                  <repeat for="{{ buyoutList }}" item="item" index="index">
+                    <navigator url="/pages/goods/buy-out/index?id={{item.id}}" class="order-buyout">
+                      <view class="order-buytitle">
+                        <view class="order-id">
+                          <view wx:if="{{utils.isFreeShipping(item.productLabel)}}" class="free-shipping-tag">免运费</view>
+                          <text
+                            class="order-{{item.statusName == 'end' ? 'buyitemsed' : 'buyitems'}}"
+                          >{{item.fwOrgName}}</text>
+                          <text
+                            class="order-{{item.statusName == 'end' ? 'buynameed' : 'buyname'}}"
+                          >{{item.packageName}}</text>
+                        </view>
+                        <!-- TODO:  -->
+                        <view wx:if="{{item.statusName == 'begin'}}" class="order-buystatus">进行中</view>
+                        <view wx:if="{{item.statusName == 'init'}}" class="order-buystatusinit">未开始</view>
+                        <view wx:if="{{item.statusName == 'end'}}" class="order-buystatusend">已结束</view>
+                      </view>
+                      <view class="order-type">
+                        <text
+                          class="order-{{item.statusName == 'end' ? 'goodsed' : 'goods'}}"
+                        >{{item.packageProductFull}}</text>
+                        <text
+                          class="order-{{item.statusName == 'end' ? 'numed' : 'num'}}"
+                        >, {{item.productNum}}个产品</text>
+                      </view>
+                      <view class="order-type-third van-hairline--bottom">
+                        <view class="order-type-sprice">
+                          ￥{{item.amount}}
+                          <view class="order-type-number">已购买 {{item.total}}</view>
+                        </view>
+                        <view class="order-type-sale">套购编码 {{item.packageCode}}</view>
+                      </view>
+                      <view class="order-type">
+                        <text class="order-date">有效期 {{item.startDate }} 至 {{item.endDate}}</text>
+                      </view>
+                    </navigator>
+                  </repeat>
+                </block>
+                <emptyDataType wx:else description="产品"/>
+              </block>
+              <emptyDataAuth wx:else description="权限"/>
+            </block>
+          </scroll-view>
+          <view wx:if="{{!specialZone && utils.includesKeyInArr('特惠专区',zoneButtonShowArr)}}" class="filter-footer van-hairline--top" style="bottom: {{ customTabBarAllHeight }}px">
+            <view class="filter-footer-bar">
+              <view class="filter-footer-bar-content">
+                <view @tap="checkAll()" class="check-all" hover-class="hover">
+                  <view class="radio-el {{isCheckAll ? 'checked' : ''}}">
+                    <view class="b-icon icon-check" />
+                  </view>
+                  <view class="radio-text">查看已选</view>
+                </view>
+                <view class="desc">
+                  <view class="desc-label">合计</view>
+                  <view class="desc-value">¥{{totalPrice}}</view>
+                </view>
+              </view>
+              <view
+                @tap="submitOrder"
+                class="filter-footer-bar-btn {{totalPrice == 0 ? 'disabled': ''}}"
+                hover-class="hover"
+              >去结算</view>
+            </view>
+          </view>
+          <!-- 收藏 -->
+          <!-- 只在分类下展示跳转到收藏 -->
+          <block wx:if="{{ !category }}">
+            <button class="screened shareBar" style="bottom: {{ customTabBarAllHeight + 124 }}px" lang="zh_CN" @tap="show">
+              <text class="b-icon chanpin-shoucang"></text>
+            </button>
+            <!-- 举报 -->
+            <button class="tipOff shareBar" style="bottom: {{ customTabBarAllHeight + 72 }}px"  lang="zh_CN" @tap="tipOff">
+              <text class="b-icon a-jubao2x"></text>
+              <text class="shareBarname">举报</text>
+            </button>
+          </block>
+          <!-- 回到上方 -->
+          <button
+            hidden="{{!visibelTop}}"
+            @tap="scrollToTop"
+            class="screen shareBar {{ category ? 'screen-float-top' : '' }}"
+            style="bottom: {{ customTabBarAllHeight + (category ? 62 : 20) }}px"
+            lang="zh_CN"
+          >
+            <view class="b-icon icon-top" />
+          </button>
+          <van-toast id="van-toast" />
+        </view>
+      </block>
+      <emptyDataAuth wx:else description="权限"/>
+    </block>
+
+  </block>
+  <block wx:else>
+    <view class="filter" style="padding-bottom: {{ customTabBarAllHeight }}px">
+      <view class="top">
+        <view class="header-divider" style="height: {{sys.statusBarHeight+45}}px" />
+        <view>
+          <van-tabs
+            tab-active-class="mintable"
+            active="{{ categoryIndex }}"
+            bind:change="onminiSelecte2"
+            line-width="0px"
+          >
+            <repeat for="{{vans}}" item="item">
+              <van-tab data-id="{{item.label}}" title="{{item.label}}"></van-tab>
+            </repeat>
+          </van-tabs>
+        </view>
+      </view>
+      <scroll-view
+        class="scroll-grid scroll-grid2"
+        bindscrolltolower="onPullBottom"
+        bindscroll="onScroll"
+        scroll-top="{{ scrollTop }}"
+        scroll-y
+        enable-back-to-top
+      >
+        <!-- 普通专区 -->
+        <block>
+          <block wx:if="{{showProduct.length > 0}}">
+            <view class="grid-context">
+              <repeat for="{{ showProduct }}" item="item">
+                <view class="context">
+                  <item
+                    item="{{ item }}"
+                    type="noLogin"
+                    lazyLoad="true"
+                  />
+                </view>
+              </repeat>
+            </view>
+          </block>
+          <emptyDataType wx:else description="产品"/>
+        </block>
+      </scroll-view>
+      <!-- 回到上方 -->
+      <button
+        hidden="{{!visibelTop}}"
+        @tap="scrollToTop"
+        class="screen shareBar {{ category ? 'screen-float-top' : '' }}"
+        lang="zh_CN"
+      >
+        <view class="b-icon icon-top" />
+      </button>
+      <van-toast id="van-toast" />
+    </view>
+  </block>
+</template>
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts" ></script>

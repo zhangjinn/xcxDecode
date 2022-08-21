@@ -1,0 +1,62 @@
+.header-tab{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 88rpx;
+  background: #FFFFFF;
+  font-size: 28rpx;
+  font-weight: 400;
+  color: #262626;
+  z-index: 111;
+  .left-btn{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 0 16rpx 0 40rpx;
+    .btn-item{
+      display: flex;
+      align-items: center;
+      &:not(:first-child){
+        margin-left: 32rpx;
+      }
+      .iconxialajiantou{
+        font-size: 32rpx;
+      }
+    }
+  }
+  .right-btn{
+    width: 140rpx;
+    display: flex;
+    align-items: center;
+    .line-shadow{
+      position: relative;
+      background-color: #FFFFFF;
+      width: 12rpx;
+      height: 56rpx;
+      margin-right: 12rpx;
+      box-shadow: -4rpx 0rpx 6rpx 0rpx rgba(0, 0, 0, 0.08);
+      &::before{
+        content: '';
+        position: absolute;
+        left: 0;
+        top: -6rpx;
+        bottom: -6rpx;
+        width: 18rpx;
+        height: 68rpx;
+        background-color: #FFFFFF;
+      }
+    }
+    .side-filter-btn{
+      display: flex;
+      align-items: center;
+    }
+    .shaixuan{
+      font-size: 24rpx;
+      margin-left: 10rpx;
+    }
+  }
+  .active{
+    color: #00AAA6;
+  }
+}

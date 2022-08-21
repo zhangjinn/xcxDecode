@@ -1,0 +1,85 @@
+.switch-account._52ec0c3 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  height: 100%;
+  background: #FFFFFF;
+}
+.switch-account .header._52ec0c3 {
+  padding: 120rpx 60rpx 108rpx;
+}
+.switch-account .header .title._52ec0c3 {
+  font-size: 56rpx;
+  color: #262626;
+}
+.switch-account .header .tip._52ec0c3 {
+  font-size: 32rpx;
+  color: #AAAAAA;
+  padding-top: 16rpx;
+}
+.switch-account .switch-account-scroll._52ec0c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  overflow-y: auto;
+}
+.switch-account .switch-account-scroll .account-info._52ec0c3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  background: #FFFFFF;
+  -webkit-box-shadow: 0 2rpx 8rpx 0 rgba(0, 0, 0, 0.1);
+          box-shadow: 0 2rpx 8rpx 0 rgba(0, 0, 0, 0.1);
+  border-radius: 20rpx;
+  padding: 24rpx;
+  margin: 0 44rpx 44rpx;
+  position: relative;
+}
+.switch-account .switch-account-scroll .account-info._52ec0c3:first-child {
+  margin-top: 8rpx;
+}
+.switch-account .switch-account-scroll .account-info .avatar-box._52ec0c3 {
+  width: 100rpx;
+  height: 100rpx;
+  margin-right: 24rpx;
+  font-weight: 500;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.switch-account .switch-account-scroll .account-info .avatar-box .trademark-logo._52ec0c3 {
+  width: 100%;
+  height: 100%;
+}
+.switch-account .switch-account-scroll .account-info .name._52ec0c3 {
+  font-size: 34rpx;
+}
+.switch-account .switch-account-scroll .account-info .code._52ec0c3 {
+  font-size: 26rpx;
+  color: #777777;
+  margin-top: 8rpx;
+}
+.switch-account .switch-account-scroll .account-info .currently-logged-in-tip._52ec0c3 {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 2rpx 10rpx;
+  font-size: 20rpx;
+  color: #FFFFFF;
+  background: #00B7B3;
+  border-radius: 0rpx 20rpx 0rpx 12rpx;
+}

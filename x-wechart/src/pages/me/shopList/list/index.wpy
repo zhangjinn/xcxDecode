@@ -1,0 +1,138 @@
+<template>
+  <view class="me-account-list">
+    {{editAccount}}
+    <!-- <view class="me-account-admin">
+      <view wx:if="{{adminAccount&&adminAccount.account}}" class="account-item">
+        <view class="account-header">
+          <view class="account-type">管理账号</view>
+          <view class="account-status {{ adminAccount.status === 'active' ? 'active' : 'disable' }}">{{ adminAccount.status === 'active' ? '生效' : '失效' }}</view>
+        </view>
+        <view class="account-auth-system-list">
+          <repeat for="{{ adminAccount.loginSystemNameList }}" key="index" item="item">
+            <view class="account-auth-system-item">{{item}}</view>
+          </repeat>
+        </view>
+        <view class="account-info-line">
+          <view class="info-label">账号名称：</view>
+          <view class="info-content">{{ adminAccount.account }}</view>
+        </view>
+        <view class="account-info-line">
+          <view class="info-label">联系人：</view>
+          <view class="info-content">{{ adminAccount.userName }}</view>
+        </view>
+        <view class="account-info-line">
+          <view class="info-label">MDM编码：</view>
+          <view class="info-content">{{ adminAccount.mdmCode }}</view>
+        </view>
+        <view class="account-info-line">
+          <view class="info-label">手机：</view>
+          <view class="info-content">{{ adminAccount.mobile }}</view>
+        </view>
+        <view class="account-info-line">
+          <view class="info-label">邮箱：</view>
+          <view class="info-content">{{ adminAccount.email }}</view>
+        </view>
+        <view class="account-info-line">
+          <view class="info-label">IP：</view>
+          <view class="info-content">{{ adminAccount.ip }}</view>
+        </view>
+      </view>
+      <view class="account-item-options">
+        <van-button type="default" size="small">新增用户账号</van-button>
+        <van-button type="default" size="small">修改密码</van-button>
+        <van-button type="default" size="small">编辑</van-button>
+      </view>
+    </view> -->
+    <repeat for="{{custAccountList}}" key="index" item="item">
+      <view class="account-item">
+        <view class="account-header">
+          <view class="account-type">{{ item.type === 'admin' ? '管理账号' : '用户账号' }}</view>
+          <view class="account-status {{ item.status === 'active' ? 'active' : 'disable' }}">{{ item.status === 'active' ? '生效' : '失效' }}</view>
+        </view>
+        <view class="account-auth-system-list">
+          <repeat for="{{ item.loginSystemNameList }}" key="index" item="item">
+            <view class="account-auth-system-item">{{item}}</view>
+          </repeat>
+        </view>
+        <view class="account-info-line">
+          <view class="info-label">账号名称：</view>
+          <view class="info-content">{{ item.account || '' }}</view>
+        </view>
+        <view class="account-info-line">
+          <view class="info-label">联系人：</view>
+          <view class="info-content">{{ item.userName || '' }}</view>
+        </view>
+        <view class="account-info-line">
+          <view class="info-label">MDM编码：</view>
+          <view class="info-content">{{ item.mdmCode || '' }}</view>
+        </view>
+        <view class="account-info-line">
+          <view class="info-label">手机：</view>
+          <view class="info-content">{{ item.mobile || '' }}</view>
+        </view>
+        <view class="account-info-line">
+          <view class="info-label">邮箱：</view>
+          <view class="info-content">{{ item.email || '' }}</view>
+        </view>
+        <view class="account-info-line">
+          <view class="info-label">IP：</view>
+          <view class="info-content">{{ item.ip || '' }}</view>
+        </view>
+        <!-- 添加是否为业务员 -->
+        <view class="account-info-line">
+          <view class="info-label">是否为业务员：</view>
+          <view class="info-content">{{ item.businessFlagName || '' }}</view>
+        </view>
+      </view>
+      <view wx:if="{{ item.type === 'user' }}" class="account-item-options">
+        <van-button type="default"  size="small" bind:click="onEditAccount({{item}})">新增管辖门店</van-button>
+        <van-button type="default"  size="small" bind:click="onEditAccount({{item}})">修改管辖门店</van-button>
+        <!-- <van-button wx:if="{{mixinCurrentUser.type === 'main'}}" type="default" size="small" bind:click="onUpdateStatus({{item}})">{{ item.status === 'active' ? '失效' : '生效' }}</van-button>
+        <van-button wx:if="{{mixinCurrentUser.type === 'main'}}" type="default" size="small" bind:click="onResetPassword({{item}})">重置密码</van-button>
+        <van-button wx:else type="default" size="small" bind:click="onEditPassword({{item}})">修改密码</van-button>
+        <van-button type="default" size="small" bind:click="onEditAccount({{item}})">编辑</van-button> -->
+      </view>
+      <!-- <view wx:if="{{ item.type === 'admin' }}" class="account-item-options">
+        <van-button type="default" size="small" bind:click="onAddAccount">新增用户账号</van-button>
+        <van-button type="default" size="small" bind:click="onEditPassword({{item}})">修改密码</van-button>
+        <van-button type="default" size="small" bind:click="onEditAccount({{item}})">编辑</van-button> 
+      </view> -->
+    </repeat>
+    <van-popup show="{{ tipVisible }}" custom-class="tip-popup">
+      <view class="tip-modal">
+        <view class="tip-label">{{ tipMessage || '操作成功！' }}</view>
+        <view class="tip-options" @tap="onToggleTipVisible">确定</view>
+      </view>
+    </van-popup>
+    <van-popup show="{{ updatePasswordVisible }}" position="top" custom-class="update-password-popup">
+      <form class="update-password-form">
+        <van-cell-group>
+          <van-field
+            value="{{ username }}"
+            required
+            clearable
+            label="用户名"
+            icon="question-o"
+            placeholder="请输入用户名"
+            bind:click-icon="onClickIcon"
+          />
+
+          <van-field
+            value="{{ password }}"
+            type="password"
+            label="密码"
+            placeholder="请输入密码"
+            required
+            border="{{ false }}"
+          />
+        </van-cell-group>
+        <view class="form-footer">
+          <button type="submit" class="form-submit">保存</button>
+        </view>
+      </form>
+    </van-popup>
+    <van-toast id="van-toast" />
+  </view>
+</template>
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts"></script>

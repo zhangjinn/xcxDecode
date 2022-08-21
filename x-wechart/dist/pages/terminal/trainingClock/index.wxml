@@ -1,0 +1,99 @@
+
+  <view class="training-clock _c8a0c9a">
+    <view class="order-scroll _c8a0c9a">
+      <view class="training-clock-header-bg _c8a0c9a">
+        <image class="img-bg _c8a0c9a" src="{{imgObj.trainingClockBg}}"/>
+      </view>
+      <view class="training-clock-header-info _c8a0c9a">
+        <view class="clock-header-inner _c8a0c9a">
+          <view class="clock-header-inner-top _c8a0c9a">
+            <view class="trademark _c8a0c9a">
+              <image class="trademark-logo _c8a0c9a" src="{{imgObj.trainingClockLogo}}"/>
+              <view class="trademark-desc _c8a0c9a">
+                <text class="name _c8a0c9a">{{ customerInfo.customerName }}</text>
+                <text class="code _c8a0c9a">{{ customerInfo.customerCode }}</text>
+              </view>
+            </view>
+            <view class="training-record _c8a0c9a" bindtap="handleToTrainingRecord">
+              <text class="_c8a0c9a">培训记录</text>
+            </view>
+          </view>
+
+          <view class="clock-header-inner-bottom _c8a0c9a">
+            <view class="graphic _c8a0c9a">
+              <van-circle  wx:if="{{!purchaseVisable}}" value="{{ statisticsData.finishRatio }}" size="{{ 88 }}" stroke-width="12" layer-color="#E4F8F7" color="#00AAA6" canvas-to-img="{{true}}" text="" bindcanvasImg="getCanvasImg" class="_c8a0c9a">
+                <view class="circle-text _c8a0c9a">
+                  <text class="num _c8a0c9a">{{ statisticsData.finishRatio }}%</text>
+                  <text class="text _c8a0c9a">总计</text>
+                </view>
+              </van-circle>
+              <view  wx:else class="img-box _c8a0c9a">
+                <image src="{{canvasImg}}" class="img _c8a0c9a"/>
+                <view class="circle-text _c8a0c9a">
+                  <text class="num _c8a0c9a">{{ statisticsData.finishRatio }}%</text>
+                  <text class="text _c8a0c9a">总计</text>
+                </view>
+              </view>
+
+            </view>
+            <view class="session _c8a0c9a">
+              <text class="text _c8a0c9a">当月上报场次(场）</text>
+              <text class="num _c8a0c9a">{{ statisticsData.finishNum }}</text>
+            </view>
+            <view class="session _c8a0c9a">
+              <view class="text _c8a0c9a" bindtap="handleDateTime">
+                <view  wx:if="{{currentMonth == currentDate}}" class="_c8a0c9a">本月任务(场)</view>
+                <view wx:else class="_c8a0c9a">{{currentDate}}月任务(场)</view>
+                <view class="b-icon h-icon iconxialajiantou _c8a0c9a"/>
+              </view>
+              <text class="num _c8a0c9a">{{ statisticsData.totalField }}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{ trainingList && trainingList.length>0 }}" class="training-clock-header-container _c8a0c9a">
+        <block class="_c8a0c9a" wx:for="{{ trainingList }}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="training-topics-item _c8a0c9a" bindtap="viewDetail" data-wpyviewdetail-a="{{item}}">
+            <view class="topics-header _c8a0c9a">
+              <view class="topics-name _c8a0c9a">{{ item.title }}</view>
+              <view class="topics-type _c8a0c9a">{{ item.type }}</view>
+            </view>
+            <view class="topics-desc _c8a0c9a">任务场次：{{ item.totalField }}</view>
+            <view class="topics-desc _c8a0c9a">上报审核场次：{{ item.times }}</view>
+            <view class="topics-desc _c8a0c9a">审核有效场次：{{ item.effTimes }}</view>
+          </view>
+        </block>
+        <view class="no-loading-data _c8a0c9a">我是有底线的~</view>
+      </view>
+      
+  <view class="empty-data _c8a0c9a" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+    </view>
+
+    <!-- 选择时间 -->
+    <van-popup show="{{ purchaseVisable }}" round="round" position="bottom" custom-style="height: 50%; border-radius: 24rpx 24rpx 0rpx 0rpx;" custom-class="base-model-popup-picker"  bind:close="touchFilter" class="_c8a0c9a">
+      <view class="datetime-picker-box _c8a0c9a">
+        <view class="datetime-picker-header _c8a0c9a">
+          <text bindtap="handleCancleDatePop" class="_c8a0c9a">取消</text>
+          <text class="_c8a0c9a">{{ currentYear }}年 {{ selectDate }}月</text>
+          <text bindtap="handleConfirmDatePop" class="_c8a0c9a">确定</text>
+        </view>
+        <view class="datetime-picker-container _c8a0c9a">
+          <scroll-view scroll-y class="purchase-inv-scroll _c8a0c9a">
+            <view class="_c8a0c9a">
+              <view wx:for="{{ dateOption }}" wx:key="month" item="item" class="datetime-picker-item {{item.month == selectDate?'active':''}} _c8a0c9a" data-key="{{item.month}}" data-index="{{ index }}" bindtap="oMonthchange" data-wpyomonthchange-a="{{item.month}}">
+                {{item.month}}月
+              </view>
+            </view>
+          </scroll-view>
+        </view>
+      </view>
+    </van-popup>
+    <van-toast id="van-toast" class="_c8a0c9a"/>
+    <van-dialog id="van-dialog" class="_c8a0c9a"/>
+  </view>

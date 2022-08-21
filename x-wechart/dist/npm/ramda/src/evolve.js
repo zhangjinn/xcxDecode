@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),evolve=_curry2(function r(e,n){var o,t,u,c=n instanceof Array?[]:{};for(t in n)o=e[t],u=typeof o,c[t]="function"===u?o(n[t]):o&&"object"===u?r(o,n[t]):n[t];return c});module.exports=evolve;

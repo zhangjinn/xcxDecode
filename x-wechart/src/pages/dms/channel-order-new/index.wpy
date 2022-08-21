@@ -1,0 +1,257 @@
+<template>
+  <view class="order">
+    <!-- 提示部分内容 -->
+    <van-popup show="{{ isNoticePopupShow }}" closeable position="bottom" bind:close="noticePopupClose">
+      <view class="noticeCon">
+        <view class="noticeCon-title van-hairline--bottom">
+          物流费用规则
+          <i @tap="noticePopupClose" class="b-icon iconyiquxiao"></i>
+        </view>
+        <scroll-view scroll-y="true" class="noticeCon-scroll">
+          <view class="noticeCon-scroll-con">
+            <text>{{expressFee}}</text>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+
+    <popup title="创建渠道订单失败" />
+    <view class="order-scroll">
+      <view class="free-shipping-tip">{{ freeShippingTip }}</view>
+      <view class="order-scroll-head">
+        <block wx:if="{{ !chooseCustomerInfo.customerName}}">
+          <navigator url="../order-customer-choose/index" class="item-row item-row-no-border">
+            <view class="item-row-left">
+              客户信息
+            </view>
+            <view class="item-row-right">
+              <view class="item-product">
+                请输入老板名称/客户名称/客户编码
+              </view>
+            </view>
+          </navigator>
+        </block>
+        <block wx:else>
+          <view class="item-customer-container">
+            <navigator url="../order-customer-choose/index" class="item-customer">
+              <view class="item-customer-title">
+                <view class="item-customer-title-left">
+                  <view class="item-customer-title-left-tag">
+                    客户
+                  </view>
+                  <view class="item-customer-title-left-name">
+                    {{ chooseCustomerInfo.legalPerson }}
+                  </view>
+                </view>
+                <view class="item-customer-title-right">
+                  <view class="item-customer-title-right-update">
+                    更改
+                  </view>
+                  <van-icon name="arrow" class="item-customer-title-right-icon" customer-class="item-customer-title-right-content" />
+                </view>
+              </view>
+              <block wx:if="{{ chooseCustomerInfo.legalPerson }}">
+                <view class="item-customer-legal">
+                  {{ chooseCustomerInfo.customerName }}
+                </view>
+              </block>
+              <view class="item-customer-address">
+                地址: {{ chooseCustomerInfo.address }}
+              </view>
+            </navigator>
+          </view>
+          <view>
+            <distributor-material-group  item="{{item}}"/>
+          </view>
+        </block>
+
+<!--        CIS-11005-去掉销售组织、发货仓库-->
+<!--        <view class="item-row" @tap="openChoose('orgList', 'org', '供应商')">-->
+<!--          <view class="item-row-left">-->
+<!--            供应商-->
+<!--          </view>-->
+<!--          <view class="item-row-right">-->
+<!--            <view class="item-row-right-inventory {{ org.id ? '' : 'placeholder' }}">-->
+<!--              {{ org.name }}-->
+<!--            </view>-->
+<!--            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />-->
+<!--          </view>-->
+<!--        </view>-->
+<!--        <view class="item-row" @tap="openChoose('warehouseList','sendInventoryInfo','发货仓库')">-->
+<!--          <view class="item-row-left">-->
+<!--            发货仓库-->
+<!--          </view>-->
+<!--          <view class="item-row-right">-->
+<!--            <view class="item-row-right-inventory {{ sendInventoryInfo.id ? '' : 'placeholder' }}">-->
+<!--              {{ sendInventoryInfo.name }}-->
+<!--            </view>-->
+<!--            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />-->
+<!--          </view>-->
+<!--        </view>-->
+<!--        <view class="item-row" @tap="openChoose('inWarehouseList','receiveInventoryInfo','入库仓库')">-->
+<!--          <view class="item-row-left">-->
+<!--            入库仓库-->
+<!--          </view>-->
+<!--          <view class="item-row-right">-->
+<!--            <view class="item-row-right-inventory {{ receiveInventoryInfo.id ? '' : 'placeholder' }}">-->
+<!--              {{ receiveInventoryInfo.name }}-->
+<!--            </view>-->
+<!--            <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />-->
+<!--          </view>-->
+<!--        </view>-->
+
+        <view class="item-more" @tap="showMore" hidden="{{ showMore }}">
+          <view class="item-more-tip">
+            查看更多
+          </view>
+          <van-icon name="arrow-down" class="icon" />
+        </view>
+
+        <view hidden="{{ !showMore }}" class="item-more-container">
+          <view class="item-row" @tap="openChoose('deliveryMode', 'deliveryMethod', '配送方式')">
+            <view class="item-row-left">
+              配送方式
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-inventory {{ deliveryMethod.id ? '' : 'placeholder' }}">
+                {{ deliveryMethod.name }}
+              </view>
+              <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+            </view>
+          </view>
+
+          <view class="item-row" @tap="openChoose('customerAddressAllList','receiverInfo','收货地址')">
+            <view class="item-row-left">
+              收货地址
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-inventory {{ receiverInfo.id ? '' : 'placeholder' }}">
+                {{ receiverInfo.name }}
+              </view>
+              <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+            </view>
+          </view>
+          <view class="item-row" @tap="openChoose('saleTypes', 'saleType', '销售类型')">
+            <view class="item-row-left">
+              销售类型
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-inventory {{ saleType.id ? '' : 'placeholder' }}">
+                {{ saleType.name }}
+              </view>
+              <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+            </view>
+          </view>
+          <view class="item-row" @tap="openChoose('kpfList', 'invoiceInfo', '开票方')">
+            <view class="item-row-left">
+              开票方
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-inventory {{ invoiceInfo.id ? '' : 'placeholder' }}">
+                {{ invoiceInfo.name }}
+              </view>
+              <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+            </view>
+          </view>
+          <view class="item-row" @tap="openChoose('ywyList', 'saler', '业务员')">
+            <view class="item-row-left">
+              业务员
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-inventory {{ saler.id ? '' : 'placeholder' }}">
+                {{ saler.name }}
+              </view>
+              <van-icon name="arrow" custom-class="dms-item-row-right-arrow" />
+            </view>
+          </view>
+          <view class="item-row">
+            <view class="item-row-left">
+              备注
+            </view>
+            <view class="item-row-right">
+              <view class="item-row-right-note">
+                <van-field
+                  value="{{ note }}"
+                  placeholder="请填写备注"
+                  border="{{ false }}"
+                  input-align="right"
+                  bind:change="onNoteChange"
+                  class="dms-order-note"
+                />
+              </view>
+            </view>
+          </view>
+
+          <view class="item-more hidden" @tap="hiddenMore">
+            <view class="item-more-tip">
+              收起更多
+            </view>
+            <van-icon name="arrow-up" class="icon" />
+          </view>
+        </view>
+      </view>
+      <order
+        ly="channelNew"
+        :isDisabled.sync="isDisabled"
+      />
+    </view>
+
+
+    <van-submit-bar
+      button-text="确认提交"
+      custom-class="order-bottom"
+      button-class-container="dms-order-bottom-button-save"
+      button-class="dms-order-bottom-button-save-submit"
+      bind:submit="submit"
+    >
+<!--      <view class="order-bottom-button-temp" @tap="cache">-->
+<!--        暂存-->
+<!--      </view>-->
+      <view slot="top" class="order-bottom-amount">
+        <view class="order-bottom-volume-num">体积:{{volume}}m³</view>
+        <i class="b-icon iconwenti" @tap="noticePopupOpen"></i>
+        <view class="order-bottom-amount-tip">
+          合计
+        </view>
+        <view class="order-bottom-amount-num">
+          ￥{{ amount }}
+        </view>
+      </view>
+    </van-submit-bar>
+
+    <van-popup
+      show="{{ popVisible }}"
+      closeable
+      position="bottom"
+      custom-style="height: 570rpx"
+      bind:click-overlay="onClose"
+    >
+    <view class="order-inv">
+      <view class="order-inv-head">
+        <view class="order-inv-head-context">
+          <view class="order-inv-head-context-title">{{ popTitle }}</view>
+        <van-icon name="cross" class="order-inv-head-context-close" bindtap="onClose" />
+        </view>
+      </view>
+      <scroll-view scroll-y class="order-inv-scroll">
+        <view wx:for="{{ popList }}" wx:key="{{ item.id }}" item="item" class="order-inv-scroll-row" data-key="{{ item.id }}" data-index="{{ index }}" bindtap="onChoose">
+          <view class="order-inv-scroll-row-desc {{ item.id === compareInfo.id ? 'checked' : ''}}">
+            {{ item.name }}
+          </view>
+          <block wx:if="{{ item.id === compareInfo.id }}">
+            <view class="b-icon icon-check order-inv-scroll-row-checked checked">
+            </view>
+          </block>
+        </view>
+
+      </scroll-view>
+    </view>
+    </van-popup>
+    <van-dialog id="van-dialog" />
+
+    <van-toast id="van-toast" />
+  </view>
+
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

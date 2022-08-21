@@ -1,0 +1,10 @@
+<template>
+  <block wx:if="{{ login }}">
+    <web-view src="{{url}}" bindmessage='getMsg'></web-view>
+  </block>
+  <block wx:else>
+    <no-permission />
+  </block>
+</template>
+<script lang="typescript" src="./index.ts"></script>
+

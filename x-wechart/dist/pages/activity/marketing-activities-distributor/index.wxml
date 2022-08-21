@@ -1,0 +1,25 @@
+
+  <view class="distributor _e222ab4">
+    <view class="distributor-wrapper _e222ab4"  wx:if="{{ marketingActivityDistributorList.length && marketingActivityDistributorList.length > 0}}">
+      <block class="_e222ab4" wx:for="{{ marketingActivityDistributorList }}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="distributor-list _e222ab4">
+          <view class="name _e222ab4">{{item.custInfoName}}</view>
+          <view class="desc _e222ab4">
+            <text class="_e222ab4">渠道范围：</text>
+            <text class="_e222ab4">{{item.channelName}}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+    
+  <view class="empty-data _e222ab4" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <van-toast id="van-toast" class="_e222ab4"/>
+    <van-dialog id="van-dialog" class="_e222ab4"/>
+  </view>

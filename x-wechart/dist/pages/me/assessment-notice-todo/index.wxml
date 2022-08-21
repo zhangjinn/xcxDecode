@@ -1,0 +1,46 @@
+
+  <view class="todo">
+    <block  wx:if="{{assessmentNoticeItems.data.length > 0}}">
+      <scroll-view bindscrolltolower="onPullBottom" enable-flex="enable-flex" scroll-y enable-back-to-top="enable-back-to-top" class="todo-body">
+        <block wx:for="{{assessmentNoticeItems.data}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+          <view class="todo-body-item">
+            <view class="todo-body-item-header">
+              <view class="todo-body-item-header-top">
+                <view class="title">{{item.title}}</view>
+                <view wx:if="{{item.status == '1' && item.taskStatus}}" class="status">{{item.taskStatus}}</view>
+              </view>
+              <view class="todo-body-item-header-bottom">
+                <view class="date">{{item.createDateStr}}</view>
+              </view>
+            </view>
+            <view class="todo-body-item-body">
+              {{item.content}}
+            </view>
+            <view wx:if="{{ isCanJump }}" class="todo-body-item-footer van-hairline--top">
+              <block wx:if="{{item.status == '1'}}">
+                <view bindtap="view" class="card-footer-handle" data-wpyview-a="{{item}}" data-wpyview-b="view">查看</view>
+              </block>
+              <block wx:if="{{item.status == '0'}}">
+                <view bindtap="handle" class="card-footer-handle" data-wpyhandle-a="{{item}}" data-wpyhandle-b="handle">处理</view>
+              </block>
+            </view>
+            <!--     14187583092：账号注销       -->
+            <view wx:if="{{ params.typeValue == '14187583092' && item.status == '0'}}" class="todo-body-item-footer van-hairline--top">
+              <view bindtap="handleAccountCancellation" class="card-footer-handle" data-wpyhandleaccountcancellation-a="{{item.id}}" data-wpyhandleaccountcancellation-b="agree">通过</view>
+              <view bindtap="handleAccountCancellation" class="card-footer-handle" data-wpyhandleaccountcancellation-a="{{item.id}}" data-wpyhandleaccountcancellation-b="disagree">驳回</view>
+            </view>
+          </view>
+        </block>
+      </scroll-view>
+    </block>
+    
+  <view class="empty-data" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <van-toast id="van-toast"/>
+  </view>

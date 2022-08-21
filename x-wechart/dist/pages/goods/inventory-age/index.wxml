@@ -1,0 +1,367 @@
+
+  <wxs src="./util.wxs" module="util" class="_34753ad"/>
+  <view class="order _34753ad">
+<!--    右侧大弹框-->
+    <van-popup show="{{visible}}" position="right" overlay="{{ true }}"  bind:close="orderfiltering" custom-style="height: 100%;" z-index="130" class="_34753ad">
+      <view class="order-drawer _34753ad">
+        <view class="order-drawer-attr _34753ad">
+          <scroll-view class="order-drawer-attr-scroll _34753ad" scroll-y>
+            <view class="attr-item _34753ad">
+              <view class="order-data _34753ad">
+                <view class="project _34753ad">
+                  <text class="_34753ad">入库时间</text>
+                  <text  wx:if="{{!filterForm.timeFrame}}" class="text _34753ad" bindtap="onToggleTimeFrame">全部日期 ></text>
+                  <text  wx:if="{{filterForm.timeFrame === '7'}}" class="text _34753ad" bindtap="onToggleTimeFrame">最近一周 ></text>
+                  <text  wx:if="{{filterForm.timeFrame === '1'}}" class="text _34753ad" bindtap="onToggleTimeFrame">最近一个月 ></text>
+                  <text wx:if="{{filterForm.timeFrame === '3'}}" class="text _34753ad" bindtap="onToggleTimeFrame">最近三个月 ></text>
+                  <text wx:if="{{filterForm.timeFrame === '6'}}" class="text _34753ad" bindtap="onToggleTimeFrame">最近六个月 ></text>
+                </view>
+                <view class="order-data-input _34753ad">
+                  <view class="order-data-input-one _34753ad" data-name="documentDateFrom" data-type="sapDate" bindtap="openCalendar">
+                    {{filterForm.documentDateFrom || '开始日期'}}
+                    <van-icon wx:if="{{filterForm.documentDateFrom}}" class="close-icon _34753ad" name="clear" bindtap="clearCalendar" data-wpyclearcalendar-a="documentDateFrom"/>
+                  </view>
+                  <view class="order-data-input-line _34753ad">-</view>
+                  <view class="order-data-input-one _34753ad" data-name="documentDateTo" data-type="sapDate" bindtap="openCalendar">
+                    {{filterForm.documentDateTo|| '结束日期'}}
+                    <van-icon wx:if="{{filterForm.documentDateTo}}" class="close-icon _34753ad" name="clear" bindtap="clearCalendar" data-wpyclearcalendar-a="documentDateTo"/>
+                  </view>
+                </view>
+              </view>
+              <view class="projectem _34753ad">
+                <view class="project _34753ad">
+                  <text style="font-size: 28rpx;color: #777777;" class="_34753ad">产品型号</text>
+                </view>
+                <van-field placeholder="请输入产品型号" value="{{productName}}" placeholder-style="font-size: 24rpx;color: #AAAAAA;" border="{{ false }}" bind:change="getproductNameList" bind:focus="productNameFocus" input-class="dms-input-field-style" custom-style="background:#F7F7F7;padding:16rpx;font-size:24rpx;" class="_34753ad"/>
+                <view class="filter-list _34753ad">{{ filterForm.productName }}</view>
+                <view class="prod-scroll-view _34753ad" wx:if="{{productNameShowed}}">
+                  <scroll-view scroll-y class="prod-scroll-view-inner _34753ad">
+                    <block class="_34753ad" wx:for="{{productNameList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+                      <view class="order-operation _34753ad">
+                        <view class="operation-text van-hairline--bottom _34753ad" bindtap="onProductModelChange" data-wpyonproductmodelchange-a="{{item.id}}" data-wpyonproductmodelchange-b="{{item.text}}">
+                          <view class="operation-status {{ util.arrIncludes(productIds,item.id)? 'active' : '' }} _34753ad">{{item.text}}</view>
+                          <view wx:if="{{ util.arrIncludes(productIds,item.id)}}" class="b-icon icon-check operation-icon _34753ad"/>
+                        </view>
+                      </view>
+                    </block>
+                  </scroll-view>
+                  <view wx:if="{{productNameList.length==0}}" class="date-emp _34753ad">
+                    暂无数据！
+                  </view>
+                  <view class="order-drawer-attr-footer1 _34753ad">
+                    <view bindtap="closeProd" class="order-drawer-attr-footer-btn confirm _34753ad" hover-class="order-drawer-attr-footer-btn-hover">确定</view>
+                  </view>
+                </view>
+              </view>
+              <view class="projectem _34753ad">
+                <view class="project _34753ad">
+                  <text style="font-size: 13px;color: #777777" class="_34753ad">物料号</text>
+                </view>
+                <van-field placeholder="请输入物料号" border="{{ false }}" value="{{matnrName}}" placeholder-style="font-size: 24rpx;color: #AAAAAA;" bind:change="getmatnrNameList" bind:focus="matnrNameFocus" input-class="dms-input-field-style" custom-style="background:#F7F7F7;padding:16rpx;font-size:24rpx;" class="_34753ad"/>
+<!--                暂时隐藏物料号输入时关联出物料号列表功能 -->
+<!--                <view class="filter-list">{{ filterForm.matnr }}</view>-->
+<!--                <view class='prod-scroll-view matnr-scroll-view' wx:if={{matnrNameShowed}}>-->
+<!--                  <scroll-view class='prod-scroll-view-inner' scroll-y>-->
+<!--                    <repeat for="{{matnrNameList}}" item="item">-->
+<!--                      <view class="order-operation">-->
+<!--                        <view class="operation-text van-hairline&#45;&#45;bottom" bindtap="onmatnrChange({{item.id}},{{item.text}})">-->
+<!--                          <view class="operation-status {{ util.arrIncludes(matnrIds,item.id)? 'active' : '' }}">{{item.text}}</view>-->
+<!--                          <view wx:if="{{ util.arrIncludes(matnrIds,item.id)}}" class="b-icon icon-check operation-icon"></view>-->
+<!--                        </view>-->
+<!--                      </view>-->
+<!--                    </repeat>-->
+<!--                  </scroll-view>-->
+<!--                  <view wx:if="{{matnrNameList.length==0}}" class="date-emp">-->
+<!--                    暂无数据！-->
+<!--                  </view>-->
+<!--                  <view class="order-drawer-attr-footer1">-->
+<!--                    <view-->
+<!-- bindtap="closeMatnr"-->
+<!--                      class="order-drawer-attr-footer-btn confirm"-->
+<!--                      hover-class="order-drawer-attr-footer-btn-hover"-->
+<!--                    >确定</view>-->
+<!--                  </view>-->
+<!--                </view>-->
+              </view>
+              <view class="projectem _34753ad">
+                <view class="project _34753ad">
+                  <text style="font-size: 13px;color: #777777" class="_34753ad">库龄天数</text>
+                </view>
+                <view style="display: flex" class="_34753ad">
+                  <van-field type="number" placeholder="请输入" border="{{ false }}" value="{{filterForm.storageAgeDaysStart}}" bind:change="onStorageAgeDateStartChange" placeholder-style="font-size: 24rpx;color: #AAAAAA;" input-class="dms-input-field-style" custom-style="background:#F7F7F7;padding:16rpx;font-size:24rpx;" class="_34753ad"/>
+                  <text style="padding: 0 10rpx;" class="_34753ad">-</text>
+                  <van-field type="number" placeholder="请输入" border="{{ false }}" value="{{filterForm.storageAgeDaysEnd}}" placeholder-style="font-size: 24rpx;color: #AAAAAA;" bind:change="onStorageAgeDateEndChange" input-class="dms-input-field-style" custom-style="background:#F7F7F7;padding:16rpx;font-size:24rpx;" class="_34753ad"/>
+                </view>
+              </view>
+              <view class="item-trans _34753ad">
+                <view class="item-project _34753ad" bindtap="selectagentPopup" data-wpyselectagentpopup-a="whetherToWarn">
+                  <view class="item-name _34753ad">是否预警/超期</view>
+                  <view class="text _34753ad">{{filterForm.whetherToWarnName}} ></view>
+                </view>
+              </view>
+              <view class="item-trans _34753ad">
+                <view class="item-project _34753ad" bindtap="selectagentPopup" data-wpyselectagentpopup-a="qualityGrade">
+                  <view class="item-name _34753ad">质量等级</view>
+                  <view class="text _34753ad">
+                    <text class="_34753ad">{{filterForm.qualityGradeName}}</text>
+                    <text class="_34753ad">></text>
+                  </view>
+                </view>
+              </view>
+              <view class="item-trans _34753ad">
+                <view class="item-project _34753ad" bindtap="selectagentPopup" data-wpyselectagentpopup-a="inventoryStatus">
+                  <view class="item-name _34753ad">库存状态</view>
+                  <view class="text _34753ad">{{filterForm.inventoryStatusName}} ></view>
+                </view>
+              </view>
+
+            </view>
+          </scroll-view>
+          <!-- 底部按钮 -->
+          <view class="order-drawer-attr-footer _34753ad">
+            <view bindtap="onSubmitFilterFormReset" class="order-drawer-attr-footer-btn reset _34753ad" hover-class="order-drawer-attr-footer-btn-hover">重置</view>
+            <view bindtap="onSubmitFilterForm" class="order-drawer-attr-footer-btn confirm _34753ad" hover-class="order-drawer-attr-footer-btn-hover">确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+    <!--日历下拉-->
+    <van-popup show="{{calendarShow}}" position="bottom"  bind:close="closeCalendar" z-index="200" class="_34753ad">
+      <calendar calendarConfig="{{calendarConfig}}" bind:afterTapDay="chooseDay" class="_34753ad"/>
+    </van-popup>
+    <!-- 入库时间-全部日期-pop -->
+    <van-popup show="{{timeFrameVisible}}" position="right" overlay="{{ true }}" z-index="200" custom-style="height: 100%;" close-on-click-overlay="{{false}}" class="_34753ad">
+      <view class="order-drawer _34753ad">
+        <view class="order-drawer-time _34753ad">
+          <view class="order-drawer-time-header _34753ad">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back _34753ad"  bind:click="onToggleTimeFrame"/>
+            <view class="order-drawer-time-header-title _34753ad">入库时间</view>
+          </view>
+          <view class="order-drawer-time-content _34753ad">
+            <block class="_34753ad" wx:for="{{timeList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="order-drawer-time-content-line _34753ad" bindtap="onSelectTimeFrame" data-wpyonselecttimeframe-a="{{item.value}}">
+                <view class="text {{timeFrameCenter === item.value? 'active' : ''}} _34753ad">{{item.label}}</view>
+                <van-icon wx:if="{{timeFrameCenter === item.value}}" name="success" class="time-selected _34753ad" size="32rpx"/>
+              </view>
+            </block>
+          </view>
+          <view class="order-drawer-attr-footer _34753ad">
+            <view bindtap="onToggleTimeFrameTrue" class="order-drawer-attr-footer-btn confirm _34753ad" hover-class="order-drawer-attr-footer-btn-hover">确定</view>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+
+    <!-- 右侧弹框筛选条件列表 -->
+    <van-popup show="{{agentPopup}}" position="right" overlay="{{ true }}" z-index="200" custom-style="height: 100%;" class="_34753ad">
+      <view class="order-drawer _34753ad">
+        <view class="order-drawer-time _34753ad">
+          <view class="order-drawer-time-header _34753ad">
+            <van-icon name="arrow-left" class="order-drawer-time-header-back _34753ad" bind:click="selectagentPopup"/>
+            <view class="order-drawer-time-header-title _34753ad">{{popupTitle}}</view>
+          </view>
+          <view wx:if="{{popupTitle == '是否预警'}}" class="order-drawer-time-content _34753ad">
+            <view class="order-drawer-time-content-line _34753ad" catchtap="selectWhetherToWarn" data-wpyselectwhethertowarn-a="全部" data-wpyselectwhethertowarn-b="">
+              <view class="text {{filterForm.whetherToWarn === '' ? 'active' : ''}} _34753ad">全部</view>
+              <van-icon wx:if="{{filterForm.whetherToWarn === ''}}" name="success" class="time-selected _34753ad" size="32rpx"/>
+            </view>
+            <block class="_34753ad" wx:for="{{whetherToWarnList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="order-drawer-time-content-line _34753ad" catchtap="selectWhetherToWarn" data-wpyselectwhethertowarn-a="{{item.value}}" data-wpyselectwhethertowarn-b="{{item.key}}">
+                <view class="text {{filterForm.whetherToWarn === item.key ? 'active' : ''}} _34753ad">{{item.value}}</view>
+                <van-icon wx:if="{{filterForm.whetherToWarn === item.key}}" name="success" class="time-selected _34753ad" size="32rpx"/>
+              </view>
+            </block>
+          </view>
+          <view wx:if="{{popupTitle == '质量等级'}}" class="order-drawer-time-content _34753ad">
+            <view class="order-drawer-time-content-line _34753ad" catchtap="selectWarehouseStatus" data-wpyselectwarehousestatus-a="全部" data-wpyselectwarehousestatus-b="">
+              <view class="text {{filterForm.qualityGrade === '' ? 'active' : ''}} _34753ad">全部</view>
+              <van-icon wx:if="{{filterForm.qualityGrade === ''}}" name="success" class="time-selected _34753ad" size="32rpx"/>
+            </view>
+            <block class="_34753ad" wx:for="{{qualityGradeList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="order-drawer-time-content-line _34753ad" catchtap="selectWarehouseStatus" data-wpyselectwarehousestatus-a="{{item.value}}" data-wpyselectwarehousestatus-b="{{item.key}}">
+                <view class="text {{util.arrIncludes(filterForm.qualityGrade,item.key) ? 'active' : ''}} _34753ad">{{item.value}}</view>
+                <van-icon wx:if="{{util.arrIncludes(filterForm.qualityGrade,item.key)}}" name="success" class="time-selected _34753ad" size="32rpx"/>
+              </view>
+            </block>
+          </view>
+          <view wx:if="{{popupTitle == '库存状态'}}" class="order-drawer-time-content _34753ad">
+            <view class="order-drawer-time-content-line _34753ad" catchtap="selectInventoryStatus" data-wpyselectinventorystatus-a="全部" data-wpyselectinventorystatus-b="">
+              <view class="text {{filterForm.inventoryStatus === '' ? 'active' : ''}} _34753ad">全部</view>
+              <van-icon wx:if="{{filterForm.inventoryStatus === ''}}" name="success" class="time-selected _34753ad" size="32rpx"/>
+            </view>
+            <block class="_34753ad" wx:for="{{inventoryStatusList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+              <view class="order-drawer-time-content-line _34753ad" catchtap="selectInventoryStatus" data-wpyselectinventorystatus-a="{{item.value}}" data-wpyselectinventorystatus-b="{{item.key}}">
+                <view class="text {{filterForm.inventoryStatus === item.key ? 'active' : ''}} _34753ad">{{item.value}}</view>
+                <van-icon wx:if="{{filterForm.inventoryStatus === item.key}}" name="success" class="time-selected _34753ad" size="32rpx"/>
+              </view>
+            </block>
+          </view>
+        </view>
+      </view>
+    </van-popup>
+<!--    顶部弹出的几种选择框-->
+    <van-popup show="{{OrderSFilterVisible}}" position="top" overlay="{{ true }}" custom-style="height: 50%; padding: 0 12px; border-radius: 0rpx 0rpx 24rpx 24rpx;" bind:close="touchOrderSFilter" class="_34753ad">
+      <view wx:if="{{CurrentOrderSFilterName === 'orgName'}}" class="order-s-filter-container _34753ad">
+        <view class="order-operation _34753ad" bindtap="onSelectOrg" data-wpyonselectorg-a="" data-wpyonselectorg-b="组织">
+          <view class="operation-text van-hairline--bottom _34753ad">
+            <view class="operation-status {{ filterForm.orgId === '' ? 'active' : '' }} _34753ad">全部</view>
+            <view wx:if="{{ filterForm.orgId === '-1' }}" class="b-icon icon-check operation-icon _34753ad"/>
+          </view>
+        </view>
+        <block class="_34753ad" wx:for="{{orgList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="order-operation _34753ad">
+            <view class="operation-text van-hairline--bottom _34753ad" bindtap="onSelectOrg" data-wpyonselectorg-a="{{item.code}}" data-wpyonselectorg-b="{{item.name}}">
+              <view class="operation-status {{ util.arrIncludes(orgIds,item.code)? 'active' : '' }} _34753ad">{{item.name}}</view>
+              <view wx:if="{{ util.arrIncludes(orgIds,item.code) }}" class="b-icon icon-check operation-icon _34753ad"/>
+            </view>
+          </view>
+        </block>
+      </view>
+      <!--仓库选择-->
+      <view wx:if="{{CurrentOrderSFilterName === 'warehouseName'}}" class="order-s-filter-container _34753ad">
+        <view class="order-operation _34753ad" bindtap="onSelectWarehouseName" data-wpyonselectwarehousename-a="" data-wpyonselectwarehousename-b="仓库">
+          <view class="operation-text van-hairline--bottom _34753ad">
+            <view class="operation-status {{ filterForm.stockId === '' ? 'active' : '' }} _34753ad">全部</view>
+            <view wx:if="{{ filterForm.stockId === '' }}" class="b-icon icon-check operation-icon _34753ad"/>
+          </view>
+        </view>
+        <block class="_34753ad" wx:for="{{stockList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="order-operation _34753ad">
+            <view class="operation-text van-hairline--bottom _34753ad" bindtap="onSelectWarehouseName" data-wpyonselectwarehousename-a="{{item.key}}" data-wpyonselectwarehousename-b="{{item.value}}">
+              <view class="operation-status {{ util.arrIncludes(stockIds,item.key)? 'active' : '' }} _34753ad">{{item.value}}</view>
+              <view wx:if="{{ util.arrIncludes(stockIds,item.key)}}" class="b-icon icon-check operation-icon _34753ad"/>
+            </view>
+          </view>
+        </block>
+      </view>
+      <!--物料组选择-->
+      <view wx:if="{{CurrentOrderSFilterName === 'itemgroup'}}" class="order-s-filter-container _34753ad">
+        <view class="order-operation _34753ad" bindtap="onSelectStatus" data-wpyonselectstatus-a="" data-wpyonselectstatus-b="物料组">
+          <view class="operation-text van-hairline--bottom _34753ad">
+            <view class="operation-status {{ filterForm.matkl === '' ? 'active' : '' }} _34753ad">全部</view>
+            <view wx:if="{{ filterForm.matkl === '' }}" class="b-icon icon-check operation-icon _34753ad"/>
+          </view>
+        </view>
+        <block class="_34753ad" wx:for="{{matklList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="order-operation _34753ad">
+            <view class="operation-text van-hairline--bottom _34753ad" bindtap="onSelectStatus" data-wpyonselectstatus-a="{{item.key}}" data-wpyonselectstatus-b="{{item.value}}">
+              <view class="operation-status {{ util.arrIncludes(matklIds,item.key)  ? 'active' : '' }} _34753ad">{{item.value}}</view>
+              <view wx:if="{{  util.arrIncludes(matklIds,item.key) }}" class="b-icon icon-check operation-icon _34753ad"/>
+            </view>
+          </view>
+        </block>
+      </view>
+      <!--库龄-->
+      <view wx:if="{{CurrentOrderSFilterName === 'storageAge'}}" class="order-s-filter-container _34753ad">
+        <view class="order-operation _34753ad">
+          <view class="operation-text van-hairline--bottom _34753ad" bindtap="onStorageAgeType" data-wpyonstorageagetype-a="" data-wpyonstorageagetype-b="库龄">
+            <view class="operation-status {{ filterForm.storageAge === '' ? 'active' : '' }} _34753ad">全部</view>
+            <view wx:if="{{ filterForm.storageAge === '' }}" class="b-icon icon-check operation-icon _34753ad"/>
+          </view>
+        </view>
+        <block class="_34753ad" wx:for="{{storageAgeList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+          <view class="order-operation _34753ad">
+            <view class="operation-text van-hairline--bottom _34753ad" bindtap="onStorageAgeType" data-wpyonstorageagetype-a="{{item.key}}" data-wpyonstorageagetype-b="{{item.value}}">
+              <view class="operation-status {{ filterForm.storageAge === item.key ? 'active' : '' }} _34753ad">{{item.value}}</view>
+              <view wx:if="{{ filterForm.storageAge === item.key }}" class="b-icon icon-check operation-icon _34753ad"/>
+            </view>
+          </view>
+        </block>
+      </view>
+    </van-popup>
+<!--    顶部筛选-->
+    
+  <view class="header-tab _34753ad">
+    <view class="left-btn">
+      <block  wx:for="{{ $headerTab$tabListNew }}">
+        <view class="btn-item {{ item.selectValue ? 'active' : '' }}" bindtap="$headerTab$changeTab" data-wpychangetab-a="{{item}}">
+          <text>{{ item.name }}</text>
+          <i wx:if="{{ $headerTab$showArrowIcon }}" class="b-icon iconxialajiantou"/>
+        </view>
+      </block>
+    </view>
+    <view class="right-btn"  wx:if="{{ $headerTab$showRightBtn }}" bindtap="$headerTab$onSideFilter">
+      <view class="line-shadow" wx:if="{{ $headerTab$showRightBtnLine }}"/>
+      <view class="side-filter-btn">
+        <text>筛选</text>
+        <i class="b-icon shaixuan"/>
+      </view>
+    </view>
+  </view>
+
+    <scroll-view wx:if="{{inventoryList && inventoryList.length !== 0}}" scroll-y="true" class="order-scroll _34753ad" enable-flex="enable-flex" bindscrolltolower="onGetOrderListNext">
+      <block class="_34753ad" wx:for="{{inventoryList}}" wx:for-index="index" wx:for-item="item" wx:key="key">
+        <view class="order-container _34753ad" wx:if="{{(item.checked&&showCheckedOnly)||!showCheckedOnly}}">
+          <view class="order-top _34753ad">
+            <view class="order-name _34753ad">
+              <view class="order-rel-name _34753ad">
+                <view class="order-name-left _34753ad">{{item.modelnum}}</view>
+                 <view class="order-name-right _34753ad">{{item.share==0?'未共享':'已共享'}}</view>
+              </view>
+              <view class="order-number _34753ad">{{item.qualitylv}}/{{item.invstatusName}}</view>
+            </view>
+          </view>
+          <view class="order-options _34753ad" style="justify-content: flex-start;">
+            <view class="item _34753ad">
+              <span class="_34753ad">库存</span>
+              ({{item.baseqty || '0'}})</view>
+            <view class="item _34753ad" style="margin-left: 40rpx">
+              <span class="_34753ad">预留</span>
+              ({{item.baseqty-item.avbbaseqty}})
+            </view>
+            <view class="item _34753ad" style="margin-left: 40rpx">
+              <span class="_34753ad">可用</span>
+              ({{item.avbbaseqty||0}})</view>
+          </view>
+          <view class="order-options _34753ad" style="justify-content: flex-start;">
+            <view class="item _34753ad">
+              <span class="_34753ad">入库时间: </span>
+              {{item.ininvdate || '无'}}</view>
+            <view class="item _34753ad" style="margin-left: 40rpx">
+              <span class="_34753ad">库龄: </span>
+              {{item.invage}}
+            </view>
+          </view>
+          <view class="order-options _34753ad" style="justify-content: flex-start;">
+            <view class="item _34753ad">
+              <span class="_34753ad">仓库: </span>
+              {{item.warehouseName}}
+            </view>
+            <view class="item _34753ad" style="margin-left: 40rpx">
+              <span class="_34753ad">是否预警: </span>
+              {{item.hifi_stockagestatus}}
+            </view>
+          </view>
+
+          <view class="order-options _34753ad" style="justify-content: flex-start;">
+            <view class="item _34753ad">
+              <span class="_34753ad">物料组: </span>
+              {{item.materialgroup}}
+            </view>
+            <view class="item _34753ad" style="margin-left: 40rpx">
+              <span class="_34753ad">库存状态: </span>
+              {{item.invtypeName}}
+            </view>
+          </view>
+          <view class="bottom-checked _34753ad" hidden="{{!showCheck}}">
+            <text class="b-icon icongongxiangshenqing-gouxuanmoren _34753ad" hidden="{{!item.checked}}"/>
+            <text class="b-icon icongongxiangshenqing-gouxuanmoren-hui _34753ad" hidden="{{item.checked}}"/>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+    
+  <view class="empty-data _34753ad" wx:else>
+    <view class="empty-data-context">
+      <image src="{{$emptyDataType$imgObj.emptyActivity}}" class="empty-data-context-img"/>
+      <view class="empty-data-context-tip">{{ $emptyDataType$descriptionText }}</view>
+    </view>
+  </view>
+
+
+    <van-toast id="van-toast" class="_34753ad"/>
+    <van-dialog id="van-dialog" class="_34753ad"/>
+    <van-popup show="{{ showGuide }}" bind:click-overlay="clickGuideOvery" close-on-click-overlay="true" z-index="9999" custom-style="background:none;text-algin:right;" position="top" class="_34753ad">
+      <image src="{{guideImg}}" class="guide-img _34753ad" bindtap="clickGuideOvery"/>
+    </van-popup>
+  </view>

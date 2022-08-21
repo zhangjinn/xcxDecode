@@ -1,0 +1,97 @@
+
+<!--<view>fsdhjk0s0kfj000</view>-->
+  <view class="mapClass" hover-class="none" hover-stop-propagation="false" style="width: 100vw; height: 100vh;">
+    <map id="map1" longitude="{{longitude}}" latitude=" {{latitude}}" scale="{{scale}}" markers="{{markers}}" circles="{{circle}}" show-location="{{true}}" bindtap="mapTap" regionchange="regionchange" style="width: 100%;height: 100%"/>
+<!--    <cover-view class="pulsBox">-->
+<!--      <cover-view class="fuhao" bindtap="scaleJia">+</cover-view>-->
+<!--      <cover-view class="fuhao" bindtap="scaleJian">-</cover-view>-->
+<!--    </cover-view>-->
+<!--    <cover-view class="pulsBox1">-->
+<!--      <cover-view class="fuhao" bindtap="location">-->
+<!--        <cover-image src="/images/location/dangqianweizhi.png"  class="mapImage" style="width: 40rpx;height: 40rpx;"></cover-image>-->
+<!--      </cover-view>-->
+<!--    </cover-view>-->
+    <view class="qingdaofont">
+       <view class="top-wrap">
+         <view class="cont cont-bod">
+           <view class="wrap">
+             <view class="lab">当前定位</view>
+             <view class="val address-input">
+               <van-field value="{{ shAddress }}" placeholder="" border="{{ false }}"  bind:change="onShAddressChange"/></view>
+           </view>
+           <view class="b-icon refresh" bindtap="location"/>
+         </view>
+         <view class="cont wrap-flex" bindtap="openAddress">
+           <view class="lab">所在地区</view>
+           <view class="val">{{city}}</view>
+         </view>
+       </view>
+      <view class="btns-wrap">
+        <view class="btn" bindtap="reset">
+          重置
+        </view>
+        <view class="btn btn-ok" bindtap="recovery">
+          纠错
+        </view>
+      </view>
+    </view>
+    
+  <van-popup show="{{ $address$addressVisible }}" position="bottom"  bind:close="$address$closeAddressPopup" class="_a5a3fc2">
+    <view class="area _a5a3fc2">
+      <view class="area-header _a5a3fc2">
+        <view class="area-header-content _a5a3fc2">
+          <view class="area-header-content-title _a5a3fc2">{{ $address$title }}</view>
+        </view>
+        <view bindtap="$address$closeAddressPopup" class="area-header-close _a5a3fc2">
+          <icon class="h-icon icon-ic-close _a5a3fc2"/>
+        </view>
+      </view>
+
+      <view class="area-tab _a5a3fc2">
+        <view bindtap="$address$chooseAddressTap" class="area-tab-item _a5a3fc2" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="province">
+          <view class="area-tab-item-title _a5a3fc2">
+            <text class="{{ $address$areaCurrentTab === 'province' ? 'active' : '' }} _a5a3fc2">{{ $address$province.name }}</text>
+            <view hidden="{{ !($address$areaCurrentTab === 'province') }}" class="area-tab-item-title-bar _a5a3fc2"/>
+          </view>
+        </view>
+
+        <view bindtap="$address$chooseAddressTap" class="area-tab-item _a5a3fc2" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="city">
+          <view class="area-tab-item-title _a5a3fc2" hidden="{{ $address$city.items.length === 0 }}">
+            <text class="{{ $address$areaCurrentTab === 'city' ? 'active' : '' }} _a5a3fc2">{{ $address$city.name }}</text>
+            <view hidden="{{ !($address$areaCurrentTab === 'city') }}" class="area-tab-item-title-bar _a5a3fc2"/>
+          </view>
+        </view>
+
+        <view bindtap="$address$chooseAddressTap" class="area-tab-item _a5a3fc2" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="area">
+          <view class="area-tab-item-title _a5a3fc2" hidden="{{ $address$area.items.length === 0 }}">
+            <text class="{{ $address$areaCurrentTab === 'area' ? 'active' : '' }} _a5a3fc2">{{ $address$area.name }}</text>
+            <view hidden="{{ !($address$areaCurrentTab === 'area') }}" class="area-tab-item-title-bar _a5a3fc2"/>
+          </view>
+        </view>
+
+        <view bindtap="$address$chooseAddressTap" class="area-tab-item _a5a3fc2" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="town">
+          <view class="area-tab-item-title _a5a3fc2" hidden="{{ $address$town.items.length === 0 }}">
+            <text class="{{ $address$areaCurrentTab === 'town' ? 'active' : '' }} _a5a3fc2">{{ $address$town.name }}</text>
+            <view hidden="{{ !($address$areaCurrentTab === 'town') }}" class="area-tab-item-title-bar _a5a3fc2"/>
+          </view>
+        </view>
+
+      </view>
+      <view class="area-body _a5a3fc2">
+        <view hidden="{{!$address$loading}}" class="area-body-loading _a5a3fc2">
+          <i-spin fix="fix" class="_a5a3fc2"/>
+        </view>
+        <scroll-view class="area-body-content _a5a3fc2" scroll-y>
+          <block class="_a5a3fc2" wx:for="{{$address$addressItems}}" wx:for-index="$address$index" wx:for-item="$address$item" wx:key="$address$id">
+            <view bindtap="$address$chooseAddress" class="area-body-content-item _a5a3fc2" hover-class="area-body-content-item-hover" data-wpychooseaddress-a="{{ $address$item }}">
+              <text class="area-body-content-item-label {{ $address$item.code === $address$addressTempId ? 'active' : '' }} _a5a3fc2">{{ $address$item.name }}</text>
+              <view hidden="{{$address$item.code !== $address$addressTempId}}" class="_a5a3fc2">
+                <van-icon name="success" color="#00AAA6" class="_a5a3fc2"/>
+              </view>
+            </view>
+          </block>
+        </scroll-view>
+      </view>
+    </view>
+  </van-popup>
+  </view>

@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),_identity=require("./internal/_identity.js"),identity=_curry1(_identity);module.exports=identity;

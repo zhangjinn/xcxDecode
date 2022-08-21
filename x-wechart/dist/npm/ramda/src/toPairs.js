@@ -1,0 +1,1 @@
+var _curry1=require("./internal/_curry1.js"),_has=require("./internal/_has.js"),toPairs=_curry1(function(r){var a=[];for(var e in r)_has(e,r)&&(a[a.length]=[e,r[e]]);return a});module.exports=toPairs;

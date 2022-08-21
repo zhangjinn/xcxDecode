@@ -1,0 +1,1 @@
+function _isRegExp(e){return"[object RegExp]"===Object.prototype.toString.call(e)}module.exports=_isRegExp;

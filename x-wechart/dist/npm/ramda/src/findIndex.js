@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),_dispatchable=require("./internal/_dispatchable.js"),_xfindIndex=require("./internal/_xfindIndex.js"),findIndex=_curry2(_dispatchable([],_xfindIndex,function(r,e){for(var n=0,i=e.length;n<i;){if(r(e[n]))return n;n+=1}return-1}));module.exports=findIndex;

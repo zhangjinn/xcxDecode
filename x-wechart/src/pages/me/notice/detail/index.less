@@ -1,0 +1,56 @@
+@import '../../../../styles/utils.less';
+
+.item {
+  background-color: #FFFFFF;
+  padding-left: 24rpx;
+  padding-right: 24rpx;
+  min-height: 100%;
+  &-head {
+    display: flex;
+    position: relative;
+    padding-bottom: 16rpx;
+    flex-direction: column;
+    &::after {
+      .hairline(#EEEEEE);
+      border-bottom-width: 1rpx;
+    }
+    &-row {
+      display: flex;
+      justify-content: space-between;
+      padding-left: 16rpx;
+      padding-right: 8rpx;
+      .item-title {
+        color: #262626;
+        font-size: 32rpx;
+        max-width: 600rpx;
+      }
+      .item-board {
+        color: #AAAAAA;
+        font-size: 24rpx;
+      }
+      .item-info {
+        display: flex;
+        color: #AAAAAA;
+        font-size: 22rpx;
+        padding-top: 4rpx;
+        &-org {
+          padding-right: 6rpx;
+        }
+      }
+    }
+  }
+  &-body {
+    padding-top: 24rpx;
+  }
+  &-load {
+    padding-top: 24rpx;
+  
+    .loadButton {
+      padding:2rpx;
+      border: 2rpx solid #00aaa6;
+      border-radius: 8rpx;
+      font-size:24rpx;
+      color:#00aaa6
+    }
+  }
+}

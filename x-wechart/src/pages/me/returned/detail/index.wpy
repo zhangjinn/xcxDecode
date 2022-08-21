@@ -1,0 +1,75 @@
+<template>
+  <view class="me-returned-detail">
+    <form class="me-returned-detail-filter" bindsubmit="onSubmitFilterForm">
+      <van-field name="productName" value="{{ filterForm.productName }}" border="{{ false }}" placeholder="请输入产品型号" custom-style="width:542rpx;padding:14rpx 24rpx;font-size:26rpx;border:2rpx solid #E5E5E5;" placeholder-style="color: #CCCCCC;" input-class="me-returned-detail-search"/>
+      <button form-type="submit" class="form-submit-button">查询</button>
+    </form>
+    <view class="me-returned-detail-content">
+      <view class="returned-main-info">
+        <view class="item-header">
+          <view class="item-order-no">{{ returnedDetail.serialCode || '' }}</view>
+          <view class="item-order-status">{{ returnedDetail.dealStatus || '' }}</view>
+        </view>
+        <view class="item-order-info-line">
+          <view class="info-label">销售组织：</view>
+          <view class="info-content">{{ returnedDetail.orgName || '' }}</view>
+        </view>
+        <view wx:if="{{returnedDetail.dealStatus === '已处理'}}" class="item-order-info-line">
+          <view class="info-label">委托单号：</view>
+          <view class="info-content">{{ returnedDetail.delegationCode || '' }}</view>
+        </view>
+        <view class="item-order-info-line">
+          <view class="info-label">创建时间：</view>
+          <view class="info-content">{{ returnedDetail.createDate || '' }}</view>
+        </view>
+        <view wx:if="{{returnedDetail.dealStatus === '已处理'}}" class="item-order-info-line">
+          <view class="info-label">处理时间：</view>
+          <view class="info-content">{{ returnedDetail.dealDate || '' }}</view>
+        </view>
+        <view class="item-order-info-line">
+          <view class="info-label">退货地址：</view>
+          <view class="info-content">{{ returnedDetail.reAddress || '' }}</view>
+        </view>
+      </view>
+      <view class="returned-detail-list">
+        <repeat for="{{returnedDetail.detailList}}" key="index" item="item">
+          <view class="returned-detail-item">
+            <view class="item-order-info-line">
+              <view class="info-label">产品型号：</view>
+              <view class="info-content">{{ item.productModel || '' }}</view>
+              <view class="item-order-status">{{ item.dealMethod || ''}}</view>
+            </view>
+            <view class="item-order-info-line">
+              <view class="info-label">机号：</view>
+              <view class="info-content">{{ item.machineNum || '' }}</view>
+            </view>
+            <view class="item-order-info-line">
+              <view class="info-label">鉴定单号：</view>
+              <view class="info-content">{{ item.crmCode || '' }}</view>
+            </view>
+            <view class="item-order-info-line">
+              <view class="info-label">鉴定日期：</view>
+              <view class="info-content">{{ item.identifyDate || '' }}</view>
+            </view>
+            <view class="item-order-info-line">
+              <view class="info-label">备注：</view>
+              <view class="info-content">{{ item.remarks || '' }}</view>
+            </view>
+          </view>
+        </repeat>
+      </view>
+      <view class="returned-deliver-info">
+        <van-steps
+          steps="{{ orderStatusList }}"
+          active="0"
+          direction="vertical"
+          active-color="#00AAAA"
+          custom-class="returned-deliver-steps"
+        />
+      </view>
+    </view>
+    <van-toast id="van-toast" />
+  </view>
+</template>
+<style lang="less" src="./index.less"></style>
+<script lang="typescript" src="./index.ts"></script>

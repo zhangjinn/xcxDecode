@@ -1,0 +1,1 @@
+function _aperture(r,e){for(var t=0,a=e.length-(r-1),o=new Array(a>=0?a:0);t<a;)o[t]=Array.prototype.slice.call(e,t,t+r),t+=1;return o}module.exports=_aperture;

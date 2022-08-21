@@ -1,0 +1,91 @@
+<template>
+  <view class="order-result {{ type }}">
+    <view @tap="goBack" hover-class="hover" class="order-result-back" style="top: {{sys.top || 20}}px;height: {{sys.height || 44}}px;">
+      <van-icon size="22px" color="#fff" name="arrow-left" />
+    </view>
+    <view class="order-result-header">
+      <view class="order-result-body">
+        <block wx:if="{{type === 'success'}}">
+          <van-icon color="#fff" size="3em" name="checked" />
+        </block>
+        <block wx:else>
+          <van-icon color="#fff" size="3em" name="clear" />
+        </block>
+        <!-- 营销活动 -->
+        <block wx:if="{{orderType !== '2'}}">
+          <view class="order-result-body-title">{{ type === 'success' ? '您的订单已提交成功！' : '您的订单提交失败！' }}</view>
+        </block>
+        <blcok wx:else>
+          <view class="order-result-body-title">提交成功</view>
+        </blcok>
+      </view>
+      <view class="order-result-footer van-hairline--surround">
+        <view class="order-result-footer-body">
+          <view class="order-result-footer-body-card">
+            <block wx:if="{{type === 'success' && orderType !== '2'}}">
+              <view class="success-title">订单编号 {{orderNum}}</view>
+              <block wx:if="{{ goWhere && goWhere == 'Y'}}">
+                <navigator url="/pages/dms/channel-purchase-order/index/index" class="success-link">点击前往订单中心</navigator>
+              </block>
+              <block wx:else>
+                <navigator url="/pages/me/order/index" class="success-link">点击前往订单中心</navigator>
+              </block>
+            </block>
+            <block wx:elif="{{orderType === '2'}}">
+              <view wx:if="{{orderNums.length==1}}" class="success-title">活动参与编号 {{orderNum}}</view>
+              <view wx:else class="success-title" style="text-align: center">活动参与编号
+                <repeat for="{{orderNums}}" item="item">
+                <view>{{item}}</view>
+                </repeat>
+              </view>
+              <navigator url="/pages/me/my-snapped/index" class="success-link">点击查看我参与的活动</navigator>
+            </block>
+            <block wx:else>
+              <view class="error-desc">失败原因：{{errorMsg || '系统错误请重试'}}！</view>
+            </block>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="order-result-content">
+      <block wx:if="{{type === 'success' && orderType !== '2'}}">
+        <block wx:if="{{ activity && activity == 'order'}}">
+          <navigator class="shop-btn-new" url="/pages/main/home/index" open-type="switchTab">返回首页</navigator>
+          <navigator class="shop-btn" url="/pages/activity/activity-area/index">继续购物</navigator>
+        </block>
+        <block wx:elif="{{sales && sales == 'salesOrder'}}">
+          <navigator class="shop-btn-new" url="/pages/main/home/index" open-type="switchTab">返回首页</navigator>
+          <navigator class="shop-btn" url="/pages/dms/sales-distributors/index" >继续购物</navigator>
+        </block>
+        <block wx:else>
+          <navigator class="shop-btn-new" url="/pages/main/home/index" open-type="switchTab">返回首页</navigator>
+          <navigator class="shop-btn" url="/pages/main/take/index" open-type="switchTab">继续购物</navigator>
+        </block>
+      </block>
+      <block wx:elif="{{ sales && sales == 'salesOrder'}}">
+        <navigator class="cart-btn" url="/pages/main/home/index" open-type="switchTab">返回首页</navigator>
+        <navigator class="continue-btn" url="/pages/dms/sales-distributors/index" >继续购物</navigator>
+      </block>
+      <block wx:elif="{{orderType === '2'}}">
+<!--        <navigator class="shop-btn-new" url="/pages/main/home/index" open-type="switchTab">返回首页</navigator>-->
+        <navigator delta="2" open-type="navigateBack" class="shop-btn-new" url="/pages/activity/activity-area/index">继续抢</navigator>
+        <view wx:if="{{type === 'success'}}" class="shop-btn" @tap="goToTransfer">去转单</view>
+      </block>
+      <block wx:elif="{{ activity && activity == 'order'}}">
+        <navigator class="cart-btn" url="/pages/main/home/index" open-type="switchTab">返回首页</navigator>
+        <navigator class="continue-btn" url="/pages/activity/activity-area/index" >继续购物</navigator>
+      </block>
+      <block wx:elif="{{ activity && activity == 'market'}}">
+        <navigator class="cart-btn" url="/pages/main/home/index" open-type="switchTab">返回首页</navigator>
+        <navigator open-type="navigateBack"  class="continue-btn" delta="2" >继续抢</navigator>
+      </block>
+      <block wx:else>
+        <navigator class="cart-btn" url="/pages/main/home/index" open-type="switchTab">返回首页</navigator>
+        <navigator class="continue-btn" url="/pages/main/take/index" open-type="switchTab">继续购物</navigator>
+      </block>
+    </view>
+    <van-toast id="van-toast" />
+  </view>
+</template>
+<style lang="less" src="./index.less" scoped></style>
+<script lang="typescript" src="./index.ts"></script>

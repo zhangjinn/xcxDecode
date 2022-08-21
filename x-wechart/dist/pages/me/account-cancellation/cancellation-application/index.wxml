@@ -1,0 +1,115 @@
+
+  <view class="account _a2c892d">
+    <view  wx:if="{{stepStatus === '1'}}" class="account-wrapper _a2c892d">
+      <view class="title _a2c892d">申请注销信天翁账号</view>
+      <view class="container _a2c892d">
+        <text class="section sub-title _a2c892d">为保障您的信息、财产安全，提交的注销 申请生效前，海信信天翁团队将进行以下 验证：</text>
+        <view class="section _a2c892d">
+          <text class="sub-title _a2c892d">1. 账号处于安全状态</text>
+          <text class="desc _a2c892d">（账号没有被盗，被封等风险；账号一年 内无 异常行为；账号无任何纠纷。）</text>
+        </view>
+        <text class="section sub-title _a2c892d">2. 财务余额已结清</text>
+        <text class="section sub-title _a2c892d">3. 库存已结清</text>
+        <text class="section sub-title _a2c892d">4. 订单已全部完成</text>
+      </view>
+      <view class="notice _a2c892d">
+        <van-checkbox use-icon-slot="use-icon-slot" value="{{ noticeChecked }}"  bind:change="onChange" class="_a2c892d">
+          <view slot="icon" class="radio-el {{ noticeChecked ? 'checked' : '' }} _a2c892d">
+            <view class="b-icon icon-check _a2c892d"/>
+          </view>
+          <view class="cancellation-notice-tip _a2c892d">申请注销即标识您自愿放弃账号内所有虚拟资产并同意<text class="notice-url _a2c892d" catchtap="cancellationNotice">《注销须知》</text></view>
+        </van-checkbox>
+      </view>
+      <view class="handle-btn _a2c892d">
+        <van-button type="default" custom-class="apply-cancel" disabled="{{!noticeChecked}}"  bind:click="toSMSVerification" class="_a2c892d">申请注销</van-button>
+      </view>
+    </view>
+    <view  wx:if="{{stepStatus === '2'}}" class="account-wrapper _a2c892d">
+      <view class="code-title _a2c892d">
+        <text class="account-tip _a2c892d">申请人身份验证</text>
+        <text class="account-number _a2c892d" wx:if="{{verifyCode}}">申请注销短信验证码已发送至{{ mobile }}</text>
+      </view>
+      <view class="code-field _a2c892d">
+        <van-field placeholder="请输入短信验证码" value="{{code}}" clearable="{{true}}" type="number" cell-class="login-input" placeholder-style="color: #aaa;font-size: 28rpx;"  bind:change="onCodeChange" bind:clear="clearCode" class="_a2c892d">
+          <view bindtap="getSmsCode" class="login-input-sms {{ timer === 60 ? 'success':'disabled' }} _a2c892d" hover-class="hover" slot="button">
+            <block wx:if="{{timer === 60}}" class="_a2c892d">获取验证码</block>
+            <block wx:else class="_a2c892d">{{timer}}s</block>
+          </view>
+        </van-field>
+      </view>
+      <view class="handle-btn code-handle-btn _a2c892d">
+        <van-button type="default" custom-class="apply-cancel code-apply-cancel" disabled="{{!code}}" bind:click="toCancellationReason" class="_a2c892d">下一步</van-button>
+      </view>
+    </view>
+    <view  wx:if="{{stepStatus === '3'}}" class="account-wrapper _a2c892d">
+      <view class="title _a2c892d">注销原因</view>
+      <view class="container _a2c892d">
+        <van-radio-group value="{{ reasonRadio }}" bind:change="onReasonRadioChange" class="_a2c892d">
+          <view wx:for="{{reasonRadioList}}" class="radio-item _a2c892d">
+            <van-radio use-icon-slot="use-icon-slot" value="{{ reasonRadio }}" name="{{item.code}}" class="_a2c892d">
+              {{ item.name }}
+              <view slot="icon" class="radio-el {{ reasonRadio === item.code ? 'checked' : '' }} _a2c892d">
+                <view class="b-icon icon-check _a2c892d"/>
+              </view>
+            </van-radio>
+          </view>
+        </van-radio-group>
+      </view>
+      <view class="container textarea-box _a2c892d">
+        <van-field value="{{ reasonText }}" type="textarea" placeholder="请输入注销原因" autosize="autosize" placeholder-style="font-size: 28rpx; color: #AAAAAA;" custom-style="background-color: #F5F5F5; height: 164rpx; padding: 0;" border="{{ false }}" bind:change="onReasonTextChange" class="_a2c892d"/>
+      </view>
+      <view class="handle-btn _a2c892d">
+        <van-button type="default" custom-class="apply-cancel" disabled="{{!reasonRadio}}" bind:click="submitCancelReason" class="_a2c892d">提交</van-button>
+      </view>
+    </view>
+    <view wx:if="{{stepStatus === '4'}}" class="account-wrapper _a2c892d">
+      <view class="title _a2c892d">注销确认</view>
+      <view class="container _a2c892d">
+        <text class="section sub-title _a2c892d">注销后海信信天翁将做以下处理：</text>
+        <text class="section sub-title _a2c892d">1. 将无法使用账号/手机号/邮箱等登录 系统。</text>
+        <text class="section sub-title _a2c892d">2. 释放关联账号的手机号、邮箱等基本 信息。</text>
+        <text class="section sub-title _a2c892d">3. 清理账号关联的财务余额、订单、库 存、门店和仓库等数据。</text>
+      </view>
+      <view class="handle-btn _a2c892d">
+        <van-button type="default" custom-class="apply-cancel" bind:click="submitConfirmation" class="_a2c892d">确认</van-button>
+      </view>
+    </view>
+    <view wx:if="{{stepStatus === '5'}}" class="account-wrapper _a2c892d">
+      <view class="title _a2c892d">申请已完成</view>
+      <view class="logout-confirm-container _a2c892d">
+        <view class="logout-icon _a2c892d"><i class="b-icon shenqingwancheng finish-icon _a2c892d"/></view>
+        <view class="tip _a2c892d">管理账号将在48小时内完成审核，审核通过将 以短信的形式告知您，请耐心等待</view>
+        <view class="back-to-home _a2c892d" bindtap="goBackHome">返回首页</view>
+      </view>
+    </view>
+    <view wx:if="{{stepStatus === 'notice'}}" class="notice-wrapper _a2c892d">
+      <view class="container-wrapper _a2c892d">
+        <view class="title _a2c892d">海信信天翁账号注销须知</view>
+        <view class="container _a2c892d">
+          <view class="section _a2c892d">
+            <text class="sub-title _a2c892d">注销须知内容：</text>
+            <text class="sub-title _a2c892d">您正在进入注销账号的程序，您在注销当前账号后，将放弃以下权益和资产。</text>
+          </view>
+          <text class="section sub-title _a2c892d">1. 无法使用账号原手机或邮箱登录信天翁及使用服务。</text>
+          <text class="section sub-title _a2c892d">2. 财务余额无法恢复。</text>
+          <text class="section sub-title _a2c892d">3. 库存无法回复。</text>
+          <text class="section sub-title _a2c892d">4. 订单无法回复。</text>
+          <view class="section _a2c892d">
+            <view class="sub-desc _a2c892d">
+              <text class="desc _a2c892d">您理解并同意，海信信天翁无法协助您重新恢复上述服务，您注销账户的行为会给您的售后维权带来诸多不便，请您在操作之前，确保您的账号无任何纠纷，并自行备份信天翁账号相关的所有信息和数据，下载并保存好订单商品和服务的交易凭证、票据等资料，否则您有可能须支付额外的账户和订单查询费用或无法享受相关售后服务。</text>
+              <text class="sub-title _a2c892d">点击“已阅读并同意”按钮，即表示您已阅读并同意《海信信天翁账号注销须知》。</text>
+            </view>
+          </view>
+          <text class="section sub-title _a2c892d">您在申请注销流程中点击同意前，应当认证阅读《海信信天翁账号注销须知》。请您务必审慎阅读、充分理解协议中的相关条款内容，其中包括：</text>
+          <text class="section sub-title _a2c892d">1、与您约定免除或限制责任的条款。</text>
+          <text class="section sub-title _a2c892d">2、其他以粗体下划线标识的重要条款。</text>
+          <text class="section sub-title _a2c892d">如您对本注销须知有任何疑问，可以通过个人中心--互动--咨询投诉，联系我们进行自助咨询。</text>
+        </view>
+      </view>
+      <view class="notice-handle-btn _a2c892d">
+        <van-button type="default" custom-class="apply-cancel" bind:click="readAndAgree" class="_a2c892d">已阅读并同意</van-button>
+      </view>
+    </view>
+    <van-toast id="van-toast" class="_a2c892d"/>
+    <van-dialog id="van-dialog" class="_a2c892d"/>
+  </view>

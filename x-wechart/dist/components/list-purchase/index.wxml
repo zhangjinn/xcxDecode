@@ -1,0 +1,54 @@
+  <view catchtap="goods" url="" class="item">
+    <view class="item-main">
+      <view class="item-main-org">{{ item.orgName }}
+      </view>
+      <img class="item-main-img" flag="{{ item.productCode }}" src="{{item.img}}" errSrc="{{item.errImg}}" lazyLoad="{{ lazyLoad }}" bind:lose="imgLose" />
+      <view class="item-main-bottom">
+        <view class="item-main-bottom-inventory">
+          <view class="item-main-bottom-inventory-count" wx:if="{{ !item.loadingInventory }}">
+            {{item.inventory == 0 ? "库存 " + item.inventory :  item.inventory}}
+          </view>
+          <view wx:else class="item-main-bottom-inventory-loading">
+            <van-loading size="18rpx" />
+          </view>
+        </view>
+        <block wx:if="{{ !hiddenCollecion }}">
+          <view class="item-main-bottom-collection">
+            <view catchtap="toggleCollection" class="b-icon {{ item.collection ? 'icon-star' : 'icon-star-e' }} item-main-bottom-collection-icon"></view>
+          </view>
+        </block>
+      </view>
+    </view>
+    <view class="item-info">
+      <view class="item-info-name">
+        {{ item.b2bName }}
+      </view>
+      <block wx:if="{{ item.importInfo }}">
+        <view class="item-info-import">
+          {{ item.importInfo || '' }}
+        </view>
+      </block>
+      <block wx:else>
+        <view class="item-info-null">
+        </view>
+      </block>
+
+      <view class="item-info-bottom">
+        <view class="item-info-bottom-price">
+        
+          <!--<view class="item-info-bottom-price-tip">
+            
+          </view>-->
+          <view wx:if="{{ !item.loadingPrice }}" class="item-info-bottom-price-num">
+            ￥{{ item.price }}
+          </view>
+          <view wx:else class="item-info-bottom-price-loading">
+            <van-loading size="24rpx" />
+          </view>
+        </view>
+        <view catchtap="addCart" class="item-info-bottom-cart">
+          加入购物车
+        </view>
+      </view>
+    </view>
+  </view>

@@ -1,0 +1,205 @@
+
+  <view class="order _354c804">
+    <!-- 顶部固定tab -->
+    <view class="header-tab-wrap _354c804">
+      <view class="header-tab-text _354c804">库存调整类型</view>
+      <view class="header-tab-flex _354c804">
+        <!-- <repeat for="{{array}}" item="item"> -->
+          <!-- <view bindtap="changeTabChoose" data-tab="{{item.id}}" class="header-tab-item {{tabIsShow==item.id?'header-tab-active':''}}">{{item.name}}</view> -->
+          <view bindtap="changeTabChoose" class="header-tab-item {{tabIsShow=='otherIn'?'header-tab-active':''}} _354c804" data-wpychangetabchoose-a="otherIn">其他入库</view>
+          <view bindtap="changeTabChoose" class="header-tab-item {{tabIsShow=='otherOut'?'header-tab-active':''}} _354c804" data-wpychangetabchoose-a="otherOut">其他出库</view>
+          <view bindtap="changeTabChoose" class="header-tab-item {{tabIsShow=='invStatus'?'header-tab-active':''}} _354c804" data-wpychangetabchoose-a="invStatus">状态调整</view>
+        <!-- </repeat> -->
+      </view>
+      <view class="free-shipping-tip _354c804">{{ freeShippingTip }}</view>
+    </view>
+    <!-- 其他入库 -->
+    <block class="_354c804">
+      <view class="order-scroll _354c804">
+        <view class="order-scroll-head _354c804">
+          <view class="item-row _354c804">
+            <view class="item-row-left _354c804">
+              单据日期
+            </view>
+            <view class="item-row-right _354c804">
+              <view class="item-row-right-note _354c804">
+                {{sysDate}}
+              </view>
+            </view>
+          </view>
+          <view class="item-row _354c804" bindtap="openChooseFiBook">
+            <view class="item-row-left _354c804">
+              销售组织
+            </view>
+            <view class="item-row-right _354c804">
+              <view class="item-row-right-inventory} {{ fiBook.id ? '' : 'placeholder' }} _354c804">
+                {{ fiBook.name}}
+              </view>
+              <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_354c804"/>
+            </view>
+          </view>
+          <view class="item-row _354c804" bindtap="openChoose" data-wpyopenchoose-a="storeHouse" data-wpyopenchoose-b="gicOutWrehouse" data-wpyopenchoose-c="仓库">
+            <view class="item-row-left _354c804">
+              仓库
+            </view>
+            <view class="item-row-right _354c804">
+              <view class="item-row-right-inventory} {{ gicOutWrehouse.id ? '' : 'placeholder' }} _354c804">
+                {{ gicOutWrehouse.name}}
+              </view>
+              <van-icon name="arrow" custom-class="dms-item-row-right-arrow" class="_354c804"/>
+            </view>
+          </view>
+          <view class="item-row _354c804">
+            <view class="item-row-left _354c804">
+              备注
+            </view>
+            <view class="item-row-right _354c804">
+              <view class="item-row-right-note _354c804">
+                <van-field value="{{ note }}" placeholder="请填写备注" border="{{ false }}" input-align="right"  bind:change="onNoteChange" class="dms-order-note _354c804" clearable="clearable"/>
+              </view>
+            </view>
+          </view>
+        </view>
+        
+  <view class="detail _c95757f _354c804">
+    <view class="detail-title _c95757f">
+      明细信息
+    </view>
+
+
+    <item id="item"  wx:for="{{ $order$details }}" from="{{ $order$from }}" wx:key="*this" orgId="{{$order$orgId}}" store="{{$order$store}}" index="{{index}}" itemId="{{ item }}" warehouseId="{{$order$out.id}}" outInv="{{$order$outInv}}" itemInfo="{{ $order$additionOrderDetailItem.itemInfo[item] }}" type="{{$order$type}}" bindvolumeChange="$order$volumeChange" bindamountChange="$order$amountChange" bindchooseItem="$order$chooseItem" binditemDel="$order$delItem" isDisabled="{{ $order$isDisabled }}" class="_c95757f"/>
+
+    <view class="detail-add _c95757f" catchtap="$order$addItem">
+      <!-- <van-icon name="add" class="detail-add-icon" /> -->
+        <!-- <view class="detail-add-tip"> -->
+          <!-- <block wx:if="{{ details.length > 0 }}">继续</block>
+          <block>添加</block> -->
+          + 添加产品信息
+        <!-- </view> -->
+    </view>
+  </view>
+      </view>
+    </block>
+
+    <van-submit-bar button-text="确认提交" custom-class="order-bottom" button-class-container="dms-order-bottom-button-save" button-class="dms-order-bottom-button-save-submit"  bind:submit="submit" class="_354c804">
+    <view slot="top" class="order-bottom-amount _354c804">
+        <!-- <view class="order-bottom-volume-num">体积:{{volume}}m³</view>
+        <i class="b-icon iconwenti" bindtap="noticePopupOpen"></i> -->
+        <view class="order-bottom-amount-tip _354c804">
+          合计
+        </view>
+        <view class="order-bottom-amount-num _354c804">
+          <!-- ￥{{ amount }} -->
+          <text class="priceSign _354c804">￥{{amountFirst}}</text>
+          <text class="priceDot _354c804">.{{amountLast}}</text>
+        </view>
+      </view>
+    </van-submit-bar>
+
+    <!--下拉框-->
+    <van-popup show="{{ popVisible }}" closeable="closeable" position="bottom" custom-style="height: 570rpx"  bind:click-overlay="onClose" class="_354c804">
+      <view class="order-inv _354c804">
+        <view class="order-inv-head _354c804">
+          <view class="order-inv-head-context _354c804">
+            <view class="order-inv-head-context-title _354c804">{{ popTitle }}</view>
+          <van-icon name="cross" class="order-inv-head-context-close _354c804" bindtap="onClose"/>
+          </view>
+        </view>
+        <scroll-view scroll-y class="order-inv-scroll _354c804">
+          <view  wx:for="{{ popList }}" wx:key="{{ item.id }}" item="item" class="order-inv-scroll-row _354c804" data-key="{{ item.id }}" data-index="{{ index }}" bindtap="onChoose">
+            <view class="order-inv-scroll-row-desc {{ item.id === compareInfo.id ? 'checked' : ''}} _354c804">
+              {{ item.name }}
+            </view>
+            <block wx:if="{{ item.id === compareInfo.id }}" class="_354c804">
+              <view class="b-icon icon-check order-inv-scroll-row-checked checked _354c804">
+              </view>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+    </van-popup>
+
+    <!-- 销售组织 -->
+    <van-popup show="{{ popFiBookVisible }}" closeable="closeable" position="bottom" custom-style="height: 570rpx" bind:click-overlay="onCloseFiBook" class="_354c804">
+      <view class="order-inv _354c804">
+        <view class="order-inv-head _354c804">
+          <view class="order-inv-head-context _354c804">
+            <view class="order-inv-head-context-title _354c804">销售组织</view>
+            <van-icon name="cross" class="order-inv-head-context-close _354c804" bindtap="onCloseFiBook"/>
+          </view>
+        </view>
+        <scroll-view scroll-y class="order-inv-scroll _354c804">
+          <view  wx:for="{{ fibookList }}" wx:key="{{ item.id }}" item="item" class="order-inv-scroll-row _354c804" data-key="{{ item.id }}" data-name="{{ item.name }}" bindtap="onChooseFiBook">
+            <view class="order-inv-scroll-row-desc {{ item.id === fiBook.id ? 'checked' : ''}} _354c804">
+              {{ item.name }}
+            </view>
+            <block wx:if="{{ item.id === fiBook.id }}" class="_354c804">
+              <view class="b-icon icon-check order-inv-scroll-row-checked checked _354c804">
+              </view>
+            </block>
+          </view>
+
+        </scroll-view>
+      </view>
+    </van-popup>
+    <van-dialog id="van-dialog" class="_354c804"/>
+    
+  <van-popup show="{{ $address$addressVisible }}" position="bottom" z-index="9999999"  bind:close="$address$closeAddressPopup" class="_c859d82 _354c804">
+    <view class="area _c859d82">
+      <view class="area-header _c859d82">
+        <view class="area-header-content _c859d82">
+          <view class="area-header-content-title _c859d82">{{ $address$title }}</view>
+        </view>
+        <view bindtap="$address$closeAddressPopup" class="area-header-close _c859d82">
+          <icon class="h-icon icon-ic-close _c859d82"/>
+        </view>
+      </view>
+
+      <view class="area-tab _c859d82">
+        <view bindtap="$address$chooseAddressTap" class="area-tab-item _c859d82" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="province">
+          <view class="area-tab-item-title _c859d82">
+            <text class="{{ $address$areaCurrentTab === 'province' ? 'active' : '' }} _c859d82">{{ $address$province.name }}</text>
+            <view hidden="{{ !($address$areaCurrentTab === 'province') }}" class="area-tab-item-title-bar _c859d82"/>
+          </view>
+        </view>
+
+        <view bindtap="$address$chooseAddressTap" class="area-tab-item _c859d82" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="city">
+          <view class="area-tab-item-title _c859d82" hidden="{{ $address$city.items.length === 0 }}">
+            <text class="{{ $address$areaCurrentTab === 'city' ? 'active' : '' }} _c859d82">{{ $address$city.name }}</text>
+            <view hidden="{{ !($address$areaCurrentTab === 'city') }}" class="area-tab-item-title-bar _c859d82"/>
+          </view>
+        </view>
+
+        <view bindtap="$address$chooseAddressTap" class="area-tab-item _c859d82" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="area">
+          <view class="area-tab-item-title _c859d82" hidden="{{ $address$area.items.length === 0 }}">
+            <text class="{{ $address$areaCurrentTab === 'area' ? 'active' : '' }} _c859d82">{{ $address$area.name }}</text>
+            <view hidden="{{ !($address$areaCurrentTab === 'area') }}" class="area-tab-item-title-bar _c859d82"/>
+          </view>
+        </view>
+        <view bindtap="$address$chooseAddressTap" class="area-tab-item _c859d82" hover-class="area-tab-item-hover" data-wpychooseaddresstap-a="town">
+          <view class="area-tab-item-title _c859d82" hidden="{{ $address$town.items.length === 0 }}">
+            <text class="{{ $address$areaCurrentTab === 'town' ? 'active' : '' }} _c859d82">{{ $address$town.name }}</text>
+            <view hidden="{{ !($address$areaCurrentTab === 'town') }}" class="area-tab-item-title-bar _c859d82"/>
+          </view>
+        </view>
+      </view>
+
+      <view class="area-body _c859d82">
+        <view hidden="{{!$address$loading}}" class="area-body-loading _c859d82">
+          <i-spin fix="fix" class="_c859d82"/>
+        </view>
+        <scroll-view class="area-body-content _c859d82" scroll-y>
+          <block class="_c859d82" wx:for="{{$address$addressItems}}" wx:for-index="$address$index" wx:for-item="$address$item" wx:key="$address$id">
+            <view bindtap="$address$chooseAddress" class="area-body-content-item _c859d82" hover-class="area-body-content-item-hover" data-wpychooseaddress-a="{{ $address$item }}">
+              <text class="area-body-content-item-label {{ $address$item.code === $address$addressTempId && $address$item.code !== '' ? 'active' : '' }} _c859d82">{{ $address$item.name }}</text>
+              <view hidden="{{$address$item.code !== $address$addressTempId || $address$item.code === ''}}" class="_c859d82">
+                <van-icon name="success" color="#00AAA6" class="_c859d82"/>
+              </view>
+            </view>
+          </block>
+        </scroll-view>
+      </view>
+    </view>
+  </van-popup>
+    <van-toast id="van-toast" class="_354c804"/>
+  </view>

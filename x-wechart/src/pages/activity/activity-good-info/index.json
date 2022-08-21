@@ -1,0 +1,10 @@
+{
+  "component": true,
+  "usingComponents": {
+    "img": "../../../components/img/index",
+    "van-loading": "../../../components/vant/loading/index",
+    "van-tag": "../../../components/vant/tag/index",
+    "van-progress-activity": "../../../components/vant/progress-activity/index",
+    "van-stepper": "../../../components/vant/stepper/index"
+  }
+}

@@ -1,0 +1,1 @@
+var _curry2=require("./internal/_curry2.js"),always=require("./always.js"),times=require("./times.js"),repeat=_curry2(function(r,e){return times(always(r),e)});module.exports=repeat;

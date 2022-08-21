@@ -1,0 +1,97 @@
+.van-hairline._9b275a4,
+.van-hairline--top._9b275a4,
+.van-hairline--left._9b275a4,
+.van-hairline--right._9b275a4,
+.van-hairline--bottom._9b275a4,
+.van-hairline--top-bottom._9b275a4,
+.van-hairline--surround._9b275a4 {
+  position: relative;
+}
+.van-hairline._9b275a4::after,
+.van-hairline--top._9b275a4::after,
+.van-hairline--left._9b275a4::after,
+.van-hairline--right._9b275a4::after,
+.van-hairline--bottom._9b275a4::after,
+.van-hairline--top-bottom._9b275a4::after,
+.van-hairline--surround._9b275a4::after {
+  content: ' ';
+  position: absolute;
+  pointer-events: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transform-origin: center;
+          transform-origin: center;
+  /* cover wechat button:after default transforn-origin */
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  -webkit-transform: scale(0.5);
+          transform: scale(0.5);
+  border: 0 solid #eee;
+}
+.van-hairline--top._9b275a4::after {
+  border-top-width: 1px;
+}
+.van-hairline--left._9b275a4::after {
+  border-left-width: 1px;
+}
+.van-hairline--right._9b275a4::after {
+  border-right-width: 1px;
+}
+.van-hairline--bottom._9b275a4::after {
+  border-bottom-width: 1px;
+}
+.van-hairline--top-bottom._9b275a4::after {
+  border-width: 1px 0;
+}
+.van-hairline--surround._9b275a4::after {
+  border-width: 1px;
+}
+.pay-confirm._9b275a4 {
+  position: relative;
+  width: 604rpx;
+  height: 560rpx;
+  padding: 40rpx;
+  background-color: #ffffff;
+}
+.pay-confirm-close._9b275a4 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100rpx;
+  height: 100rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  z-index: 10;
+}
+.pay-confirm-header._9b275a4 {
+  font-size: 28rpx;
+  color: #777777;
+  text-align: center;
+}
+.pay-confirm-body._9b275a4 {
+  font-size: 64rpx;
+  color: #262626;
+  font-weight: 500;
+  padding: 60rpx;
+  text-align: center;
+}
+.pay-confirm-input._9b275a4 {
+  width: 100%;
+  padding: 0 20rpx;
+  margin-bottom: 60rpx;
+}
+.pay-confirm-input-border._9b275a4 {
+  background-color: #cccccc;
+}
+.pay-confirm-input-border._9b275a4::after {
+  border-radius: 12rpx;
+}

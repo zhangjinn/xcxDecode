@@ -1,0 +1,112 @@
+@import '../../../../styles/utils.less';
+@import '../../../../styles/index.less';
+@import '../../../../components/vant/common/style/hairline.less';
+@import '../../../../components/vant/common/style/ellipsis.less';
+.container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .head{
+        background:#FFFFFF ;
+        height: 88rpx;
+        padding:12rpx 24rpx 12rpx 24rpx;
+        z-index: 120;
+        .input-group{
+            height: 64rpx;
+            border:1rpx solid #E5E5E5;
+            display: flex;
+            border-radius:2px;
+            .input{
+                height: 100%;
+                font-size: 26rpx;
+                padding-left: 24rpx;
+                width: 85%;
+            }
+            .btn{
+                background-color: #00AAA6;
+                height: 100%;
+                width:15%;
+                font-size: 26rpx;
+                color:#FFFFFF;
+                text-align: center;
+                line-height: 63rpx;
+            }
+        }
+    }
+    .order-operation {
+        display: flex;
+        width: 100%;
+        .operation-text {
+            width: 100%;
+            height: 84rpx;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .operation-status {
+            font-size: 28rpx;
+            font-weight: 400;
+            padding-left: 16rpx;
+                &.active {
+                    color: #00AAAA;
+                }
+            }
+            .operation-icon {
+                font-size: 20rpx;
+                color: #00aaa6;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding-right: 40rpx;
+            }
+        }
+
+    }
+    .filter-container {
+        padding-top: 156rpx;
+    }
+    .problem-scroll{
+        display: flex;
+        flex: 1;
+        padding-top: 14rpx;
+        overflow-y: auto;
+        .item{
+            height: 122rpx;
+            background: #FFFFFF;
+            padding: 0 24rpx 0 24rpx;
+            &-content{
+                height: 100%;
+                .row{
+                    display: flex;
+                    .title{
+                        font-size:26rpx;
+                        color:#262626;
+                        max-width: 630rpx;
+                        padding-top: 22rpx;
+                        &.done {
+                            color: #AAAAAA;
+                        }
+                    }
+                    .status{
+                        font-size:26rpx;
+                        color:#777777;
+                        padding-top: 22rpx;
+                        position: absolute;
+                        right: 0;
+                    }
+                    .date{
+                        font-size:24rpx;
+                        color:#AAAAAA;
+                        padding-top: 8rpx;
+                    }
+                    .btn{
+                        font-size:24rpx;
+                        color:#00AAA6;
+                        padding-top: 8rpx;
+                        position: absolute;
+                        right: 0;
+                    }
+                }
+            }
+        }
+    }
+}

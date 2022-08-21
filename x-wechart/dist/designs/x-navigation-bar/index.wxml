@@ -1,0 +1,18 @@
+<view  class="x-navigator-bar" style="{{contentStyle}}" hover-class="x-text-title-hover">
+    <block wx:if="{{!lateralSwitch}}" wx:for="{{items}}" wx:key="{{item.key}}">
+      <view class='x-navigator-bar-item' key="{{item.key}}" data-index="{{index}}" bindtap="onTap">
+        <image class='x-navigator-bar-item-img' src="{{item.src}}" alt="导航项图" />
+        <view class='x-navigator-bar-item-text'>
+          {{item.text}}
+        </view>
+      </view>
+    </block>
+    <block wx:if="{{lateralSwitch}}" wx:for="{{items}}" wx:key="{{item.key}}">
+      <view class='x-navigator-bar-itemOne' key="{{item.key}}" data-index="{{index}}" bindtap="onTap">
+        <image class='x-navigator-bar-itemOne-img' src="{{item.src}}" alt="导航项图" />
+        <view class='x-navigator-bar-itemOne-text'>
+          {{item.text}}
+        </view>
+      </view>
+    </block>
+</view>

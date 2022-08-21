@@ -1,0 +1,1 @@
+var _curry3=require("./internal/_curry3.js"),replace=_curry3(function(r,e,c){return c.replace(r,e)});module.exports=replace;
